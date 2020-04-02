@@ -42,11 +42,6 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-{% if not url_prefix %}
-    <script src="{% static 'ciclos/ownscripts/configuracion_desarrollo.js' %}"></script>
-{% else %}
-    <script src="{% static 'ciclos/ownscripts/configuracion_produccion.js' %}"></script>
-{% endif %}
 
 {% include 'base/partials/js_imports.html' %}
 
