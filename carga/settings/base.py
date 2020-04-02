@@ -43,7 +43,9 @@ PREREQ_APPS = [
 ]
 
 PROJECT_APPS = [
-    'scheduler',
+    'gestion',
+    'recursos_humanos',
+    'carga_horaria',
 ]
 
 MIDDLEWARE = [
