@@ -1,0 +1,14 @@
+{% load staticfiles compress %}
+
+{% compress css %}
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'base/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'base/css/chosen.min.css' %}" rel="stylesheet">
+    <link href="{% static 'base/css/bootstrap-chosen.css' %}" rel="stylesheet">
+    <link href="{% static 'insumos/alertifyjs/css/alertify.min.css' %}" rel="stylesheet">
+    <link href="{% static 'insumos/alertifyjs/css/themes/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'base/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'base/pickadate/themes/classic.css' %}" rel="stylesheet">
+    <link href="{% static 'base/pickadate/themes/classic.date.css' %}" rel="stylesheet">
+    <link href="{% static 'base/css/jumbotron.css' %}" rel="stylesheet">
+{% endcompress %}

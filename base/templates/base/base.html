@@ -1,0 +1,92 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{% static 'base/img/icono.png' %}">
+
+    <title>{% block title_page %}
+    {% endblock %} </title>
+
+    {% include 'base/partials/css_imports.html' %}
+    {% block extra_css %}
+    {% endblock %}
+</head>
+
+<body>
+{% include 'base/partials/navbar.html' %}
+
+{% block suma_presupuesto %}{% endblock %}
+<div {% block container %}class="container"{% endblock %} id="contenidoApp">
+    {% block breadcrumb %}
+    {% endblock %}
+    {% block content %}
+    {% endblock %}
+</div> <!-- /container -->
+
+<br><br><br>
+
+<footer class="footer">
+    <div class="container">
+    <span class="text-muted">
+      Copyright &copy; 2019 Universidad Adventista de Chile
+    </span>
+    </div>
+</footer>
+
+<a href="javascript:void(0);" id="scroll" title="Scroll Arriba" style="display: none;">Top<span></span></a>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+{% if not url_prefix %}
+    <script src="{% static 'ciclos/ownscripts/configuracion_desarrollo.js' %}"></script>
+{% else %}
+    <script src="{% static 'ciclos/ownscripts/configuracion_produccion.js' %}"></script>
+{% endif %}
+
+{% include 'base/partials/js_imports.html' %}
+
+{% block extra_js %}
+{% endblock %}
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+{% comment %}
+    <script src="../../../../assets/js/ie10-viewport-bug-workaround.js"></script>
+    {% endcomment %}
+
+<script>
+    $(function() {
+        $('.chosen').chosen(
+            {width: '100%'});
+
+        $('[data-toggle="tooltip"]').tooltip();
+
+        $.each($('.autonumeric'), function () {
+            new AutoNumeric($(this)[0],
+                { currencySymbol : '$' });
+        });
+
+        {% block datepicker %}
+            $('.datepicker').pickadate({
+                formatSubmit: 'dd/mm/yyyy',
+                format: 'dd/mm/yyyy',
+                selectMonths: true,
+                hiddenName: true,
+                selectYears: true
+            });
+        {% endblock %}
+        alertify.set('notifier','position', 'top-right');
+
+        {% if messages %}
+            {% for message in messages %}
+                mostrarNotificacionGrowl('{{ message|safe }}', '{{ message.tags }}');
+            {% endfor %}
+        {% endif %}
+    });
+</script>
+
+</body>
+</html>

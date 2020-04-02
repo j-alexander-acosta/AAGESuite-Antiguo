@@ -1,0 +1,20 @@
+{% extends 'base/genericas/formulario.html' %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">
+            <i class="fa fa-gears"></i> Administración
+        </a>
+        </li>
+        <li class="breadcrumb-item active">
+            <a href="{{ url_listado_breadcrumb }}">
+                {{ icono|safe }} Listado de {{ verbose_name_plural }}
+            </a>
+        </li>
+        {% block  block_editar_eliminar %}
+            <li class="breadcrumb-item active">
+                <i class="fa fa-plus"></i> Crear {{ verbose_name }}
+            </li>
+        {% endblock %}
+    </ol>
+{% endblock %}

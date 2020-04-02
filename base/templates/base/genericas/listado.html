@@ -1,0 +1,70 @@
+{% extends 'base/base.html' %}
+{% load bootstrap_pagination %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">
+            <i class="fa fa-gears"></i> Administración
+        </a>
+        </li>
+        <li class="breadcrumb-item active">
+            {{ icono|safe }} Listado de {{ verbose_name_plural }}
+        </li>
+    </ol>
+{% endblock %}
+
+{% block content%}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body text-dark">
+                    <h3 class="card-title">
+                        {% block title %}
+                        {% endblock %}
+                        <span class="badge badge-secondary">{{ page_obj.paginator.count }}</span>
+                        {% if not request.user.usuariofuncion.es_dirplac_lectura %}
+                            {% block button_new %}
+                            {% endblock %}
+                        {% endif %}
+                    </h3>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        {% block subtitle %}
+                        {% endblock %}
+                    </h6>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <form method="GET">
+                                <div class="input-group custom-search-form ">
+                                    <input type="text" class="form-control" name="q"
+                                           placeholder="{% block search_placeholder %}{% endblock %}"
+                                           {% if request.GET.q %}value="{{ request.GET.q }}"{% endif %} >
+                                    <span class="input-group-btn">
+                                <button class="btn btn-info" type="submit">
+                                    <i class="him-icon fa fa-search"></i>
+                                </button>
+                            </span>
+                                </div>
+                            </form>
+                            {% if request.GET.q %}
+                                <a href="{{ request.path }}">
+                                    Quitar Filtro
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <br>
+                    {% block content_list %}
+                    {% endblock %}
+                </div>
+                <div class="card-footer">
+                    <div align="center">
+                        {% bootstrap_paginate page_obj range=5 %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br><br>
+
+{% endblock%}

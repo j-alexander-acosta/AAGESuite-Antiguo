@@ -1,0 +1,143 @@
+{% load staticfiles %}
+<nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: #203c53">
+    <a class="navbar-brand" href="#">
+        <img src="{% static 'base/img/logotipo.png' %}" height="45" alt="">
+        {% if request.user.usuariofuncion.es_dirplac_or_admin %}
+            Administrador
+        {% elif request.user.usuariofuncion.es_departamental and request.user.fundacion_set.all.count == 1 %}
+            {{ request.user.fundacion_set.all.first.nombre }}
+        {% elif request.user.usuariofuncion.es_departamental and request.user.fundacion_set.all.count > 1 %}
+            Departamental SEA
+        {% elif request.user.usuariofuncion.es_supervisor %}
+            Supervisor Agencia de Calidad
+        {% elif request.user.colegio_set.all %}
+            {{ request.user.colegio_set.all.first.nombre }}
+        {% else %}
+            Invitado
+        {% endif %}
+        <span class="badge badge-secondary">Periodo {{ request.session.p_anio }}</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
+            aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'ciclos:home' %}">
+                    <i class="fa fa-home"></i> Inicio <span class="sr-only">(current)</span>
+                </a>
+            </li>
+            {% if request.user.usuariofuncion.es_departamental %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'ciclos:custom-view' %}">
+                        <i class="fa fa-building-o"></i> Mi Fundación</a>
+                </li>
+            {% elif request.user.usuariofuncion.es_supervisor %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'ciclos:custom-view' %}">
+                        <i class="fa fa-building-o"></i> Mis Colegios</a>
+                </li>
+            {% elif request.user.usuariofuncion.es_dirplac_or_admin %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'ciclos:dashboard' %}">
+                        <i class="fa fa-dashboard"></i> Dashboard</a>
+                </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'ciclos:unidades_ciclos' %}">
+                    <i class="fa fa-building-o"></i> Unidades & Ciclos</a>
+            </li>
+            {% if request.user.usuariofuncion.es_supervisor or request.user.usuariofuncion.es_dirplac_or_admin %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#"
+                       id="dropdownAdministracion" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-gears"></i> Administración</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownAdministracion">
+                        {% if request.user.usuariofuncion.es_dirplac_or_admin %}
+                            <h6 class="dropdown-header">Administración General</h6>
+                            <a class="dropdown-item" href="{% url 'ciclos:usuarios' %}">
+                                <i class="fa fa-user"></i> Administración de Usuarios</a>
+                            <a class="dropdown-item" href="{% url 'ciclos:listado_perfilusuario' %}">
+                                <i class="fa fa-users"></i> Perfiles de Usuarios</a>
+                            <div class="dropdown-divider"></div>
+                        {% endif %}
+                        <h6 class="dropdown-header">Insumos</h6>
+                        <a class="dropdown-item" href="{% url 'ciclos:tipo_insumos' %}">
+                            <i class="fa fa-clipboard"></i> Tipos de insumos</a>
+                        <a class="dropdown-item" href="{% url 'insumos:insumos' %}">
+                            <i class="fa fa-list-ul"></i> Insumos</a>
+                        <a class="dropdown-item" href="{% url 'insumos:listado_indicadores' %}">
+                            <i class="fa fa-hand-o-right"></i> Indicadores</a>
+                        <a class="dropdown-item" href="{% url 'insumos:listado_estrategias' %}">
+                            <i class="fa fa-puzzle-piece"></i> Estrategias</a>
+                        <div class="dropdown-divider"></div>
+                        <h6 class="dropdown-header">Departamentos</h6>
+                        <a class="dropdown-item" href="{% url 'ciclos:fundaciones' %}">
+                            <i class="fa fa-building"></i> Fundaciones</a>
+                        <a class="dropdown-item" href="{% url 'ciclos:colegios' %}">
+                            <i class="fa fa-graduation-cap"></i> Colegios</a>
+                        <a class="dropdown-item" href="{% url 'ciclos:unidades' %}">
+                            <i class="fa fa-building-o"></i> Unidades</a>
+                        <a class="dropdown-item" href="{% url 'ciclos:listado_responsables' %}">
+                            <i class="fa fa-user-circle-o"></i> Responsables de Unidades</a>
+                        <div class="dropdown-divider"></div>
+                        <h6 class="dropdown-header">Ciclos de Calidad</h6>
+                        <a class="dropdown-item" href="{% url 'ciclos:ciclo_calidad' %}">
+                            <i class="fa fa-refresh"></i> Ciclos de Calidad</a>
+                        <a class="dropdown-item" href="{% url 'ciclos:listado_centro_costo' %}">
+                            <i class="fa fa-money"></i> Cuentas</a>
+                        <a class="dropdown-item" href="{% url 'ciclos:periodos' %}">
+                            <i class="fa fa-calendar-check-o"></i> Periodos</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#"
+                       id="dropdownAdministracion" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-bar-chart"></i> Reportes</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownAdministracion">
+                        <h6 class="dropdown-header">Ciclos de Calidad</h6>
+                        <a class="dropdown-item" href="{% url 'reportes:avance_ciclo_calidad' request.session.p_activo_pk %}">
+                            <i class="fa fa-line-chart"></i> Avance en Ciclos de Calidad</a>
+                        <a class="dropdown-item" href="{% url 'reportes:reporte_costos' %}">
+                            <i class="fa fa-money"></i> Reporte por cuentas</a>
+                        <a class="dropdown-item" href="{% url 'reportes:planes_trabajo_unidades_html' %}">
+                            <i class="fa fa-table"></i> Planes de Trabajo de Unidades</a>
+                        <a class="dropdown-item" href="{% url 'reportes:avance_unidades_dependientes' request.session.p_activo_pk %}">
+                            <i class="fa fa-building-o"></i> Avance por Unidades</a>
+                        <a class="dropdown-item" href="{% url 'reportes:diagrama_datos' %}">
+                            <i class="fa fa-table"></i> Diagrama de Datos</a>
+                        <a class="dropdown-item" href="{% url 'reportes:evidencias_unidades_html' %}">
+                            <i class="fa fa-check-square-o"></i> Evidencia por Unidades</a>
+                        <a class="dropdown-item" href="{% url 'reportes:avance_nivel_logro_unidades_html' request.session.p_activo_pk %}">
+                            <i class="fa fa-check"></i> Avance por Nivel de Logro</a>
+                    </div>
+                </li>
+            {% endif %}
+        </ul>
+        <ul class="navbar-nav pull-right mr-5">
+            {% if request.user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#"
+                       id="dropdownUsuario" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-user-o"></i> {{ request.user.get_full_name }}</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownUsuario">
+                        <a class="dropdown-item" href="{% url 'ciclos:perfil' request.user.id %}">
+                            <i class="fa fa-user-secret"></i> Perfil </a>
+                        <a class="dropdown-item" href="{% url 'ciclos:screen_lock' %}?reverse={{ request.path }}">
+                            <i class="fa fa-lock"></i> Bloquear Pantalla</a>
+                        <a class="dropdown-item" href="{% url 'logout' %}">
+                            <i class="fa fa-sign-out"></i> Cerrar Sesión</a>
+                    </div>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a href="{% url 'login' %}" class="nav-link">
+                        <i class="fa fa-sign-in"></i> Iniciar Sesión</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>

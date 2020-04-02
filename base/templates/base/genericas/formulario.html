@@ -1,0 +1,24 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">
+                {% block titulo_formulario %}
+                {% endblock %}
+            </h3>
+            <h6 class="text-muted card-subtitle">
+                {% block subtitulo_formulario %}
+                {% endblock %}
+            </h6>
+            <br>
+            {% block formulario_personalizado %}
+                {% crispy form %}
+            {% endblock %}
+        </div>
+    </div>
+    <br><br><br>
+
+{% endblock %}

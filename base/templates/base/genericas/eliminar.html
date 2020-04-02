@@ -1,0 +1,52 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">
+            <i class="fa fa-gears"></i> Administración
+        </a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ url_listado_breadcrumb }}">
+                {{ icono|safe }} Listado de {{ verbose_name_plural }}
+            </a>
+        </li>
+        <li class="breadcrumb-item active">
+            <a href="{{ object.get_absolute_url }}">
+                {{ icono|safe }} {{ object }}</a>
+        </li>
+        <li class="breadcrumb-item active">
+            <i class="fa fa-trash"></i> Eliminar ({{ object.pk }})
+        </li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="card border-info">
+        <div class="card-header bg-info text-white">
+            {% block title %}{% endblock %} | <strong>{{ object.id }}</strong>
+        </div>
+
+        <div class="card-body card-padding">
+            <form action="." method="post">
+                {% csrf_token %}
+                <div class="alert alert-danger" role="alert">
+                    <h4 class="alert-heading"><i class="fa fa-exclamation-triangle"></i> Alerta</h4>
+                    <p>
+                        {% block message %}
+                        {% endblock %}
+                    </p>
+                    <hr>
+                    <p class="mb-0"><em>{% block sub_message %}{% endblock %}</em></p>
+                </div>
+                {% block button_back %}
+                {% endblock %}
+                <button type="submit" class="btn btn-danger">
+                    <i class="fa fa-trash"></i>
+                    Eliminar
+                </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

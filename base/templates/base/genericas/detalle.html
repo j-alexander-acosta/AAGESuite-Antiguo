@@ -1,0 +1,49 @@
+{% extends 'base/base.html' %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">
+            <i class="fa fa-gears"></i> Administración
+        </a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ url_listado_breadcrumb }}">
+                {{ icono|safe }} Listado de {{ verbose_name_plural }}
+            </a>
+        </li>
+        <li class="breadcrumb-item active">
+            {{ icono|safe }} {{ object }}
+        </li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card border-info">
+                <div class="card-header bgm-teal">
+                    <h4 class="card-title text-white">
+                        Detalle |
+                        {% block title %}
+                        {% endblock %}
+
+                        {% if not request.user.usuariofuncion.es_dirplac_lectura %}
+                            {% block buttons %}
+                            {% endblock %}
+                        {% endif %}
+                    </h4>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        {% block subtitle %}
+                        {% endblock %}
+                    </h6>
+                </div>
+                <div class="card-body">
+                    {% block card_body %}
+                    {% endblock %}
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>
+    <br><br><br>
+{% endblock %}
