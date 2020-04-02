@@ -38,6 +38,8 @@ PREREQ_APPS = [
     'crispy_forms',
     'qr_code',
     'easy_select2',
+    'compressor',
+    'base'
 ]
 
 PROJECT_APPS = [
@@ -114,6 +116,18 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
+
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+)
+
+COMPRESS_ENABLED = False
+COMPRESS_OFFLINE = False
+COMPRESS_CSS_HASHING_METHOD = 'content'
+
 
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

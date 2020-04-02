@@ -218,6 +218,7 @@ pkgs.python3Packages.buildPythonApplication {
     python3Packages.requests
     python3Packages.redis
     python3Packages.unidecode
+    python3Packages.django_compressor
     django-qr-code
     django-crispy-forms
     django-constance
