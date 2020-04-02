@@ -1,0 +1,2 @@
+* Notes
+The correct nixpkgs release is nixos-19.03

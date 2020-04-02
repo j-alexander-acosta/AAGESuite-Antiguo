@@ -1,0 +1,25 @@
+from .base import *  # noqa
+
+DEBUG = True
+
+DEVELOPMENT_APPS = []
+
+INSTALLED_APPS = PREREQ_APPS + PROJECT_APPS + DEVELOPMENT_APPS
+
+ALLOWED_HOSTS = ['*']
+
+# Database
+# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'carga',
+        'USER': 'carga',
+    }
+}
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
