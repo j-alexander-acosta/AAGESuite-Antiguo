@@ -99,7 +99,7 @@ class Funcionario(TimeStampModel):
         verbose_name="Profesión"
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{}".format(
             self.rut
         )
@@ -128,7 +128,7 @@ class Perfeccionamiento(TimeStampModel):
     )
     certificado = models.FileField()
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{} - {}".format(
             self.funcionario,
             self.tipo_perfeccionamiento
@@ -158,7 +158,7 @@ class Documentacion(TimeStampModel):
         verbose_name="Certificado de Antecedentes"
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{}".format(
             self.funcionario
         )
@@ -214,7 +214,7 @@ class FuncionarioUnion(TimeStampModel):
         verbose_name="Causa de termino de contrato"
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{} - {}".format(
             self.funcionario,
             self.union
@@ -271,7 +271,7 @@ class FuncionarioFundacion(TimeStampModel):
         verbose_name="Causa de termino de contrato"
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{} - {}".format(
             self.funcionario,
             self.fundacion
@@ -356,10 +356,10 @@ class FuncionarioColegio(TimeStampModel):
         verbose_name="Causa de término de contrato"
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{} - {}".format(
             self.funcionario,
-            self.colegio.abrev
+            self.colegio
         )
 
     class Meta:
@@ -391,7 +391,7 @@ class Vacacion(TimeStampModel):
         verbose_name="¿Pertenece a vacaciones pendientes?"
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{} - {}".format(
             self.funcionario,
             self.anio
@@ -424,7 +424,7 @@ class Licencia(TimeStampModel):
         verbose_name="Fecha de término"
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{} - {} ({} días)".format(
             self.funcionario,
             self.tipo_licencia,
@@ -451,7 +451,7 @@ class Asistencia(TimeStampModel):
     fecha = models.DateField()
     horas = models.TimeField()
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{} - {}".format(
             self.funcionario,
             self.fecha
@@ -492,7 +492,7 @@ class ObservacionEntrevista(TimeStampModel):
     )
     acta = models.FileField()
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{} - {} ({})".format(
             self.funcionario,
             self.tipo,
@@ -521,7 +521,7 @@ class ObservadorAdjunto(TimeStampModel):
         null=True
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{}".format(
             self.observacion_entrevista,
         )

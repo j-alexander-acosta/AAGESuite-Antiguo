@@ -86,7 +86,7 @@ class Curso(TimeStampModel):
         null=True
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{} {} - {}".format(
             self.nivel,
             self.tipo_ensenanza,
@@ -141,7 +141,7 @@ class Asignatura(TimeStampModel):
         verbose_name="Horas semanales sin JEC"
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{} - {}".format(
             self.nombre,
             self.tipo_ensenanza
@@ -175,7 +175,7 @@ class PlanEstudio(TimeStampModel):
         verbose_name="Horas sin asignar"
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{} - {} {}".format(
             self.asignatura.nombre,
             self.curso.nivel,
@@ -201,7 +201,7 @@ class Semestre(TimeStampModel):
     fecha_inicio = models.DateField()
     fecha_termino = models.DateField()
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{} - {}".format(
             self.nombre,
             self.periodo
@@ -240,7 +240,7 @@ class AsignaturaExtra(TimeStampModel):
         verbose_name="Horas sin asignar"
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{} - {}".format(
             self.nombre,
             self.curso.nivel,
@@ -273,7 +273,7 @@ class CargaHoraria(TimeStampModel):
     )
     horas_asignadas = models.PositiveIntegerField()
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{} - {}".format(
             self.plan_estudio if self.plan_estudio is not None else self.asignatura_extra,
             self.docente
@@ -304,7 +304,7 @@ class TablaTiempoLectivo(TimeStampModel):
         verbose_name="Restricción de aplicación"
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{} ({})".format(
             self.nombre,
             self.proporcion

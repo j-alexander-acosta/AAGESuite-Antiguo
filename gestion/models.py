@@ -28,7 +28,7 @@ class Union(TimeStampModel):
         max_length=250
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{}".format(
             self.nombre
         )
@@ -54,7 +54,7 @@ class Fundacion(TimeStampModel):
         related_name="+"
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{}".format(
             self.nombre
         )
@@ -149,7 +149,7 @@ class Colegio(TimeStampModel):
         verbose_name="Índice de vulnerabilidad"
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{} @ {}".format(
             self.nombre,
             self.abrev
@@ -175,7 +175,7 @@ class ExcelenciaAcademica(TimeStampModel):
         verbose_name="Año"
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{} - {}".format(
             self.colegio.abrev,
             self.anio
@@ -205,7 +205,7 @@ class Periodo(TimeStampModel):
         default=False
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{} - {}".format(
             self.nombre,
             self.colegio.abrev

@@ -11,27 +11,34 @@ from .models import DistribucionTiempoLectivo
 
 @admin.register(Curso)
 class CursoAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('periodo', 'tipo_ensenanza', 'nivel')
+    list_filter = ('tipo_curso', 'periodo', 'nivel', 'jornada')
 
 @admin.register(Asignatura)
 class AsignaturaAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('nombre', 'tipo_ensenanza', 'tipo_formacion', 'niveles')
+    list_filter = ('tipo_ensenanza', 'lengua_indigena')
+    search_fields = ('nombre',)
 
 @admin.register(PlanEstudio)
 class PlanEstudioAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('curso', 'asignatura')
 
 @admin.register(Semestre)
 class SemestreAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('nombre', 'periodo', 'fecha_inicio', 'fecha_termino')
+    list_filter = ('periodo',)
+    date_hierarchy = 'fecha_inicio'
 
 @admin.register(AsignaturaExtra)
 class AsignaturaExtraAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('nombre', 'curso', 'semestre')
+    list_filter = ('semestre',)
 
 @admin.register(CargaHoraria)
 class CargaHorariaAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('docente', 'plan_estudio', 'asignatura_extra', 'horas_asignadas')
+    list_filter = ('plan_estudio',)
 
 @admin.register(TablaTiempoLectivo)
 class TablaTiempoLectivoAdmin(admin.ModelAdmin):
