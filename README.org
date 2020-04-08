@@ -22,7 +22,7 @@ Entonces instala Vagrant y en la carpeta del proyecto:
   vagrant up
 #+END_SRC
 
-Eso prepara una máquina virtual para correr el proyecto. Luego de entrar a la máquina virtual con `vagrant ssh`:
+Eso prepara una máquina virtual para correr el proyecto. Luego de entrar a la máquina virtual con =vagrant ssh=:
 
 #+BEGIN_SRC sh
   cd /vagrant
