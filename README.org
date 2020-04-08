@@ -30,6 +30,6 @@ Eso prepara una máquina virtual para correr el proyecto. Luego de entrar a la m
   make
 #+END_SRC
 
-El servidor de desarrollo corre en el puerto 8000 en la máquina virtual, pero para verlo en el navegador, se configuró en el Vagrantfile un reenvío de puerto para el 8888. Es decir, hay que abrir http://localhost:8888
+El servidor de desarrollo corre en el puerto =8000= en la máquina virtual, pero para verlo en el navegador, se configuró en el Vagrantfile un reenvío de puerto para el =8888=. Es decir, hay que abrir [[http://localhost:8888]]
 * Notes
 The correct nixpkgs release is nixos-19.03
