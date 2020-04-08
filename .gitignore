@@ -71,3 +71,4 @@ media/
 *~
 
 .make*
+.vagrant*
