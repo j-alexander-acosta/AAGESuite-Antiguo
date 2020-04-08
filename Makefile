@@ -1,13 +1,13 @@
 include .env
 export
 
-shell: manage.py
-	nix-shell
-.PHONY: shell
-
 serve: manage.py
 	nix-shell --run 'python3 manage.py runserver'
 .PHONY: serve
+
+shell: manage.py
+	nix-shell
+.PHONY: shell
 
 migrate: manage.py
 	nix-shell --run 'python3 manage.py migrate'

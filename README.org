@@ -1,2 +1,16 @@
+* Quickstart
+Instala =curl= y =make= en tu sistema. En Debian/Ubuntu:
+
+#+BEGIN_SRC sh
+  apt install make curl
+#+END_SRC
+
+Luego, en la carpeta del proyecto:
+
+#+BEGIN_SRC sh
+  make
+#+END_SRC
+
+Y pista.
 * Notes
 The correct nixpkgs release is nixos-19.03
