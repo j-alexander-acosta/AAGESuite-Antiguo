@@ -1,15 +1,15 @@
 include .env
 export
 
-serve: manage.py
+serve: .make.nix-exists
 	nix-shell --run 'python3 manage.py runserver'
 .PHONY: serve
 
-shell: manage.py
+shell: .make.nix-exists
 	nix-shell
 .PHONY: shell
 
-migrate: manage.py
+migrate: .make.nix-exists
 	nix-shell --run 'python3 manage.py migrate'
 .PHONY: migrate
 
