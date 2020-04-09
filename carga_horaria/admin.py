@@ -23,7 +23,15 @@ class ColegioAdmin(admin.ModelAdmin):
 
 @admin.register(Periodo)
 class PeriodoAdmin(admin.ModelAdmin):
-    pass
+    search_fields = ['nombre']
+    list_filter = ['nombre', 'colegio', 'plan']
+    list_display = (
+        'nombre',
+        'colegio',
+        'plan',
+#        'creado_en',
+#        'modificado_en'
+    )
 
 @admin.register(Asignatura)
 class AsignaturaAdmin(admin.ModelAdmin):
