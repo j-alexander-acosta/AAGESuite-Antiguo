@@ -66,6 +66,11 @@ ctags:
 	ctags -e -R --languages=python3 --exclude=.git --exclude=log .
 .PHONY: ctags
 
+clear_session:
+	rm -rf .make.postgres-started
+	rm -rf .make.nix-shell*
+.PHONY: clear_session
+
 clean:
 	rm -rf .make*
 	rm -rf $(CONFIG_DIR)
