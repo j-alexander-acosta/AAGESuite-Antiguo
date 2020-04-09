@@ -16,6 +16,11 @@ migrate: .make.nix-exists
 manage.py: .make.nix-exists
 	nix-shell --run 'django-admin startproject $(PROJECT_NAME) .'
 
+dropdb: .make.nix-exists
+	rm .make.postgres-started; \
+	rm .make.postgres-init; \
+	rm -rf $(PGHOST)
+
 .make.postgres-init:
 	if [ ! -d $(PGDATA) ]; then mkdir -p $(PGDATA) && initdb --auth-local=trust; fi
 	touch $@
