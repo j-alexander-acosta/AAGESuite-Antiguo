@@ -43,8 +43,6 @@ PREREQ_APPS = [
 ]
 
 PROJECT_APPS = [
-    'gestion',
-    'recursos_humanos',
     'carga_horaria',
 ]
 
