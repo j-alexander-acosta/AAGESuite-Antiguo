@@ -20,6 +20,7 @@ dropdb: .make.nix-exists
 	rm .make.postgres-started; \
 	rm .make.postgres-init; \
 	rm -rf $(PGHOST)
+.PHONY: dropdb
 
 .make.postgres-init:
 	if [ ! -d $(PGDATA) ]; then mkdir -p $(PGDATA) && initdb --auth-local=trust; fi
