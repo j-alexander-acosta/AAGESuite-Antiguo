@@ -1,0 +1,48 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+
+{% block title_page %}
+    Periodos
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Listado de Periodos 
+            <a class="btn btn-sm btn-primary" href="#" role="button">
+                <i class="fa fa-plus"></i>
+            </a>
+        </h4>
+        <h6 class="card-subtitle mb-2 text-muted">Tabla para configuración de periodos</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th><i class="fa fa-calendar-check-o"></i> Nombre </th>
+                <th><i class="fa fa-calendar-minus-o"></i> Colegio </th>
+                <th><i class="fa fa-check-circle"></i> Plan </th>
+                <th><i class="fa fa-cogs"></i> Acciones </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for p in object_list %}
+                <tr>
+                    <td><a href="#">{{ p.nombre }}</a></td>
+                    <td>{{p.colegio.nombre}}</td>
+                    <td>{{p.plan.nombre}}</td>
+                    <td>
+                        <a class="btn btn-sm btn-primary" href="#" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
+                        <a class="btn btn-sm btn-danger" href="#" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    </div>
+</div>
+
+{% endblock content  %}

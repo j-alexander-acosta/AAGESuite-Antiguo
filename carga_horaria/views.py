@@ -17,6 +17,15 @@ class PeriodoListView(ListView):
     search_fields = ['nombre', 'colegio']
     paginate_by = 3
 
+
+class PeriodoDetailView(DetailView):
+    """
+        Detalle de Periodo
+    """
+    model = Periodo
+    template_name = 'carga_horaria/periodo/detalle_periodo.html'
+
+
 """
     Fin Crud Periodos
 """

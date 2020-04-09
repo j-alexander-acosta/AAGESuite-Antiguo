@@ -21,6 +21,12 @@ app_name = 'carga-horaria'
 
 urlpatterns = [
     url(r'^$', views.home, name='home'),
+    url(
+        r'^periodos/$',
+        views.PeriodoListView.as_view(),
+        name='periodos'
+    ),
+
 ]
 
 

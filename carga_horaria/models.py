@@ -23,6 +23,14 @@ class Plan(models.Model):
     nombre = models.CharField(max_length=255)
     nivel = models.CharField(max_length=8, choices=[(tag, tag.value) for tag in Nivel])
 
+    def __unicode__(self):
+        return u"{} - {}".format(
+            self.nombre,
+            self.nivel
+        )
+
+
+
     class Meta:
         verbose_name = u"Plan"
         verbose_name_plural = u"Planes"
