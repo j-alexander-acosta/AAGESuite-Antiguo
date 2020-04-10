@@ -9,7 +9,7 @@
 <div class="card">
     <div class="card-header">
         <h4 class="card-title">Listado de Periodos 
-            <a class="btn btn-sm btn-primary" href="#" role="button">
+            <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:periodo__nuevo'%}" role="button">
                 <i class="fa fa-plus"></i>
             </a>
         </h4>
@@ -29,14 +29,34 @@
             <tbody>
             {% for p in object_list %}
                 <tr>
-                    <td><a href="#">{{ p.nombre }}</a></td>
+                    <td><a href="{% url 'carga-horaria:periodo' p.pk %}">{{ p.nombre }}</a></td>
                     <td>{{p.colegio.nombre}}</td>
                     <td>{{p.plan.nombre}}</td>
                     <td>
-                        <a class="btn btn-sm btn-primary" href="#" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
-                        <a class="btn btn-sm btn-danger" href="#" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fa fa-trash"></i></a>
+                        <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:periodo__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
+                        <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_periodo_{{p.pk}}"><i class="fa fa-trash"></i></a>
                     </td>
                 </tr>
+                <div class="modal" tabindex="-1" role="dialog" id="eliminar_periodo_{{p.pk}}">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar un Periodo</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Está seguro que desea eliminar el periodo "{{p.nombre}}"?.</p>
+                                <p class="text-muted">Recuerde que eliminará todos los registros asociados a este periodo.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a role="button" class="btn btn-danger" href="#">Eliminar</a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
             {% endfor %}
             </tbody>
         </table>

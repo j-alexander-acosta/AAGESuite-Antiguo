@@ -26,6 +26,27 @@ urlpatterns = [
         views.PeriodoListView.as_view(),
         name='periodos'
     ),
+    url(
+        r'^periodos/(?P<pk>\d+)/$',
+        views.PeriodoDetailView.as_view(),
+        name='periodo'
+    ),
+    url(
+        r'^periodos/nuevo/$',
+        views.PeriodoCreateView.as_view(),
+        name='periodo__nuevo'
+    ),
+    url(
+        r'^periodos/(?P<pk>\d+)/editar/$',
+        views.PeriodoUpdateView.as_view(),
+        name='periodo__editar'
+    ),
+    url(
+        r'^periodos/(?P<pk>\d+)/eliminar/$',
+        views.PeriodoDeleteView.as_view(),
+        name='periodo__eliminar'
+    ),
+
 
 ]
 

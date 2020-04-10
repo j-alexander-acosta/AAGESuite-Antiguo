@@ -11,8 +11,63 @@
     <div class="card-header">
         <h4 class="card-title">Periodo: <strong> {{ object.nombre }} </h4>
         <h6 class="card-subtitle mb-2 text-muted">Tabla para configuración de periodos</h6>
+
+        {% block buttons %}
+            <div class="btn-group pull-right">
+                <a href="{% url 'carga-horaria:periodos' %}" type="button" class="btn btn-sm btn-dark">
+                    <i class="fa fa-arrow-left"></i>
+                </a>
+                <a href="#" type="button" class="btn btn-sm btn-primary">
+                    <i class="fa fa-edit"></i>
+                </a>
+                <a href="#" type="button" class="btn btn-sm btn-danger">
+                    <i class="fa fa-trash"></i>
+                </a>
+            </div>
+        {% endblock %}
     </div>
     <div class="card-body">
+        <div class="row">
+        <div class="col-md-6">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th colspan="2" class="table-info">
+                <span>
+                    <i class="fa fa-info-circle"></i>
+                     Descripción
+                </span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th> Nombre </th>
+                    <td>  {{ object.nombre }}  </td>
+                </tr>
+                <tr>
+                    <th> Colegio </th>
+                    <td>  {{ object.colegio.nombre }}  </td>
+                </tr>
+                <tr>
+                    <th> Plan </th>
+                    <td>  {{ object.plan.nombre }}  </td>
+                </tr>
+                <!--
+                <tr>
+                    <td colspan="2">
+                        <small class="text-muted">
+                            Creado: {{ object.creado_en }}
+                            <br>
+                            Modificado: {{ object.modificado_en }}
+                        </small>
+                    </td>
+                </tr>
+                -->
+                </tbody>
+            </table>
+        </div>
+    </div>
     </div
 </div>
 

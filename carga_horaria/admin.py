@@ -37,8 +37,6 @@ class ColegioAdmin(admin.ModelAdmin):
 
 @admin.register(Periodo)
 class PeriodoAdmin(admin.ModelAdmin):
-    search_fields = ['nombre']
-    list_filter = ['nombre', 'colegio', 'plan']
     list_display = (
         'nombre',
         'colegio',
@@ -46,6 +44,8 @@ class PeriodoAdmin(admin.ModelAdmin):
 #        'creado_en',
 #        'modificado_en'
     )
+    search_fields = ['nombre']
+    list_filter = ['nombre', 'colegio', 'plan']
 
 @admin.register(Asignatura)
 class AsignaturaAdmin(admin.ModelAdmin):
