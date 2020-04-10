@@ -1,0 +1,22 @@
+{% extends 'carga_horaria/plan/nuevo_plan.html' %}
+{% load staticfiles %}
+
+
+{% block title_page %}
+    Editar {{ object }}
+{% endblock %}
+
+{% block block_editar_eliminar %}
+    <li class="breadcrumb-item">
+        <a href="{{ object.get_absolute_url }}">
+            {{ icono|safe }} {{ object }}
+        </a>
+    </li>
+    <li class="breadcrumb-item active">
+        <i class="fa fa-edit"></i> Editar ({{ object.pk }})
+    </li>
+{% endblock %}
+
+{% block titulo_formulario %}
+  <i class="fa fa-calendar-check-o"></i>  Editar Plan | {{ object }}
+{% endblock %}

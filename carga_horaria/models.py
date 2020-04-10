@@ -31,6 +31,13 @@ class Plan(models.Model):
         verbose_name = u"Plan"
         verbose_name_plural = u"Planes"
 
+    def get_absolute_url(self):
+        """
+            Propiedad que retorna la ruta específica del detalle del plan
+        :return: url
+        """
+        return reverse('carga-horaria:plan', args=[str(self.pk)])
+
 
 class AsignaturaBase(models.Model):
     nombre = models.CharField(max_length=255)
@@ -47,6 +54,13 @@ class Colegio(models.Model):
     
     def __str__(self): 
         return self.nombre
+
+    def get_absolute_url(self):
+        """
+            Propiedad que retorna la ruta específica del detalle del colegio
+        :return: url
+        """
+        return reverse('carga-horaria:colegio', args=[str(self.pk)])
 
 class Periodo(models.Model):
     nombre = models.CharField(max_length=255)
