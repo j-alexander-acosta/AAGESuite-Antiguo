@@ -29,7 +29,7 @@
             {% for p in object_list %}
                 <tr>
                     <td><a href="{% url 'carga-horaria:plan' p.pk %}">{{ p.nombre }}</a></td>
-                    <td>{{p.nivel}}</td>
+                    <td>{{p.get_nivel_display}}</td>
                     <td>
                         <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:plan__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
                         <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_plan_{{p.pk}}"><i class="fa fa-trash"></i></a>

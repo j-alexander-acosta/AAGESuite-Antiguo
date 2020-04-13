@@ -88,8 +88,20 @@ class Asignatura(models.Model):
     periodo = models.ForeignKey('Periodo')
     horas = models.PositiveSmallIntegerField()
 
+    @property
+    def horas_asignadas(self):
+        return sum(self.asignacion_set.values_list('horas', flat=True))
+
+    @property
+    def completa(self):
+        return self.horas_asignadas >= self.horas
+
+    @property
+    def profesores(self):
+        return {ax.profesor for ax in self.asignacion_set.all()}
+
     def __str__(self): 
-        return self.base
+        return str(self.base)
 
 class Curso(models.Model):
     periodo = models.ForeignKey('Periodo')
@@ -112,4 +124,4 @@ class Asignacion(models.Model):
     horas = models.PositiveSmallIntegerField()
 
     def __str__(self): 
-        return self.profesor
+        return "{} - {} ({})".format(self.profesor, self.asignatura, self.horas)

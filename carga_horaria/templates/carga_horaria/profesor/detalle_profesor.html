@@ -64,6 +64,64 @@
                 </tbody>
             </table>
         </div>
+	</div>
+
+	        <div class="row">
+        <div class="col-md-6">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th colspan="2" class="table-info">
+                <span>
+                    <i class="fa fa-info-circle"></i>
+		    Asignaciones
+                </span>
+                    </th>
+                </tr>
+		<tr>
+		  <th>Asignatura</th>
+		  <th>Horas</th>
+		  <th>Acciones</th>
+		</tr>
+                </thead>
+                <tbody>
+		    {% for ax in object.asignacion_set.all %}
+                    <tr>
+                      <td> {{ ax.asignatura }} </td>
+                      <td> {{ ax.horas }} </td>
+		      <td>
+			{% comment %}
+                        <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:periodo__editar' ax.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
+			{% endcomment %}
+                        <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_{{ax.pk}}"><i class="fa fa-trash"></i></a>
+			
+		      </td>
+                    </tr>
+		    <div class="modal" tabindex="-1" role="dialog" id="eliminar_asignacion_{{ax.pk}}">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar una asignación</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>¿Está seguro que desea eliminar {{ ax.horas }} horas de {{ ax.asignatura }} para {{ ax.profesor }}?.</p>
+                                <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta asignación.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:asignacion__eliminar' ax.pk %}">Eliminar</a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+		    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+	</div>
     </div>
   </div>
 </div>

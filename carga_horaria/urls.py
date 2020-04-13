@@ -198,4 +198,14 @@ urlpatterns = [
         views.PlanDeleteView.as_view(),
         name='plan__eliminar'
     ),
+    url(
+        r'^asignaturas/(?P<pk>\d+)/asignar/$',
+        views.asignar,
+        name='asignar'
+    ),
+    url(
+        r'^asignaciones/(?P<pk>\d+)/eliminar/$',
+        views.AsignacionDeleteView.as_view(),
+        name='asignacion__eliminar'
+    ),
 ]

@@ -48,13 +48,13 @@
                 </tr>
                 <tr>
                     <th> Nivel </th>
-                    <td>  {{ object.nivel }}  </td>
+                    <td>  {{ object.get_nivel_display }}  </td>
                 </tr>
                 </tbody>
             </table>
         </div>
+	</div>
     </div>
-    </div
 </div>
 
 <div class="modal" tabindex="-1" role="dialog" id="eliminar_plan_{{object.pk}}">

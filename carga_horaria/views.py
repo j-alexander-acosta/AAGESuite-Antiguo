@@ -1,5 +1,5 @@
 from django.views.generic.detail import DetailView
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from .viewsAlexis import *
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from carga_horaria.models import Periodo, Colegio, Plan
@@ -7,7 +7,8 @@ from carga_horaria.formsDani import PeriodoForm, ColegioForm, PlanForm
 from django.core.urlresolvers import reverse_lazy, reverse
 from .models import Profesor
 from .models import Periodo
-
+from .models import Asignacion
+from .forms import AsignacionForm
 
 def home(request):
     return render(request, 'carga_horaria/home.html')
@@ -179,3 +180,29 @@ class PlanDeleteView(DeleteView):
 """
     Fin Crud Planes
 """
+
+def asignar(request, pk):
+    # FIXME: validar horas
+    # FIXME: validar horas no superiores a 44 para profesores
+    aa = get_object_or_404(Asignatura, pk=pk)
+
+    if request.method == 'POST':
+        form = AsignacionForm(request.POST)
+        if form.is_valid():
+            asignacion = form.save(commit=False)
+            asignacion.asignatura = aa
+            asignacion.save()
+            return redirect('carga-horaria:periodo', aa.periodo.pk)
+    else:
+        form = AsignacionForm()
+    return render(request, 'carga_horaria/asignar.html', {'object': aa,
+                                                          'form': form})
+
+
+class AsignacionDeleteView(DeleteView):
+    model = Asignacion
+    success_url = reverse_lazy('carga-horaria:periodos')
+    template_name = 'carga_horaria/periodo/eliminar_periodo.html'
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
