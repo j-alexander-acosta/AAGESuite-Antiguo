@@ -87,7 +87,7 @@
                     <td>  {{ a }}  </td>
                     <td>  {{ a.horas }}  </td>
                     <td>  {{ a.horas_asignadas }}  </td>
-                    <td>  {% for p in a.profesores %}<a href="{% url 'carga-horaria:profesor' p.pk %}">{{ p }}</a>{% endfor %}  </td>
+                    <td>  {% for p in a.profesores %}<a href="{% url 'carga-horaria:profesor' p.pk %}">{{ p }} </a>{% endfor %}  </td>
                     <td>  {% if not a.completa %}<a href="{% url 'carga-horaria:asignar' a.pk %}">Asignar</a>{% endif %}  </td>
                 </tr>
 		{% endfor %}

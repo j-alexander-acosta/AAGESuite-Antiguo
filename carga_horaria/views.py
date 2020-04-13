@@ -182,12 +182,10 @@ class PlanDeleteView(DeleteView):
 """
 
 def asignar(request, pk):
-    # FIXME: validar horas
-    # FIXME: validar horas no superiores a 44 para profesores
     aa = get_object_or_404(Asignatura, pk=pk)
 
     if request.method == 'POST':
-        form = AsignacionForm(request.POST)
+        form = AsignacionForm(request.POST, asignatura=aa)
         if form.is_valid():
             asignacion = form.save(commit=False)
             asignacion.asignatura = aa

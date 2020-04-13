@@ -1,4 +1,5 @@
 from enum import Enum
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
 
@@ -93,6 +94,10 @@ class Asignatura(models.Model):
         return sum(self.asignacion_set.values_list('horas', flat=True))
 
     @property
+    def horas_disponibles(self):
+        return self.horas - self.horas_asignadas
+
+    @property
     def completa(self):
         return self.horas_asignadas >= self.horas
 
@@ -112,7 +117,15 @@ class Curso(models.Model):
 
 class Profesor(models.Model):
     nombre = models.CharField(max_length=255)
-    horas = models.PositiveSmallIntegerField()
+    horas = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(44)])
+
+    @property
+    def horas_asignadas(self):
+        return sum(self.asignacion_set.values_list('horas', flat=True))
+
+    @property
+    def horas_disponibles(self):
+        return self.horas - self.horas_asignadas
 
     def __str__(self): 
         return self.nombre
