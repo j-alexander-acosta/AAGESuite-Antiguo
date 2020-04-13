@@ -20,7 +20,7 @@ from django.contrib import admin
 admin.site.site_header = 'Carga Académica - Back Office'
 
 urlpatterns = [
-    url(r'^carga_horaria/', include('carga_horaria.urls')),
+    url(r'^carga/', include('carga_horaria.urls')),
     url(r'^admin/', admin.site.urls),
 ]
 

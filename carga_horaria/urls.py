@@ -21,7 +21,6 @@ app_name = 'carga-horaria'
 
 urlpatterns = [
     url(r'^$', views.home, name='home'),
-
     url(
         r'^periodos/$',
         views.PeriodoListView.as_view(),
@@ -98,7 +97,5 @@ urlpatterns = [
         views.PlanDeleteView.as_view(),
         name='plan__eliminar'
     ),
-
+    url(r'^profesor/(?P<pk>\d+)/$', views.ProfesorDetailView.as_view(), name='profesor-detail'),
 ]
-
-

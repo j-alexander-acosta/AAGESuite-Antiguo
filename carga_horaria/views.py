@@ -1,8 +1,11 @@
+from django.views.generic.detail import DetailView
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from carga_horaria.models import Periodo, Colegio, Plan
 from carga_horaria.formsDani import PeriodoForm, ColegioForm, PlanForm
 from django.core.urlresolvers import reverse_lazy, reverse
+from .models import Profesor
+from .models import Periodo
 
 
 def home(request):
@@ -175,3 +178,12 @@ class PlanDeleteView(DeleteView):
 """
     Fin Crud Planes
 """
+
+
+class ProfesorDetailView(DetailView):
+    model = Profesor
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProfesorDetailView, self).get_context_data(**kwargs)
+        context['periodo'] = Periodo.objects.first()
+        return context
