@@ -36,7 +36,7 @@
             <div class="card text-white card-inverse bgm-lightgreen text-center">
                 <div class="card-header">
                     <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                    <h6><a href="/admin/carga_horaria/semestre/add/" style="color: #fff;">Semestres</a></h6>
+                    <h6><a href="{% url 'carga-horaria:profesores' %}" style="color: #fff;">Profesores</a></h6>
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@
             <div class="card text-white card-inverse bgm-lightblue text-center">
                 <div class="card-header">
                     <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                    <h6><a href="/admin/carga_horaria/asignaturaextra/add/" style="color: #fff;">Asignatura Extra</a></h6>
+                    <h6><a href="{% url 'carga-horaria:asignaturas' %}" style="color: #fff;">Asignatura Base</a></h6>
                 </div>
             </div>
         </div>
@@ -52,7 +52,7 @@
             <div class="card text-white card-inverse bgm-indigo text-center">
                 <div class="card-header">
                     <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                    <h6><a href="/admin/carga_horaria/cargahoraria/add/" style="color: #fff;">Carga Horaria</a></h6>
+                    <h6><a href="{% url 'carga-horaria:periodos' %}" style="color: #fff;">Períodos</a></h6>
                 </div>
             </div>
         </div>
@@ -62,23 +62,7 @@
             <div class="card text-white card-inverse bgm-purple text-center">
                 <div class="card-header">
                     <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                    <h6><a href="/admin/carga_horaria/tablatiempolectivo/add/" style="color: #fff;">Tiempo Lectivo</a></h6>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card text-white card-inverse bgm-purple text-center">
-                <div class="card-header">
-                    <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                    <h6><a href="{% url 'carga-horaria:colegios'%}" style="color: #fff;">Colegio</a></h6>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card text-white card-inverse bgm-purple text-center">
-                <div class="card-header">
-                    <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                    <h6><a href="{% url 'carga-horaria:periodos'%}" style="color: #fff;">Periodos</a></h6>
+                    <h6><a href="{% url 'carga-horaria:colegios' %}" style="color: #fff;">Colegios</a></h6>
                 </div>
             </div>
         </div>
