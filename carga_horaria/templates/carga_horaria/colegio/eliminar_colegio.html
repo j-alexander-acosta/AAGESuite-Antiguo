@@ -2,20 +2,17 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-
-
-    
     <div class="card-body card-padding">
         <form action="." method="post">
             {% csrf_token %}
             <div class="alert alert-danger" role="alert">
-                <h4 class="alert-heading"><i class="fa fa-exclamation-triangle"></i> Alerta - Eliminar Periodo</h4>
+                <h4 class="alert-heading"><i class="fa fa-exclamation-triangle"></i> Alerta - Eliminar Colegio</h4>
                 <hr>
-                <p>Estás seguro que deseas eliminar el registro de periodo <strong> "{{ object.nombre }}" </strong>?</p>
+                <p>Estás seguro que deseas eliminar el registro de colegio <strong> "{{ object.nombre }}" </strong>?</p>
                 <br>
-                <p><strong>Recuerda que todos los registros asociados a este Periodo, serán eliminados. </strong></p>           
+                <p><strong>Recuerda que todos los registros asociados a este Colegio, serán eliminados. </strong></p>           
             </div>
-            <button href="{% url 'carga-horaria:periodo' object.pk %}" class="btn btn-dark">
+            <button href="{% url 'carga-horaria:colegio' object.pk %}" class="btn btn-dark">
                 <i class="fa fa-arrow-left"></i>
                 Cancelar
             </button>

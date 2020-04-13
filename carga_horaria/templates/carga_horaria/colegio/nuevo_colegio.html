@@ -6,16 +6,28 @@
 {% block content %}
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title">Crear Periodo
+        <h4 class="card-title">Crear Colegio
         </h4>
-        <h6 class="card-subtitle mb-2 text-muted">Tabla para configuración de un nuevo periodo</h6>
+        <h6 class="card-subtitle mb-2 text-muted">Tabla para configuración de un nuevo colegio</h6>
     </div>
     <div class="card-body">
-        {% crispy form %}
-    </div>
-
+        <form class="form-horizontal" method="post">
+            {% csrf_token %}
+            {% crispy form %}
+            <div class="form-group">
+                <div class="col-sm-10 col-sm-offset-2">
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <a {% if object %}
+                        href="{% url 'carga-horaria:colegio' object.pk %}"
+                    {% else %}
+                        href="{% url 'carga-horaria:colegios' %}"
+                    {% endif %}
+                    role="button" class="btn btn-dark">
+                        Volver
+                    </a>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
-
-
 {% endblock %}

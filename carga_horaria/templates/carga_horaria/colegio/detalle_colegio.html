@@ -9,8 +9,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title">Colegio: <strong> {{ object.nombre }} </h4>
-        <h6 class="card-subtitle mb-2 text-muted">Tabla para mostrar el detalle de un colegio</h6>
+        <h4 class="card-title">Colegio: <strong> {{ object.nombre }} 
 
         {% block buttons %}
             <div class="btn-group pull-right">
@@ -18,13 +17,16 @@
                     <i class="fa fa-arrow-left"></i>
                 </a>
                 <a href="{% url 'carga-horaria:colegio__editar' object.pk %}" type="button" class="btn btn-sm btn-primary">
-                    <i class="fa fa-edit"></i>
-                </a>
-                <a href="#" type="button" class="btn btn-sm btn-danger">
-                    <i class="fa fa-trash"></i>
-                </a>
+                      <i class="fa fa-edit"></i>
+                  </a>
+                  <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_colegio_{{object.pk}}">
+                      <i class="fa fa-trash"></i>
+                  </a>
+
             </div>
         {% endblock %}
+        </h4>
+        <h6 class="card-subtitle mb-2 text-muted">Tabla para mostrar el detalle de un colegio</h6>
     </div>
     <div class="card-body">
         <div class="row">
@@ -55,5 +57,28 @@
     </div>
     </div
 </div>
+
+<div class="modal" tabindex="-1" role="dialog" id="eliminar_colegio_{{object.pk}}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar un Colegio</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Está seguro que desea eliminar el colegio "{{ object.nombre }}"?.</p>
+                <p class="text-muted">Recuerde que eliminará todos los registros asociados a este colegio.</p>
+            </div>
+            <div class="modal-footer">
+                <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:colegio__eliminar' object.pk %}">Eliminar</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 {% endblock content %}
