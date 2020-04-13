@@ -1,5 +1,6 @@
 from django.views.generic.detail import DetailView
 from django.shortcuts import render
+from .viewsAlexis import *
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from carga_horaria.models import Periodo, Colegio, Plan
 from carga_horaria.formsDani import PeriodoForm, ColegioForm, PlanForm

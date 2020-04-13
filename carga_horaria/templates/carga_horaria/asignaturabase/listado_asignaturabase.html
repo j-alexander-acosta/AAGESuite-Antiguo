@@ -1,0 +1,66 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+
+{% block title_page %}
+    Asignaturas Base
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Listado de Asignaturas Base
+            <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignaturabase__nuevo'%}" role="button">
+                <i class="fa fa-plus"></i>
+            </a>
+        </h4>
+        <h6 class="card-subtitle mb-2 text-muted">Tabla para configuración de asignaturas base</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th><i class="fa fa-user"></i> Nombre </th>
+                <th><i class="fa fa-clock-o"></i> Plan </th>
+                <th><i class="fa fa-cogs"></i> Acciones </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for ab in object_list %}
+                <tr>
+                    <td><a href="{% url 'carga-horaria:asignaturabase' ab.pk %}"> {{ ab.nombre }} </a></td>
+                    <td> {{ ab.plan }} </td>
+                    <td>
+                        <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignaturabase__editar' ab.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
+                        <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignaturabase_{{ab.pk}}"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+                <div class="modal" tabindex="-1" role="dialog" id="eliminar_asignaturabase_{{ab.pk}}">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar una Asignatura Base</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Está seguro que desea eliminar la asignatura base "{{ ab.nombre }}"?.</p>
+                                <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta asignatura base.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:asignaturabase__eliminar' ab.pk %}">Eliminar</a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    </div>
+</div>
+
+{% endblock content  %}
