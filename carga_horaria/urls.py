@@ -21,6 +21,30 @@ app_name = 'carga-horaria'
 
 urlpatterns = [
     url(r'^$', views.home, name='home'),
+    url(
+        r'^profesores/$',
+        views.ProfesorListView.as_view(),
+        name='profesores'
+    ),
+    url(
+        r'^profesores/(?P<pk>\d+)/$',
+        views.ProfesorDetailView.as_view(),
+        name='profesor'
+    ),
+    url(
+        r'^profesores/nuevo/$',
+        views.ProfesorCreateView.as_view(),
+        name='profesor__nuevo'
+    ),
+    url(
+        r'^profesores/(?P<pk>\d+)/editar/$',
+        views.ProfesorUpdateView.as_view(),
+        name='profesor__editar'
+    ),
+    url(
+        r'^profesores/(?P<pk>\d+)/eliminar/$',
+        views.ProfesorDeleteView.as_view(),
+        name='profesor__eliminar'
+    ),
+
 ]
-
-

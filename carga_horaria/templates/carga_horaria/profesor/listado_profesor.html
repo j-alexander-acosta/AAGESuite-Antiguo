@@ -1,0 +1,66 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+
+{% block title_page %}
+    Profesores
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Listado de Profesores
+            <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:profesor__nuevo'%}" role="button">
+                <i class="fa fa-plus"></i>
+            </a>
+        </h4>
+        <h6 class="card-subtitle mb-2 text-muted">Tabla para configuración de profesores</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th><i class="fa fa-user"></i> Nombre </th>
+                <th><i class="fa fa-clock-o"></i> Horas </th>
+                <th><i class="fa fa-cogs"></i> Acciones </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for p in object_list %}
+                <tr>
+                    <td><a href="{% url 'carga-horaria:profesor' p.pk %}"> {{ p.nombre }} </a></td>
+                    <td> {{ p.horas }} </td>
+                    <td>
+                        <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:profesor__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
+                        <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_profesor_{{p.pk}}"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+                <div class="modal" tabindex="-1" role="dialog" id="eliminar_profesor_{{p.pk}}">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar un Profesor</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Está seguro que desea eliminar el profesor "{{ p.nombre }}"?.</p>
+                                <p class="text-muted">Recuerde que eliminará todos los registros asociados a este profesor.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:profesor__eliminar' p.pk %}">Eliminar</a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    </div>
+</div>
+
+{% endblock content  %}
