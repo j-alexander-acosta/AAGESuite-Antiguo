@@ -97,5 +97,4 @@ urlpatterns = [
         views.PlanDeleteView.as_view(),
         name='plan__eliminar'
     ),
-    url(r'^profesor/(?P<pk>\d+)/$', views.ProfesorDetailView.as_view(), name='profesor-detail'),
 ]

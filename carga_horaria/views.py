@@ -178,12 +178,3 @@ class PlanDeleteView(DeleteView):
 """
     Fin Crud Planes
 """
-
-
-class ProfesorDetailView(DetailView):
-    model = Profesor
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(ProfesorDetailView, self).get_context_data(**kwargs)
-        context['periodo'] = Periodo.objects.first()
-        return context
