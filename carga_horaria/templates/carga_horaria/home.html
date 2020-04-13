@@ -26,7 +26,7 @@
             <div class="card text-white card-inverse bgm-yellow text-center">
                 <div class="card-header">
                     <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                    <h6><a href="/admin/carga_horaria/planestudio/add/" style="color: #fff;">Planes de Estudio</a></h6>
+                    <h6><a href="{% url 'carga-horaria:planes' %}" style="color: #fff;">Planes de Estudio</a></h6>
                 </div>
             </div>
         </div>
@@ -63,6 +63,22 @@
                 <div class="card-header">
                     <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
                     <h6><a href="/admin/carga_horaria/tablatiempolectivo/add/" style="color: #fff;">Tiempo Lectivo</a></h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white card-inverse bgm-purple text-center">
+                <div class="card-header">
+                    <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
+                    <h6><a href="{% url 'carga-horaria:colegios'%}" style="color: #fff;">Colegio</a></h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white card-inverse bgm-purple text-center">
+                <div class="card-header">
+                    <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
+                    <h6><a href="{% url 'carga-horaria:periodos'%}" style="color: #fff;">Periodos</a></h6>
                 </div>
             </div>
         </div>

@@ -11,7 +11,14 @@ from .models import Asignacion
 
 @admin.register(Plan)
 class PlanAdmin(admin.ModelAdmin):
-    pass
+    search_fields = ['nombre']
+    list_filter = ['nombre', 'nivel']
+    list_display = (
+        'nombre',
+        'nivel',
+#        'creado_en',
+#        'modificado_en'
+    )
 
 @admin.register(AsignaturaBase)
 class AsignaturaBaseAdmin(admin.ModelAdmin):
@@ -19,11 +26,26 @@ class AsignaturaBaseAdmin(admin.ModelAdmin):
 
 @admin.register(Colegio)
 class ColegioAdmin(admin.ModelAdmin):
-    pass
+    search_fields = ['nombre']
+    list_filter = ['nombre', 'jec']
+    list_display = (
+        'nombre',
+        'jec',
+#        'creado_en',
+#        'modificado_en'
+    )
 
 @admin.register(Periodo)
 class PeriodoAdmin(admin.ModelAdmin):
-    pass
+    list_display = (
+        'nombre',
+        'colegio',
+        'plan',
+#        'creado_en',
+#        'modificado_en'
+    )
+    search_fields = ['nombre']
+    list_filter = ['nombre', 'colegio', 'plan']
 
 @admin.register(Asignatura)
 class AsignaturaAdmin(admin.ModelAdmin):
