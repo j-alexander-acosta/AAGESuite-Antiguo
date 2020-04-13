@@ -1,0 +1,89 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+
+{% block title_page %}
+    Asignatura Base - Detalle
+{% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title"><strong> {{ object.nombre }}
+          {% block buttons %}
+              <div class="btn-group pull-right">
+                  <a href="{% url 'carga-horaria:asignaturasbase' %}" type="button" class="btn btn-sm btn-dark">
+                      <i class="fa fa-arrow-left"></i>
+                  </a>
+                  <a href="{% url 'carga-horaria:asignaturabase__editar' object.pk %}" type="button" class="btn btn-sm btn-primary">
+                      <i class="fa fa-edit"></i>
+                  </a>
+                  <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignaturabase_{{object.pk}}">
+                      <i class="fa fa-trash"></i>
+                  </a>
+              </div>
+          {% endblock %}
+        </h4>
+        <h6 class="card-subtitle mb-2 text-muted">Detalle de la asignatura perteneciente al plan {{ object.plan.nombre }} - {{ object.plan.nivel }}</h6>
+
+    </div>
+    <div class="card-body">
+        <div class="row">
+        <div class="col-md-6">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th colspan="2" class="table-info">
+                <span>
+                    <i class="fa fa-info-circle"></i>
+                     Descripción
+                </span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th> Nombre </th>
+                    <td>  {{ object.nombre }}  </td>
+                </tr>
+                <tr>
+                    <th> plan </th>
+                    <td> {{ object.plan }}  </td>
+                </tr>
+                <tr>
+                    <th> Horas con JEC </th>
+                    <td> {{ object.horas_jec }}  </td>
+                </tr>
+                <tr>
+                    <th> Horas sin JEC </th>
+                    <td> {{ object.horas_nec }}  </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="eliminar_asignaturabase_{{object.pk}}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar una asignatura base</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Está seguro que desea eliminar la asignatura base "{{ object }}"?.</p>
+                <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta Asignatura Base.</p>
+            </div>
+            <div class="modal-footer">
+                <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:asignaturabase__eliminar' object.pk %}">Eliminar</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

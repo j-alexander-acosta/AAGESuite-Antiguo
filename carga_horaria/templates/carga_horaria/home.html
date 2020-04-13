@@ -10,7 +10,7 @@
             <div class="card text-white card-inverse bgm-orange text-center">
                 <div class="card-header">
                     <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                    <h6><a href="/admin/carga_horaria/curso/add/" style="color: #fff;">Cursos</a></h6>
+                    <h6><a href="{% url 'carga-horaria:cursos' %}" style="color: #fff;">Cursos</a></h6>
                 </div>
             </div>
         </div>
@@ -18,7 +18,7 @@
             <div class="card text-white card-inverse bgm-red text-center">
                 <div class="card-header">
                     <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                    <h6><a href="" style="color: #fff;">Asignaturas</a></h6>
+                    <h6><a href="{% url 'carga-horaria:asignaturas' %}" style="color: #fff;">Asignaturas</a></h6>
                 </div>
             </div>
         </div>
@@ -70,4 +70,3 @@
     <br>
 
 {% endblock content %}
-

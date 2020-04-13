@@ -1,0 +1,26 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="card-body card-padding">
+        <form action="." method="post">
+            {% csrf_token %}
+            <div class="alert alert-danger" role="alert">
+                <h4 class="alert-heading"><i class="fa fa-exclamation-triangle"></i> Alerta - Eliminar Curso</h4>
+                <hr>
+                <p>Estás seguro que deseas eliminar el registro de curso <strong> "{{ object.nombre }}" </strong>?</p>
+                <br>
+                <p><strong>Recuerda que todos los registros asociados a este Curso, serán eliminados. </strong></p>
+            </div>
+            <button href="{% url 'carga-horaria:curso' object.pk %}" class="btn btn-dark">
+                <i class="fa fa-arrow-left"></i>
+                Cancelar
+            </button>
+            <button type="submit" class="btn btn-danger">
+                <i class="fa fa-trash"></i>
+                   Eliminar
+            </button>
+        </form>
+    </div>
+
+{% endblock content %}

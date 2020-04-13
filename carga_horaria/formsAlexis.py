@@ -30,3 +30,69 @@ class ProfesorForm(forms.ModelForm):
         super(ProfesorForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+
+
+class CursoForm(forms.ModelForm):
+    """
+        Formulario para crear y editar un curso
+    """
+
+    class Meta:
+        model = models.Curso
+        fields = [
+            'periodo',
+            'letra'
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super(CursoForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+
+
+class AsignaturaBaseForm(forms.ModelForm):
+    """
+        Formulario para crear y editar una asignatura base
+    """
+
+    class Meta:
+        model = models.AsignaturaBase
+        fields = [
+            'nombre',
+            'plan',
+            'horas_jec',
+            'horas_nec'
+        ]
+
+        labels = {
+            'horas_jec': u'Horas con Jornada Escolar Completa',
+            'horas_nec': u'Horas sin Jornada Escolar Completa',
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(AsignaturaBaseForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+
+
+class AsignaturaForm(forms.ModelForm):
+    """
+        Formulario para crear y editar una asignatura
+    """
+
+    class Meta:
+        model = models.Asignatura
+        fields = [
+            'base',
+            'periodo',
+            'horas',
+        ]
+
+        labels = {
+            'base': u'Asigantura Base'
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(AsignaturaForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
