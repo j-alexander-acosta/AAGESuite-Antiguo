@@ -2,7 +2,7 @@ include .env
 export
 
 serve: .make.nix-exists
-	nix-shell --run 'python3 manage.py runserver'
+	nix-shell --run 'python3 manage.py runserver 0.0.0.0:8080'
 .PHONY: serve
 
 shell: .make.nix-exists

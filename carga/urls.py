@@ -16,12 +16,14 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.views.generic import RedirectView
 
 admin.site.site_header = 'Carga Académica - Back Office'
 
 urlpatterns = [
     url(r'^carga/', include('carga_horaria.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^$', RedirectView.as_view(url='/carga/', permanent=False)),
 ]
 
 # add static
