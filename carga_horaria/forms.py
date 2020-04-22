@@ -1,6 +1,7 @@
 from django import forms
 from crispy_forms.helper import FormHelper
 from .models import Asignacion
+from .models import Profesor
 
 class AsignacionForm(forms.ModelForm):
     """
@@ -28,3 +29,5 @@ class AsignacionForm(forms.ModelForm):
         super(AsignacionForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+        profesores = [(p.id, "{} - {} horas".format(p, p.horas_disponibles)) for p in Profesor.objects.all()]
+        self.fields['profesor'] = forms.ChoiceField(choices=profesores)
