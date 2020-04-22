@@ -1,5 +1,6 @@
 {% extends 'base/base.html' %}
 {% load staticfiles %}
+{% load bootstrap_pagination %}
 
 {% block title_page %}
     Periodos
@@ -60,9 +61,15 @@
             {% endfor %}
             </tbody>
         </table>
-    </div>
+	</div>
 
     </div>
+                    <div class="card-footer">
+                    <div align="center">
+                        {% bootstrap_paginate page_obj range=5 %}
+                    </div>
+                </div>
+
 </div>
 
 {% endblock content  %}

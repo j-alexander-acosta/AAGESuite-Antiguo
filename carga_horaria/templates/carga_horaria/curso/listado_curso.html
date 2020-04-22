@@ -1,5 +1,6 @@
 {% extends 'base/base.html' %}
 {% load staticfiles %}
+{% load bootstrap_pagination %}
 
 {% block title_page %}
     Cursos
@@ -28,7 +29,7 @@
             <tbody>
             {% for c in object_list %}
                 <tr>
-                    <td><a href="{% url 'carga-horaria:curso' c.pk %}"> {{ c.periodo.plan.nivel }} - {{ c.letra }} </a></td>
+                    <td><a href="{% url 'carga-horaria:curso' c.pk %}"> {{ c.periodo.plan.get_nivel_display }} - {{ c.letra }} </a></td>
                     <td> {{ c.periodo.nombre }} </td>
                     <td>
                         <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:curso__editar' c.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
@@ -61,6 +62,13 @@
     </div>
 
     </div>
+
+                    <div class="card-footer">
+                    <div align="center">
+                        {% bootstrap_paginate page_obj range=5 %}
+                    </div>
+                </div>
+
 </div>
 
 {% endblock content  %}

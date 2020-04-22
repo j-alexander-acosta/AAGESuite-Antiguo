@@ -1,5 +1,6 @@
 {% extends 'base/base.html' %}
 {% load staticfiles %}
+{% load bootstrap_pagination %}
 
 {% block title_page %}
     Asignaturas Base
@@ -61,6 +62,13 @@
     </div>
 
     </div>
+                    <div class="card-footer">
+                    <div align="center">
+                        {% bootstrap_paginate page_obj range=5 %}
+                    </div>
+                </div>
+
+
 </div>
 
 {% endblock content  %}
