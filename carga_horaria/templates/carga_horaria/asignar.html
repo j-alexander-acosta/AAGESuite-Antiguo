@@ -10,10 +10,24 @@
 
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title">Asignar horas <strong>
+        <h4 class="card-title">Asignar horas para {{ object }} <strong>
         
         </h4>
         <h6 class="card-subtitle mb-2 text-muted">{{ object }} - {{ object.periodo }}</h6>
+	<table class="table">
+	  <thead>
+	  <tr>
+	    <th>Horas asignadas</th>
+	    <th>Horas faltantes</th>
+	  </tr>
+	  </thead>
+	  <tbody>
+	  <tr>
+	    <td>{{ object.horas_asignadas }}</td>
+	    <td>{{ object.horas_disponibles }}</td>
+	  </tr>
+	  </tbody>
+	</table>
     </div>
     <div class="card-body">
         <form class="form-horizontal" method="post">
