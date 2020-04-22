@@ -27,6 +27,46 @@
         </h4>
         <h6 class="card-subtitle mb-2 text-muted">Detalle del periodo</h6>
     </div>
+
+        <div class="card-body">
+        <div class="row">
+        <div class="col-md-6">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th colspan="2" class="table-info">
+                <span>
+                    <i class="fa fa-info-circle"></i>
+		    Asignaturas
+                </span>
+                    </th>
+                </tr>
+		<tr>
+		  <th>Nombre</th>
+		  <th>Horas Requeridas</th>
+		  <th>Horas Asignadas</th>
+		  <th>Horas Sin Asignar</th>
+		  <th>Profesores</th>
+		  <th>Acciones</th>
+		</tr>
+                </thead>
+                <tbody>
+		  {% for a in object.asignatura_set.all %}
+                <tr>
+                  <td>  <a href="{% url 'carga-horaria:asignatura' a.pk %}">{{ a }} </a> </td>
+                    <td>  {{ a.horas }}  </td>
+                    <td>  {{ a.horas_asignadas }}  </td>
+                    <td>  {{ a.horas_disponibles }}  </td>
+                    <td>  {% for p in a.profesores %}<a href="{% url 'carga-horaria:profesor' p.pk %}">{{ p }} ({{ p.horas_disponibles }}) </a>{% endfor %}  </td>
+                    <td>  {% if not a.completa %}<a href="{% url 'carga-horaria:asignar' a.pk %}">Asignar</a>{% endif %}  </td>
+                </tr>
+		{% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+	</div>
+
     <div class="card-body">
         <div class="row">
         <div class="col-md-6">
@@ -60,41 +100,6 @@
     </div>
     </div>
 
-        <div class="card-body">
-        <div class="row">
-        <div class="col-md-6">
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th colspan="2" class="table-info">
-                <span>
-                    <i class="fa fa-info-circle"></i>
-		    Asignaturas
-                </span>
-                    </th>
-                </tr>
-		<tr>
-		  <th>Nombre</th>
-		  <th>Horas Requeridas</th>
-		  <th>Horas Asignadas</th>
-		  <th>Profesores</th>
-		  <th>Acciones</th>
-		</tr>
-                </thead>
-                <tbody>
-		  {% for a in object.asignatura_set.all %}
-                <tr>
-                    <td>  {{ a }}  </td>
-                    <td>  {{ a.horas }}  </td>
-                    <td>  {{ a.horas_asignadas }}  </td>
-                    <td>  {% for p in a.profesores %}<a href="{% url 'carga-horaria:profesor' p.pk %}">{{ p }} </a>{% endfor %}  </td>
-                    <td>  {% if not a.completa %}<a href="{% url 'carga-horaria:asignar' a.pk %}">Asignar</a>{% endif %}  </td>
-                </tr>
-		{% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
 
 </div>
 
