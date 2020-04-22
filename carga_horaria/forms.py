@@ -29,5 +29,5 @@ class AsignacionForm(forms.ModelForm):
         super(AsignacionForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
-        profesores = [(p.id, "{} - {} horas".format(p, p.horas_disponibles)) for p in Profesor.objects.all()]
-        self.fields['profesor'] = forms.ChoiceField(choices=profesores)
+        # profesores = [(p, "{} - {} horas".format(p, p.horas_disponibles)) for p in Profesor.objects.all()]
+        # self.fields['profesor'] = forms.ChoiceField(choices=profesores)
