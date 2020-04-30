@@ -204,3 +204,17 @@ class AsignacionDeleteView(DeleteView):
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
+
+
+class AsignacionUpdateView(UpdateView):
+    model = Asignacion
+    form_class = AsignacionForm
+    template_name = 'carga_horaria/asignar.html'
+
+    def get_success_url(self):
+        return reverse(
+            'carga-horaria:periodo',
+            kwargs={
+                'pk': self.object.asignatura.periodo.pk,
+            }
+        )

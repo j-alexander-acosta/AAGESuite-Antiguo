@@ -204,6 +204,11 @@ urlpatterns = [
         name='asignar'
     ),
     url(
+        r'^asignaciones/(?P<pk>\d+)/editar/$',
+        views.AsignacionUpdateView.as_view(),
+        name='asignacion__editar'
+    ),
+    url(
         r'^asignaciones/(?P<pk>\d+)/eliminar/$',
         views.AsignacionDeleteView.as_view(),
         name='asignacion__eliminar'

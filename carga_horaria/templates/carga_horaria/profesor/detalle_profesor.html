@@ -98,9 +98,7 @@
                       <td> {{ ax.asignatura }} </td>
                       <td> {{ ax.horas }} </td>
 		      <td>
-			{% comment %}
-                        <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:periodo__editar' ax.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
-			{% endcomment %}
+                        <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignacion__editar' ax.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
                         <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_{{ax.pk}}"><i class="fa fa-trash"></i></a>
 			
 		      </td>
