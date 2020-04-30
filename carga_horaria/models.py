@@ -83,7 +83,6 @@ class Periodo(models.Model):
         return reverse('carga-horaria:periodo', args=[str(self.pk)])
 
 
-
 class Asignatura(models.Model):
     base = models.ForeignKey('AsignaturaBase')
     periodo = models.ForeignKey('Periodo')
