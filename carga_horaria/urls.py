@@ -213,4 +213,9 @@ urlpatterns = [
         views.AsignacionDeleteView.as_view(),
         name='asignacion__eliminar'
     ),
+    url(
+        r'^planes/plantila/$',
+        views.crear_desde_plantilla,
+        name='plan__plantilla'
+    ),
 ]

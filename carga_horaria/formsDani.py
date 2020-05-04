@@ -7,6 +7,7 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.forms import ModelChoiceField
+from .models import Plan
 
 from carga_horaria import models
 
@@ -89,5 +90,15 @@ class PlanForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(PlanForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+
+
+class PlantillaPlanForm(forms.Form):
+    nombre = forms.CharField()
+    plan = forms.ModelChoiceField(queryset=Plan.objects.all())
+
+    def __init__(self, *args, **kwargs):
+        super(PlantillaPlanForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False

@@ -67,6 +67,8 @@ class Periodo(models.Model):
     nombre = models.CharField(max_length=255)
     colegio = models.ForeignKey('Colegio')
     plan = models.ForeignKey('Plan')
+#    curso = models.CharField(max_length=1)
+
 
     def __str__(self): 
         return self.nombre

@@ -9,6 +9,7 @@ from .models import Profesor
 from .models import Periodo
 from .models import Asignacion
 from .forms import AsignacionForm
+from .formsDani import PlantillaPlanForm
 
 def home(request):
     return render(request, 'carga_horaria/home.html')
@@ -154,6 +155,26 @@ class PlanCreateView(CreateView):
     success_url = reverse_lazy('carga-horaria:planes')
 #    success_message = u"Nuevo periodo %(nombre)s creado satisfactoriamente."
 #    error_message = "Revise que todos los campos del formulario hayan sido validados correctamente."
+
+
+def crear_desde_plantilla(request):
+    if request.method == 'POST':
+        form = PlantillaPlanForm(request.POST)
+        if form.is_valid():
+            nombre = form.cleaned_data['nombre']
+            plantilla = form.cleaned_data['plan']
+
+            nuevo = Plan.objects.create(nombre=nombre,
+                                        nivel=plantilla.nivel)
+            for ab in plantilla.asignaturabase_set.all():
+                AsignaturaBase.objects.create(nombre=ab.nombre,
+                                              plan=nuevo,
+                                              horas_jec=ab.horas_jec,
+                                              horas_nec=ab.horas_nec)
+            return redirect('carga-horaria:planes')
+    else:
+        form = PlantillaPlanForm()
+    return render(request, 'carga_horaria/plantilla.html', {'form': form})
 
 
 class PlanUpdateView(UpdateView):
