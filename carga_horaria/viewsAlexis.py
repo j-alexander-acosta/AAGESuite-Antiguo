@@ -3,6 +3,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from carga_horaria.models import Profesor, Curso, AsignaturaBase, Asignatura
 from carga_horaria.formsAlexis import ProfesorForm, CursoForm, AsignaturaBaseForm, AsignaturaForm
 from django.core.urlresolvers import reverse_lazy, reverse
+from .models import Nivel
 
 """
     Comienzo Crud Profesor
@@ -114,7 +115,22 @@ class AsignaturaBaseListView(ListView):
     model = AsignaturaBase
     template_name = 'carga_horaria/asignaturabase/listado_asignaturabase.html'
     search_fields = ['nombre', 'plan']
-    paginate_by = 6
+    paginate_by = 10
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super().get_context_data(*args, **kwargs)
+        ctx['levels'] = [(tag.name, tag.value) for tag in Nivel][::-1]
+        ctx['nivel_actual'] = self.request.GET.get('nivel')
+        return ctx
+
+    def get_queryset(self):
+        qs = AsignaturaBase.objects.all()
+
+        nivel = self.request.GET.get('nivel')
+        if nivel:
+            qs = qs.filter(plan__nivel=nivel)
+
+        return qs
 
 
 class AsignaturaBaseDetailView(DetailView):
