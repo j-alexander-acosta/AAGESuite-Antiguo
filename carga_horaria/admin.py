@@ -11,10 +11,8 @@ from .models import Asignacion
 
 @admin.register(Plan)
 class PlanAdmin(admin.ModelAdmin):
-    search_fields = ['nombre']
-    list_filter = ['nombre', 'nivel']
+    list_filter = ['nivel']
     list_display = (
-        'nombre',
         'nivel',
 #        'creado_en',
 #        'modificado_en'

@@ -25,7 +25,8 @@ class PeriodoListView(ListView):
     model = Periodo
     template_name = 'carga_horaria/periodo/listado_periodos.html'
     search_fields = ['nombre', 'colegio']
-    paginate_by = 6
+    paginate_by = 10
+    ordering = ['-pk']
 
 
 class PeriodoDetailView(DetailView):
@@ -161,11 +162,9 @@ def crear_desde_plantilla(request):
     if request.method == 'POST':
         form = PlantillaPlanForm(request.POST)
         if form.is_valid():
-            nombre = form.cleaned_data['nombre']
-            plantilla = form.cleaned_data['plan']
+            plantilla = form.cleaned_data['plantilla']
 
-            nuevo = Plan.objects.create(nombre=nombre,
-                                        nivel=plantilla.nivel)
+            nuevo = Plan.objects.create(nivel=plantilla.nivel)
             for ab in plantilla.asignaturabase_set.all():
                 AsignaturaBase.objects.create(nombre=ab.nombre,
                                               plan=nuevo,

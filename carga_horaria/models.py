@@ -22,11 +22,10 @@ class Nivel(Enum):
 
 
 class Plan(models.Model):
-    nombre = models.CharField(max_length=255)
     nivel = models.CharField(max_length=8, choices=[(tag.name, tag.value) for tag in Nivel])
 
     def __str__(self): 
-        return self.nombre
+        return "Plan de Estudios - {} (ID: {})".format(getattr(Nivel, self.nivel).value.title(), self.pk)
 
     class Meta:
         verbose_name = u"Plan"
@@ -64,13 +63,12 @@ class Colegio(models.Model):
         return reverse('carga-horaria:colegio', args=[str(self.pk)])
 
 class Periodo(models.Model):
+    plan = models.ForeignKey('Plan')
     nombre = models.CharField(max_length=255)
     colegio = models.ForeignKey('Colegio')
-    plan = models.ForeignKey('Plan')
-#    letra = models.CharField(max_length=1)
 
     def __str__(self): 
-        return self.nombre
+        return "{} {}".format(getattr(Nivel, self.plan.nivel).value.title(), self.nombre)
 
     class Meta:
         verbose_name = u"Curso"

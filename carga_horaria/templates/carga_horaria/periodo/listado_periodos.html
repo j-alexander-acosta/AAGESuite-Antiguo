@@ -22,7 +22,6 @@
             <thead>
             <tr>
                 <th><i class="fa fa-calendar-check-o"></i> Nombre </th>
-                <th><i class="fa fa-calendar-minus-o"></i> Colegio </th>
                 <th><i class="fa fa-check-circle"></i> Plan </th>
                 <th><i class="fa fa-cogs"></i> Acciones </th>
             </tr>
@@ -30,9 +29,8 @@
             <tbody>
             {% for p in object_list %}
                 <tr>
-                    <td><a href="{% url 'carga-horaria:periodo' p.pk %}">{{ p.nombre }}</a></td>
-                    <td>{{p.colegio.nombre}}</td>
-                    <td>{{p.plan.nombre}}</td>
+                    <td><a href="{% url 'carga-horaria:periodo' p.pk %}">{{ p }}</a></td>
+                    <td>{{ p.plan }}</td>
                     <td>
                         <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:periodo__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
                         <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_periodo_{{p.pk}}"><i class="fa fa-trash"></i></a>

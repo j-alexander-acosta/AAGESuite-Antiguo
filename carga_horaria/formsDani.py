@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.forms import ModelChoiceField
 from .models import Plan
+from .models import Nivel
 
 from carga_horaria import models
 
@@ -20,13 +21,12 @@ class PeriodoForm(forms.ModelForm):
     class Meta:
         model = models.Periodo
         fields = [
-            'nombre',
             'colegio',
-            'plan'
+            'plan',
+            'nombre'
         ]
         help_texts = {
-            'nombre': u"Defina un nombre de periodo",
-            'colegio': u"Establece si el periodo es el usado actualmente en la aplicación."
+            'nombre': u"Defina un nombre para el curso",
         }
         labels = {
             'plan': u"Plan"
@@ -79,11 +79,9 @@ class PlanForm(forms.ModelForm):
     class Meta:
         model = models.Plan
         fields = [
-            'nombre',
             'nivel'
         ]
         help_texts = {
-            'nombre': u"Defina un nombre para el Plan",
             'nivel': u"Seleccione el nivel a Asociar a su Plan."
         }
 
@@ -95,8 +93,9 @@ class PlanForm(forms.ModelForm):
 
 
 class PlantillaPlanForm(forms.Form):
-    nombre = forms.CharField()
-    plan = forms.ModelChoiceField(queryset=Plan.objects.all())
+    plantilla = forms.ModelChoiceField(queryset=Plan.objects.all())
+    nivel = forms.ChoiceField(choices=[(tag.name, tag.value) for tag in Nivel])
+
 
     def __init__(self, *args, **kwargs):
         super(PlantillaPlanForm, self).__init__(*args, **kwargs)

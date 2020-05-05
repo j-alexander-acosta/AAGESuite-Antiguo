@@ -9,7 +9,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title">Plan: <strong> {{ object.nombre }} 
+        <h4 class="card-title">Plan: <strong> {{ object }} 
 
         {% block buttons %}
             <div class="btn-group pull-right">
@@ -43,10 +43,6 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <th> Nombre </th>
-                    <td>  {{ object.nombre }}  </td>
-                </tr>
-                <tr>
                     <th> Nivel </th>
                     <td>  {{ object.get_nivel_display }}  </td>
                 </tr>
@@ -67,7 +63,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Está seguro que desea eliminar el plan "{{ object.nombre }}"?.</p>
+                <p>Está seguro que desea eliminar "{{ object }}"?.</p>
                 <p class="text-muted">Recuerde que eliminará todos los registros asociados a este plan.</p>
             </div>
             <div class="modal-footer">
