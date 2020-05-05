@@ -46,31 +46,31 @@ urlpatterns = [
         views.ProfesorDeleteView.as_view(),
         name='profesor__eliminar'
     ),
-    url(
-        r'^cursos/$',
-        views.CursoListView.as_view(),
-        name='cursos'
-    ),
-    url(
-        r'^cursos/(?P<pk>\d+)/$',
-        views.CursoDetailView.as_view(),
-        name='curso'
-    ),
-    url(
-        r'^cursos/nuevo/$',
-        views.CursoCreateView.as_view(),
-        name='curso__nuevo'
-    ),
-    url(
-        r'^cursos/(?P<pk>\d+)/editar/$',
-        views.CursoUpdateView.as_view(),
-        name='curso__editar'
-    ),
-    url(
-        r'^cursos/(?P<pk>\d+)/eliminar/$',
-        views.CursoDeleteView.as_view(),
-        name='curso__eliminar'
-    ),
+    # url(
+    #     r'^cursos/$',
+    #     views.CursoListView.as_view(),
+    #     name='cursos'
+    # ),
+    # url(
+    #     r'^cursos/(?P<pk>\d+)/$',
+    #     views.CursoDetailView.as_view(),
+    #     name='curso'
+    # ),
+    # url(
+    #     r'^cursos/nuevo/$',
+    #     views.CursoCreateView.as_view(),
+    #     name='curso__nuevo'
+    # ),
+    # url(
+    #     r'^cursos/(?P<pk>\d+)/editar/$',
+    #     views.CursoUpdateView.as_view(),
+    #     name='curso__editar'
+    # ),
+    # url(
+    #     r'^cursos/(?P<pk>\d+)/eliminar/$',
+    #     views.CursoDeleteView.as_view(),
+    #     name='curso__eliminar'
+    # ),
     url(
         r'^asignaturasbase/$',
         views.AsignaturaBaseListView.as_view(),

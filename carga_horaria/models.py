@@ -67,15 +67,14 @@ class Periodo(models.Model):
     nombre = models.CharField(max_length=255)
     colegio = models.ForeignKey('Colegio')
     plan = models.ForeignKey('Plan')
-#    curso = models.CharField(max_length=1)
-
+#    letra = models.CharField(max_length=1)
 
     def __str__(self): 
         return self.nombre
 
     class Meta:
-        verbose_name = u"Periodo"
-        verbose_name_plural = u"Periodos"
+        verbose_name = u"Curso"
+        verbose_name_plural = u"Cursos"
     
     def get_absolute_url(self):
         """
@@ -109,12 +108,6 @@ class Asignatura(models.Model):
     def __str__(self): 
         return str(self.base)
 
-class Curso(models.Model):
-    periodo = models.ForeignKey('Periodo')
-    letra = models.CharField(max_length=1)
-
-    def __str__(self): 
-        return self.letra
 
 class Profesor(models.Model):
     nombre = models.CharField(max_length=255)

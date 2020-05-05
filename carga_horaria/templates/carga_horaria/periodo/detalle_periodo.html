@@ -2,14 +2,14 @@
 {% load staticfiles %}
 
 {% block title_page %}
-    Periodo - Detalle
+    Curso - Detalle
 {% endblock %}
 
 {% block content %}
 
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title">Periodo: <strong> {{ object.nombre }} 
+        <h4 class="card-title">Curso: <strong> {{ object.nombre }} 
         
         {% block buttons %}
             <div class="btn-group pull-right">
@@ -25,7 +25,7 @@
             </div>
         {% endblock %}
         </h4>
-        <h6 class="card-subtitle mb-2 text-muted">Detalle del periodo</h6>
+        <h6 class="card-subtitle mb-2 text-muted">Detalle del curso</h6>
     </div>
 
         <div class="card-body">
@@ -107,14 +107,14 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar un Periodo</h5>
+                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar un curso</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Está seguro que desea eliminar el periodo "{{ object.nombre }}"?.</p>
-                <p class="text-muted">Recuerde que eliminará todos los registros asociados a este periodo.</p>
+                <p>Está seguro que desea eliminar el curso "{{ object.nombre }}"?.</p>
+                <p class="text-muted">Recuerde que eliminará todos los registros asociados a este curso.</p>
             </div>
             <div class="modal-footer">
                 <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:periodo__eliminar' object.pk %}">Eliminar</a>

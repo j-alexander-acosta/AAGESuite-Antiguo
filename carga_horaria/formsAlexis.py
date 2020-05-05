@@ -32,22 +32,22 @@ class ProfesorForm(forms.ModelForm):
         self.helper.form_tag = False
 
 
-class CursoForm(forms.ModelForm):
-    """
-        Formulario para crear y editar un curso
-    """
+# class CursoForm(forms.ModelForm):
+#     """
+#         Formulario para crear y editar un curso
+#     """
 
-    class Meta:
-        model = models.Curso
-        fields = [
-            'periodo',
-            'letra'
-        ]
+#     class Meta:
+#         model = models.Curso
+#         fields = [
+#             'periodo',
+#             'letra'
+#         ]
 
-    def __init__(self, *args, **kwargs):
-        super(CursoForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_tag = False
+#     def __init__(self, *args, **kwargs):
+#         super(CursoForm, self).__init__(*args, **kwargs)
+#         self.helper = FormHelper()
+#         self.helper.form_tag = False
 
 
 class AsignaturaBaseForm(forms.ModelForm):

@@ -4,7 +4,7 @@ from .models import AsignaturaBase
 from .models import Colegio
 from .models import Periodo
 from .models import Asignatura
-from .models import Curso
+#from .models import Curso
 from .models import Profesor
 from .models import Asignacion
 
@@ -51,9 +51,9 @@ class PeriodoAdmin(admin.ModelAdmin):
 class AsignaturaAdmin(admin.ModelAdmin):
     pass
 
-@admin.register(Curso)
-class CursoAdmin(admin.ModelAdmin):
-    pass
+# @admin.register(Curso)
+# class CursoAdmin(admin.ModelAdmin):
+#     pass
 
 @admin.register(Profesor)
 class ProfesorAdmin(admin.ModelAdmin):
