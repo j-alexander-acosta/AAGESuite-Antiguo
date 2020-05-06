@@ -5,6 +5,7 @@ from django.views.generic import TemplateView, ListView, DetailView, CreateView,
 from carga_horaria.models import Periodo, Colegio, Plan
 from carga_horaria.formsDani import PeriodoForm, ColegioForm, PlanForm
 from django.core.urlresolvers import reverse_lazy, reverse
+from .models import Nivel
 from .models import Profesor
 from .models import Periodo
 from .models import Asignacion
@@ -138,7 +139,8 @@ class PlanListView(ListView):
     model = Plan
     template_name = 'carga_horaria/plan/listado_planes.html'
     search_fields = ['nombre', 'nivel']
-    paginate_by = 6
+    paginate_by = 10
+    ordering = ['-pk']
 
 
 class PlanDetailView(DetailView):
@@ -163,8 +165,9 @@ def crear_desde_plantilla(request):
         form = PlantillaPlanForm(request.POST)
         if form.is_valid():
             plantilla = form.cleaned_data['plantilla']
+            nivel = form.cleaned_data['nivel']
 
-            nuevo = Plan.objects.create(nivel=plantilla.nivel)
+            nuevo = Plan.objects.create(nivel=nivel)
             for ab in plantilla.asignaturabase_set.all():
                 AsignaturaBase.objects.create(nombre=ab.nombre,
                                               plan=nuevo,

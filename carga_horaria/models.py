@@ -64,11 +64,11 @@ class Colegio(models.Model):
 
 class Periodo(models.Model):
     plan = models.ForeignKey('Plan')
-    nombre = models.CharField(max_length=255)
+    nombre = models.CharField(max_length=255, blank=True, null=True)
     colegio = models.ForeignKey('Colegio')
 
     def __str__(self): 
-        return "{} {}".format(getattr(Nivel, self.plan.nivel).value.title(), self.nombre)
+        return "{} {}".format(getattr(Nivel, self.plan.nivel).value.title(), str(self.nombre or ''))
 
     class Meta:
         verbose_name = u"Curso"

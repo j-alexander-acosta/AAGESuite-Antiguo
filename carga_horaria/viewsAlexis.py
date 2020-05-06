@@ -213,6 +213,9 @@ class AsignaturaListView(ListView):
         if nivel:
             qs = qs.filter(base__plan__nivel=nivel)
 
+        periodo = self.request.GET.get('periodo')
+        if periodo:
+            qs = qs.filter(periodo__pk=periodo)
         return qs
 
 

@@ -89,7 +89,8 @@ class AsignaturaForm(forms.ModelForm):
         ]
 
         labels = {
-            'base': u'Asigantura Base'
+            'base': u'Asigantura Base',
+            'periodo': u'Curso',
         }
 
     def __init__(self, *args, **kwargs):
