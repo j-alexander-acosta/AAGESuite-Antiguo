@@ -22,8 +22,8 @@ class ProfesorForm(forms.ModelForm):
             'nombre',
             'horas'
         ]
-        help_texts = {
-            'horas': u"Horas por la que se contrato al Profesor."
+        labels = {
+            'horas': u'Horas de contrato',
         }
 
     def __init__(self, *args, **kwargs):
