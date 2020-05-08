@@ -7,6 +7,7 @@ from .models import Asignatura
 #from .models import Curso
 from .models import Profesor
 from .models import Asignacion
+from .models import Especialidad
 
 
 @admin.register(Plan)
@@ -59,4 +60,9 @@ class ProfesorAdmin(admin.ModelAdmin):
 
 @admin.register(Asignacion)
 class AsignacionAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Especialidad)
+class EspecialidadAdmin(admin.ModelAdmin):
     pass

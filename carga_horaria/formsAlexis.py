@@ -20,7 +20,8 @@ class ProfesorForm(forms.ModelForm):
         model = models.Profesor
         fields = [
             'nombre',
-            'horas'
+            'horas',
+            'especialidad'
         ]
         labels = {
             'horas': u'Horas de contrato',
