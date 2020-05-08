@@ -93,11 +93,11 @@ class PlanForm(forms.ModelForm):
 
 
 class PlantillaPlanForm(forms.Form):
-    plantilla = forms.ModelChoiceField(queryset=Plan.objects.all())
-    nivel = forms.ChoiceField(choices=[(tag.name, tag.value) for tag in Nivel])
-
+    plantilla = forms.ModelChoiceField(label="Plan de estudio que desea copiar", queryset=Plan.objects.all())
+    nivel = forms.ChoiceField(label="Curso al que desea agregar el plan", choices=[(tag.name, tag.value) for tag in Nivel])
 
     def __init__(self, *args, **kwargs):
         super(PlantillaPlanForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+        
