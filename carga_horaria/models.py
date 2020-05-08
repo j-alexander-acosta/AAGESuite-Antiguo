@@ -2,6 +2,7 @@ from enum import Enum
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
+from decimal import Decimal, ROUND_HALF_DOWN
 
 
 class Nivel(Enum):
@@ -118,7 +119,12 @@ class Profesor(models.Model):
 
     @property
     def horas_disponibles(self):
-        return self.horas - self.horas_asignadas
+        return self.horas_docentes - self.horas_asignadas
+
+    @property
+    def horas_docentes(self):
+        # considerar luego 60/40 colegios vulnerables
+        return Decimal(self.horas * Decimal(60.0)/Decimal(45.0) * Decimal(.65)).quantize(Decimal(0), rounding=ROUND_HALF_DOWN)
 
     def __str__(self): 
         return self.nombre
