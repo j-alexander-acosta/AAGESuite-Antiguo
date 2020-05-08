@@ -20,7 +20,7 @@ class PlanAdmin(admin.ModelAdmin):
 
 @admin.register(AsignaturaBase)
 class AsignaturaBaseAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('nombre', 'horas_jec', 'horas_nec')
 
 @admin.register(Colegio)
 class ColegioAdmin(admin.ModelAdmin):
@@ -47,7 +47,7 @@ class PeriodoAdmin(admin.ModelAdmin):
 
 @admin.register(Asignatura)
 class AsignaturaAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('base', 'horas')
 
 # @admin.register(Curso)
 # class CursoAdmin(admin.ModelAdmin):

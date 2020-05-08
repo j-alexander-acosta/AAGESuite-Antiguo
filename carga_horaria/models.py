@@ -42,8 +42,8 @@ class Plan(models.Model):
 class AsignaturaBase(models.Model):
     nombre = models.CharField(max_length=255)
     plan = models.ForeignKey('Plan')
-    horas_jec = models.PositiveSmallIntegerField()
-    horas_nec = models.PositiveSmallIntegerField()
+    horas_jec = models.DecimalField(max_digits=3, decimal_places=1)
+    horas_nec = models.DecimalField(max_digits=3, decimal_places=1)
 
     def __str__(self): 
         return self.nombre
@@ -85,7 +85,7 @@ class Periodo(models.Model):
 class Asignatura(models.Model):
     base = models.ForeignKey('AsignaturaBase')
     periodo = models.ForeignKey('Periodo')
-    horas = models.PositiveSmallIntegerField()
+    horas = models.DecimalField(max_digits=3, decimal_places=1)
 
     @property
     def horas_asignadas(self):
@@ -109,7 +109,7 @@ class Asignatura(models.Model):
 
 class Profesor(models.Model):
     nombre = models.CharField(max_length=255)
-    horas = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(44)])
+    horas = models.DecimalField(max_digits=3, decimal_places=1, validators=[MinValueValidator(1), MaxValueValidator(44)])
 
     @property
     def horas_asignadas(self):
@@ -126,7 +126,7 @@ class Profesor(models.Model):
 class Asignacion(models.Model):
     profesor = models.ForeignKey('Profesor')
     asignatura = models.ForeignKey('Asignatura')
-    horas = models.PositiveSmallIntegerField()
+    horas = models.DecimalField(max_digits=3, decimal_places=1)
 
     def __str__(self): 
         return "{} - {} ({})".format(self.profesor, self.asignatura, self.horas)
