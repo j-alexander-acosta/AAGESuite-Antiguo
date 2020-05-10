@@ -115,7 +115,7 @@ class Profesor(models.Model):
 
     @property
     def horas_asignadas(self):
-        return sum(self.asignacion_set.values_list('horas', flat=True))
+        return sum(self.asignacion_set.values_list('horas', flat=True)) + sum(self.asignacionextra_set.values_list('horas', flat=True))
 
     @property
     def horas_disponibles(self):
@@ -137,6 +137,15 @@ class Asignacion(models.Model):
 
     def __str__(self): 
         return "{} - {} ({})".format(self.profesor, self.asignatura, self.horas)
+
+
+class AsignacionExtra(models.Model):
+    profesor = models.ForeignKey('Profesor')
+    descripcion = models.CharField(max_length=255)
+    horas = models.DecimalField(max_digits=3, decimal_places=1)
+
+    def __str__(self): 
+        return "{} - {} ({})".format(self.profesor, self.descripcion, self.horas)
 
 
 class Especialidad(models.Model):

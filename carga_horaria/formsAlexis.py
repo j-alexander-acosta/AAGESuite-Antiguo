@@ -93,6 +93,9 @@ class AsignaturaForm(forms.ModelForm):
             'base': u'Asigantura Base',
             'periodo': u'Curso',
         }
+        # help_texts = {
+        #     'base': u"Para crear una asignatura extra al plan original, deje este campo en blanco."
+        # }
 
     def __init__(self, *args, **kwargs):
         super(AsignaturaForm, self).__init__(*args, **kwargs)

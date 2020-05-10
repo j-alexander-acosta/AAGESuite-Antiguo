@@ -31,6 +31,7 @@
             </div>
         </div>
     </div>
+    <br>
     <div class="row">
         <div class="col-md-3">
             <div class="card text-white card-inverse bgm-red text-center">
@@ -57,6 +58,18 @@
             </div>
         </div>
     </div>
+    <br>
+    <div class="row">
+        <div class="col-md-9">
+            <div class="card text-white card-inverse bgm-orange text-center">
+                <div class="card-header">
+                    <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
+                    <h6><a href="{% url 'carga-horaria:periodos' %}" style="color: #fff;">Confección de Carga Horaria</a></h6>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <br>
 
 {% endblock content %}

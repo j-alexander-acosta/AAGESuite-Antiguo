@@ -22,7 +22,9 @@
             <thead>
             <tr>
                 <th><i class="fa fa-user"></i> Nombre </th>
-                <th><i class="fa fa-clock-o"></i> Horas </th>
+                <th><i class="fa fa-clock-o"></i> Horas contrato </th>
+                <th><i class="fa fa-clock-o"></i> Horas docentes </th>
+                <th><i class="fa fa-clock-o"></i> Horas disponibles </th>
                 <th><i class="fa fa-cogs"></i> Acciones </th>
             </tr>
             </thead>
@@ -31,6 +33,8 @@
                 <tr>
                     <td><a href="{% url 'carga-horaria:profesor' p.pk %}"> {{ p.nombre }} </a></td>
                     <td> {{ p.horas }} </td>
+                    <td> {{ p.horas_docentes }} </td>
+                    <td> {{ p.horas_disponibles }} </td>
                     <td>
                         <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:profesor__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
                         <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_profesor_{{p.pk}}"><i class="fa fa-trash"></i></a>

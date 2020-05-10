@@ -9,7 +9,9 @@ from .models import Nivel
 from .models import Profesor
 from .models import Periodo
 from .models import Asignacion
+from .models import AsignacionExtra
 from .forms import AsignacionForm
+from .forms import AsignacionExtraForm
 from .formsDani import PlantillaPlanForm
 
 def home(request):
@@ -219,6 +221,21 @@ def asignar(request, pk):
     return render(request, 'carga_horaria/asignar.html', {'object': aa,
                                                           'form': form})
 
+def asignar_extra(request, pk):
+    pp = get_object_or_404(Profesor, pk=pk)
+
+    if request.method == 'POST':
+        form = AsignacionExtraForm(request.POST, profesor=pp)
+        if form.is_valid():
+            asignacion = form.save(commit=False)
+            asignacion.profesor = pp
+            asignacion.save()
+            return redirect('carga-horaria:profesor', pp.pk)
+    else:
+        form = AsignacionExtraForm()
+    return render(request, 'carga_horaria/asignar_extra.html', {'object': pp,
+                                                                'form': form})
+
 
 class AsignacionDeleteView(DeleteView):
     model = Asignacion
@@ -239,5 +256,21 @@ class AsignacionUpdateView(UpdateView):
             'carga-horaria:periodo',
             kwargs={
                 'pk': self.object.asignatura.periodo.pk,
+            }
+        )
+
+
+class AsignacionExtraDeleteView(DeleteView):
+    model = AsignacionExtra
+    template_name = 'carga_horaria/periodo/eliminar_periodo.html'
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse(
+            'carga-horaria:profesor',
+            kwargs={
+                'pk': self.object.profesor.pk,
             }
         )
