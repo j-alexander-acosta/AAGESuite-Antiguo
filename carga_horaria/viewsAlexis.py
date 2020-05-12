@@ -137,7 +137,7 @@ class AsignaturaBaseListView(ListView):
 
     def get_context_data(self, *args, **kwargs):
         ctx = super().get_context_data(*args, **kwargs)
-        ctx['levels'] = [(tag.name, tag.value) for tag in Nivel][::-1]
+        ctx['levels'] = [(tag.name, tag.value) for tag in Nivel]
         ctx['nivel_actual'] = self.request.GET.get('nivel')
         return ctx
 
