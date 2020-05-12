@@ -68,6 +68,12 @@ class Periodo(models.Model):
     nombre = models.CharField(max_length=255, blank=True, null=True)
     colegio = models.ForeignKey('Colegio')
 
+    @property
+    def completion_percentage(self):
+        goal = sum(self.asignatura_set.values_list('horas', flat=True))
+        progress = sum(Asignacion.objects.filter(asignatura__in=self.asignatura_set.all()).values_list('horas', flat=True))
+        return round(progress * 100 / goal)
+
     def __str__(self): 
         return "{} {}".format(getattr(Nivel, self.plan.nivel).value.title(), str(self.nombre or ''))
 
