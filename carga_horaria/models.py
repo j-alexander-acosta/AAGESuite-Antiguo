@@ -90,7 +90,8 @@ class Periodo(models.Model):
 
 
 class Asignatura(models.Model):
-    base = models.ForeignKey('AsignaturaBase')
+    base = models.ForeignKey('AsignaturaBase', null=True, blank=True)
+    nombre = models.CharField(max_length=255, null=True, blank=True)
     periodo = models.ForeignKey('Periodo')
     horas = models.DecimalField(max_digits=3, decimal_places=1)
 
@@ -111,7 +112,7 @@ class Asignatura(models.Model):
         return {ax.profesor for ax in self.asignacion_set.all()}
 
     def __str__(self): 
-        return str(self.base)
+        return str(self.base or self.nombre)
 
 
 class Profesor(models.Model):

@@ -233,6 +233,14 @@ class AsignaturaCreateView(CreateView):
     template_name = 'carga_horaria/asignatura/nuevo_asignatura.html'
     success_url = reverse_lazy('carga-horaria:asignaturas')
 
+    def get_success_url(self):
+        return reverse(
+            'carga-horaria:periodo',
+            kwargs={
+                'pk': self.object.periodo.pk,
+            }
+        )
+
 
 class AsignaturaUpdateView(UpdateView):
     model = Asignatura

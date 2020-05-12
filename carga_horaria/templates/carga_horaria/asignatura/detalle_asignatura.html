@@ -9,7 +9,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title"><strong> {{ object.base }}
+        <h4 class="card-title"><strong> {{ object }}
           {% block buttons %}
               <div class="btn-group pull-right">
                   <a href="{% url 'carga-horaria:asignaturas' %}" type="button" class="btn btn-sm btn-dark">
@@ -44,7 +44,7 @@
                 <tbody>
                 <tr>
                     <th> Asignatura </th>
-                    <td>  {{ object.base }}  </td>
+                    <td>  {{ object }}  </td>
                 </tr>
                 <tr>
                     <th> Curso </th>

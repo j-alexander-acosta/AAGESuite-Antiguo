@@ -84,13 +84,13 @@ class AsignaturaForm(forms.ModelForm):
     class Meta:
         model = models.Asignatura
         fields = [
-            'base',
+            'nombre',
             'periodo',
             'horas',
         ]
 
         labels = {
-            'base': u'Asigantura Base',
+            'nombre': u'Nombre de nueva asignatura',
             'periodo': u'Curso',
         }
         # help_texts = {
