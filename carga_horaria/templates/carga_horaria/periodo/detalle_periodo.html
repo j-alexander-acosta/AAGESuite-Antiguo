@@ -30,18 +30,21 @@
 
         <div class="card-body">
         <div class="row">
-        <div class="col-md-6">
-            <table class="table table-hover">
+        <div class="col-md-12">
+            <table class="table table-hover table-sm">
                 <thead>
                 <tr>
-                    <th colspan="2" class="table-info">
+                    <th colspan="6" class="table-info">
                 <span>
                     <i class="fa fa-info-circle"></i>
 		    Asignaturas
                 </span>
 
-		<a class="btn btn-sm btn-primary float-right" href="{% url 'carga-horaria:asignatura__nuevo' %}" role="button">
-                  <i class="fa fa-plus"></i>
+		<a class="btn btn-sm btn-warning float-right" href="{% url 'carga-horaria:asignatura__nuevo' %}" role="button">
+		  <span>
+		    Crear Asignatura
+                    <i class="fa fa-plus"></i>
+		  </span>
 		</a>
 
                     </th>
