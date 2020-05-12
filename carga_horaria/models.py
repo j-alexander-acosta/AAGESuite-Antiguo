@@ -141,6 +141,7 @@ class Asignacion(models.Model):
 
 class AsignacionExtra(models.Model):
     profesor = models.ForeignKey('Profesor')
+    curso = models.ForeignKey('Periodo', null=True, blank=True)
     descripcion = models.CharField(max_length=255)
     horas = models.DecimalField(max_digits=3, decimal_places=1)
 

@@ -106,6 +106,7 @@
                 </tr>
 		<tr>
 		  <th>Descripción</th>
+		  <th>Curso</th>
 		  <th>Horas</th>
 		  <th>Acciones</th>
 		</tr>
@@ -114,6 +115,7 @@
 		    {% for ax in object.asignacionextra_set.all %}
                     <tr>
                       <td> {{ ax.descripcion }} </td>
+                      <td> {{ ax.curso|default:"Todos" }} </td>
                       <td> {{ ax.horas }} </td>
 		      <td>
                         <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_extra_{{ax.pk}}"><i class="fa fa-trash"></i></a>

@@ -41,6 +41,7 @@ class AsignacionExtraForm(forms.ModelForm):
     class Meta:
         model = AsignacionExtra
         fields = [
+            'curso',
             'descripcion',
             'horas',
         ]
@@ -57,3 +58,4 @@ class AsignacionExtraForm(forms.ModelForm):
         super(AsignacionExtraForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+        self.fields['curso'].empty_label = "Todos"
