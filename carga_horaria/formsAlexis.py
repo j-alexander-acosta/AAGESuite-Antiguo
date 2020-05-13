@@ -76,28 +76,43 @@ class AsignaturaBaseForm(forms.ModelForm):
         self.helper.form_tag = False
 
 
-class AsignaturaForm(forms.ModelForm):
+class AsignaturaUpdateForm(forms.ModelForm):
     """
-        Formulario para crear y editar una asignatura
+        Formulario para editar una asignatura
+    """
+
+    class Meta:
+        model = models.Asignatura
+        fields = [
+            'horas',
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super(AsignaturaUpdateForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+
+
+class AsignaturaCreateForm(forms.ModelForm):
+    """
+        Formulario para crear una asignatura
     """
 
     class Meta:
         model = models.Asignatura
         fields = [
             'nombre',
-            'periodo',
             'horas',
         ]
 
         labels = {
             'nombre': u'Nombre de nueva asignatura',
-            'periodo': u'Curso',
         }
         # help_texts = {
         #     'base': u"Para crear una asignatura extra al plan original, deje este campo en blanco."
         # }
 
     def __init__(self, *args, **kwargs):
-        super(AsignaturaForm, self).__init__(*args, **kwargs)
+        super(AsignaturaCreateForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False

@@ -107,7 +107,7 @@ urlpatterns = [
         name='asignatura'
     ),
     url(
-        r'^asignaturas/nuevo/$',
+        r'^periodos/(?P<pk>\d+)/nueva-asignatura/$',
         views.AsignaturaCreateView.as_view(),
         name='asignatura__nuevo'
     ),

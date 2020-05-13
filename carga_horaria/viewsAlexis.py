@@ -1,8 +1,10 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from carga_horaria.models import Profesor, AsignaturaBase, Asignatura
-from carga_horaria.formsAlexis import ProfesorForm, AsignaturaBaseForm, AsignaturaForm
+from carga_horaria.formsAlexis import ProfesorForm, AsignaturaBaseForm, AsignaturaCreateForm, AsignaturaUpdateForm
 from django.core.urlresolvers import reverse_lazy, reverse
+from .models import Periodo
 from .models import Nivel
 
 
@@ -229,9 +231,14 @@ class AsignaturaDetailView(DetailView):
 
 class AsignaturaCreateView(CreateView):
     model = Asignatura
-    form_class = AsignaturaForm
+    form_class = AsignaturaCreateForm
     template_name = 'carga_horaria/asignatura/nuevo_asignatura.html'
-    success_url = reverse_lazy('carga-horaria:asignaturas')
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.periodo = Periodo.objects.get(pk=self.kwargs['pk'])
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
         return reverse(
@@ -242,9 +249,10 @@ class AsignaturaCreateView(CreateView):
         )
 
 
+
 class AsignaturaUpdateView(UpdateView):
     model = Asignatura
-    form_class = AsignaturaForm
+    form_class = AsignaturaUpdateForm
     template_name = 'carga_horaria/asignatura/editar_asignatura.html'
 
     def get_success_url(self):
@@ -258,7 +266,14 @@ class AsignaturaUpdateView(UpdateView):
 
 class AsignaturaDeleteView(DeleteView):
     model = Asignatura
-    success_url = reverse_lazy('carga-horaria:asignaturas')
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse(
+            'carga-horaria:periodo',
+            kwargs={
+                'pk': self.request.GET.get('periodo'),
+            }
+        )
