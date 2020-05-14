@@ -74,8 +74,8 @@ class Periodo(models.Model):
         if self.colegio.jec:
             lookup = 'base__horas_jec'
         else:
-            lookup = 'base__horas_jec'
-        return sum(self.asignatura_set.values_list(lookup, flat=True))
+            lookup = 'base__horas_nec'
+        return sum(filter(None, self.asignatura_set.values_list(lookup, flat=True)))
 
     @property
     def ceiling(self):
@@ -87,6 +87,10 @@ class Periodo(models.Model):
     @property
     def capacity(self):
         return sum(self.asignatura_set.values_list('horas', flat=True))
+
+    @property
+    def available(self):
+        return self.ceiling - self.capacity
 
     @property
     def progress(self):

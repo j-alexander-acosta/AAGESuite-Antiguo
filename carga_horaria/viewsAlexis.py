@@ -235,10 +235,18 @@ class AsignaturaCreateView(CreateView):
     template_name = 'carga_horaria/asignatura/nuevo_asignatura.html'
 
     def form_valid(self, form):
-        self.object = form.save(commit=False)
-        self.object.periodo = Periodo.objects.get(pk=self.kwargs['pk'])
-        self.object.save()
-        return HttpResponseRedirect(self.get_success_url())
+        # dirty validation
+        periodo = Periodo.objects.get(pk=self.kwargs['pk'])
+        horas = form.cleaned_data['horas']
+        available = periodo.available
+        if horas > available:
+            form.add_error('horas', "Horas superan el tiempo disponible ({})".format(available))
+            return self.form_invalid(form)
+        else:
+            self.object = form.save(commit=False)
+            self.object.periodo = periodo
+            self.object.save()
+            return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
         return reverse(
@@ -254,6 +262,19 @@ class AsignaturaUpdateView(UpdateView):
     model = Asignatura
     form_class = AsignaturaUpdateForm
     template_name = 'carga_horaria/asignatura/editar_asignatura.html'
+
+    def form_valid(self, form):
+        # dirty validation
+        periodo = self.object.periodo
+        horas = form.cleaned_data['horas']
+        old_horas = Asignatura.objects.get(pk=self.object.pk).horas
+        delta = horas - old_horas
+        available = periodo.available
+        if delta > available:
+            form.add_error('horas', "Horas superan el tiempo disponible ({})".format(available + old_horas))
+            return self.form_invalid(form)
+        else:
+            return super().form_valid(form)
 
     def get_success_url(self):
         return reverse(
