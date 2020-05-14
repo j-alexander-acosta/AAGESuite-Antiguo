@@ -270,11 +270,21 @@ class AsignaturaUpdateView(UpdateView):
         old_horas = Asignatura.objects.get(pk=self.object.pk).horas
         delta = horas - old_horas
         available = periodo.available
+
         if delta > available:
             form.add_error('horas', "Horas superan el tiempo disponible ({})".format(available + old_horas))
             return self.form_invalid(form)
-        else:
-            return super().form_valid(form)
+        elif self.object.base:
+            if self.object.periodo.colegio.jec:
+                horas_base = self.object.base.horas_jec
+            else:
+                horas_base = self.object.base.horas_nec
+
+            if horas < horas_base:
+                form.add_error('horas', "Horas deben ser como mínimo las del plan de estudios original ({})".format(horas_base))
+                return self.form_invalid(form)
+
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse(

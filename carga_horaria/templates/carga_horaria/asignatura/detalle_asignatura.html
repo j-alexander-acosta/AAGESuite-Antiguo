@@ -18,9 +18,11 @@
                   <a href="{% url 'carga-horaria:asignatura__editar' object.pk %}" type="button" class="btn btn-sm btn-primary" onclick="return confirm('¿Está seguro de editar las horas del plan de estudio?')">
                       <i class="fa fa-edit"></i>
                   </a>
+		  {% if not object.base %}
                   <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignatura_{{object.pk}}">
                       <i class="fa fa-trash"></i>
                   </a>
+		  {% endif %}
               </div>
           {% endblock %}
         </h4>
