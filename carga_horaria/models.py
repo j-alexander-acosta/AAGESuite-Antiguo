@@ -101,7 +101,7 @@ class Periodo(models.Model):
         return round(self.progress * 100 / self.ceiling)
 
     def __str__(self): 
-        return "{} {}".format(getattr(Nivel, self.plan.nivel).value.title(), str(self.nombre or ''))
+        return "{} {}".format(getattr(Nivel, self.plan.nivel).value.title(), str(self.nombre or '')).strip()
 
     class Meta:
         verbose_name = u"Curso"
