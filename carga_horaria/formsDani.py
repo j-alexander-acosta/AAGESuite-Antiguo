@@ -23,13 +23,15 @@ class PeriodoForm(forms.ModelForm):
         fields = [
             'colegio',
             'plan',
-            'nombre'
+            'nombre',
+            'horas'
         ]
         help_texts = {
             'nombre': u"Defina un nombre para el curso",
+            'horas': "Horas destinadas a educación diferenciada",
         }
         labels = {
-            'plan': u"Plan"
+            'plan': u"Plan",
         }
 
     def __init__(self, *args, **kwargs):

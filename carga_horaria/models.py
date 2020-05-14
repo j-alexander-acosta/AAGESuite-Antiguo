@@ -66,13 +66,35 @@ class Colegio(models.Model):
 class Periodo(models.Model):
     plan = models.ForeignKey('Plan')
     nombre = models.CharField(max_length=255, blank=True, null=True)
+    horas = models.DecimalField(max_digits=3, decimal_places=1, default=0)
     colegio = models.ForeignKey('Colegio')
 
     @property
+    def floor(self):
+        if self.colegio.jec:
+            lookup = 'base__horas_jec'
+        else:
+            lookup = 'base__horas_jec'
+        return sum(self.asignatura_set.values_list(lookup, flat=True))
+
+    @property
+    def ceiling(self):
+        if self.colegio.jec:
+            return self.floor + self.horas
+        else:
+            return self.floor
+
+    @property
+    def capacity(self):
+        return sum(self.asignatura_set.values_list('horas', flat=True))
+
+    @property
+    def progress(self):
+        return sum(Asignacion.objects.filter(asignatura__in=self.asignatura_set.all()).values_list('horas', flat=True))
+
+    @property
     def completion_percentage(self):
-        goal = sum(self.asignatura_set.values_list('horas', flat=True))
-        progress = sum(Asignacion.objects.filter(asignatura__in=self.asignatura_set.all()).values_list('horas', flat=True))
-        return round(progress * 100 / goal)
+        return round(self.progress * 100 / self.ceiling)
 
     def __str__(self): 
         return "{} {}".format(getattr(Nivel, self.plan.nivel).value.title(), str(self.nombre or ''))

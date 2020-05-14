@@ -78,6 +78,26 @@
 		  </td>
                 </tr>
 		{% endfor %}
+		  <tr>
+		    <td colspan="3">
+		    <td colspan="2">Subtotal tiempo mínimo</td>
+		    <td>{{ object.floor }}</td>
+		  </tr>
+		  <tr>
+		    <td colspan="3">
+		    <td colspan="2">Horas de libre disposición</td>
+		    <td>{{ object.horas }}</td>
+		  </tr>
+		  <tr>
+		    <td colspan="3">
+		    <td colspan="2">Total tiempo mínimo</td>
+		    <td>{{ object.ceiling }}</td>
+		  </tr>
+		  <tr>
+		    <td colspan="3">
+		    <td colspan="2">Total actual</td>
+		    <td>{{ object.capacity }}</td>
+		  </tr>
                 </tbody>
             </table>
         </div>
