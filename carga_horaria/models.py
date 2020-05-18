@@ -67,6 +67,7 @@ class Periodo(models.Model):
     plan = models.ForeignKey('Plan')
     nombre = models.CharField(max_length=255, blank=True, null=True)
     horas = models.DecimalField(max_digits=3, decimal_places=1, default=0)
+    horas_dif = models.DecimalField(max_digits=3, decimal_places=1, default=0, validators=[MinValueValidator(0), MaxValueValidator(9)])
     colegio = models.ForeignKey('Colegio')
 
     @property
@@ -80,9 +81,9 @@ class Periodo(models.Model):
     @property
     def ceiling(self):
         if self.colegio.jec:
-            return self.floor + self.horas
+            return self.floor + self.horas_dif + self.horas
         else:
-            return self.floor
+            return self.floor + self.horas_dif
 
     @property
     def capacity(self):

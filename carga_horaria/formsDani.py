@@ -24,15 +24,25 @@ class PeriodoForm(forms.ModelForm):
             'colegio',
             'plan',
             'nombre',
-            'horas'
+            'horas',
+            'horas_dif'
         ]
         help_texts = {
             'nombre': u"Defina un nombre para el curso",
-            'horas': "Horas destinadas a educación diferenciada",
         }
         labels = {
             'plan': u"Plan",
+            'horas': "Horas Libre Disposición",
+            'horas_dif': "Horas Educación Diferenciada"
         }
+
+    def clean_horas_dif(self):
+        hd = self.cleaned_data['horas_dif']
+        nivel = self.cleaned_data['plan'].nivel
+        if hd != 0 and nivel not in [Nivel.M3.name, Nivel.M4.name]:
+            raise forms.ValidationError("Sólo Tercero y Cuarto medio puede tener horas diferenciadas")
+        else:
+            return hd
 
     def __init__(self, *args, **kwargs):
         super(PeriodoForm, self).__init__(*args, **kwargs)

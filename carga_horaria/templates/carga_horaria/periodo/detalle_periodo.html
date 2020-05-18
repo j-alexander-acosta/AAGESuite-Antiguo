@@ -86,6 +86,13 @@
 		    <td colspan="2">Horas de libre disposición</td>
 		    <td>{{ object.horas }}</td>
 		  </tr>
+		  {% if object.horas_dif > 0 %}
+		  <tr>
+		    <td colspan="3">
+		    <td colspan="2">Horas Educación Diferenciada</td>
+		    <td>{{ object.horas_dif }}</td>
+		  </tr>
+		  {% endif %}
 		  <tr>
 		    <td colspan="3">
 		    <td colspan="2">Total tiempo mínimo</td>
