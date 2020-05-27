@@ -39,6 +39,7 @@ PREREQ_APPS = [
     'qr_code',
     'easy_select2',
     'compressor',
+    'guardian',
     'base'
 ]
 
@@ -74,6 +75,8 @@ TEMPLATES = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',
+                           'guardian.backends.ObjectPermissionBackend')
 
 WSGI_APPLICATION = 'carga.wsgi.application'
 
