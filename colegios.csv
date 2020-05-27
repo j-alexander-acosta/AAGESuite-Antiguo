@@ -1,45 +1,46 @@
-Colegio Adventista de Arica,COADAR,Fundación Arnaldo Salamanca
-Colegio Adventista de Iquique,CAI,Fundación Arnaldo Salamanca
-Colegio Adventista de Calama,CADECAL,Fundación Arnaldo Salamanca
-Colegio Adventista de Antofagasta,COADAN,Fundación Arnaldo Salamanca
-Colegio Adventista de Copiapó,CADECOP,Fundación Arnaldo Salamanca
-Jardín Adventista de Arica,JIADAR,Fundación Arnaldo Salamanca
-Colegio Adventista de La Serena,CADELSE,Fundación Sanders de Groot
-Escuela Adventista de Valparaíso,CADEVALPO,Fundación Sanders de Groot
-Colegio Adventista La Calera,CADELCA,Fundación Sanders de Groot
-Colegio Adventista de Quilpué,CADEQUI,Fundación Sanders de Groot
-Colegio Adventista de Porvenir,CAP,Fundación Francisco Westphal
-Colegio Adventista de Las Condes,CALC,Fundación Francisco Westphal
-Colegio Adventista Santiago Norte,CASAN,Fundación Francisco Westphal
-Colegio Adventista Santiago Poniente,CASAP,Fundación Francisco Westphal
-Colegio Adventista Santiago Sur,CASS,Fundación Graciela Carvajal
-Colegio Adventista Buenaventura,CAB,Fundación Graciela Carvajal
-Colegio Adventista La Cisterna,COALC,Fundación Graciela Carvajal
-Colegio Adventista la Florida,CALF,Fundación Graciela Carvajal
-Escuela Adventista de Rancagua,CAR,Fundación José Torres
-Colegio Adventista de Molina,CAM,Fundación José Torres
-Colegio Adventista de Talca,COADET,Fundación José Torres
-Colegio Adventista de Chile,CACH,Fundación Mario Veloso
-Escuela Adventista Las Mariposas,EADMA,Fundación Mario Veloso
-Escuela Adventista de Chillán,CADECH,Fundación Mario Veloso
-Jardín Adventista de Chillán,PACH,Fundación Mario Veloso
-Escuela Adventista de Quirao,EAQ,Fundación Mario Veloso
-Escuela Adventista de Los Ángeles,EALA,Fundación Mario Veloso
-Centro Educacional Adventista de Los Ángeles,CEALA,Fundación Mario Veloso
-Colegio Adventista Talcahuano Centro,CATCE,Fundación Mario Veloso
-Colegio Adventista de Talcahuano,CADET,Fundación Mario Veloso
-Colegio Adventista de Hualpén,CADHU,Fundación Mario Veloso
-Jardín Adventista de Concepción,JCONCE,Fundación Mario Veloso
-Escuela Adventista de Concepción,CADECB,Fundación Mario Veloso
-Colegio Adventista Concepción Media,CADECM,Fundación Mario Veloso
-Colegio Adventista de Lota,CAL,Fundación Mario Veloso
-Colegio Adventista de Angol,COADVAN,Fundación Julian Ocampo
-Colegio Adventista de Temuco,LAT,Fundación Julian Ocampo
-Colegio Adventista de Pitrufquen,COADPI,Fundación Julian Ocampo
-Escuela Adventista de Trovolhue,COADTRO,Fundación Julian Ocampo
-Colegio Adventista de Villarrica,CADVI,Fundación Julian Ocampo
-Colegio Adventista de Valdivia,CADVA,Fundación Julian Ocampo
-Colegio Adventista de Punta Arenas,COADPA,Fundación Julian Ocampo
-Colegio Adventista de Osorno,COADOS,Fundación Julian Ocampo
-Colegio Adventista de Puerto Montt,CADPU,Fundación Julian Ocampo
-Jardín Adventista de Castro,JADCA,Fundación Julian Ocampo
+Fundación,Nombre Colegio,Abreviación,Usuario,Contraseña
+Fundación Arnaldo Salamanca,Colegio Adventista de Arica,COADAR,admincoadar,V5BQw4YX5dhhYL
+Fundación Arnaldo Salamanca,Colegio Adventista de Iquique,CAI,admincai,os2SivwSaBnTYv
+Fundación Arnaldo Salamanca,Colegio Adventista de Calama,CADECAL,admincadecal,os2SivwSaBnTYv
+Fundación Arnaldo Salamanca,Colegio Adventista de Antofagasta,COADAN,admincoadan,ahANmzgof9bzQd
+Fundación Arnaldo Salamanca,Colegio Adventista de Copiapó,CADECOP,admincadecop,3EuV4Kao6DPsmQ
+Fundación Arnaldo Salamanca,Jardín Adventista de Arica,JIADAR,adminjiadar,itT6VEjkMrM3HV
+Fundación Sanders de Groot,Colegio Adventista de La Serena,CADELSE,admincadelse,Pvc9qeEgHR2Agr
+Fundación Sanders de Groot,Escuela Adventista de Valparaíso,CADEVALPO,admincadevalpo,v88yNeUipa3ccm
+Fundación Sanders de Groot,Colegio Adventista La Calera,CADELCA,admincadelca,2SG2pEcbxaXWfd
+Fundación Sanders de Groot,Colegio Adventista de Quilpué,CADEQUI,admincadequi,JN5u7pLH3Y7LPr
+Fundación Francisco Westphal,Colegio Adventista de Porvenir,CAP,admincap,Y3fH6jrWTjZTm2
+Fundación Francisco Westphal,Colegio Adventista de Las Condes,CALC,admincalc,crqKZ5QwHBbFmp
+Fundación Francisco Westphal,Colegio Adventista Santiago Norte,CASAN,admincasan,LttaTe2ZgVfNsA
+Fundación Francisco Westphal,Colegio Adventista Santiago Poniente,CASAP,admincasap,tYMFzTuitVkQS2
+Fundación Graciela Carvajal,Colegio Adventista Santiago Sur,CASS,admincass,t9QncnpRKSY6td
+Fundación Graciela Carvajal,Colegio Adventista Buenaventura,CAB,admincab,ujRLij29Sa9zFQ
+Fundación Graciela Carvajal,Colegio Adventista La Cisterna,COALC,admincoalc,8xTVLTkZ5CURGL
+Fundación Graciela Carvajal,Colegio Adventista la Florida,CALF,admincalf,PrYjU37xJ9zHEo
+Fundación José Torres,Escuela Adventista de Rancagua,CAR,admincar,hhpMG8QTPq5k5E
+Fundación José Torres,Colegio Adventista de Molina,CAM,admincam,9zjfwBF6VmP93i
+Fundación José Torres,Colegio Adventista de Talca,COADET,admincoadet,37YpSVVABwXbAX
+Fundación Mario Veloso,Colegio Adventista de Chile,CACH,admincach,fLV4WABBA5dKga
+Fundación Mario Veloso,Escuela Adventista Las Mariposas,EADMA,admineadma,tyE3X3aR59rtfe
+Fundación Mario Veloso,Escuela Adventista de Chillán,CADECH,admincadech,ivpt5UHb5LMDb8
+Fundación Mario Veloso,Jardín Adventista de Chillán,PACH,adminpach,ywh8zHWEwHky9N
+Fundación Mario Veloso,Escuela Adventista de Quirao,EAQ,admineaq,q3aYEtJHimjEhi
+Fundación Mario Veloso,Escuela Adventista de Los Ángeles,EALA,admineala,fuc6ve9iQKj9BV
+Fundación Mario Veloso,Centro Educacional Adventista de Los Ángeles,CEALA,adminceala,39SR4HjeL4xEJr
+Fundación Mario Veloso,Colegio Adventista Talcahuano Centro,CATCE,admincatce,cxQB55ftFBRzmL
+Fundación Mario Veloso,Colegio Adventista de Talcahuano,CADET,admincadet,eqhmoTpVmT4MhU
+Fundación Mario Veloso,Colegio Adventista de Hualpén,CADHU,admincadhu,St8hJMbZmauiFF
+Fundación Mario Veloso,Jardín Adventista de Concepción,JCONCE,adminjconce,Mc6dJKpYQ7i4UM
+Fundación Mario Veloso,Escuela Adventista de Concepción,CADECB,admincadecb,nMvuENWxw9ZW5R
+Fundación Mario Veloso,Colegio Adventista Concepción Media,CADECM,admincadecm,J69686AmzXapNF
+Fundación Mario Veloso,Colegio Adventista de Lota,CAL,admincal,VR8cTuUNCwte62
+Fundación Julian Ocampo,Colegio Adventista de Angol,COADVAN,admincoadvan,hShNDa2TxKqcu6
+Fundación Julian Ocampo,Colegio Adventista de Temuco,LAT,adminlat,GkM5sqtYcit3Ly
+Fundación Julian Ocampo,Colegio Adventista de Pitrufquen,COADPI,admincoadpi,Ds2BXsRbpnp7FZ
+Fundación Julian Ocampo,Escuela Adventista de Trovolhue,COADTRO,admincoadtro,A5uTFYB2mXWc8L
+Fundación Julian Ocampo,Colegio Adventista de Villarrica,CADVI,admincadvi,i7KARn6te8vbs8
+Fundación Julian Ocampo,Colegio Adventista de Valdivia,CADVA,admincadva,vfDYYNtRZhsE9x
+Fundación Julian Ocampo,Colegio Adventista de Punta Arenas,COADPA,admincoadpa,L7k2KBSuVcDMD6
+Fundación Julian Ocampo,Colegio Adventista de Osorno,COADOS,admincoados,8MjddDXeGEdmZ6
+Fundación Julian Ocampo,Colegio Adventista de Puerto Montt,CADPU,admincadpu,ve9YyCEJpMD9yN
+Fundación Julian Ocampo,Jardín Adventista de Castro,JADCA,adminjadca,i3yHFwTzoTu6Ct

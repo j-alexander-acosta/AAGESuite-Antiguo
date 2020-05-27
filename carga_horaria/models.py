@@ -49,8 +49,15 @@ class AsignaturaBase(models.Model):
     def __str__(self): 
         return self.nombre
 
+
+class Fundacion(models.Model):
+    nombre = models.CharField(max_length=255)
+
+
 class Colegio(models.Model):
     nombre = models.CharField(max_length=255)
+    abrev = models.CharField(max_length=10, blank=True, null=True)
+    fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
     jec = models.BooleanField(default=True)
     
     def __str__(self): 
