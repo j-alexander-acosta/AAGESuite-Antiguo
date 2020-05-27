@@ -1,0 +1,23 @@
+* TODO Cargar colegios, fundaciones y un usuario por colegio
+:PROPERTIES:
+:CREATED:  [2020-05-27 mié 15:32]
+:END:
+:LOGBOOK:
+- State "TODO"       from              [2020-05-27 mié 15:32]
+:END:
+* TODO Enviar el listado de usuarios a Eduardo y a Erwin
+:PROPERTIES:
+:CREATED:  [2020-05-27 mié 15:34]
+:END:
+* TODO Hacer que todas las vistas sean login required
+:PROPERTIES:
+:CREATED:  [2020-05-27 mié 15:32]
+:END:
+* TODO Fijarse en cómo establecer un permiso por objeto en Django
+:PROPERTIES:
+:CREATED:  [2020-05-27 mié 15:33]
+:END:
+* TODO Hacer que los querysets de los listados muestren lo de mi colegio solamente
+:PROPERTIES:
+:CREATED:  [2020-05-27 mié 15:32]
+:END:
