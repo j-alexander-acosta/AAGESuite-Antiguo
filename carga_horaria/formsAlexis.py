@@ -7,6 +7,7 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.forms import ModelChoiceField
+from guardian.shortcuts import get_objects_for_user
 
 from carga_horaria import models
 
@@ -21,14 +22,23 @@ class ProfesorForm(forms.ModelForm):
         fields = [
             'nombre',
             'horas',
-            'especialidad'
+            'especialidad',
+            'fundacion'
         ]
         labels = {
             'horas': u'Horas de contrato',
+            'fundacion': 'Fundación que lo contrata'
         }
 
     def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
         super(ProfesorForm, self).__init__(*args, **kwargs)
+
+        if user:
+            self.fields['fundacion'].queryset = self.fields['fundacion'].queryset.filter(colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")])
+        else:
+            del(self.fields['fundacion'])
+        
         self.helper = FormHelper()
         self.helper.form_tag = False
 

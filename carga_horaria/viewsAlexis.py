@@ -1,9 +1,11 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from carga_horaria.models import Profesor, AsignaturaBase, Asignatura
 from carga_horaria.formsAlexis import ProfesorForm, AsignaturaBaseForm, AsignaturaCreateForm, AsignaturaUpdateForm
 from django.core.urlresolvers import reverse_lazy, reverse
+from guardian.shortcuts import get_objects_for_user
 from .models import Periodo
 from .models import Nivel
 
@@ -25,14 +27,38 @@ class LevelFilterMixin(object):
         return qs
 
 
+
+# FIXME: I will leave it like this for now,
+# but it's still possible for somebody to poke object ids to see what shouldn't see
+# fix this!!1
+
+
+class GetObjectsForUserMixin(object):
+    def get_queryset(self):
+        qs = super(GetObjectsForUserMixin, self).get_queryset()
+        colegios = [c.pk for c in get_objects_for_user(self.request.user, "carga_horaria.change_colegio")]
+        kwargs = {"{}__in".format(self.lookup): colegios}
+        return qs.filter(**kwargs)
+
+
+class ObjPermissionRequiredMixin(object):
+    def get_object(self, *args, **kwargs):
+        obj = super(ObjPermissionRequiredMixin, self).get_object(*args, **kwargs)
+        if self.request.user.has_perm(self.permission, obj):
+            return obj
+        else:
+            raise Http404
+
+
 """
     Comienzo Crud Profesor
 """
-class ProfesorListView(ListView):
+class ProfesorListView(LoginRequiredMixin, GetObjectsForUserMixin, ListView):
     """
         Listado de profesores
     """
     model = Profesor
+    lookup = 'fundacion__colegio'
     template_name = 'carga_horaria/profesor/listado_profesor.html'
     search_fields = ['nombre', 'horas']
     paginate_by = 6
@@ -46,11 +72,16 @@ class ProfesorDetailView(DetailView):
     template_name = 'carga_horaria/profesor/detalle_profesor.html'
 
 
-class ProfesorCreateView(CreateView):
+class ProfesorCreateView(LoginRequiredMixin, CreateView):
     model = Profesor
     form_class = ProfesorForm
     template_name = 'carga_horaria/profesor/nuevo_profesor.html'
     success_url = reverse_lazy('carga-horaria:profesores')
+
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(ProfesorCreateView, self).get_form_kwargs(*args, **kwargs)
+        kwargs.update({'user': self.request.user})
+        return kwargs
 
 
 class ProfesorUpdateView(UpdateView):

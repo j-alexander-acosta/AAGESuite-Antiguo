@@ -1,3 +1,6 @@
+from django.http import Http404
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.views.generic.detail import DetailView
 from django.shortcuts import render, get_object_or_404, redirect
 from .viewsAlexis import *
@@ -14,18 +17,22 @@ from .forms import AsignacionForm
 from .forms import AsignacionExtraForm
 from .formsDani import PlantillaPlanForm
 
+
+@login_required
 def home(request):
     return render(request, 'carga_horaria/home.html')
+
 
 
 """
     Comienzo Crud Periodos
 """
-class PeriodoListView(ListView):
+class PeriodoListView(LoginRequiredMixin, GetObjectsForUserMixin, ListView):
     """
         Listado de periodos
     """
     model = Periodo
+    lookup = 'colegio__pk'
     template_name = 'carga_horaria/periodo/listado_periodos.html'
     search_fields = ['nombre', 'colegio']
     paginate_by = 10
@@ -45,8 +52,11 @@ class PeriodoCreateView(CreateView):
     form_class = PeriodoForm
     template_name = 'carga_horaria/periodo/nuevo_periodo.html'
     success_url = reverse_lazy('carga-horaria:periodos')
-#    success_message = u"Nuevo periodo %(nombre)s creado satisfactoriamente."
-#    error_message = "Revise que todos los campos del formulario hayan sido validados correctamente."
+
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(PeriodoCreateView, self).get_form_kwargs(*args, **kwargs)
+        kwargs.update({'user': self.request.user})
+        return kwargs
 
 
 class PeriodoUpdateView(UpdateView):
@@ -77,21 +87,23 @@ class PeriodoDeleteView(DeleteView):
 """
     Comienzo Crud Colegios
 """
-class ColegioListView(ListView):
+class ColegioListView(LoginRequiredMixin, GetObjectsForUserMixin, ListView):
     """
         Listado de periodos
     """
     model = Colegio
+    lookup = 'pk'
     template_name = 'carga_horaria/colegio/listado_colegios.html'
     search_fields = ['nombre', 'jec']
     paginate_by = 6
 
 
-class ColegioDetailView(DetailView):
+class ColegioDetailView(LoginRequiredMixin, ObjPermissionRequiredMixin, DetailView):
     """
         Detalle de Colegio
     """
     model = Colegio
+    permission = 'carga_horaria.change_colegio'
     template_name = 'carga_horaria/colegio/detalle_colegio.html'
 
 
@@ -210,14 +222,14 @@ def asignar(request, pk):
     aa = get_object_or_404(Asignatura, pk=pk)
 
     if request.method == 'POST':
-        form = AsignacionForm(request.POST, asignatura=aa)
+        form = AsignacionForm(request.POST, asignatura=aa, user=request.user)
         if form.is_valid():
             asignacion = form.save(commit=False)
             asignacion.asignatura = aa
             asignacion.save()
             return redirect('carga-horaria:periodo', aa.periodo.pk)
     else:
-        form = AsignacionForm()
+        form = AsignacionForm(user=request.user)
     return render(request, 'carga_horaria/asignar.html', {'object': aa,
                                                           'form': form})
 
@@ -225,14 +237,14 @@ def asignar_extra(request, pk):
     pp = get_object_or_404(Profesor, pk=pk)
 
     if request.method == 'POST':
-        form = AsignacionExtraForm(request.POST, profesor=pp)
+        form = AsignacionExtraForm(request.POST, profesor=pp, user=request.user)
         if form.is_valid():
             asignacion = form.save(commit=False)
             asignacion.profesor = pp
             asignacion.save()
             return redirect('carga-horaria:profesor', pp.pk)
     else:
-        form = AsignacionExtraForm()
+        form = AsignacionExtraForm(user=request.user)
     return render(request, 'carga_horaria/asignar_extra.html', {'object': pp,
                                                                 'form': form})
 

@@ -61,15 +61,48 @@
 :LOGBOOK:
 - State "DONE"       from "TODO"       [2020-05-27 mié 16:45]
 :END:
+* DONE Fijarse en cómo establecer un permiso por objeto en Django
+:PROPERTIES:
+:CREATED:  [2020-05-27 mié 15:33]
+:END:
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2020-05-27 mié 19:02]
+:END:
+* DONE Hacer que los querysets de los listados muestren lo de mi colegio solamente
+:PROPERTIES:
+:CREATED:  [2020-05-27 mié 15:32]
+:END:
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2020-05-27 mié 19:02]
+:END:
+* DONE Hacer que las vistas que listan cosas, sólo listen si tengo el change permission
+:PROPERTIES:
+:CREATED:  [2020-05-27 mié 19:02]
+:END:
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2020-05-27 mié 22:47]
+:END:
+* DONE Hacer que las cosas que se crean dependiendo de colegio u otros, en los selects filtren por permisos
+:PROPERTIES:
+:CREATED:  [2020-05-27 mié 19:03]
+:END:
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2020-05-27 mié 22:47]
+:END:
+Periodo, por ejemplo, que sólo pueda seleccionar colegios de él.
 * TODO Hacer que todas las vistas sean login required
 :PROPERTIES:
 :CREATED:  [2020-05-27 mié 15:32]
 :END:
-* TODO Fijarse en cómo establecer un permiso por objeto en Django
+* DONE Hacer que el loginrequired funcione adecuadamente
 :PROPERTIES:
-:CREATED:  [2020-05-27 mié 15:33]
+:CREATED:  [2020-05-27 mié 19:03]
 :END:
-* TODO Hacer que los querysets de los listados muestren lo de mi colegio solamente
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2020-05-27 mié 22:46]
+:END:
+Con redirección
+* TODO Hacer un usuario superuser a Erwin
 :PROPERTIES:
-:CREATED:  [2020-05-27 mié 15:32]
+:CREATED:  [2020-05-27 mié 22:46]
 :END:

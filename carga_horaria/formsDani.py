@@ -7,6 +7,7 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.forms import ModelChoiceField
+from guardian.shortcuts import get_objects_for_user
 from .models import Plan
 from .models import Nivel
 
@@ -45,8 +46,14 @@ class PeriodoForm(forms.ModelForm):
             return hd
 
     def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
         super(PeriodoForm, self).__init__(*args, **kwargs)
-#        self.fields['activo'].widget.attrs['class'] = ""
+
+        if user:
+            self.fields['colegio'].queryset = get_objects_for_user(user, "carga_horaria.change_colegio")
+        else:
+            del(self.fields['colegio'])
+            
         self.helper = FormHelper()
         self.helper.form_tag = False
         

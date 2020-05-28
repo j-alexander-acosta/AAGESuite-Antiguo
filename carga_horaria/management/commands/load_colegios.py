@@ -15,7 +15,7 @@ class Command(BaseCommand):
                 colegio, _ = Colegio.objects.get_or_create(nombre=row['Nombre Colegio'],
                                                            abrev=row['Abreviación'],
                                                            fundacion=fundacion)
-                user, _ = get_user_model().objects.get_or_create(username=row['Usuario'], is_staff=False)
+                user, _ = get_user_model().objects.get_or_create(username=row['Usuario'], is_staff=True, is_superuser=False)
                 user.set_password(row['Contraseña'])
                 user.save()
 

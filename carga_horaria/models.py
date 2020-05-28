@@ -53,6 +53,9 @@ class AsignaturaBase(models.Model):
 class Fundacion(models.Model):
     nombre = models.CharField(max_length=255)
 
+    def __str__(self):
+        return self.nombre
+
 
 class Colegio(models.Model):
     nombre = models.CharField(max_length=255)
@@ -153,6 +156,7 @@ class Profesor(models.Model):
     nombre = models.CharField(max_length=255)
     horas = models.DecimalField(max_digits=3, decimal_places=1, validators=[MinValueValidator(1), MaxValueValidator(44)])
     especialidad = models.ForeignKey('Especialidad', blank=True, null=True)
+    fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
 
     @property
     def horas_asignadas(self):

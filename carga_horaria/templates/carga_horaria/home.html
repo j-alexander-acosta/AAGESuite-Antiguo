@@ -6,27 +6,11 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-md-3">
-            <div class="card text-white card-inverse bgm-yellow text-center">
+        <div class="col-md-9">
+            <div class="card text-white card-inverse bgm-orange text-center">
                 <div class="card-header">
                     <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                    <h6><a href="{% url 'carga-horaria:planes' %}" style="color: #fff;">Planes de Estudio</a></h6>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card text-white card-inverse bgm-lightblue text-center">
-                <div class="card-header">
-                    <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                    <h6><a href="{% url 'carga-horaria:asignaturasbase' %}" style="color: #fff;">Asignatura Base</a></h6>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card text-white card-inverse bgm-indigo text-center">
-                <div class="card-header">
-                    <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                    <h6><a href="{% url 'carga-horaria:periodos' %}" style="color: #fff;">Cursos</a></h6>
+                    <h6><a href="{% url 'carga-horaria:periodos' %}" style="color: #fff;">Confección de Carga Horaria</a></h6>
                 </div>
             </div>
         </div>
@@ -60,16 +44,33 @@
     </div>
     <br>
     <div class="row">
-        <div class="col-md-9">
-            <div class="card text-white card-inverse bgm-orange text-center">
+        <div class="col-md-3">
+            <div class="card text-white card-inverse bgm-indigo text-center">
                 <div class="card-header">
                     <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                    <h6><a href="{% url 'carga-horaria:periodos' %}" style="color: #fff;">Confección de Carga Horaria</a></h6>
+                    <h6><a href="{% url 'carga-horaria:periodos' %}" style="color: #fff;">Cursos</a></h6>
                 </div>
             </div>
         </div>
+	{% if request.user.is_superuser %}
+        <div class="col-md-3">
+            <div class="card text-white card-inverse bgm-yellow text-center">
+                <div class="card-header">
+                    <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
+                    <h6><a href="{% url 'carga-horaria:planes' %}" style="color: #fff;">Planes de Estudio</a></h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white card-inverse bgm-lightblue text-center">
+                <div class="card-header">
+                    <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
+                    <h6><a href="{% url 'carga-horaria:asignaturasbase' %}" style="color: #fff;">Asignatura Base</a></h6>
+                </div>
+            </div>
+        </div>
+	{% endif %}
     </div>
-
     <br>
 
 {% endblock content %}

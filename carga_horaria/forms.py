@@ -1,5 +1,6 @@
 from django import forms
 from crispy_forms.helper import FormHelper
+from guardian.shortcuts import get_objects_for_user
 from .models import Asignacion, AsignacionExtra
 from .models import Profesor
 
@@ -26,7 +27,14 @@ class AsignacionForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.asignatura = kwargs.pop('asignatura', None)
+        user = kwargs.pop('user', None)
         super(AsignacionForm, self).__init__(*args, **kwargs)
+
+        if user:
+            self.fields['profesor'].queryset = self.fields['profesor'].queryset.filter(fundacion__colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")])
+        else:
+            del(self.fields['profesor'])
+
         self.helper = FormHelper()
         self.helper.form_tag = False
         # profesores = [(p, "{} - {} horas".format(p, p.horas_disponibles)) for p in Profesor.objects.all()]
@@ -55,7 +63,15 @@ class AsignacionExtraForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.profesor = kwargs.pop('profesor', None)
+        user = kwargs.pop('user', None)
         super(AsignacionExtraForm, self).__init__(*args, **kwargs)
+
+        if user:
+            self.fields['curso'].queryset = self.fields['curso'].queryset.filter(colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")])
+        else:
+            del(self.fields['curso'])
+
+
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['curso'].empty_label = "Todos"
