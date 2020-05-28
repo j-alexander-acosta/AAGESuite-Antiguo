@@ -50,7 +50,8 @@ class PeriodoForm(forms.ModelForm):
         super(PeriodoForm, self).__init__(*args, **kwargs)
 
         if user:
-            self.fields['colegio'].queryset = get_objects_for_user(user, "carga_horaria.change_colegio")
+            if not user.is_superuser:
+                self.fields['colegio'].queryset = get_objects_for_user(user, "carga_horaria.change_colegio")
         else:
             del(self.fields['colegio'])
             

@@ -73,7 +73,7 @@ class PeriodoUpdateView(UpdateView):
         )
 
 
-class PeriodoDeleteView(DeleteView):
+class PeriodoDeleteView(LoginRequiredMixin, DeleteView):
     model = Periodo
     success_url = reverse_lazy('carga-horaria:periodos')
     template_name = 'carga_horaria/periodo/eliminar_periodo.html'
@@ -131,7 +131,7 @@ class ColegioUpdateView(UpdateView):
 
 
 
-class ColegioDeleteView(DeleteView):
+class ColegioDeleteView(LoginRequiredMixin, DeleteView):
     model = Colegio
     success_url = reverse_lazy('carga-horaria:colegios')
     
@@ -207,7 +207,7 @@ class PlanUpdateView(UpdateView):
         )
 
 
-class PlanDeleteView(DeleteView):
+class PlanDeleteView(LoginRequiredMixin, DeleteView):
     model = Plan
     success_url = reverse_lazy('carga-horaria:planes')
     template_name = 'carga_horaria/plan/eliminar_plan.html'
@@ -249,7 +249,7 @@ def asignar_extra(request, pk):
                                                                 'form': form})
 
 
-class AsignacionDeleteView(DeleteView):
+class AsignacionDeleteView(LoginRequiredMixin, DeleteView):
     model = Asignacion
     success_url = reverse_lazy('carga-horaria:periodos')
     template_name = 'carga_horaria/periodo/eliminar_periodo.html'
@@ -272,7 +272,7 @@ class AsignacionUpdateView(UpdateView):
         )
 
 
-class AsignacionExtraDeleteView(DeleteView):
+class AsignacionExtraDeleteView(LoginRequiredMixin, DeleteView):
     model = AsignacionExtra
     template_name = 'carga_horaria/periodo/eliminar_periodo.html'
 

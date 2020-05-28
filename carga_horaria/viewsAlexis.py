@@ -36,9 +36,12 @@ class LevelFilterMixin(object):
 class GetObjectsForUserMixin(object):
     def get_queryset(self):
         qs = super(GetObjectsForUserMixin, self).get_queryset()
-        colegios = [c.pk for c in get_objects_for_user(self.request.user, "carga_horaria.change_colegio")]
-        kwargs = {"{}__in".format(self.lookup): colegios}
-        return qs.filter(**kwargs)
+        if not self.request.user.is_superuser:
+            colegios = [c.pk for c in get_objects_for_user(self.request.user, "carga_horaria.change_colegio")]
+            kwargs = {"{}__in".format(self.lookup): colegios}
+            return qs.filter(**kwargs)
+        else:
+            return qs
 
 
 class ObjPermissionRequiredMixin(object):
@@ -98,7 +101,7 @@ class ProfesorUpdateView(UpdateView):
         )
 
 
-class ProfesorDeleteView(DeleteView):
+class ProfesorDeleteView(LoginRequiredMixin, DeleteView):
     model = Profesor
     success_url = reverse_lazy('carga-horaria:profesores')
 
@@ -213,7 +216,7 @@ class AsignaturaBaseUpdateView(UpdateView):
         )
 
 
-class AsignaturaBaseDeleteView(DeleteView):
+class AsignaturaBaseDeleteView(LoginRequiredMixin, DeleteView):
     model = AsignaturaBase
     success_url = reverse_lazy('carga-horaria:asignaturasbase')
 
@@ -326,7 +329,7 @@ class AsignaturaUpdateView(UpdateView):
         )
 
 
-class AsignaturaDeleteView(DeleteView):
+class AsignaturaDeleteView(LoginRequiredMixin, DeleteView):
     model = Asignatura
 
     def get(self, request, *args, **kwargs):

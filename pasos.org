@@ -102,7 +102,10 @@ Periodo, por ejemplo, que sólo pueda seleccionar colegios de él.
 - State "DONE"       from "TODO"       [2020-05-27 mié 22:46]
 :END:
 Con redirección
-* TODO Hacer un usuario superuser a Erwin
+* DONE Hacer un usuario superuser a Erwin
 :PROPERTIES:
 :CREATED:  [2020-05-27 mié 22:46]
+:END:
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2020-05-27 mié 22:56]
 :END:

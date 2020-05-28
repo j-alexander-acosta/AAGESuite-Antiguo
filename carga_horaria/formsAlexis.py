@@ -35,7 +35,8 @@ class ProfesorForm(forms.ModelForm):
         super(ProfesorForm, self).__init__(*args, **kwargs)
 
         if user:
-            self.fields['fundacion'].queryset = self.fields['fundacion'].queryset.filter(colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")])
+            if not user.is_superuser:
+                self.fields['fundacion'].queryset = self.fields['fundacion'].queryset.filter(colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")])
         else:
             del(self.fields['fundacion'])
         

@@ -31,7 +31,8 @@ class AsignacionForm(forms.ModelForm):
         super(AsignacionForm, self).__init__(*args, **kwargs)
 
         if user:
-            self.fields['profesor'].queryset = self.fields['profesor'].queryset.filter(fundacion__colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")])
+            if not user.is_superuser:
+                self.fields['profesor'].queryset = self.fields['profesor'].queryset.filter(fundacion__colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")])
         else:
             del(self.fields['profesor'])
 
@@ -67,7 +68,8 @@ class AsignacionExtraForm(forms.ModelForm):
         super(AsignacionExtraForm, self).__init__(*args, **kwargs)
 
         if user:
-            self.fields['curso'].queryset = self.fields['curso'].queryset.filter(colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")])
+            if not user.is_superuser:
+                self.fields['curso'].queryset = self.fields['curso'].queryset.filter(colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")])
         else:
             del(self.fields['curso'])
 
