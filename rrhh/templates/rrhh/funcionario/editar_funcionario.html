@@ -1,0 +1,30 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Editar Funcionario
+        </h4>
+        <h6 class="card-subtitle mb-2 text-muted">Datos del funcionario</h6>
+    </div>
+    <div class="card-body">
+
+        <form class="form-horizontal" method="post">
+            {% csrf_token %}
+            {% crispy form %}
+            <div class="form-group">
+                <div class="col-sm-10 col-sm-offset-2">
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <a href="{{ request.META.HTTP_REFERER }}"
+                    role="button" class="btn btn-default">
+                        Volver
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

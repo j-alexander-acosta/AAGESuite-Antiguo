@@ -1,0 +1,146 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+
+{% block title_page %}
+    Funcionario - Detalle
+{% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-header">
+      <h4 class="card-title"><strong> {{ object.nombre }}</strong>
+          {% block buttons %}
+              <div class="btn-group pull-right">
+                  <a href="{% url 'rrhh:funcionarios' %}" type="button" class="btn btn-sm btn-dark">
+                      <i class="fa fa-arrow-left"></i>
+                  </a>
+                  <a href="{% url 'rrhh:funcionario__editar' object.pk %}" type="button" class="btn btn-sm btn-primary">
+                      <i class="fa fa-edit"></i>
+                  </a>
+                  <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_funcionario_{{object.pk}}">
+                      <i class="fa fa-trash"></i>
+                  </a>
+              </div>
+          {% endblock %}
+        </h4>
+        <h6 class="card-subtitle mb-2 text-muted">Detalle del funcionario</h6>
+
+    </div>
+    <div class="card-body">
+
+		<div class="row">
+        <div class="col-md-6">
+            <table class="table table-hover table-sm">
+                <thead>
+                <tr>
+                    <th colspan="2" class="table-info">
+                <span>
+                    <i class="fa fa-info-circle"></i>
+                     Descripción
+                </span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th> Nombre </th>
+                    <td>  {{ object.nombre }}  </td>
+                </tr>
+                <tr>
+                    <th> RUT </th>
+                    <td>  {{ object.rut }}  </td>
+                </tr>
+                <tr>
+                    <th> Fecha de nacimiento </th>
+                    <td>  {{ object.fecha_nacimiento }}  </td>
+                </tr>
+                <tr>
+                    <th> Fecha de ingreso </th>
+                    <td>  {{ object.fecha_ingreso }}  </td>
+                </tr>
+                <tr>
+                    <th> Título </th>
+                    <td>  {{ object.titulo }}  </td>
+                </tr>
+                <tr>
+                    <th> Religión </th>
+                    <td>  {{ object.religion }}  </td>
+                </tr>
+                <tr>
+                    <th> Estado civil </th>
+                    <td>  {{ object.estado_civil }}  </td>
+                </tr>
+                <tr>
+                    <th> Nacionalidad </th>
+                    <td>  {{ object.nacionalidad }}  </td>
+                </tr>
+                <tr>
+                    <th> Sexo </th>
+                    <td>  {{ object.sexo }}  </td>
+                </tr>
+                <tr>
+                    <th> Email </th>
+                    <td>  {{ object.email }}  </td>
+                </tr>
+                <tr>
+                    <th> Dirección </th>
+                    <td>  {{ object.direccion }}  </td>
+                </tr>
+                <tr>
+                    <th> Teléfono </th>
+                    <td>  {{ object.telefono }}  </td>
+                </tr>
+                <!--
+                <tr>
+                    <td colspan="2">
+                        <small class="text-muted">
+                            Creado: {{ object.creado_en }}
+                            <br>
+                            Modificado: {{ object.modificado_en }}
+                        </small>
+                    </td>
+                </tr>
+                -->
+                </tbody>
+            </table>
+        </div>
+
+	<div class="col-md-6">
+	  <p>Archivos asociados</p>
+	  <ul>
+	    {% for archivo in object.archivo_set.all %}
+	    <li><a href="{{ archivo.url }}">{{ archivo.descripcion }}</a></li>
+	    {% endfor %}
+	  </ul>
+	</div>
+
+
+	</div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="eliminar_funcionario_{{object.pk}}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar un Funcionario</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Está seguro que desea eliminar el funcionario "{{ object.nombre }}"?.</p>
+                <p class="text-muted">Recuerde que eliminará todos los registros asociados a este funcionario.</p>
+            </div>
+            <div class="modal-footer">
+                <a role="button" class="btn btn-danger" href="{% url 'rrhh:funcionario__eliminar' object.pk %}">Eliminar</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

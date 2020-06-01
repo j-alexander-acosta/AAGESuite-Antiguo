@@ -45,6 +45,7 @@ PREREQ_APPS = [
 
 PROJECT_APPS = [
     'carga_horaria',
+    'rrhh',
 ]
 
 MIDDLEWARE = [

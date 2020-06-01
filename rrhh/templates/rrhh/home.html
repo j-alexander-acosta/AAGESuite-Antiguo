@@ -1,0 +1,36 @@
+{% extends 'base/base.html' %}
+
+{% block title_page %}
+    Inicio
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card text-white card-inverse bgm-red text-center">
+                <div class="card-header">
+                    <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
+                    <h6><a href="{% url 'rrhh:funcionarios' %}" style="color: #fff;">Funcionarios</a></h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white card-inverse bgm-lightgreen text-center">
+                <div class="card-header">
+                    <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
+                    <h6><a href="{% url 'rrhh:archivos' %}" style="color: #fff;">Archivos</a></h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white card-inverse bgm-purple text-center">
+                <div class="card-header">
+                    <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
+                    <h6><a href="{% url 'rrhh:entrevistas' %}" style="color: #fff;">Entrevistas</a></h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+
+{% endblock content %}

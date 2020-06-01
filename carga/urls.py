@@ -22,6 +22,7 @@ admin.site.site_header = 'Carga Académica - Back Office'
 
 urlpatterns = [
     url(r'^carga/', include('carga_horaria.urls')),
+    url(r'^rrhh/', include('rrhh.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^$', RedirectView.as_view(url='/carga/', permanent=False)),
 ]
