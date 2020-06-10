@@ -58,8 +58,8 @@ class AsignacionExtraForm(forms.ModelForm):
     def clean_horas(self):
         horas = self.cleaned_data['horas']
         profesor = self.profesor
-        if horas > profesor.horas_disponibles:
-            raise forms.ValidationError("Excede las horas que {} tiene disponibles ({})".format(profesor, profesor.horas_disponibles))
+        if horas > profesor.horas_no_lectivas_disponibles:
+            raise forms.ValidationError("Excede las horas que {} tiene disponibles ({})".format(profesor, profesor.horas_no_lectivas_disponibles))
         return horas
 
     def __init__(self, *args, **kwargs):

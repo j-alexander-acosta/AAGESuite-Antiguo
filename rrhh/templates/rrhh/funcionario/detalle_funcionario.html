@@ -110,7 +110,7 @@
 	  <p>Archivos asociados</p>
 	  <ul>
 	    {% for archivo in object.archivo_set.all %}
-	    <li><a href="{{ archivo.url }}">{{ archivo.descripcion }}</a></li>
+	    <li><a href="{{ archivo.archivo.url }}">{{ archivo.descripcion }}</a></li>
 	    {% endfor %}
 	  </ul>
 	</div>

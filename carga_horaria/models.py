@@ -2,7 +2,7 @@ from enum import Enum
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
-from decimal import Decimal, ROUND_HALF_DOWN
+from decimal import Decimal, ROUND_HALF_DOWN, ROUND_HALF_UP
 
 
 class Nivel(Enum):
@@ -160,16 +160,36 @@ class Profesor(models.Model):
 
     @property
     def horas_asignadas(self):
-        return sum(self.asignacion_set.values_list('horas', flat=True)) + sum(self.asignacionextra_set.values_list('horas', flat=True))
+        return sum(self.asignacion_set.values_list('horas', flat=True))
 
     @property
     def horas_disponibles(self):
         return self.horas_docentes - self.horas_asignadas
 
     @property
+    def horas_no_lectivas_asignadas(self):
+        return sum(self.asignacionextra_set.values_list('horas', flat=True))
+
+    @property
+    def horas_no_lectivas_disponibles(self):
+        return self.horas_no_lectivas - self.horas_no_lectivas_asignadas
+
+    @property
     def horas_docentes(self):
         # considerar luego 60/40 colegios vulnerables
         return Decimal(self.horas * Decimal(60.0)/Decimal(45.0) * Decimal(.65)).quantize(Decimal(0), rounding=ROUND_HALF_DOWN)
+
+    @property
+    def horas_lectivas(self):
+        return Decimal(self.horas_docentes * Decimal(45.0)/Decimal(60.0)).quantize(Decimal('0.0'), rounding=ROUND_HALF_DOWN)
+
+    @property
+    def horas_no_lectivas(self):
+        return Decimal(self.horas - self.horas_lectivas - self.horas_recreo).quantize(Decimal('0.0'), rounding=ROUND_HALF_UP)
+
+    @property
+    def horas_recreo(self):
+        return Decimal(3)
 
     def __str__(self): 
         return self.nombre

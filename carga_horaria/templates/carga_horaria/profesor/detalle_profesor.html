@@ -89,10 +89,10 @@
                     <th colspan="4" class="table-info">
                 <span>
                     <i class="fa fa-info-circle"></i>
-		    Asignaciones Extra 
+		    Asignaciones No Lectivas 
                 </span>
 
-		{% if object.horas_disponibles > 0 %}
+		{% if object.horas_no_lectivas_disponibles > 0 %}
 		<a class="btn btn-sm btn-primary float-right" href="{% url 'carga-horaria:asignar-extra' object.pk %}" role="button">
                   <i class="fa fa-plus"></i>
 		</a>
@@ -178,12 +178,31 @@
                     <td> {{ object.horas_docentes }}  </td>
                 </tr>
                 <tr>
-                    <th> Horas asignadas </th>
+                    <th> Horas lectivas </th>
+                    <td> {{ object.horas_lectivas }}  </td>
+                </tr>
+                <tr>
+                    <th> Horas recreo </th>
+                    <td> {{ object.horas_recreo }}  </td>
+                </tr>                <tr>
+                    <th> Horas no lectivas </th>
+                    <td> {{ object.horas_no_lectivas }}  </td>
+                </tr>
+                <tr>
+                    <th> Horas docentes asignadas </th>
                     <td> {{ object.horas_asignadas }}  </td>
                 </tr>
                 <tr>
-                    <th> Horas disponibles </th>
+                    <th> Horas docentes disponibles </th>
                     <td> {{ object.horas_disponibles }}  </td>
+                </tr>
+                <tr>
+                    <th> Horas no lectivas asignadas </th>
+                    <td> {{ object.horas_no_lectivas_asignadas }}  </td>
+                </tr>
+                <tr>
+                    <th> Horas no lectivas disponibles </th>
+                    <td> {{ object.horas_no_lectivas_disponibles }}  </td>
                 </tr>
                 <!--
                 <tr>
