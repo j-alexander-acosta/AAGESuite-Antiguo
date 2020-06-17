@@ -204,6 +204,11 @@ urlpatterns = [
         name='asignar'
     ),
     url(
+        r'^profesores/(?P<pk>\d+)/fua/(?P<tipo>\d+)/$',
+        views.asignar_fua,
+        name='asignar-fua'
+    ),
+    url(
         r'^asignaciones/(?P<pk>\d+)/editar/$',
         views.AsignacionUpdateView.as_view(),
         name='asignacion__editar'

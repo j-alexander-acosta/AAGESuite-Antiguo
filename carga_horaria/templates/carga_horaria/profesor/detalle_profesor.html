@@ -9,7 +9,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title"><strong> {{ object.nombre }}
+      <h4 class="card-title"><strong> {{ object.nombre }}</strong>
           {% block buttons %}
               <div class="btn-group pull-right">
                   <a href="{% url 'carga-horaria:profesores' %}" type="button" class="btn btn-sm btn-dark">
@@ -34,7 +34,7 @@
 		    <table class="table table-hover table-sm">
                 <thead>
                 <tr>
-                    <th colspan="3" class="table-info">
+                    <th colspan="4" class="table-info">
                 <span>
                     <i class="fa fa-info-circle"></i>
 		    Asignaciones Plan de Estudio
@@ -43,6 +43,7 @@
                 </tr>
 		<tr>
 		  <th>Asignatura</th>
+		  <th>Curso</th>
 		  <th>Horas</th>
 		  <th>Acciones</th>
 		</tr>
@@ -51,6 +52,7 @@
 		    {% for ax in object.asignacion_set.all.plan %}
                     <tr>
                       <td> {{ ax.asignatura }} </td>
+                      <td> {{ ax.asignatura.periodo }} </td>
                       <td> {{ ax.horas }} </td>
 		      <td>
                         <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignacion__editar' ax.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
@@ -80,7 +82,195 @@
                 </div>
 		    {% endfor %}
                 </tbody>
-            </table>
+		    </table>
+
+
+		    		    <table class="table table-hover table-sm">
+                <thead>
+                <tr>
+                    <th colspan="4" class="table-info">
+                <span>
+                    <i class="fa fa-info-circle"></i>
+		    Asignaciones SEP
+                </span>
+
+		{% if object.horas_disponibles > 0 %}
+		<a class="btn btn-sm btn-primary float-right" href="{% url 'carga-horaria:asignar-fua' object.pk 2 %}" role="button">
+                  <i class="fa fa-plus"></i>
+		</a>
+		{% endif %}
+
+                    </th>
+                </tr>
+		<tr>
+		  <th>Descripción</th>
+		  <th>Curso</th>
+		  <th>Horas</th>
+		  <th>Acciones</th>
+		</tr>
+                </thead>
+                <tbody>
+		    {% for ax in object.asignacion_set.all.sep %}
+                    <tr>
+                      <td> {{ ax.descripcion }} </td>
+                      <td> {{ ax.curso|default:"Todos" }} </td>
+                      <td> {{ ax.horas }} </td>
+		      <td>
+                        <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignacion__editar' ax.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
+                        <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_{{ax.pk}}"><i class="fa fa-trash"></i></a>
+			
+		      </td>
+                    </tr>
+		    <div class="modal" tabindex="-1" role="dialog" id="eliminar_asignacion_{{ax.pk}}">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar una asignación</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>¿Está seguro que desea eliminar {{ ax.horas }} horas de {{ ax.descripcion }} para {{ ax.profesor }}?.</p>
+                                <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta asignación.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:asignacion__eliminar' ax.pk %}">Eliminar</a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+		    {% endfor %}
+                </tbody>
+				    </table>
+
+
+				    		    <table class="table table-hover table-sm">
+                <thead>
+                <tr>
+                    <th colspan="4" class="table-info">
+                <span>
+                    <i class="fa fa-info-circle"></i>
+		    Asignaciones PIE
+                </span>
+
+		{% if object.horas_disponibles > 0 %}
+		<a class="btn btn-sm btn-primary float-right" href="{% url 'carga-horaria:asignar-fua' object.pk 3 %}" role="button">
+                  <i class="fa fa-plus"></i>
+		</a>
+		{% endif %}
+
+                    </th>
+                </tr>
+		<tr>
+		  <th>Descripción</th>
+		  <th>Curso</th>
+		  <th>Horas</th>
+		  <th>Acciones</th>
+		</tr>
+                </thead>
+                <tbody>
+		    {% for ax in object.asignacion_set.all.pie %}
+                    <tr>
+                      <td> {{ ax.descripcion }} </td>
+                      <td> {{ ax.curso|default:"Todos" }} </td>
+                      <td> {{ ax.horas }} </td>
+		      <td>
+                        <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignacion__editar' ax.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
+                        <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_{{ax.pk}}"><i class="fa fa-trash"></i></a>
+			
+		      </td>
+                    </tr>
+		    <div class="modal" tabindex="-1" role="dialog" id="eliminar_asignacion_{{ax.pk}}">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar una asignación</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>¿Está seguro que desea eliminar {{ ax.horas }} horas de {{ ax.descripcion }} para {{ ax.profesor }}?.</p>
+                                <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta asignación.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:asignacion__eliminar' ax.pk %}">Eliminar</a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+		    {% endfor %}
+                </tbody>
+						    </table>
+
+
+
+				    		    <table class="table table-hover table-sm">
+                <thead>
+                <tr>
+                    <th colspan="4" class="table-info">
+                <span>
+                    <i class="fa fa-info-circle"></i>
+		    Asignaciones sostenedor
+                </span>
+
+		{% if object.horas_disponibles > 0 %}
+		<a class="btn btn-sm btn-primary float-right" href="{% url 'carga-horaria:asignar-fua' object.pk 4 %}" role="button">
+                  <i class="fa fa-plus"></i>
+		</a>
+		{% endif %}
+
+
+                    </th>
+                </tr>
+		<tr>
+		  <th>Descripción</th>
+		  <th>Curso</th>
+		  <th>Horas</th>
+		  <th>Acciones</th>
+		</tr>
+                </thead>
+                <tbody>
+		    {% for ax in object.asignacion_set.all.sostenedor %}
+                    <tr>
+                      <td> {{ ax.descripcion }} </td>
+                      <td> {{ ax.curso|default:"Todos" }} </td>
+                      <td> {{ ax.horas }} </td>
+		      <td>
+                        <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignacion__editar' ax.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
+                        <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_{{ax.pk}}"><i class="fa fa-trash"></i></a>
+			
+		      </td>
+                    </tr>
+		    <div class="modal" tabindex="-1" role="dialog" id="eliminar_asignacion_{{ax.pk}}">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar una asignación</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>¿Está seguro que desea eliminar {{ ax.horas }} horas de {{ ax.descripcion }} para {{ ax.profesor }}?.</p>
+                                <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta asignación.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:asignacion__eliminar' ax.pk %}">Eliminar</a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+		    {% endfor %}
+                </tbody>
+						    </table>
+
+						    
+						    
         </div>
         <div class="col-md-6">
             <table class="table table-hover table-sm">

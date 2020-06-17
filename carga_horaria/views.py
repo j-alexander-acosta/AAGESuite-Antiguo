@@ -14,6 +14,7 @@ from .models import Periodo
 from .models import Asignacion
 from .models import AsignacionExtra
 from .forms import AsignacionForm
+from .forms import AsignacionFUAForm
 from .forms import AsignacionExtraForm
 from .formsDani import PlantillaPlanForm
 
@@ -232,6 +233,24 @@ def asignar(request, pk):
         form = AsignacionForm(user=request.user)
     return render(request, 'carga_horaria/asignar.html', {'object': aa,
                                                           'form': form})
+
+
+def asignar_fua(request, pk, tipo):
+    pp = get_object_or_404(Profesor, pk=pk)
+
+    if request.method == 'POST':
+        form = AsignacionFUAForm(request.POST, profesor=pp, user=request.user)
+        if form.is_valid():
+            asignacion = form.save(commit=False)
+            asignacion.profesor = pp
+            asignacion.tipo = tipo
+            asignacion.save()
+            return redirect('carga-horaria:profesor', pp.pk)
+    else:
+        form = AsignacionFUAForm(user=request.user)
+    return render(request, 'carga_horaria/asignar_fua.html', {'object': pp,
+                                                              'form': form})
+
 
 def asignar_extra(request, pk):
     pp = get_object_or_404(Profesor, pk=pk)
