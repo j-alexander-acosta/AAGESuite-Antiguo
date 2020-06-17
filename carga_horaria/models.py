@@ -103,7 +103,6 @@ class Periodo(models.Model):
     def available(self):
         return self.ceiling - self.capacity
 
-    # FIXME toma en cuenta los nuevos tipos de asignaciones
     @property
     def progress(self):
         return sum(Asignacion.objects.filter(asignatura__in=self.asignatura_set.all()).values_list('horas', flat=True))
@@ -169,11 +168,11 @@ class Profesor(models.Model):
 
     @property
     def horas_no_lectivas_asignadas(self):
-        return sum(self.asignacionextra_set.values_list('horas', flat=True))
+        return sum(self.asignacionextra_set.values_list('horas', flat=True)) + self.horas_planificacion
 
     @property
     def horas_no_lectivas_disponibles(self):
-        return self.horas_no_lectivas - self.horas_no_lectivas_asignadas
+        return self.horas_no_lectivas - self.horas_no_lectivas_asignadas - self.horas_planificacion
 
     @property
     def horas_docentes(self):
@@ -188,11 +187,11 @@ class Profesor(models.Model):
     def horas_no_lectivas(self):
         return Decimal(self.horas - self.horas_lectivas - self.horas_recreo).quantize(Decimal('0.0'), rounding=ROUND_HALF_UP)
 
+    @property
+    def horas_planificacion(self):
+        return Decimal(self.horas_no_lectivas * Decimal(.40)).quantize(Decimal('0.0'), rounding=ROUND_HALF_UP)
+
     # FIXME: configurar según la tabla (horas recreo)
-    # TODO: al crear el profesor, que se creen las asignaciones no lectivas (SÓLO UN ITEM: Planificación 40%)
-    # TODO: agregar columna curso en tabla de asignaciones Plan de Estudio (detalle profesor)
-    # Sacar negrita accidental detalle profesor
-    # No editar horas de planificación!! porque es la ley
     @property
     def horas_recreo(self):
         return Decimal(3)

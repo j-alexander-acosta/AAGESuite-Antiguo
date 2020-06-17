@@ -298,6 +298,13 @@
 		</tr>
                 </thead>
                 <tbody>
+                    <tr>
+                      <td>Planificación</td>
+                      <td>Todos</td>
+                      <td>{{ object.horas_planificacion }}</td>
+		      <td>
+		      </td>
+                    </tr>
 		    {% for ax in object.asignacionextra_set.all %}
                     <tr>
                       <td> {{ ax.descripcion }} </td>
