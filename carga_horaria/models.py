@@ -191,10 +191,10 @@ class Profesor(models.Model):
     def horas_planificacion(self):
         return Decimal(self.horas_no_lectivas * Decimal(.40)).quantize(Decimal('0.0'), rounding=ROUND_HALF_UP)
 
-    # FIXME: configurar según la tabla (horas recreo)
+    # FIXME: verificar según la tabla (horas recreo), puta locura
     @property
     def horas_recreo(self):
-        return Decimal(3)
+        return Decimal(self.horas * Decimal(4.1)/Decimal(60.0)).quantize(Decimal('0.0'), rounding=ROUND_HALF_DOWN)
 
     def __str__(self): 
         return self.nombre
