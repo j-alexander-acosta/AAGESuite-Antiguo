@@ -103,6 +103,7 @@ class Periodo(models.Model):
     def available(self):
         return self.ceiling - self.capacity
 
+    # FIXME toma en cuenta los nuevos tipos de asignaciones
     @property
     def progress(self):
         return sum(Asignacion.objects.filter(asignatura__in=self.asignatura_set.all()).values_list('horas', flat=True))
@@ -187,6 +188,11 @@ class Profesor(models.Model):
     def horas_no_lectivas(self):
         return Decimal(self.horas - self.horas_lectivas - self.horas_recreo).quantize(Decimal('0.0'), rounding=ROUND_HALF_UP)
 
+    # FIXME: configurar según la tabla (horas recreo)
+    # TODO: al crear el profesor, que se creen las asignaciones no lectivas (SÓLO UN ITEM: Planificación 40%)
+    # TODO: agregar columna curso en tabla de asignaciones Plan de Estudio (detalle profesor)
+    # Sacar negrita accidental detalle profesor
+    # No editar horas de planificación!! porque es la ley
     @property
     def horas_recreo(self):
         return Decimal(3)
@@ -195,10 +201,43 @@ class Profesor(models.Model):
         return self.nombre
 
 
+class AsignacionQuerySet(models.QuerySet):
+    @property
+    def plan(self):
+        return self.filter(tipo=Asignacion.PLAN)
+
+    @property
+    def sep(self):
+        return self.filter(tipo=Asignacion.SEP)
+
+    @property
+    def pie(self):
+        return self.filter(tipo=Asignacion.PIE)
+
+    @property
+    def sostenedor(self):
+        return self.filter(tipo=Asignacion.SOSTENEDOR)
+
+
 class Asignacion(models.Model):
+    PLAN = 1
+    SEP = 2
+    PIE = 3
+    SOSTENEDOR = 4
+
+    TIPO_CHOICES = ((PLAN, 'plan'),
+                    (SEP, 'SEP'),
+                    (PIE, 'PIE'),
+                    (SOSTENEDOR, 'Sostenedor'))
+
     profesor = models.ForeignKey('Profesor')
-    asignatura = models.ForeignKey('Asignatura')
+    asignatura = models.ForeignKey('Asignatura', null=True, blank=True)
+    curso = models.ForeignKey('Periodo', null=True, blank=True)
+    descripcion = models.CharField(max_length=255, null=True, blank=True)
+    tipo = models.PositiveSmallIntegerField(default=PLAN)
     horas = models.DecimalField(max_digits=3, decimal_places=1)
+
+    objects = AsignacionQuerySet.as_manager()
 
     def __str__(self): 
         return "{} - {} ({})".format(self.profesor, self.asignatura, self.horas)

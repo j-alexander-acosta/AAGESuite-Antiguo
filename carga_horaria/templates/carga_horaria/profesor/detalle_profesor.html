@@ -48,7 +48,7 @@
 		</tr>
                 </thead>
                 <tbody>
-		    {% for ax in object.asignacion_set.all %}
+		    {% for ax in object.asignacion_set.all.plan %}
                     <tr>
                       <td> {{ ax.asignatura }} </td>
                       <td> {{ ax.horas }} </td>
