@@ -1,31 +1,18 @@
 from django import forms
 from crispy_forms.helper import FormHelper
-from .models import Funcionario
-from .models import Entrevista
-from .models import Archivo
+from .models import Funcionario, Entrevista, Archivo, Vacacion, TipoLicencia, Licencia
 
 
 class FuncionarioForm(forms.ModelForm):
     class Meta:
         model = Funcionario
-        fields = ('nombre',
-                  'rut',
-                  'fecha_nacimiento',
-                  'fecha_ingreso',
-                  'titulo',
-                  'religion',
-                  'estado_civil',
-                  'nacionalidad',
-                  'sexo',
-                  'email',
-                  'direccion',
-                  'telefono')
+        fields = '__all__'
 
     def __init__(self, *args, **kwargs):
         super(FuncionarioForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
-        
+
 
 class EntrevistaForm(forms.ModelForm):
     class Meta:
@@ -40,7 +27,7 @@ class EntrevistaForm(forms.ModelForm):
         super(EntrevistaForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
-        
+
 
 class ArchivoForm(forms.ModelForm):
     class Meta:
@@ -53,4 +40,36 @@ class ArchivoForm(forms.ModelForm):
         super(ArchivoForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
-        
+
+
+class VacacionForm(forms.ModelForm):
+    class Meta:
+        model = Vacacion
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(VacacionForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+
+
+class TipoLicenciaForm(forms.ModelForm):
+    class Meta:
+        model = TipoLicencia
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(TipoLicenciaForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+
+
+class LicenciaForm(forms.ModelForm):
+    class Meta:
+        model = Licencia
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(LicenciaForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False

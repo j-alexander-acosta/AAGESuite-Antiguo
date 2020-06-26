@@ -21,11 +21,6 @@ urlpatterns = [
         name='funcionario'
     ),
     url(
-        r'^funcionarios/nuevo/$',
-        views.FuncionarioCreateView.as_view(),
-        name='funcionario__nuevo'
-    ),
-    url(
         r'^funcionarios/(?P<pk>\d+)/editar/$',
         views.FuncionarioUpdateView.as_view(),
         name='funcionario__editar'
@@ -94,5 +89,80 @@ urlpatterns = [
         r'^archivos/(?P<pk>\d+)/eliminar/$',
         views.ArchivoDeleteView.as_view(),
         name='archivo__eliminar'
+    ),
+    url(
+        r'^vacaciones/$',
+        views.VacacionListView.as_view(),
+        name='vacaciones'
+    ),
+    url(
+        r'^vacaciones/nuevo/$',
+        views.VacacionCreateView.as_view(),
+        name='vacacion__nuevo'
+    ),
+    url(
+        r'^vacaciones/(?P<pk>\d+)/$',
+        views.VacacionDetailView.as_view(),
+        name='vacacion'
+    ),
+    url(
+        r'^vacaciones/(?P<pk>\d+)/editar/$',
+        views.VacacionUpdateView.as_view(),
+        name='vacacion__editar'
+    ),
+    url(
+        r'^vacaciones/(?P<pk>\d+)/eliminar/$',
+        views.VacacionDeleteView.as_view(),
+        name='vacacion__eliminar'
+    ),
+    url(
+        r'^tiposlicencia/$',
+        views.TipoLicenciaListView.as_view(),
+        name='tiposlicencia'
+    ),
+    url(
+        r'^tiposlicencia/nuevo/$',
+        views.TipoLicenciaCreateView.as_view(),
+        name='tipolicencia__nuevo'
+    ),
+    url(
+        r'^tiposlicencia/(?P<pk>\d+)/$',
+        views.TipoLicenciaDetailView.as_view(),
+        name='tipolicencia'
+    ),
+    url(
+        r'^tiposlicencia/(?P<pk>\d+)/editar/$',
+        views.TipoLicenciaUpdateView.as_view(),
+        name='tipolicencia__editar'
+    ),
+    url(
+        r'^tiposlicencia/(?P<pk>\d+)/eliminar/$',
+        views.TipoLicenciaDeleteView.as_view(),
+        name='tipolicencia__eliminar'
+    ),
+    url(
+        r'^licencias/$',
+        views.LicenciaListView.as_view(),
+        name='licencias'
+    ),
+    url(
+        r'^licencias/nuevo/$',
+        views.LicenciaCreateView.as_view(),
+        name='licencia__nuevo'
+    ),
+    url(
+        r'^licencias/(?P<pk>\d+)/$',
+        views.LicenciaDetailView.as_view(),
+        name='licencia'
+    ),
+    url(
+        r'^licencias/(?P<pk>\d+)/editar/$',
+        views.LicenciaUpdateView.as_view(),
+        name='licencia__editar'
+    ),
+    url(
+        r'^licencias/(?P<pk>\d+)/eliminar/$',
+        views.LicenciaDeleteView.as_view(),
+        name='licencia__eliminar'
     ),
 ]

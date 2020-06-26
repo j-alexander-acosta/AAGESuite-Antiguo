@@ -3,12 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.shortcuts import render
-from .models import Funcionario
-from .models import Entrevista
-from .models import Archivo
-from .forms import FuncionarioForm
-from .forms import EntrevistaForm
-from .forms import ArchivoForm
+from .models import Funcionario, Entrevista, Archivo, Vacacion, TipoLicencia, Licencia
+from .forms import FuncionarioForm, EntrevistaForm, ArchivoForm, VacacionForm, TipoLicenciaForm, LicenciaForm
 
 
 @login_required
@@ -34,7 +30,7 @@ class FuncionarioCreateView(CreateView):
 
 class FuncionarioDetailView(DetailView):
     model = Funcionario
-    template_name = 'rrhh/funcionario/detalle_funcionario.html'
+    template_name = 'rrhh/funcionario/perfil.html'
 
 
 class FuncionarioUpdateView(UpdateView):
@@ -137,6 +133,129 @@ class ArchivoUpdateView(UpdateView):
 class ArchivoDeleteView(LoginRequiredMixin, DeleteView):
     model = Archivo
     success_url = reverse_lazy('rrhh:archivos')
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+
+class VacacionListView(LoginRequiredMixin, ListView):
+    model = Vacacion
+    template_name = 'rrhh/vacacion/listado_vacacion.html'
+    search_fields = ['funcionario__rut', 'funcionario']
+    paginate_by = 10
+
+
+class VacacionDetailView(LoginRequiredMixin, DetailView):
+    model = Vacacion
+    template_name = 'rrhh/vacacion/detalle_vacacion.html'
+
+
+class VacacionCreateView(LoginRequiredMixin, CreateView):
+    model = Vacacion
+    form_class = VacacionForm
+    template_name = 'rrhh/vacacion/nueva_vacacion.html'
+    success_url = reverse_lazy('rrhh:vacaciones')
+
+
+class VacacionUpdateView(LoginRequiredMixin, UpdateView):
+    model = Vacacion
+    form_class = VacacionForm
+    template_name = 'rrhh/vacacion/editar_vacacion.html'
+
+    def get_success_url(self):
+        return reverse(
+            'rrhh:vacacion',
+            kwargs={
+                'pk': self.object.pk,
+            }
+        )
+
+
+class VacacionDeleteView(LoginRequiredMixin, DeleteView):
+    model = Vacacion
+    success_url = reverse_lazy('rrhh:vacaciones')
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+
+class TipoLicenciaListView(LoginRequiredMixin, ListView):
+    model = TipoLicencia
+    template_name = 'rrhh/tipo_licencia/listado_tipolicencia.html'
+    search_fields = ['nombre']
+    paginate_by = 10
+
+
+class TipoLicenciaDetailView(LoginRequiredMixin, DetailView):
+    model = TipoLicencia
+    template_name = 'rrhh/tipo_licencia/detalle_tipolicencia.html'
+
+
+class TipoLicenciaCreateView(LoginRequiredMixin, CreateView):
+    model = TipoLicencia
+    form_class = TipoLicenciaForm
+    template_name = 'rrhh/tipo_licencia/nuevo_tipolicencia.html'
+    success_url = reverse_lazy('rrhh:tiposlicencia')
+
+
+class TipoLicenciaUpdateView(LoginRequiredMixin, UpdateView):
+    model = TipoLicencia
+    form_class = TipoLicenciaForm
+    template_name = 'rrhh/tipo_licencia/editar_tipolicencia.html'
+
+    def get_success_url(self):
+        return reverse(
+            'rrhh:tipolicencia',
+            kwargs={
+                'pk': self.object.pk,
+            }
+        )
+
+
+class TipoLicenciaDeleteView(LoginRequiredMixin, DeleteView):
+    model = TipoLicencia
+    success_url = reverse_lazy('rrhh:tiposlicencia')
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+
+class LicenciaListView(LoginRequiredMixin, ListView):
+    model = Licencia
+    template_name = 'rrhh/licencia/listado_licencia.html'
+    search_fields = ['funcionario', 'funcionario_rut']
+    paginate_by = 10
+
+
+class LicenciaDetailView(LoginRequiredMixin, DetailView):
+    model = Licencia
+    template_name = 'rrhh/licencia/detalle_licencia.html'
+
+
+class LicenciaCreateView(LoginRequiredMixin, CreateView):
+    model = Licencia
+    form_class = LicenciaForm
+    template_name = 'rrhh/licencia/nuevo_licencia.html'
+    success_url = reverse_lazy('rrhh:licencias')
+
+
+class LicenciaUpdateView(LoginRequiredMixin, UpdateView):
+    model = Licencia
+    form_class = LicenciaForm
+    template_name = 'rrhh/licencia/editar_licencia.html'
+
+    def get_success_url(self):
+        return reverse(
+            'rrhh:licencia',
+            kwargs={
+                'pk': self.object.pk,
+            }
+        )
+
+
+class LicenciaDeleteView(LoginRequiredMixin, DeleteView):
+    model = Licencia
+    success_url = reverse_lazy('rrhh:licencias')
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)

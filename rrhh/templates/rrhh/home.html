@@ -15,6 +15,22 @@
             </div>
         </div>
         <div class="col-md-3">
+            <div class="card text-white card-inverse bgm-indigo text-center">
+                <div class="card-header">
+                    <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
+                    <h6><a href="{% url 'rrhh:vacaciones' %}" style="color: #fff;">Vacaciones</a></h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white card-inverse bgm-lightblue text-center">
+                <div class="card-header">
+                    <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
+                    <h6><a href="{% url 'rrhh:licencias' %}" style="color: #fff;">Licencias</a></h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
             <div class="card text-white card-inverse bgm-lightgreen text-center">
                 <div class="card-header">
                     <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
@@ -22,6 +38,9 @@
                 </div>
             </div>
         </div>
+    </div>
+    <br>
+    <div class="row">
         <div class="col-md-3">
             <div class="card text-white card-inverse bgm-purple text-center">
                 <div class="card-header">

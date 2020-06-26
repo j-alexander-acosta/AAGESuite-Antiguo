@@ -1,0 +1,206 @@
+{% extends 'base/base.html' %}
+
+{% block title_page %}
+    Perfil de {{ object }}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="card" id="profile-main">
+            <div class="pm-overview c-overflow">
+                <div class="pmo-pic">
+                    <div class="p-relative">
+                        <a href="">
+                            <img class="img-responsive" src="{{ object.foto}}" alt="{{ object.username }}">
+                        </a>
+                    </div>
+
+                    <div class="pmo-stat">
+                        <h5 class="m-0 c-white">{{ object.rut }}</h5>
+                        {{ object.get_full_name }}
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="pm-body clearfix">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="perfil-tab" data-toggle="tab" href="#perfil"
+                        role="tab" aria-controls="perfil" aria-selected="true">Perfil</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="profesional-tab" data-toggle="tab" href="#profesional"
+                        role="tab" aria-controls="profesional" aria-selected="false">Inf. Profesional</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="vacacion-tab" data-toggle="tab" href="#vacacion"
+                        role="tab" aria-controls="vacacion" aria-selected="false">Vacaciones</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="licencia-tab" data-toggle="tab" href="#licencia"
+                        role="tab" aria-controls="licencia" aria-selected="false">Licencias</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="perfil" role="tabpanel" aria-labelledby="perfil-tab">
+                        <div class="pmb-block">
+                            <div class="pmbb-body p-l-30">
+                                <div class="pmbb-view">
+                                    <table class="table table-responsive">
+                                        <body>
+                                            <tr>
+                                                <th>Fecha de Nacimiento</th>
+                                                <td>{{ object.fecha_nacimiento }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Genero</th>
+                                                <td>{{ object.genero }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Nacionalidad</th>
+                                                <td>{{ object.nacionalidad }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Estado Civil</th>
+                                                <td>{{ object.estado_civil }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Religión</th>
+                                                <td>{{ object.religion }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Dirección</th>
+                                                <td>{{ object.direccion }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Teléfono</th>
+                                                <td>{{ object.telefono }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Correo Electrónico</th>
+                                                <td>{{ object.email }}</td>
+                                            </tr>
+                                        </body>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="profesional" role="tabpanel" aria-labelledby="profesional-tab">
+                        <div class="pmb-block">
+                            <div class="pmbb-body p-l-30">
+                                <div class="pmbb-view">
+                                    <table class="table table-responsive">
+                                        <body>
+                                            <tr>
+                                                <th>Título</th>
+                                                <td>{{ object.titulo }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Casa Formadora</th>
+                                                <td>{{ object.casa_formadora }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Antiguedad Docente</th>
+                                                <td>{{ object.antiguedad_docente_meses }} meses</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Fecha de ingreso al sistema Docente</th>
+                                                <td>{{ object.fecha_ingreso_docente }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Antiguedad en el SEA</th>
+                                                <td>{{ object.antiguedad_sea_meses }} meses</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Fecha de ingreso al SEA</th>
+                                                <td>{{ object.fecha_ingreso_sea }}</td>
+                                            </tr>
+                                        </body>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="vacacion" role="tabpanel" aria-labelledby="vacacion-tab">
+                        <div class="pmb-block">
+                            <div class="pmbb-body p-l-30">
+                                <p>Listado de Vacaciones del funcionario, ordenado del mas reciente a las antiguo.</p>
+                                <div class="pmbb-view">
+                                    <table class="table table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <th>Fecha de inicio</th>
+                                                <th>Fecha de termino</th>
+                                                <th>Total de días</th>
+                                                <th>Total feriados</th>
+                                                <th>Es pendiente</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for v in object.vacacion_set.all %}
+                                                <tr>
+                                                    <td>{{ v.fecha_inicio }}</td>
+                                                    <td>{{ v.fecha_termino }}</td>
+                                                    <td>{{ v.total_dias }}</td>
+                                                    <td>{{ v.total_feriados }}</td>
+                                                    <td>{{ v.es_pendiente|yesno }}</td>
+                                                </tr>
+                                            {% empty %}
+                                                <tr>
+                                                    <td>No existen registros de licencias</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="licencia" role="tabpanel" aria-labelledby="licencia-tab">
+                        <div class="pmb-block">
+                            <div class="pmbb-body p-l-30">
+                                <p>Listado de Licencias del funcionario, ordenado del mas reciente a las antiguo.</p>
+                                <div class="pmbb-view">
+                                    <table class="table table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <th>Tipo de Licencia</th>
+                                                <th>Folio de Licencia</th>
+                                                <th>Fecha de inicio</th>
+                                                <th>Fecha de termino</th>
+                                                <th>Total de días</th>
+                                                <th>Total feriados</th>
+                                                <th>Son días hábiles</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for l in object.licencia_set.all %}
+                                                <tr>
+                                                    <td>{% if l.tipo_licencia %} {{ l.tipo_licencia }} {% else %} {{ l.tipo_licencia_descripcion }} {% endif %}</td>
+                                                    <td>{{ l.folio_licencia }}</td>
+                                                    <td>{{ l.fecha_inicio }}</td>
+                                                    <td>{{ l.fecha_termino }}</td>
+                                                    <td>{{ l.dias_totales }}</td>
+                                                    <td>{{ l.total_feriados }}</td>
+                                                    <td>{{ l.dias_habiles|yesno }}</td>
+                                                </tr>
+                                            {% empty %}
+                                                <tr>
+                                                    <td>No existen registros de licencias</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br><br><br>
+
+{% endblock %}
