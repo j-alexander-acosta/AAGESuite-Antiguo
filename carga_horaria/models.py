@@ -216,6 +216,16 @@ class Profesor(models.Model):
         return self.nombre
 
 
+class Asistente(models.Model):
+    nombre = models.CharField(max_length=255)
+    horas = models.DecimalField(max_digits=3, decimal_places=1, validators=[MinValueValidator(1), MaxValueValidator(44)])
+    funcion = models.CharField(max_length=255)
+    fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
+
+    def __str__(self):
+        return self.nombre
+
+
 class AsignacionQuerySet(models.QuerySet):
     @property
     def plan(self):

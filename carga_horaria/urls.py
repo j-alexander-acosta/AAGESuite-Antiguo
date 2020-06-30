@@ -77,6 +77,31 @@ urlpatterns = [
     #     name='curso__eliminar'
     # ),
     url(
+        r'^asistentes/$',
+        views.AsistenteListView.as_view(),
+        name='asistentes'
+    ),
+    url(
+        r'^asistentes/(?P<pk>\d+)/$',
+        views.AsistenteDetailView.as_view(),
+        name='asistente'
+    ),
+    url(
+        r'^asistentes/nuevo/$',
+        views.AsistenteCreateView.as_view(),
+        name='asistente__nuevo'
+    ),
+    url(
+        r'^asistentes/(?P<pk>\d+)/editar/$',
+        views.AsistenteUpdateView.as_view(),
+        name='asistente__editar'
+    ),
+    url(
+        r'^asistentes/(?P<pk>\d+)/eliminar/$',
+        views.AsistenteDeleteView.as_view(),
+        name='asistente__eliminar'
+    ),
+    url(
         r'^asignaturasbase/$',
         views.AsignaturaBaseListView.as_view(),
         name='asignaturasbase'

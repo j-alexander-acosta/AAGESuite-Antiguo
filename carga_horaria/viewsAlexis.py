@@ -2,8 +2,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from carga_horaria.models import Profesor, AsignaturaBase, Asignatura
-from carga_horaria.formsAlexis import ProfesorForm, AsignaturaBaseForm, AsignaturaCreateForm, AsignaturaUpdateForm
+from carga_horaria.models import Profesor, AsignaturaBase, Asignatura, Asistente
+from carga_horaria.formsAlexis import ProfesorForm, AsignaturaBaseForm, AsignaturaCreateForm, AsignaturaUpdateForm, AsistenteForm
 from django.core.urlresolvers import reverse_lazy, reverse
 from guardian.shortcuts import get_objects_for_user
 from .models import Periodo
@@ -157,6 +157,64 @@ class ProfesorDeleteView(LoginRequiredMixin, DeleteView):
 
 #     def get(self, request, *args, **kwargs):
 #         return self.post(request, *args, **kwargs)
+
+
+"""
+    Comienzo Crud Asistente
+"""
+class AsistenteListView(LoginRequiredMixin, GetObjectsForUserMixin, ListView):
+    """
+        Listado de asistentes
+    """
+    model = Asistente
+    lookup = 'fundacion__colegio'
+    template_name = 'carga_horaria/asistente/listado_asistente.html'
+    search_fields = ['nombre', 'horas']
+    paginate_by = 6
+
+
+class AsistenteDetailView(DetailView):
+    """
+        Detalle de Asistente
+    """
+    model = Asistente
+    template_name = 'carga_horaria/asistente/detalle_asistente.html'
+
+
+class AsistenteCreateView(LoginRequiredMixin, CreateView):
+    model = Asistente
+    form_class = AsistenteForm
+    template_name = 'carga_horaria/asistente/nuevo_asistente.html'
+    success_url = reverse_lazy('carga-horaria:asistentes')
+
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(AsistenteCreateView, self).get_form_kwargs(*args, **kwargs)
+        kwargs.update({'user': self.request.user})
+        return kwargs
+
+
+class AsistenteUpdateView(UpdateView):
+    model = Asistente
+    form_class = AsistenteForm
+    template_name = 'carga_horaria/asistente/editar_asistente.html'
+
+    def get_success_url(self):
+        return reverse(
+            'carga-horaria:asistente',
+            kwargs={
+                'pk': self.object.pk,
+            }
+        )
+
+
+class AsistenteDeleteView(LoginRequiredMixin, DeleteView):
+    model = Asistente
+    success_url = reverse_lazy('carga-horaria:asistentes')
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+
 
 
 """

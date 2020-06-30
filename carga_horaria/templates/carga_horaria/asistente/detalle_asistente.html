@@ -1,0 +1,111 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+
+{% block title_page %}
+    Asistente - Detalle
+{% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-header">
+      <h4 class="card-title"><strong> {{ object.nombre }}</strong>
+          {% block buttons %}
+              <div class="btn-group pull-right">
+                  <a href="{% url 'carga-horaria:asistentes' %}" type="button" class="btn btn-sm btn-dark">
+                      <i class="fa fa-arrow-left"></i>
+                  </a>
+                  <a href="{% url 'carga-horaria:asistente__editar' object.pk %}" type="button" class="btn btn-sm btn-primary">
+                      <i class="fa fa-edit"></i>
+                  </a>
+                  <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asistente_{{object.pk}}">
+                      <i class="fa fa-trash"></i>
+                  </a>
+              </div>
+          {% endblock %}
+        </h4>
+        <h6 class="card-subtitle mb-2 text-muted">Detalle del asistente</h6>
+
+    </div>
+    <div class="card-body">
+
+	        <div class="row">
+		  <div class="col-md-6">
+            <table class="table table-hover table-sm">
+                <thead>
+                <tr>
+                    <th colspan="2" class="table-info">
+                <span>
+                    <i class="fa fa-info-circle"></i>
+                     Descripción
+                </span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th> Nombre </th>
+                    <td>  {{ object.nombre }}  </td>
+                </tr>
+                <tr>
+                    <th> Función </th>
+                    <td>  {{ object.funcion|default:"Ninguna" }}  </td>
+                </tr>
+                <tr>
+                    <th> Horas contratadas </th>
+                    <td> {{ object.horas }}  </td>
+                </tr>
+                <!--
+                <tr>
+                    <td colspan="2">
+                        <small class="text-muted">
+                            Creado: {{ object.creado_en }}
+                            <br>
+                            Modificado: {{ object.modificado_en }}
+                        </small>
+                    </td>
+                </tr>
+                -->
+                </tbody>
+            </table>
+						    
+		  </div>
+        <div class="col-md-6">
+	  
+        </div>
+		</div>
+
+
+		<div class="row">
+		  <div class="col-md-6">
+		  </div>
+        <div class="col-md-6">
+        </div>
+	</div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="eliminar_asistente_{{object.pk}}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar un Asistente</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Está seguro que desea eliminar el asistente "{{ object.nombre }}"?.</p>
+                <p class="text-muted">Recuerde que eliminará todos los registros asociados a este asistente.</p>
+            </div>
+            <div class="modal-footer">
+                <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:asistente__eliminar' object.pk %}">Eliminar</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
