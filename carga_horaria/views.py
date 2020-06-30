@@ -25,6 +25,16 @@ def home(request):
 
 
 
+@login_required
+def anexo(request, pk):
+    p = get_object_or_404(Profesor, pk=pk)
+    ax = [{'descripcion': 'Planificación', 'curso': '', 'horas': p.horas_planificacion},
+          {'descripcion': 'Recreo', 'curso': '', 'horas': p.horas_recreo}] + list(p.asignacionextra_set.all())
+    return render(request, 'carga_horaria/profesor/anexo_profesor.html', {'asignaciones': p.asignacion_set.all(),
+                                                                          'asignaciones_extra': ax,
+                                                                          'profesor': p})
+
+
 """
     Comienzo Crud Periodos
 """

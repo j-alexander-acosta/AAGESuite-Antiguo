@@ -32,6 +32,11 @@ urlpatterns = [
         name='profesor'
     ),
     url(
+        r'^profesores/(?P<pk>\d+)/anexo/$',
+        views.anexo,
+        name='profesor__anexo'
+    ),
+    url(
         r'^profesores/nuevo/$',
         views.ProfesorCreateView.as_view(),
         name='profesor__nuevo'

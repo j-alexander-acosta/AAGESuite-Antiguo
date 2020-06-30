@@ -159,6 +159,14 @@ class Profesor(models.Model):
     fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
 
     @property
+    def horas_asignadas_crono(self):
+        return self.horas_asignadas * 45 / 60
+
+    @property
+    def horas_asignadas_total_crono(self):
+        return self.horas_no_lectivas_asignadas_anexo + self.horas_asignadas_crono
+
+    @property
     def horas_asignadas(self):
         return sum(self.asignacion_set.values_list('horas', flat=True))
 
@@ -169,6 +177,10 @@ class Profesor(models.Model):
     @property
     def horas_no_lectivas_asignadas(self):
         return sum(self.asignacionextra_set.values_list('horas', flat=True)) + self.horas_planificacion
+
+    @property
+    def horas_no_lectivas_asignadas_anexo(self):
+        return sum(self.asignacionextra_set.values_list('horas', flat=True)) + self.horas_planificacion + self.horas_recreo
 
     @property
     def horas_no_lectivas_disponibles(self):
@@ -186,6 +198,10 @@ class Profesor(models.Model):
     @property
     def horas_no_lectivas(self):
         return Decimal(self.horas - self.horas_lectivas - self.horas_recreo).quantize(Decimal('0.0'), rounding=ROUND_HALF_UP)
+
+    @property
+    def horas_no_lectivas_anexo(self):
+        return Decimal(self.horas - self.horas_lectivas).quantize(Decimal('0.0'), rounding=ROUND_HALF_UP)
 
     @property
     def horas_planificacion(self):
@@ -237,6 +253,10 @@ class Asignacion(models.Model):
     horas = models.DecimalField(max_digits=3, decimal_places=1)
 
     objects = AsignacionQuerySet.as_manager()
+
+    @property
+    def horas_crono(self):
+        return self.horas * 45 / 60
 
     def __str__(self): 
         return "{} - {} ({})".format(self.profesor, self.asignatura, self.horas)

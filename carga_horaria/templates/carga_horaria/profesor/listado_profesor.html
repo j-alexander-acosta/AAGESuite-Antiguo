@@ -39,6 +39,7 @@
                     <td> {{ p.horas_docentes }} </td>
                     <td> {{ p.horas_disponibles }} </td>
                     <td>
+                        <a class="btn btn-sm btn-success" href="{% url 'carga-horaria:profesor__anexo' p.pk %}" data-toggle="tooltip" data-placement="top" title="Generar Anexo 1"><i class="fa fa-handshake-o"></i></a>
                         <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:profesor__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
                         <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_profesor_{{p.pk}}"><i class="fa fa-trash"></i></a>
                     </td>
