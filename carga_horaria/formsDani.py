@@ -75,7 +75,17 @@ class ColegioForm(forms.ModelForm):
      )
         fields = [
             'nombre',
-            'jec'
+            'abrev',
+            'fundacion',
+            'direccion',
+            'ciudad',
+            'comuna',
+            'telefono',
+            'rbd',
+            'jec',
+            'pie',
+            'web',
+            'financiamiento'
         ]
         help_texts = {
             'nombre': u"Defina un nombre para el colegio",

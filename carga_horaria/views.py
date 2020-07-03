@@ -247,6 +247,7 @@ def asignar(request, pk):
 
 def asignar_fua(request, pk, tipo):
     pp = get_object_or_404(Profesor, pk=pk)
+    tipo_display = dict(Asignacion.TIPO_CHOICES)[int(tipo)]
 
     if request.method == 'POST':
         form = AsignacionFUAForm(request.POST, profesor=pp, user=request.user)
@@ -259,6 +260,7 @@ def asignar_fua(request, pk, tipo):
     else:
         form = AsignacionFUAForm(user=request.user)
     return render(request, 'carga_horaria/asignar_fua.html', {'object': pp,
+                                                              'tipo': tipo_display,
                                                               'form': form})
 
 

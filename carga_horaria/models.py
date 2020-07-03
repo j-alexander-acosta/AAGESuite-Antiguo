@@ -58,10 +58,25 @@ class Fundacion(models.Model):
 
 
 class Colegio(models.Model):
+    PAID = 1
+    SHARED = 2
+    FREE = 3
+    FINANCING_CHOICES = ((PAID, 'particular pagado'),
+                         (SHARED, 'financiamiento compartido'),
+                         (FREE, 'gratuito'))
+    
     nombre = models.CharField(max_length=255)
     abrev = models.CharField(max_length=10, blank=True, null=True)
     fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
+    direccion = models.CharField(max_length=255, blank=True, null=True)
+    ciudad = models.CharField(max_length=255, blank=True, null=True)
+    comuna = models.CharField(max_length=255, blank=True, null=True)
+    telefono = models.CharField(max_length=255, blank=True, null=True)
+    rbd = models.CharField(max_length=255, blank=True, null=True)
     jec = models.BooleanField(default=True)
+    pie = models.BooleanField(default=True)
+    web = models.URLField(max_length=255, blank=True, null=True)
+    financiamiento = models.PositiveSmallIntegerField(default=PAID, choices=FINANCING_CHOICES)
     
     def __str__(self): 
         return self.nombre
@@ -218,7 +233,7 @@ class Profesor(models.Model):
 
 class Asistente(models.Model):
     nombre = models.CharField(max_length=255)
-    horas = models.DecimalField(max_digits=3, decimal_places=1, validators=[MinValueValidator(1), MaxValueValidator(44)])
+    horas = models.DecimalField(max_digits=3, decimal_places=1, validators=[MinValueValidator(1), MaxValueValidator(45)])
     funcion = models.CharField(max_length=255)
     fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
 
