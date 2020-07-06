@@ -78,6 +78,8 @@ class Vacacion(models.Model):
     fecha_inicio = models.DateField(verbose_name='Fecha de inicio')
     total_feriados = models.IntegerField(default=0, verbose_name='Total de feriados en el periodo de vacaciones')
     fecha_termino = models.DateField(null=True, blank=True, verbose_name='Fecha de término')
+    fecha_retorno = models.DateField(null=True, blank=True, verbose_name='Fecha de retorno')
+    dias_pendiente = models.IntegerField(default=0, verbose_name='Días pendientes')
     es_pendiente = models.BooleanField(default=False, verbose_name='Corresponde a vacaciones pendientes')
 
     def __str__(self):
@@ -90,6 +92,12 @@ class Vacacion(models.Model):
         verbose_name = u'Vacación'
         verbose_name_plural = u'Vacaciones'
 
+    @property
+    def dias_correspondientes(self):
+        # TODO crear funcion dias correspondientes, apartir de la antiguedad del funcionario
+        dias = 0
+        return dias
+
 
 class TipoLicencia(models.Model):
     nombre = models.CharField(max_length=150)
@@ -98,7 +106,11 @@ class TipoLicencia(models.Model):
     dias_habiles = models.BooleanField(default=True, verbose_name='Corresponde a días hábiles')
 
     def __str__(self):
-        return self.nombre
+        return '{} ({}-{})'.format(
+                self.nombre,
+                self.total_dias,
+                '1' if self.dias_habiles else '0'
+            )
 
     class Meta:
         verbose_name = u'Tipo de licencia'
@@ -114,8 +126,8 @@ class Licencia(models.Model):
     fecha_inicio = models.DateField(verbose_name='Fecha de inicio')
     total_feriados = models.IntegerField(default=0, verbose_name='Total de feriados en el periodo de la licencia')
     fecha_termino = models.DateField(null=True, blank=True, verbose_name='Fecha de término')
+    fecha_retorno = models.DateField(null=True, blank=True, verbose_name='Fecha de retorno')
     dias_habiles = models.BooleanField(default=True, verbose_name='Corresponde a días hábiles')
-
 
     def __str__(self):
         return '{}, {}'.format(

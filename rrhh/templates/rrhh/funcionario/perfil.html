@@ -1,4 +1,5 @@
 {% extends 'base/base.html' %}
+{% load humanize crispy_forms_tags staticfiles %}
 
 {% block title_page %}
     Perfil de {{ object }}
@@ -23,7 +24,8 @@
             </div>
 
 
-            <div class="pm-body clearfix">
+            <div class="pm-body clearfix m-l-5">
+                <br>
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" id="perfil-tab" data-toggle="tab" href="#perfil"
@@ -45,7 +47,7 @@
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="perfil" role="tabpanel" aria-labelledby="perfil-tab">
                         <div class="pmb-block">
-                            <div class="pmbb-body p-l-30">
+                            <div class="pmbb-body">
                                 <div class="pmbb-view">
                                     <table class="table table-responsive">
                                         <body>
@@ -89,7 +91,7 @@
                     </div>
                     <div class="tab-pane fade" id="profesional" role="tabpanel" aria-labelledby="profesional-tab">
                         <div class="pmb-block">
-                            <div class="pmbb-body p-l-30">
+                            <div class="pmbb-body">
                                 <div class="pmbb-view">
                                     <table class="table table-responsive">
                                         <body>
@@ -125,14 +127,14 @@
                     </div>
                     <div class="tab-pane fade" id="vacacion" role="tabpanel" aria-labelledby="vacacion-tab">
                         <div class="pmb-block">
-                            <div class="pmbb-body p-l-30">
-                                <p>Listado de Vacaciones del funcionario, ordenado del mas reciente a las antiguo.</p>
+                            <div class="pmbb-body">
+                                <p>Listado de Vacaciones del funcionario, ordenado del mas reciente al mas antiguo.</p>
                                 <div class="pmbb-view">
                                     <table class="table table-responsive">
                                         <thead>
                                             <tr>
-                                                <th>Fecha de inicio</th>
-                                                <th>Fecha de termino</th>
+                                                <th>Periodo</th>
+                                                <th>Fecha de retorno</th>
                                                 <th>Total de días</th>
                                                 <th>Total feriados</th>
                                                 <th>Es pendiente</th>
@@ -141,8 +143,8 @@
                                         <tbody>
                                             {% for v in object.vacacion_set.all %}
                                                 <tr>
-                                                    <td>{{ v.fecha_inicio }}</td>
-                                                    <td>{{ v.fecha_termino }}</td>
+                                                    <td>{{ v.fecha_inicio|naturalday }} - {{ v.fecha_termino|naturalday }}</td>
+                                                    <td>{{ v.fecha_retorno|naturalday }}</td>
                                                     <td>{{ v.total_dias }}</td>
                                                     <td>{{ v.total_feriados }}</td>
                                                     <td>{{ v.es_pendiente|yesno }}</td>
@@ -160,29 +162,33 @@
                     </div>
                     <div class="tab-pane fade" id="licencia" role="tabpanel" aria-labelledby="licencia-tab">
                         <div class="pmb-block">
-                            <div class="pmbb-body p-l-30">
-                                <p>Listado de Licencias del funcionario, ordenado del mas reciente a las antiguo.</p>
+                            <div class="pmbb-body">
+                                <p>Listado de Licencias del funcionario, ordenado del mas reciente al mas antiguo.
+                                    <button name="agregar_licencia" type="button" class="btn btn-sm btn-primary pull-right" data-toggle="modal" data-target="#crear_licencia">
+                                        <span><i class="fa fa-plus"></i> Agregar licencia</span>
+                                    </button>
+                                </p>
                                 <div class="pmbb-view">
                                     <table class="table table-responsive">
                                         <thead>
                                             <tr>
                                                 <th>Tipo de Licencia</th>
                                                 <th>Folio de Licencia</th>
-                                                <th>Fecha de inicio</th>
-                                                <th>Fecha de termino</th>
+                                                <th>Periodo</th>
+                                                <th>Fecha de retorno</th>
                                                 <th>Total de días</th>
                                                 <th>Total feriados</th>
                                                 <th>Son días hábiles</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for l in object.licencia_set.all %}
+                                            {% for l in object.licencia_set.all|dictsortreversed:"id" %}
                                                 <tr>
                                                     <td>{% if l.tipo_licencia %} {{ l.tipo_licencia }} {% else %} {{ l.tipo_licencia_descripcion }} {% endif %}</td>
                                                     <td>{{ l.folio_licencia }}</td>
-                                                    <td>{{ l.fecha_inicio }}</td>
-                                                    <td>{{ l.fecha_termino }}</td>
-                                                    <td>{{ l.dias_totales }}</td>
+                                                    <td>{{ l.fecha_inicio|naturalday }} - {{ l.fecha_terminonaturalday }}</td>
+                                                    <td>{{ l.fecha_retorno|naturalday }}</td>
+                                                    <td>{{ l.total_dias }}</td>
                                                     <td>{{ l.total_feriados }}</td>
                                                     <td>{{ l.dias_habiles|yesno }}</td>
                                                 </tr>
@@ -203,4 +209,80 @@
     </div>
     <br><br><br><br>
 
+    <!-- Modal -->
+    <div class="modal fade" id="crear_licencia" tabindex="-1" role="dialog" aria-labelledby="crear_licenciaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <form class="form-horizontal" action="" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Agregar licencia a {{ object }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body m-10">
+                        {% csrf_token %}
+                        {% crispy lf_form %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'rrhh/ownscripts/nueva_licencia_funcionario.js' %}"></script>
+    <script>
+        function calculo_fechas(){
+            let total_dias = $(document).find('#id_total_dias').val();
+            let fecha_inicio = $(document).find('#id_fecha_inicio').val();
+            let total_feriados = $(document).find('#id_total_feriados').val();
+            console.log(fecha_inicio);
+            let fecha_inicial = new Date(fecha_inicio);
+            console.log(fecha_inicial);
+            let fecha_termino = fecha_inicial + parseInt(total_dias) + parseInt(total_feriados);
+            let fecha_retorno = fecha_termino + 1;
+            $(document).find('#id_fecha_termino').val(fecha_termino.toString());
+            $(document).find('#id_fecha_retorno').val(fecha_retorno.toString());
+        }
+
+        $(function() {
+            console.log('Funcionando!!!');
+            let total_dias = 0, dias_habiles = 0
+
+            $(document).find('#div_id_tipo_licencia_descripcion').css('display', 'none');
+            $(document).find('#id_total_dias').attr('disabled', 'true');
+            $(document).find('#id_dias_habiles').attr('disabled', 'true');
+            $(document).find('#id_fecha_termino').attr('disabled', 'true');
+            $(document).find('#id_fecha_retorno').attr('disabled', 'true');
+            $(document).find('#id_dias_habiles').attr('checked', false);
+
+            $(document).on('change', '#id_tipo_licencia', function() {
+                let opcion = $(document).find('#id_tipo_licencia_chosen').find('a.chosen-single').find('span').html();
+                try {
+                    total_dias = opcion.split('(')[1].split(')')[0].split('-')[0];
+                    dias_habiles = opcion.split('(')[1].split(')')[0].split('-')[1];
+                }catch(err){
+                    console.log(err.message);
+                    total_dias = 0;
+                    dias_habiles = 0;
+                }
+                if (dias_habiles == '1') {
+                    $(document).find('#id_dias_habiles').attr('checked', true);
+                }else {
+                    $(document).find('#id_dias_habiles').attr('checked', false);
+                }
+                $(document).find('#id_total_dias').val(total_dias);
+            });
+
+            $(document).on('change', '#id_fecha_inicio', function() {
+                calculo_fechas();
+            });
+
+        });
+    </script>
 {% endblock %}

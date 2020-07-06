@@ -16,8 +16,8 @@ urlpatterns = [
         name='funcionario__nuevo'
     ),
     url(
-        r'^funcionarios/(?P<pk>\d+)/$',
-        views.FuncionarioDetailView.as_view(),
+        r'^funcionarios/(?P<pk_funcionario>\d+)/$',
+        views.funcionario_detail,
         name='funcionario'
     ),
     url(

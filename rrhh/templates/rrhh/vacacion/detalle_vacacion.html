@@ -1,5 +1,5 @@
 {% extends 'base/base.html' %}
-{% load staticfiles %}
+{% load staticfiles humanize %}
 
 {% block title_page %}
     Vacación - Detalle
@@ -9,7 +9,7 @@
 
 <div class="card">
     <div class="card-header">
-      <h4 class="card-title"><strong> {{ object.funcionario }}</strong>
+      <h4 class="card-title"><strong>Detalle de Vacaciones</strong>
           {% block buttons %}
               <div class="btn-group pull-right">
                   <a href="{% url 'rrhh:vacaciones' %}" type="button" class="btn btn-sm btn-dark">
@@ -24,7 +24,7 @@
               </div>
           {% endblock %}
         </h4>
-        <h6 class="card-subtitle mb-2 text-muted">Detalle de la vacación</h6>
+        <h6 class="card-subtitle mb-2 text-muted">{{ object }}</h6>
 
     </div>
     <div class="card-body">
@@ -35,12 +35,12 @@
                 <td>  {{ object.funcionario }}  </td>
             </tr>
             <tr>
-                <th> Fecha de inicio </th>
-                <td>  {{ object.fecha_inicio }}  </td>
+                <th> Periodo de vacaciones </th>
+                <td>  {{ object.fecha_inicio|naturalday }} - {{ object.fecha_termino|naturalday }} </td>
             </tr>
             <tr>
-                <th> fecha de termino </th>
-                <td>  {{ object.fecha_termino }}  </td>
+                <th> Fecha de retorno </th>
+                <td>  {{ object.fecha_retorno|naturalday }}  </td>
             </tr>
             <tr>
                 <th> Total de días </th>

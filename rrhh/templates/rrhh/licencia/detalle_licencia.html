@@ -1,5 +1,5 @@
 {% extends 'base/base.html' %}
-{% load staticfiles %}
+{% load staticfiles humanize %}
 
 {% block title_page %}
     Licencia - Detalle
@@ -9,7 +9,7 @@
 
 <div class="card">
     <div class="card-header">
-      <h4 class="card-title"><strong> {{ object}}</strong>
+      <h4 class="card-title"><strong>Detalle de Licencia</strong>
           {% block buttons %}
               <div class="btn-group pull-right">
                   <a href="{% url 'rrhh:licencias' %}" type="button" class="btn btn-sm btn-dark">
@@ -24,7 +24,7 @@
               </div>
           {% endblock %}
         </h4>
-        <h6 class="card-subtitle mb-2 text-muted">Detalle de licencia</h6>
+        <h6 class="card-subtitle mb-2 text-muted">{{ object }}</h6>
 
     </div>
     <div class="card-body">
@@ -48,7 +48,11 @@
                 </tr>
                 <tr>
                     <th> Periodo de licencia </th>
-                    <td>  {{ object.fecha_inicio }} - {{ object.fecha_termino }}  </td>
+                    <td>  {{ object.fecha_inicio|naturalday }} - {{ object.fecha_termino|naturalday }}  </td>
+                </tr>
+                <tr>
+                    <th> Fecha de retorno </th>
+                    <td>  {{ object.fecha_retorno|naturalday }}  </td>
                 </tr>
                 <tr>
                     <th> Total de días feriados en el rango de licencia</th>

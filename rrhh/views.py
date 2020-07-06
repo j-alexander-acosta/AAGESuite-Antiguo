@@ -2,9 +2,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
 from django.core.urlresolvers import reverse_lazy, reverse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Funcionario, Entrevista, Archivo, Vacacion, TipoLicencia, Licencia
-from .forms import FuncionarioForm, EntrevistaForm, ArchivoForm, VacacionForm, TipoLicenciaForm, LicenciaForm
+from .forms import FuncionarioForm, EntrevistaForm, ArchivoForm, VacacionForm
+from .forms import TipoLicenciaForm, LicenciaForm, LicenciaFuncionarioForm
 
 
 @login_required
@@ -21,19 +22,42 @@ class FuncionarioListView(LoginRequiredMixin, ListView):
     paginate_by = 10
 
 
-class FuncionarioCreateView(CreateView):
+class FuncionarioCreateView(LoginRequiredMixin, CreateView):
     model = Funcionario
     form_class = FuncionarioForm
     template_name = 'rrhh/funcionario/nuevo_funcionario.html'
     success_url = reverse_lazy('rrhh:funcionarios')
 
 
-class FuncionarioDetailView(DetailView):
+@login_required
+def funcionario_detail(request, pk_funcionario):
+    context = {}
+    funcionario = get_object_or_404(
+        Funcionario,
+        pk=pk_funcionario
+    )
+
+    context['object'] = funcionario
+    context['lf_form'] = LicenciaFuncionarioForm(instance=funcionario)
+
+    return render(
+        request,
+        'rrhh/funcionario/perfil.html',
+        context
+    )
+
+
+class FuncionarioDetailView(LoginRequiredMixin, DetailView):
     model = Funcionario
     template_name = 'rrhh/funcionario/perfil.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['lf_form'] = LicenciaFuncionarioForm(instance=self)
+        return context
 
-class FuncionarioUpdateView(UpdateView):
+
+class FuncionarioUpdateView(LoginRequiredMixin, UpdateView):
     model = Funcionario
     form_class = FuncionarioForm
     template_name = 'rrhh/funcionario/editar_funcionario.html'
@@ -63,19 +87,19 @@ class EntrevistaListView(LoginRequiredMixin, ListView):
     paginate_by = 10
 
 
-class EntrevistaCreateView(CreateView):
+class EntrevistaCreateView(LoginRequiredMixin, CreateView):
     model = Entrevista
     form_class = EntrevistaForm
     template_name = 'rrhh/entrevista/nueva_entrevista.html'
     success_url = reverse_lazy('rrhh:entrevistas')
 
 
-class EntrevistaDetailView(DetailView):
+class EntrevistaDetailView(LoginRequiredMixin, DetailView):
     model = Entrevista
     template_name = 'rrhh/entrevista/detalle_entrevista.html'
 
 
-class EntrevistaUpdateView(UpdateView):
+class EntrevistaUpdateView(LoginRequiredMixin, UpdateView):
     model = Entrevista
     form_class = EntrevistaForm
     template_name = 'rrhh/entrevista/editar_entrevista.html'
@@ -105,19 +129,19 @@ class ArchivoListView(LoginRequiredMixin, ListView):
     paginate_by = 10
 
 
-class ArchivoCreateView(CreateView):
+class ArchivoCreateView(LoginRequiredMixin, CreateView):
     model = Archivo
     form_class = ArchivoForm
     template_name = 'rrhh/archivo/nuevo_archivo.html'
     success_url = reverse_lazy('rrhh:archivos')
 
 
-class ArchivoDetailView(DetailView):
+class ArchivoDetailView(LoginRequiredMixin, DetailView):
     model = Archivo
     template_name = 'rrhh/archivo/detalle_archivo.html'
 
 
-class ArchivoUpdateView(UpdateView):
+class ArchivoUpdateView(LoginRequiredMixin, UpdateView):
     model = Archivo
     form_class = ArchivoForm
     template_name = 'rrhh/archivo/editar_archivo.html'

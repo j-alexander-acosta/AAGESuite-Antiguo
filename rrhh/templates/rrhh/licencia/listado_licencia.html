@@ -36,9 +36,9 @@
             <tbody>
             {% for l in object_list %}
                 <tr>
-                    <td><a href="{% url 'rrhh:tipolicencia' l.pk %}"> {{ l.funcionario }} </a></td>
+                    <td><a href="{% url 'rrhh:licencia' l.pk %}"> {{ l.funcionario }} </a></td>
                     <td> {% if l.tipo_licencia %} {{ l.tipo_licencia }} {% else %} {{ l.tipo_licencia_descripcion }} {% endif %}</td>
-                    <td> {{ tl.total_dias }} </td>
+                    <td> {{ l.total_dias }} </td>
                     <td>
                         <a class="btn btn-sm btn-primary" href="{% url 'rrhh:licencia__editar' l.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
                         <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_licencia_{{l.pk}}"><i class="fa fa-trash"></i></a>
