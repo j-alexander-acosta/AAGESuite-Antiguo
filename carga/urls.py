@@ -17,10 +17,13 @@ from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.views.generic import RedirectView
+from . import views
 
 admin.site.site_header = 'Carga Académica - Back Office'
 
 urlpatterns = [
+    url(r'^login/', views.login_view, name='login'),
+    url(r'^logout/', views.logout_view, name='logout'),
     url(r'^carga/', include('carga_horaria.urls')),
     url(r'^rrhh/', include('rrhh.urls')),
     url(r'^admin/', admin.site.urls),

@@ -63,7 +63,9 @@ ROOT_URLCONF = 'carga.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -139,4 +141,4 @@ COMPRESS_CSS_HASHING_METHOD = 'content'
 # Crispy forms
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
-LOGIN_URL = '/admin/login/'
+LOGIN_URL = '/login/'

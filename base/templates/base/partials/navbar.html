@@ -131,11 +131,9 @@
                        id="dropdownUsuario" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-user-o"></i> {{ request.user.username }}</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownUsuario">
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownUsuario">
                         <a class="dropdown-item" href="#">
                             <i class="fa fa-user-secret"></i> Perfil </a>
-                        <a class="dropdown-item" href="#">
-                            <i class="fa fa-lock"></i> Bloquear Pantalla</a>
                         <a class="dropdown-item" href="/admin/logout/?next=/">
                             <i class="fa fa-sign-out"></i> Cerrar Sesión</a>
                     </div>
