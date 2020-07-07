@@ -41,7 +41,7 @@
       </tbody>
     </table>
 
-    <h3>Docencia de Aula 70%</h3>
+    <h3>Docencia de Aula 65%</h3>
 
     <table class="table table-small">
       <thead>
@@ -57,7 +57,7 @@
 	{% for a in asignaciones %}
 	<tr>
 	  <td>{{ forloop.counter }}</td>
-	  <td>{{ a.asignatura }}</td>
+	  <td>{{ a.asignatura|default:"" }}{{ a.descripcion|default:"" }}</td>
 	  <td>{{ a.curso|default:"" }}</td>
 	  <td>{{ a.horas }}</td>
 	  <td>{{ a.horas_crono }}</td>
@@ -85,7 +85,7 @@
     </table>
 
 
-    <h3>Actividades curriculares no lectivas 30%</h3>
+    <h3>Actividades curriculares no lectivas 35%</h3>
 
     <table class="table table-small">
       <thead>
