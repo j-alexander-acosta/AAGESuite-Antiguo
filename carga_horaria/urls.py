@@ -21,6 +21,9 @@ app_name = 'carga-horaria'
 
 urlpatterns = [
     url(r'^$', views.home, name='home'),
+    url(r'^switch/$', views.switch, name='switch'),
+    url(r'^switch/(?P<pk>\d+)/$', views.switch, name='switch'),
+    url(r'^clear/$', views.clear, name='clear'),
     url(
         r'^profesores/$',
         views.ProfesorListView.as_view(),

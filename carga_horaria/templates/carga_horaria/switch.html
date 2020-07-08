@@ -1,0 +1,15 @@
+{% extends 'base/base.html' %}
+
+{% block title_page %}
+    Inicio
+{% endblock %}
+
+{% block content %}
+<h2>Elija colegio para trabajar</h2>
+
+<div class="list-group">
+  {% for c in colegios %}
+    <a href="{% url 'carga-horaria:switch' pk=c.pk %}" class="list-group-item list-group-item-action">{{ c }}</a>
+  {% endfor %}
+</div>
+{% endblock content %}
