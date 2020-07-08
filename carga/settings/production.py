@@ -8,7 +8,7 @@ PRODUCTION_APPS = []
 
 INSTALLED_APPS = PREREQ_APPS + PROJECT_APPS + PRODUCTION_APPS
 
-ALLOWED_HOSTS = ['carga.unach.cl']
+ALLOWED_HOSTS = ['ch.unach.cl']
 
 
 # Database
@@ -20,7 +20,7 @@ DATABASES = {
         'NAME': 'carga',
         'USER': 'carga',
         'PASSWORD': 'carga',
-        'HOST': 'localhost',
+        'HOST': '/var/run/postgresql',
     }
 }
 
