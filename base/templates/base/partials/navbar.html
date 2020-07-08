@@ -2,20 +2,6 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: #203c53">
     <a class="navbar-brand" href="#">
         <img src="{% static 'base/img/logotipo.png' %}" height="45" alt="">
-        {% if request.user.usuariofuncion.es_dirplac_or_admin %}
-            Administrador
-        {% elif request.user.usuariofuncion.es_departamental and request.user.fundacion_set.all.count == 1 %}
-            {{ request.user.fundacion_set.all.first.nombre }}
-        {% elif request.user.usuariofuncion.es_departamental and request.user.fundacion_set.all.count > 1 %}
-            Departamental SEA
-        {% elif request.user.usuariofuncion.es_supervisor %}
-            Supervisor Agencia de Calidad
-        {% elif request.user.colegio_set.all %}
-            {{ request.user.colegio_set.all.first.nombre }}
-        {% else %}
-            Invitado
-        {% endif %}
-        <span class="badge badge-secondary">Periodo {{ request.session.p_anio }}</span>
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
