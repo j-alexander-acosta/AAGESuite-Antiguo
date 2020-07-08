@@ -84,7 +84,8 @@ class PeriodoCreateView(CreateView):
 
     def get_form_kwargs(self, *args, **kwargs):
         kwargs = super(PeriodoCreateView, self).get_form_kwargs(*args, **kwargs)
-        kwargs.update({'user': self.request.user})
+        kwargs.update({'user': self.request.user,
+                       'colegio': self.request.session.get('colegio__pk', None)})
         return kwargs
 
 

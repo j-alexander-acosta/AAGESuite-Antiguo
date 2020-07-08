@@ -47,7 +47,12 @@ class PeriodoForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
+        colegio = kwargs.pop('colegio', None)
         super(PeriodoForm, self).__init__(*args, **kwargs)
+
+        if colegio:
+            self.fields['colegio'].initial = colegio
+            self.fields['colegio'].disabled = True
 
         if user:
             if not user.is_superuser:
