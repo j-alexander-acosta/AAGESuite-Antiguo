@@ -6,6 +6,7 @@ from carga_horaria.models import Profesor, AsignaturaBase, Asignatura, Asistente
 from carga_horaria.formsAlexis import ProfesorForm, AsignaturaBaseForm, AsignaturaCreateForm, AsignaturaUpdateForm, AsistenteForm
 from django.core.urlresolvers import reverse_lazy, reverse
 from guardian.shortcuts import get_objects_for_user
+from .models import Colegio
 from .models import Periodo
 from .models import Nivel
 
@@ -38,10 +39,25 @@ class GetObjectsForUserMixin(object):
         qs = super(GetObjectsForUserMixin, self).get_queryset()
         if not self.request.user.is_superuser:
             colegios = [c.pk for c in get_objects_for_user(self.request.user, "carga_horaria.change_colegio")]
+
+            # new logic for colegio switcher
+            selected = self.request.session.get('colegio__pk', None)
+            if selected:
+                colegios = [selected]
+            # end
+            
             kwargs = {"{}__in".format(self.lookup): colegios}
             return qs.filter(**kwargs)
         else:
-            return qs
+            colegios = [c.pk for c in Colegio.objects.all()]
+            # new logic for colegio switcher
+            selected = self.request.session.get('colegio__pk', None)
+            if selected:
+                colegios = [selected]
+            # end
+            
+            kwargs = {"{}__in".format(self.lookup): colegios}
+            return qs.filter(**kwargs)
 
 
 class ObjPermissionRequiredMixin(object):
