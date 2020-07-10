@@ -197,6 +197,18 @@ let
     doCheck = false;
   };
 
+  django-jsonview = with pkgs.python3Packages; buildPythonPackage rec {
+    name = "django-jsonview-${version}";
+    version = "2.2.0";
+    src = pkgs.fetchurl {
+    	url = "https://files.pythonhosted.org/packages/0a/6d/052ceb63865bd67c0fb39a6041f45152734120cf1258a61c6fb88f35307b/django-jsonview-2.0.0.tar.gz";
+	    sha512 = "1a47f1dvb0br7rvv4s0aw6x78m57l0sb8cl2krhzq33hw775ay63hzhk0ivrnhnrmaf39nc6x467iq65wp5aw10ch6la9glnnrsj95q";
+    };
+    buildInputs = [ django_1_11 ];
+    propagatedBuildInputs = [ pkgs.wkhtmltopdf ];
+    doCheck = false;
+  };
+
 in
 { stdenv ? pkgs.stdenv }:
 
@@ -220,6 +232,7 @@ pkgs.python3Packages.buildPythonApplication {
     python3Packages.unidecode
     python3Packages.django_compressor
     python3Packages.django_guardian
+    django-jsonview
     django-qr-code
     django-crispy-forms
     django-constance
