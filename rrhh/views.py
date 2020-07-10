@@ -3,9 +3,12 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.shortcuts import render, get_object_or_404, redirect
+# from jsonview.decorators import json_view, json
 from .models import Funcionario, Entrevista, Archivo, Vacacion, TipoLicencia, Licencia
 from .forms import FuncionarioForm, EntrevistaForm, ArchivoForm, VacacionForm
 from .forms import TipoLicenciaForm, LicenciaForm, LicenciaFuncionarioForm
+
+
 
 
 @login_required
@@ -283,3 +286,51 @@ class LicenciaDeleteView(LoginRequiredMixin, DeleteView):
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
+
+
+# @login_required
+# @json_view
+# def nuevo_licencia_funcionario(request):
+#     """
+#         Función para crear un nuevo objetivo estrategico para un area en particular
+#
+#     :param request: Django Request
+#     :return: Json
+#     """
+#     data = {
+#         'success': False,
+#         'message': u"",
+#         'form_html': None
+#     }
+#
+#     if request.is_ajax():
+#         if request.method == 'POST':
+#             form = LicenciaFuncionarioForm(request.POST)
+#             if form.is_valid():
+#                 licencia = form.save()
+#                 data['success'] = True
+#                 data['message'] = u"la licencia fue agregada exitosamente"
+#                 data['tipo_licencia'] = licencia.tipo_licencia if licencia.tipo_licencia else licencia.tipo_licencia_descripcion
+#                 data['folio'] = licencia.folio_licencia
+#                 data['periodo'] = '{} - {}'.format(
+#                     licencia.fecha_inicio,
+#                     licencia.fecha_termino
+#                 )
+#                 data['fecha_retorno'] = licencia.fecha_retorno
+#                 data['total_dias'] = licencia.total_dias
+#                 data['total_feriados'] = licencia.total_feriados
+#                 data['dias_habiles'] = licencia.dias_habiles
+#             else:
+#                 form_html = render_crispy_form(
+#                     form,
+#                     context=csrf(request)
+#                 )
+#                 # Formulario con errores
+#                 data['message'] = u"Complete la información requerida"
+#                 data['form_html'] = form_html
+#         else:
+#             data['message'] = u"La solicitud debe ser POST"
+#     else:
+#         data['message'] = u"La solicitud debe ser ajax"
+#
+#     return data

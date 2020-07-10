@@ -169,7 +169,7 @@
                                     </button>
                                 </p>
                                 <div class="pmbb-view">
-                                    <table class="table table-responsive">
+                                    <table id="licencias" class="table table-responsive">
                                         <thead>
                                             <tr>
                                                 <th>Tipo de Licencia</th>
@@ -186,7 +186,7 @@
                                                 <tr>
                                                     <td>{% if l.tipo_licencia %} {{ l.tipo_licencia }} {% else %} {{ l.tipo_licencia_descripcion }} {% endif %}</td>
                                                     <td>{{ l.folio_licencia }}</td>
-                                                    <td>{{ l.fecha_inicio|naturalday }} - {{ l.fecha_terminonaturalday }}</td>
+                                                    <td>{{ l.fecha_inicio|naturalday }} - {{ l.fecha_termino|naturalday }}</td>
                                                     <td>{{ l.fecha_retorno|naturalday }}</td>
                                                     <td>{{ l.total_dias }}</td>
                                                     <td>{{ l.total_feriados }}</td>
@@ -213,7 +213,8 @@
     <div class="modal fade" id="crear_licencia" tabindex="-1" role="dialog" aria-labelledby="crear_licenciaLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <form class="form-horizontal" action="" method="post">
+                
+                <form id="licenciaForm" class="form-horizontal" action="{% comment %}{% url 'rrhh:licencia_funcionario__nuevo' %}{%endcomment%}" method="post">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Agregar licencia a {{ object }}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -241,13 +242,24 @@
             let total_dias = $(document).find('#id_total_dias').val();
             let fecha_inicio = $(document).find('#id_fecha_inicio').val();
             let total_feriados = $(document).find('#id_total_feriados').val();
-            console.log(fecha_inicio);
-            let fecha_inicial = new Date(fecha_inicio);
-            console.log(fecha_inicial);
-            let fecha_termino = fecha_inicial + parseInt(total_dias) + parseInt(total_feriados);
-            let fecha_retorno = fecha_termino + 1;
-            $(document).find('#id_fecha_termino').val(fecha_termino.toString());
-            $(document).find('#id_fecha_retorno').val(fecha_retorno.toString());
+            let fecha_inicio_part = fecha_inicio.split('/');
+            console.log(fecha_inicio)
+            let fecha = new Date(fecha_inicio_part[2] + '/' + fecha_inicio_part[1] + '/' + fecha_inicio_part[0]);
+            console.log(fecha.toLocaleString());
+
+            //let fecha_termino = new Date(fecha_inicial.getFullYear() + '/' + fecha_inicial.getMonth() + '/' + (fecha_inicial.getDate() + parseInt(total_dias) - 1 + parseInt(total_feriados)));
+            fecha.setDate(fecha.getDate() + parseInt(total_dias) - 1 + parseInt(total_feriados));
+            console.log(fecha);
+            let fecha_string = fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear();
+            console.log(fecha_string);
+            $(document).find('#id_fecha_termino').val((fecha_string));
+
+            //let fecha_retorno = new Date((fecha_termino.getFullYear()) + '/' + fecha_termino.getMonth() + '/' + (fecha_termino.getDate() + 1 ));
+            fecha.setDate(fecha.getDate() + 1);
+            console.log(fecha);
+            fecha_string = fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear();
+            console.log(fecha_string);
+            $(document).find('#id_fecha_retorno').val(fecha_string);
         }
 
         $(function() {
@@ -279,8 +291,46 @@
                 $(document).find('#id_total_dias').val(total_dias);
             });
 
-            $(document).on('change', '#id_fecha_inicio', function() {
+            $(document).on('change', '[id^="id_"]', function() {
                 calculo_fechas();
+            });
+
+            $(document).on('keyup', '[id^="id_"]', function() {
+                calculo_fechas();
+            });
+
+            $(document).on('submit', '#licenciaForm', function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: form.attr('method'),
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function(data) {
+                        if (!(data['success'])) {
+                            if(data['form_html'] !== null){
+                                form.find('#div_id_objetivo').replaceWith(data['form_html']);
+                                alertify.warning(data['message']);
+                            }
+                        } else {
+                            let tbody = $(document).find("table[id='licencias']").find('tbody');
+                            let nueva_licencia = `<tr>
+                                <td>${data.tipo_licencia}</td>
+                                <td>${data.folio}</td>
+                                <td>${data.periodo}</td>
+                                <td>${data.fecha_retorno}</td>
+                                <td>${data.total_dias}</td>
+                                <td>${data.total_feriados}</td>
+                                <td>${data.dias_habiles}</td>
+                                </tr>`;
+                            tbody.append(nueva_licencia);
+                            alertify.success(data['message']);
+                            $(document).find("div[class='modal fade show']").modal('hide');
+                        }
+                    },
+                    error: function () {
+                        alertify.warning("Ocurrio un error inesperado..");
+                    }
+                });
             });
 
         });
