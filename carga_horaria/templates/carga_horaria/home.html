@@ -1,7 +1,20 @@
 {% extends 'base/base.html' %}
+{% load staticfiles %}
 
 {% block title_page %}
     Inicio
+{% endblock %}
+
+{% block extra_css %}
+    <style media="screen">
+        body {
+            background: url({% static 'base/img/fondo.jpg' %}) no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
