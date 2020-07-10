@@ -18,14 +18,6 @@
     <br>
     <div class="row">
         <div class="col-md-3">
-            <div class="card text-white card-inverse bgm-lightgreen text-center">
-                <div class="card-header">
-                    <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                    <h6><a href="{% url 'carga-horaria:profesores' %}" style="color: #fff;">Profesores</a></h6>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
             <div class="card text-white card-inverse bgm-purple text-center">
                 <div class="card-header">
                     <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
@@ -33,9 +25,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <br>
-    <div class="row">
 	{% if request.user.is_superuser %}
         <div class="col-md-3">
             <div class="card text-white card-inverse bgm-yellow text-center">
@@ -61,10 +50,28 @@
             <div class="card text-white card-inverse bgm-lightgreen text-center">
                 <div class="card-header">
                     <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
+                    <h6><a href="{% url 'carga-horaria:profesores' %}" style="color: #fff;">Profesores</a></h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white card-inverse bgm-green text-center">
+                <div class="card-header">
+                    <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
                     <h6><a href="{% url 'carga-horaria:asistentes' %}" style="color: #fff;">Asistentes</a></h6>
                 </div>
             </div>
         </div>
+	{% if request.user.is_superuser %}
+        <div class="col-md-3">
+            <div class="card text-white card-inverse bgm-teal text-center">
+                <div class="card-header">
+                    <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
+                    <h6><a href="https://app.powerbi.com/sharedwithme" style="color: #fff;">Reportes</a></h6>
+                </div>
+            </div>
+        </div>
+	{% endif %}
     </div>
     <br>
 
