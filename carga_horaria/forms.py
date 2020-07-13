@@ -1,7 +1,7 @@
 from django import forms
 from crispy_forms.helper import FormHelper
 from guardian.shortcuts import get_objects_for_user
-from .models import Asignacion, AsignacionExtra
+from .models import Asignacion, AsignacionExtra, AsignacionNoAula
 from .models import Profesor
 
 class AsignacionForm(forms.ModelForm):
@@ -113,6 +113,43 @@ class AsignacionExtraForm(forms.ModelForm):
         self.profesor = kwargs.pop('profesor', None)
         user = kwargs.pop('user', None)
         super(AsignacionExtraForm, self).__init__(*args, **kwargs)
+
+        if user:
+            if not user.is_superuser:
+                self.fields['curso'].queryset = self.fields['curso'].queryset.filter(colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")])
+        else:
+            del(self.fields['curso'])
+
+
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.fields['curso'].empty_label = "Todos"
+
+
+class AsignacionNoAulaForm(forms.ModelForm):
+    """
+        Formulario para asignar una cosa NoAula
+    """
+
+    class Meta:
+        model = AsignacionNoAula
+        fields = [
+            'curso',
+            'descripcion',
+            'horas',
+        ]
+
+    def clean_horas(self):
+        horas = self.cleaned_data['horas']
+        profesor = self.profesor
+        if horas > profesor.horas_no_aula_disponibles:
+            raise forms.ValidationError("Excede las horas que {} tiene disponibles ({})".format(profesor, profesor.horas_no_aula_disponibles))
+        return horas
+
+    def __init__(self, *args, **kwargs):
+        self.profesor = kwargs.pop('profesor', None)
+        user = kwargs.pop('user', None)
+        super(AsignacionNoAulaForm, self).__init__(*args, **kwargs)
 
         if user:
             if not user.is_superuser:

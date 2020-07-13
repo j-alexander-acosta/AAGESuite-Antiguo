@@ -170,6 +170,7 @@ class Asignatura(models.Model):
 class Profesor(models.Model):
     nombre = models.CharField(max_length=255)
     horas = models.DecimalField(max_digits=3, decimal_places=1, validators=[MinValueValidator(1), MaxValueValidator(44)])
+    horas_no_aula = models.DecimalField(max_digits=3, decimal_places=1, validators=[MinValueValidator(1), MaxValueValidator(44)], default=0)
     especialidad = models.ForeignKey('Especialidad', blank=True, null=True)
     fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
 
@@ -200,6 +201,14 @@ class Profesor(models.Model):
     @property
     def horas_no_lectivas_disponibles(self):
         return self.horas_no_lectivas - self.horas_no_lectivas_asignadas - self.horas_planificacion
+
+    @property
+    def horas_no_aula_asignadas(self):
+        return sum(self.asignacionnoaula_set.values_list('horas', flat=True))
+
+    @property
+    def horas_no_aula_disponibles(self):
+        return self.horas_no_aula - self.horas_no_aula_asignadas
 
     @property
     def horas_docentes(self):
@@ -288,6 +297,16 @@ class Asignacion(models.Model):
 
 
 class AsignacionExtra(models.Model):
+    profesor = models.ForeignKey('Profesor')
+    curso = models.ForeignKey('Periodo', null=True, blank=True)
+    descripcion = models.CharField(max_length=255)
+    horas = models.DecimalField(max_digits=3, decimal_places=1)
+
+    def __str__(self): 
+        return "{} - {} ({})".format(self.profesor, self.descripcion, self.horas)
+
+
+class AsignacionNoAula(models.Model):
     profesor = models.ForeignKey('Profesor')
     curso = models.ForeignKey('Periodo', null=True, blank=True)
     descripcion = models.CharField(max_length=255)

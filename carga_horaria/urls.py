@@ -262,6 +262,16 @@ urlpatterns = [
         name='asignacion-extra__eliminar'
     ),
     url(
+        r'^profesores/(?P<pk>\d+)/asignar-no-aula/$',
+        views.asignar_no_aula,
+        name='asignar-no-aula'
+    ),
+    url(
+        r'^asignaciones-no-aula/(?P<pk>\d+)/eliminar/$',
+        views.AsignacionNoAulaDeleteView.as_view(),
+        name='asignacion-no-aula__eliminar'
+    ),
+    url(
         r'^planes/plantila/$',
         views.crear_desde_plantilla,
         name='plan__plantilla'

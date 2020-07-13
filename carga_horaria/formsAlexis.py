@@ -22,13 +22,22 @@ class ProfesorForm(forms.ModelForm):
         fields = [
             'nombre',
             'horas',
+            'horas_no_aula',
             'especialidad',
             'fundacion'
         ]
         labels = {
-            'horas': u'Horas de contrato',
+            'horas': u'Horas de contrato en docencia de aula',
+            'horas_no_aula': u'Horas de contrato en docencia no aula',
             'fundacion': 'Fundación que lo contrata'
         }
+
+    def clean(self):
+        cleaned_data = super(ProfesorForm, self).clean()
+
+        if cleaned_data['horas'] + cleaned_data['horas_no_aula'] > 44:
+            raise forms.ValidationError("La suma de horas de aula y no aula no debe superar 44 horas.")
+        return cleaned_data
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)

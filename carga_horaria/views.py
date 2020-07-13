@@ -14,10 +14,12 @@ from .models import Profesor
 from .models import Periodo
 from .models import Asignacion
 from .models import AsignacionExtra
+from .models import AsignacionNoAula
 from .models import Colegio
 from .forms import AsignacionForm
 from .forms import AsignacionFUAForm
 from .forms import AsignacionExtraForm
+from .forms import AsignacionNoAulaForm
 from .formsDani import PlantillaPlanForm
 
 
@@ -299,6 +301,21 @@ def asignar_extra(request, pk):
                                                                 'form': form})
 
 
+def asignar_no_aula(request, pk):
+    pp = get_object_or_404(Profesor, pk=pk)
+
+    if request.method == 'POST':
+        form = AsignacionNoAulaForm(request.POST, profesor=pp, user=request.user)
+        if form.is_valid():
+            asignacion = form.save(commit=False)
+            asignacion.profesor = pp
+            asignacion.save()
+            return redirect('carga-horaria:profesor', pp.pk)
+    else:
+        form = AsignacionNoAulaForm(user=request.user)
+    return render(request, 'carga_horaria/asignar_no_aula.html', {'object': pp,
+                                                                  'form': form})
+
 class AsignacionDeleteView(LoginRequiredMixin, DeleteView):
     model = Asignacion
     success_url = reverse_lazy('carga-horaria:periodos')
@@ -324,6 +341,22 @@ class AsignacionUpdateView(UpdateView):
 
 class AsignacionExtraDeleteView(LoginRequiredMixin, DeleteView):
     model = AsignacionExtra
+    template_name = 'carga_horaria/periodo/eliminar_periodo.html'
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse(
+            'carga-horaria:profesor',
+            kwargs={
+                'pk': self.object.profesor.pk,
+            }
+        )
+
+
+class AsignacionNoAulaDeleteView(LoginRequiredMixin, DeleteView):
+    model = AsignacionNoAula
     template_name = 'carga_horaria/periodo/eliminar_periodo.html'
 
     def get(self, request, *args, **kwargs):
