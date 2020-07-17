@@ -19,7 +19,7 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-md-9">
+        <div class="col">
             <div class="card text-white card-inverse bgm-orange text-center">
                 <div class="card-header">
                     <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
@@ -30,7 +30,7 @@
     </div>
     <br>
     <div class="row">
-        <div class="col-md-3">
+        <div class="col">
             <div class="card text-white card-inverse bgm-purple text-center">
                 <div class="card-header">
                     <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
@@ -38,28 +38,26 @@
                 </div>
             </div>
         </div>
-	{% if request.user.is_superuser %}
-        <div class="col-md-3">
-            <div class="card text-white card-inverse bgm-yellow text-center">
+        <div class="col">
+            <div class="card text-white card-inverse bgm-{% if request.user.is_superuser %}yellow{% else %}gray{% endif %} text-center">
                 <div class="card-header">
                     <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                    <h6><a href="{% url 'carga-horaria:planes' %}" style="color: #fff;">Planes de Estudio</a></h6>
+                    <h6><a href="{% if request.user.is_superuser %}{% url 'carga-horaria:planes' %}{% else %}#{% endif %}" style="color: #fff;">Planes de Estudio</a></h6>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card text-white card-inverse bgm-lightblue text-center">
+        <div class="col">
+            <div class="card text-white card-inverse bgm-{% if request.user.is_superuser %}lightblue{% else %}gray{% endif %} text-center">
                 <div class="card-header">
                     <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                    <h6><a href="{% url 'carga-horaria:asignaturasbase' %}" style="color: #fff;">Asignatura Base</a></h6>
+                    <h6><a href="{% if request.user.is_superuser %}{% url 'carga-horaria:asignaturasbase' %}{% else %}#{% endif %}" style="color: #fff;">Asignatura Base</a></h6>
                 </div>
             </div>
         </div>
-	{% endif %}
     </div>
     <br>
     <div class="row">
-        <div class="col-md-3">
+        <div class="col">
             <div class="card text-white card-inverse bgm-lightgreen text-center">
                 <div class="card-header">
                     <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
@@ -67,7 +65,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col">
             <div class="card text-white card-inverse bgm-green text-center">
                 <div class="card-header">
                     <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
@@ -75,16 +73,14 @@
                 </div>
             </div>
         </div>
-	{% if request.user.is_superuser %}
-        <div class="col-md-3">
-            <div class="card text-white card-inverse bgm-teal text-center">
+        <div class="col">
+            <div class="card text-white card-inverse bgm-{% if request.user.is_superuser %}teal{% else %}gray{% endif %} text-center">
                 <div class="card-header">
                     <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                    <h6><a href="https://app.powerbi.com/sharedwithme" target="_blank" style="color: #fff;">Reportes</a></h6>
+                    <h6><a href="{% if request.user.is_superuser %}https://app.powerbi.com/sharedwithme{% else %}#{% endif %}" target="_blank" style="color: #fff;">Reportes</a></h6>
                 </div>
             </div>
         </div>
-	{% endif %}
     </div>
     <br>
 
