@@ -22,7 +22,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '933(3!oxta6w63geg7yh62+mr&*@h0pn1h5z_z#br93#l-(wi^'
 
-
 # Application definition
 
 PREREQ_APPS = [
@@ -40,6 +39,7 @@ PREREQ_APPS = [
     'easy_select2',
     'compressor',
     'guardian',
+    'wkhtmltopdf',
     'base'
 ]
 

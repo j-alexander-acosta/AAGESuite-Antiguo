@@ -9,6 +9,7 @@ from carga_horaria.models import Periodo, Colegio, Plan
 from carga_horaria.formsDani import PeriodoForm, ColegioForm, PlanForm
 from django.core.urlresolvers import reverse_lazy, reverse
 from guardian.shortcuts import get_objects_for_user
+from wkhtmltopdf.views import PDFTemplateResponse, PDFTemplateView
 from .models import Nivel
 from .models import Profesor
 from .models import Periodo
@@ -50,9 +51,34 @@ def anexo(request, pk):
     p = get_object_or_404(Profesor, pk=pk)
     ax = [{'descripcion': 'Planificación', 'curso': '', 'horas': p.horas_planificacion},
           {'descripcion': 'Recreo', 'curso': '', 'horas': p.horas_recreo}] + list(p.asignacionextra_set.all())
-    return render(request, 'carga_horaria/profesor/anexo_profesor.html', {'asignaciones': p.asignacion_set.all(),
-                                                                          'asignaciones_extra': ax,
-                                                                          'profesor': p})
+
+    response = PDFTemplateResponse(request=request,
+                                   template='carga_horaria/profesor/anexo_profesor.html',
+                                   filename='anexo1.pdf',
+                                   context={'asignaciones': p.asignacion_set.all(),
+                                            'asignaciones_extra': ax,
+                                            'profesor': p},
+                                   show_content_in_browser=True)
+    return response
+
+# class AnexoView(PDFTemplateView):
+#     template_name = 'carga_horaria/profesor/anexo_profesor.html'
+#     filename = 'anexo1.pdf'
+
+#     def get(self, request, *args, **kwargs):
+#         pk = kwargs.pop('pk')
+#         self.p = get_object_or_404(Profesor, pk=pk)
+#         self.ax = [{'descripcion': 'Planificación', 'curso': '', 'horas': self.p.horas_planificacion},
+#                    {'descripcion': 'Recreo', 'curso': '', 'horas': self.p.horas_recreo}] + list(self.p.asignacionextra_set.all())
+#         return super(AnexoView, self).get(request, *args, **kwargs)
+
+#     def get_context_data(self, *args, **kwargs):
+#         ctx = super(AnexoView, self).get_context_data(*args, **kwargs)
+#         ctx.update({'asignaciones': self.p.asignacion_set.all(),
+#                     'asignaciones_extra': self.ax,
+#                     'profesor': self.p})
+
+# anexo = AnexoView.as_view()
 
 
 """
