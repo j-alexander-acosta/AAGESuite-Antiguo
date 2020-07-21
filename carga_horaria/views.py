@@ -84,6 +84,16 @@ def asistentes_pdf(request):
                                    show_content_in_browser=settings.DEBUG)
     return response
 
+@login_required
+def periodo_pdf(request, pk):
+    periodo = get_object_or_404(Periodo, pk=pk)
+    response = PDFTemplateResponse(request=request,
+                                   template='carga_horaria/periodo/periodo_pdf.html',
+                                   filename='carga_horaria.pdf',
+                                   context={'object': periodo},
+                                   show_content_in_browser=settings.DEBUG)
+    return response
+
 # class AnexoView(PDFTemplateView):
 #     template_name = 'carga_horaria/profesor/anexo_profesor.html'
 #     filename = 'anexo1.pdf'

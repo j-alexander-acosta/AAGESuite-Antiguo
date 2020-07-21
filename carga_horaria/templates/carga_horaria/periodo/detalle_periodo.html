@@ -35,6 +35,9 @@
         <div class="card-body">
         <div class="row">
         <div class="col-md-12">
+      <div class="pull-right" style="padding-bottom: 10px;">
+        <a class="btn btn-sm btn-default" href="{% url 'carga-horaria:periodo-pdf' pk=object.pk %}"><i class="fa fa-print"></i> Imprimir</a>
+      </div>
             <table class="table table-hover table-sm">
                 <thead>
                 <tr>

@@ -176,6 +176,11 @@ urlpatterns = [
         name='periodo'
     ),
     url(
+        r'^periodos/(?P<pk>\d+)/pdf/$',
+        views.periodo_pdf,
+        name='periodo-pdf'
+    ),
+    url(
         r'^periodos/nuevo/$',
         views.PeriodoCreateView.as_view(),
         name='periodo__nuevo'
