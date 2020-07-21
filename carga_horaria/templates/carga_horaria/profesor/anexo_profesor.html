@@ -1,12 +1,16 @@
+{% load inline_static_tags %}
 <html>
   <head>
-    {% include 'base/partials/css_imports.html' %}
-    <style>
+    <meta charset="utf-8" />
+
+    <style type="text/css">
+      {% inline_style 'base/css/bootstrap.min.css' %}
+      
       @media print {
 	  body{
               width: 21cm;
               height: 29.7cm;
-              margin: 30mm 45mm 30mm 45mm; 
+              margin: 15mm 45mm 30mm 30mm; 
 	  } 
       }
     </style>
@@ -146,4 +150,3 @@
     </table>
   </body>
 </html>
-

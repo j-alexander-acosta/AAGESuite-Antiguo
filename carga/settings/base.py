@@ -32,6 +32,7 @@ PREREQ_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'base',
     'django_extensions',
     'widget_tweaks',
     'crispy_forms',
@@ -40,7 +41,7 @@ PREREQ_APPS = [
     'compressor',
     'guardian',
     'wkhtmltopdf',
-    'base'
+    'inline_static'
 ]
 
 PROJECT_APPS = [

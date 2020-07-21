@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.http import Http404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
@@ -58,7 +59,7 @@ def anexo(request, pk):
                                    context={'asignaciones': p.asignacion_set.all(),
                                             'asignaciones_extra': ax,
                                             'profesor': p},
-                                   show_content_in_browser=True)
+                                   show_content_in_browser=settings.DEBUG)
     return response
 
 # class AnexoView(PDFTemplateView):
