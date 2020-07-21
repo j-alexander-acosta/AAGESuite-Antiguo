@@ -34,6 +34,31 @@ class LevelFilterMixin(object):
 # fix this!!1
 
 
+def get_for_user(request, qs, lookup, user):
+    if not user.is_superuser:
+        colegios = [c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")]
+        
+        # new logic for colegio switcher
+        selected = request.session.get('colegio__pk', None)
+        if selected:
+            colegios = [selected]
+        # end
+            
+        kwargs = {"{}__in".format(lookup): colegios}
+        return qs.filter(**kwargs)
+    else:
+        colegios = [c.pk for c in Colegio.objects.all()]
+        # new logic for colegio switcher
+        selected = request.session.get('colegio__pk', None)
+        if selected:
+            colegios = [selected]
+        # end
+            
+        kwargs = {"{}__in".format(lookup): colegios}
+        return qs.filter(**kwargs)
+        
+    
+
 class GetObjectsForUserMixin(object):
     def get_queryset(self):
         qs = super(GetObjectsForUserMixin, self).get_queryset()

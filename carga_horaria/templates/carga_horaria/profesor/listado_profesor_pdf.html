@@ -1,0 +1,45 @@
+{% load inline_static_tags %}
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <style type="text/css">
+      {% inline_style 'base/css/bootstrap.min.css' %}
+      
+      @media print {
+	  body{
+              width: 21cm;
+              height: 29.7cm;
+              margin: 15mm 45mm 30mm 30mm; 
+	  } 
+      }
+    </style>
+    <title>Listado de Profesores</title>
+  </head>
+  <body>
+    <h1>Listado de Profesores</h1>
+
+    <br>
+    
+    <table class="table table-small">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Horas Contrato</th>
+          <th>Horas Docentes</th>
+          <th>Horas Disponibles</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in profesores %}
+	<tr>
+	  <td>{{ p.nombre }}</td>
+	  <td>{{ p.horas }}</td>
+	  <td>{{ p.horas_docentes }}</td>
+	  <td>{{ p.horas_disponibles }}</td>
+	</tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>

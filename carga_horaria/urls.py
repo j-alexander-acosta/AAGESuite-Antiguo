@@ -30,6 +30,11 @@ urlpatterns = [
         name='profesores'
     ),
     url(
+        r'^profesores/pdf/$',
+        views.profesores_pdf,
+        name='profesores-pdf'
+    ),
+    url(
         r'^profesores/(?P<pk>\d+)/$',
         views.ProfesorDetailView.as_view(),
         name='profesor'
@@ -83,6 +88,11 @@ urlpatterns = [
         r'^asistentes/$',
         views.AsistenteListView.as_view(),
         name='asistentes'
+    ),
+    url(
+        r'^asistentes/pdf/$',
+        views.asistentes_pdf,
+        name='asistentes-pdf'
     ),
     url(
         r'^asistentes/(?P<pk>\d+)/$',

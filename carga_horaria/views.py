@@ -62,6 +62,28 @@ def anexo(request, pk):
                                    show_content_in_browser=settings.DEBUG)
     return response
 
+
+@login_required
+def profesores_pdf(request):
+    profesores = get_for_user(request, Profesor.objects.all(), 'fundacion__colegio', request.user)
+    response = PDFTemplateResponse(request=request,
+                                   template='carga_horaria/profesor/listado_profesor_pdf.html',
+                                   filename='listado_profesores.pdf',
+                                   context={'profesores': profesores},
+                                   show_content_in_browser=settings.DEBUG)
+    return response
+
+
+@login_required
+def asistentes_pdf(request):
+    asistentes = get_for_user(request, Asistente.objects.all(), 'fundacion__colegio', request.user)
+    response = PDFTemplateResponse(request=request,
+                                   template='carga_horaria/asistente/listado_asistente_pdf.html',
+                                   filename='listado_asistentes.pdf',
+                                   context={'asistentes': asistentes},
+                                   show_content_in_browser=settings.DEBUG)
+    return response
+
 # class AnexoView(PDFTemplateView):
 #     template_name = 'carga_horaria/profesor/anexo_profesor.html'
 #     filename = 'anexo1.pdf'
