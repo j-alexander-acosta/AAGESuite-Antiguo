@@ -43,8 +43,8 @@ class Plan(models.Model):
 class AsignaturaBase(models.Model):
     nombre = models.CharField(max_length=255)
     plan = models.ForeignKey('Plan')
-    horas_jec = models.DecimalField(max_digits=3, decimal_places=1)
-    horas_nec = models.DecimalField(max_digits=3, decimal_places=1)
+    horas_jec = models.DecimalField(max_digits=4, decimal_places=2)
+    horas_nec = models.DecimalField(max_digits=4, decimal_places=2)
 
     def __str__(self): 
         return self.nombre
@@ -92,8 +92,8 @@ class Colegio(models.Model):
 class Periodo(models.Model):
     plan = models.ForeignKey('Plan')
     nombre = models.CharField(max_length=255, blank=True, null=True)
-    horas = models.DecimalField(max_digits=3, decimal_places=1, default=0)
-    horas_dif = models.DecimalField(max_digits=3, decimal_places=1, default=0, validators=[MinValueValidator(0), MaxValueValidator(9)])
+    horas = models.DecimalField(max_digits=4, decimal_places=2, default=0)
+    horas_dif = models.DecimalField(max_digits=4, decimal_places=2, default=0, validators=[MinValueValidator(0), MaxValueValidator(9)])
     colegio = models.ForeignKey('Colegio')
 
     @property
@@ -146,7 +146,7 @@ class Asignatura(models.Model):
     base = models.ForeignKey('AsignaturaBase', null=True, blank=True)
     nombre = models.CharField(max_length=255, null=True, blank=True)
     periodo = models.ForeignKey('Periodo')
-    horas = models.DecimalField(max_digits=3, decimal_places=1)
+    horas = models.DecimalField(max_digits=4, decimal_places=2)
 
     @property
     def horas_asignadas(self):
@@ -170,9 +170,9 @@ class Asignatura(models.Model):
 
 class Profesor(models.Model):
     nombre = models.CharField(max_length=255)
-    horas = models.DecimalField(max_digits=3, decimal_places=1, validators=[MinValueValidator(0), MaxValueValidator(44)])
-    horas_no_aula = models.DecimalField(max_digits=3, decimal_places=1, validators=[MinValueValidator(0), MaxValueValidator(44)], default=0)
-    especialidad = models.ForeignKey('Especialidad', blank=True, null=True)
+    horas = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(44)])
+    horas_no_aula = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(44)], default=0)
+    especialidad = models.ForeignKey('Especialidad', verbose_name='título', blank=True, null=True)
     fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
 
     @property
@@ -243,7 +243,7 @@ class Profesor(models.Model):
 
 class Asistente(models.Model):
     nombre = models.CharField(max_length=255)
-    horas = models.DecimalField(max_digits=3, decimal_places=1, validators=[MinValueValidator(1), MaxValueValidator(45)])
+    horas = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(1), MaxValueValidator(45)])
     funcion = models.CharField(max_length=255)
     fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
 
@@ -285,7 +285,7 @@ class Asignacion(models.Model):
     curso = models.ForeignKey('Periodo', null=True, blank=True)
     descripcion = models.CharField(max_length=255, null=True, blank=True)
     tipo = models.PositiveSmallIntegerField(default=PLAN)
-    horas = models.DecimalField(max_digits=3, decimal_places=1)
+    horas = models.DecimalField(max_digits=4, decimal_places=2)
 
     objects = AsignacionQuerySet.as_manager()
 
@@ -301,7 +301,7 @@ class AsignacionExtra(models.Model):
     profesor = models.ForeignKey('Profesor')
     curso = models.ForeignKey('Periodo', null=True, blank=True)
     descripcion = models.CharField(max_length=255)
-    horas = models.DecimalField(max_digits=3, decimal_places=1)
+    horas = models.DecimalField(max_digits=4, decimal_places=2)
 
     def __str__(self): 
         return "{} - {} ({})".format(self.profesor, self.descripcion, self.horas)
@@ -311,7 +311,7 @@ class AsignacionNoAula(models.Model):
     profesor = models.ForeignKey('Profesor')
     curso = models.ForeignKey('Periodo', null=True, blank=True)
     descripcion = models.CharField(max_length=255)
-    horas = models.DecimalField(max_digits=3, decimal_places=1)
+    horas = models.DecimalField(max_digits=4, decimal_places=2)
 
     def __str__(self): 
         return "{} - {} ({})".format(self.profesor, self.descripcion, self.horas)
