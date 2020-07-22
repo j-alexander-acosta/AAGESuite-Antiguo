@@ -169,8 +169,8 @@ class Asignatura(models.Model):
 
 class Profesor(models.Model):
     nombre = models.CharField(max_length=255)
-    horas = models.DecimalField(max_digits=3, decimal_places=1, validators=[MinValueValidator(1), MaxValueValidator(44)])
-    horas_no_aula = models.DecimalField(max_digits=3, decimal_places=1, validators=[MinValueValidator(1), MaxValueValidator(44)], default=0)
+    horas = models.DecimalField(max_digits=3, decimal_places=1, validators=[MinValueValidator(0), MaxValueValidator(44)])
+    horas_no_aula = models.DecimalField(max_digits=3, decimal_places=1, validators=[MinValueValidator(0), MaxValueValidator(44)], default=0)
     especialidad = models.ForeignKey('Especialidad', blank=True, null=True)
     fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
 
