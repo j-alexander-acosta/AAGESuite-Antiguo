@@ -89,6 +89,7 @@ class ColegioForm(forms.ModelForm):
             'rbd',
             'jec',
             'pie',
+            'sep',
             'web',
             'financiamiento'
         ]

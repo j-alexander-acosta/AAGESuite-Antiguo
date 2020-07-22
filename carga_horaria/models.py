@@ -75,6 +75,7 @@ class Colegio(models.Model):
     rbd = models.CharField(max_length=255, blank=True, null=True)
     jec = models.BooleanField(default=True)
     pie = models.BooleanField(default=True)
+    sep = models.BooleanField(default=True)
     web = models.URLField(max_length=255, blank=True, null=True)
     financiamiento = models.PositiveSmallIntegerField(default=PAID, choices=FINANCING_CHOICES)
     
