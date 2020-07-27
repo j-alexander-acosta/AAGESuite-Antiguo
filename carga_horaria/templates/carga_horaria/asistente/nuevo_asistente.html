@@ -2,6 +2,9 @@
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+{% endblock %}
 
 {% block content %}
 <div class="card">
@@ -31,4 +34,54 @@
         </form>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $( function() {
+    var availableTags = [
+        "Recepcionista",
+        "Junior ",
+        "Manipulador/a de alimentos ",
+        "Auxiliar de aseo",
+        "Cuidado del establecimiento ",
+        "Jardinero",
+        "Chofer",
+        "Operario ",
+        "Pañolero",
+        "Encargado de mantención ",
+        "Secretaria/o",
+        "Contador/a",
+        "Soporte informático ",
+        "Asesoría legal ",
+        "Encargado de inventario ",
+        "Encargado de adquisiciones ",
+        "Ecónomo /a",
+        "Asistente/ Técnico párvulos",
+        "Inspector/a",
+        "Monitor/a Taller",
+        "Bibliotecario/a Encargado CRA",
+        "Encargado Laboratorio",
+        "Encargado Impresiones ",
+        "Psicopedagogo/a",
+        "Psicólogo /a",
+        "Fonoaudiólogo/a",
+        "Asistente social ",
+        "Enfermera/o",
+        "Paramédico",
+        "Encargado nutrición",
+        "Kinesiologo/a",
+        "Terapeuta ocupacional",
+        "Asistente diferencial ",
+        "Educador tradicional ",
+        "Auxiliar de servicio menores ",
+        "Asistente administrativo ",
+        "Encargado de FICOM ",
+        "Nochero ",
+    ];
+    $( "#id_funcion" ).autocomplete({
+      source: availableTags
+    });
+  } );
+</script>
 {% endblock %}
