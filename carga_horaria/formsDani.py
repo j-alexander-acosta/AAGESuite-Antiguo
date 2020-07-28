@@ -115,7 +115,8 @@ class PlanForm(forms.ModelForm):
     class Meta:
         model = models.Plan
         fields = [
-            'nivel'
+            'nivel',
+            'colegio'
         ]
         help_texts = {
             'nivel': u"Seleccione el nivel a Asociar a su Plan."

@@ -24,6 +24,7 @@ class Nivel(Enum):
 
 class Plan(models.Model):
     nivel = models.CharField(max_length=8, choices=[(tag.name, tag.value) for tag in Nivel])
+    colegio = models.ForeignKey('Colegio', null=True)
 
     def __str__(self): 
         return "Plan de Estudios - {} (ID: {})".format(getattr(Nivel, self.nivel).value.title(), self.pk)

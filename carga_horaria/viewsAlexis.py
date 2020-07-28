@@ -261,11 +261,12 @@ class AsistenteDeleteView(LoginRequiredMixin, DeleteView):
 """
     Comienzo Crud Asignatura Base
 """
-class AsignaturaBaseListView(ListView):
+class AsignaturaBaseListView(LoginRequiredMixin, GetObjectsForUserMixin, ListView):
     """
         Listado de asignatura base
     """
     model = AsignaturaBase
+    lookup = 'plan__colegio__pk'
     template_name = 'carga_horaria/asignaturabase/listado_asignaturabase.html'
     search_fields = ['nombre', 'plan']
     paginate_by = 10

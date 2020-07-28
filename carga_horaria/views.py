@@ -237,11 +237,12 @@ class ColegioDeleteView(LoginRequiredMixin, DeleteView):
 """
     Comienzo Crud Planes
 """
-class PlanListView(ListView):
+class PlanListView(LoginRequiredMixin, GetObjectsForUserMixin, ListView):
     """
         Listado de planes
     """
     model = Plan
+    lookup = 'colegio__pk'
     template_name = 'carga_horaria/plan/listado_planes.html'
     search_fields = ['nombre', 'nivel']
     paginate_by = 10
