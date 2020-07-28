@@ -202,7 +202,7 @@ class Profesor(models.Model):
 
     @property
     def horas_no_lectivas_disponibles(self):
-        return self.horas_no_lectivas - self.horas_no_lectivas_asignadas - self.horas_planificacion
+        return self.horas_no_lectivas - self.horas_no_lectivas_asignadas
 
     @property
     def horas_no_aula_asignadas(self):
