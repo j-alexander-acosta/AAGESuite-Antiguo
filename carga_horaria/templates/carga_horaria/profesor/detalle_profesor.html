@@ -24,7 +24,22 @@
               </div>
           {% endblock %}
         </h4>
-      <h6 class="card-subtitle mb-2 text-muted">Título: <strong>{{ profesor.especialidad|default:"Ninguna" }}</strong></h6>
+      <h6 class="card-subtitle mb-2">Título: <strong>{{ profesor.especialidad|default:"Ninguna" }}</strong></h6>
+      <h6 class="card-subtitle mb-2"> Horas contratadas: <strong>{{ object.horas }}</strong> | Horas contratadas no aula: <strong>{{ object.horas_no_aula }}</strong> | Horas recreo: <strong>{{ object.horas_recreo }}</strong></h6>
+      <h6 class="card-subtitle mb-2">Horas docentes: <strong>{{ object.horas_docentes }}</strong> | Horas lectivas: <strong>{{ object.horas_lectivas }}</strong> | Horas no lectivas: <strong>{{ object.horas_no_lectivas }}</strong></h6>
+
+      <!--
+      <div class="btn-group pull-right">
+        <table class="table table-sm">
+          <tbody>
+            <tr>
+              <td>Horas contratadas</td>
+              <td>{{ object.horas }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      -->
 
     </div>
     <div class="card-body">
@@ -401,7 +416,7 @@
 
 
 
-            <table class="table table-hover table-sm">
+            <table class="table table-hover table-sm table-striped">
                 <thead>
                 <tr>
                     <th colspan="2" class="table-info">
@@ -413,25 +428,6 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th> Horas contratadas </th>
-                    <td> {{ object.horas }}  </td>
-                </tr>
-                <tr>
-                    <th> Horas docentes </th>
-                    <td> {{ object.horas_docentes }}  </td>
-                </tr>
-                <tr>
-                    <th> Horas lectivas </th>
-                    <td> {{ object.horas_lectivas }}  </td>
-                </tr>
-                <tr>
-                    <th> Horas recreo </th>
-                    <td> {{ object.horas_recreo }}  </td>
-                </tr>                <tr>
-                    <th> Horas no lectivas </th>
-                    <td> {{ object.horas_no_lectivas }}  </td>
-                </tr>
                 <tr>
                     <th> Horas docentes asignadas </th>
                     <td> {{ object.horas_asignadas }}  </td>
@@ -447,10 +443,6 @@
                 <tr>
                     <th> Horas no lectivas disponibles </th>
                     <td> {{ object.horas_no_lectivas_disponibles }}  </td>
-                </tr>
-                <tr>
-                    <th> Horas contratadas no aula </th>
-                    <td> {{ object.horas_no_aula }}  </td>
                 </tr>
                 <tr>
                     <th> Horas contratadas no aula asignadas </th>
