@@ -108,7 +108,7 @@ class LicenciaForm(forms.ModelForm):
         self.helper.form_tag = False
 
 
-class LicenciaFuncionarioForm(forms.ModelForm):
+class LicenciaTipoFuncionarioForm(forms.ModelForm):
     class Meta:
         model = Licencia
         fields = [
@@ -118,9 +118,9 @@ class LicenciaFuncionarioForm(forms.ModelForm):
             'folio_licencia',
             'total_dias',
             'fecha_inicio',
-            'total_feriados',
             'fecha_termino',
             'fecha_retorno',
+            'total_feriados',
             'dias_habiles',
         ]
         help_texts = {
@@ -131,11 +131,9 @@ class LicenciaFuncionarioForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        super(LicenciaFuncionarioForm, self).__init__(*args, **kwargs)
+        super(LicenciaTipoFuncionarioForm, self).__init__(*args, **kwargs)
         self.fields['tipo_licencia'].widget.attrs['class'] = 'chosen'
         self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
-        self.fields['fecha_termino'].widget.attrs['class'] = 'datepicker'
-        self.fields['fecha_retorno'].widget.attrs['class'] = 'datepicker'
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.layout = Layout(
@@ -179,6 +177,74 @@ class LicenciaFuncionarioForm(forms.ModelForm):
                         css_class='col-md-6'
                     ),
                     css_class='row'
-                )
+                ),
+            )
+        )
+
+
+class VacacionFuncionarioForm(forms.ModelForm):
+    class Meta:
+        model = Vacacion
+        fields = [
+            'funcionario',
+            'total_dias',
+            'fecha_inicio',
+            'fecha_termino',
+            'fecha_retorno',
+            'total_feriados',
+            'dias_pendiente',
+            'es_pendiente',
+        ]
+        widgets = {
+            'funcionario': forms.HiddenInput
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(VacacionFuncionarioForm, self).__init__(*args, **kwargs)
+        self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_termino'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_retorno'].widget.attrs['class'] = 'datepicker'
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            'funcionario',
+            Div(
+                Div(
+                    Div(
+                        Field('total_dias'),
+                        css_class='col-md-4'
+                    ),
+                    Div(
+                        Field('es_pendiente'),
+                        css_class='col-md-4'
+                    ),
+                    Div(
+                        Field('dias_pendiente'),
+                        css_class='col-md-4'
+                    ),
+                    css_class='row'
+                ),
+                Div(
+                    Div(
+                        Field('fecha_inicio'),
+                        css_class='col-md-6'
+                    ),
+                    Div(
+                        Field('total_feriados'),
+                        css_class='col-md-6'
+                    ),
+                    css_class='row'
+                ),
+                Div(
+                    Div(
+                        Field('fecha_termino'),
+                        css_class='col-md-6'
+                    ),
+                    Div(
+                        Field('fecha_retorno'),
+                        css_class='col-md-6'
+                    ),
+                    css_class='row'
+                ),
             )
         )

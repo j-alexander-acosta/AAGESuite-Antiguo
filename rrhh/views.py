@@ -3,12 +3,15 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.shortcuts import render, get_object_or_404, redirect
-# from jsonview.decorators import json_view, json
+from jsonview.decorators import json_view, json
+from crispy_forms.utils import render_crispy_form
+from django.template.context_processors import csrf
+from django.template.defaultfilters import yesno
+from django.contrib.humanize.templatetags.humanize import naturalday
 from .models import Funcionario, Entrevista, Archivo, Vacacion, TipoLicencia, Licencia
 from .forms import FuncionarioForm, EntrevistaForm, ArchivoForm, VacacionForm
-from .forms import TipoLicenciaForm, LicenciaForm, LicenciaFuncionarioForm
-
-
+from .forms import TipoLicenciaForm, LicenciaForm, VacacionFuncionarioForm
+from .forms import LicenciaTipoFuncionarioForm
 
 
 @login_required
@@ -41,7 +44,8 @@ def funcionario_detail(request, pk_funcionario):
     )
 
     context['object'] = funcionario
-    context['lf_form'] = LicenciaFuncionarioForm(instance=funcionario)
+    context['lf_form'] = LicenciaTipoFuncionarioForm(initial={'funcionario':funcionario})
+    context['vf_form'] = VacacionFuncionarioForm(initial={'funcionario':funcionario})
 
     return render(
         request,
@@ -56,7 +60,7 @@ class FuncionarioDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['lf_form'] = LicenciaFuncionarioForm(instance=self)
+        context['lf_form'] = LicenciaTipoFuncionarioForm(instance=self)
         return context
 
 
@@ -252,6 +256,7 @@ class LicenciaListView(LoginRequiredMixin, ListView):
     template_name = 'rrhh/licencia/listado_licencia.html'
     search_fields = ['funcionario', 'funcionario_rut']
     paginate_by = 10
+    order_by = '-id'
 
 
 class LicenciaDetailView(LoginRequiredMixin, DetailView):
@@ -288,49 +293,101 @@ class LicenciaDeleteView(LoginRequiredMixin, DeleteView):
         return self.post(request, *args, **kwargs)
 
 
-# @login_required
-# @json_view
-# def nuevo_licencia_funcionario(request):
-#     """
-#         Función para crear un nuevo objetivo estrategico para un area en particular
-#
-#     :param request: Django Request
-#     :return: Json
-#     """
-#     data = {
-#         'success': False,
-#         'message': u"",
-#         'form_html': None
-#     }
-#
-#     if request.is_ajax():
-#         if request.method == 'POST':
-#             form = LicenciaFuncionarioForm(request.POST)
-#             if form.is_valid():
-#                 licencia = form.save()
-#                 data['success'] = True
-#                 data['message'] = u"la licencia fue agregada exitosamente"
-#                 data['tipo_licencia'] = licencia.tipo_licencia if licencia.tipo_licencia else licencia.tipo_licencia_descripcion
-#                 data['folio'] = licencia.folio_licencia
-#                 data['periodo'] = '{} - {}'.format(
-#                     licencia.fecha_inicio,
-#                     licencia.fecha_termino
-#                 )
-#                 data['fecha_retorno'] = licencia.fecha_retorno
-#                 data['total_dias'] = licencia.total_dias
-#                 data['total_feriados'] = licencia.total_feriados
-#                 data['dias_habiles'] = licencia.dias_habiles
-#             else:
-#                 form_html = render_crispy_form(
-#                     form,
-#                     context=csrf(request)
-#                 )
-#                 # Formulario con errores
-#                 data['message'] = u"Complete la información requerida"
-#                 data['form_html'] = form_html
-#         else:
-#             data['message'] = u"La solicitud debe ser POST"
-#     else:
-#         data['message'] = u"La solicitud debe ser ajax"
-#
-#     return data
+@login_required
+@json_view
+def nuevo_licencia_tipo_funcionario(request):
+    """
+        Función para crear un nuevo registro de licencia a un uncionario
+
+    :param request: Django Request
+    :return: Json
+    """
+    data = {
+        'success': False,
+        'message': u"",
+        'form_html': None
+    }
+
+    if request.is_ajax():
+        if request.method == 'POST':
+            form = LicenciaTipoFuncionarioForm(request.POST)
+            print(form.is_valid())
+            print(form)
+            if form.is_valid():
+                licencia = form.save()
+                data['success'] = True
+                data['message'] = u"la licencia fue agregada exitosamente"
+                data['tipo_licencia'] = licencia.tipo_licencia.nombre if licencia.tipo_licencia else licencia.tipo_licencia_descripcion
+                data['folio'] = licencia.folio_licencia if licencia.folio_licencia else 'No especificado'
+                data['periodo'] = '{} - {}'.format(
+                    naturalday(licencia.fecha_inicio),
+                    naturalday(licencia.fecha_termino)
+                )
+                data['total_dias'] = licencia.total_dias
+                data['fecha_retorno'] = naturalday(licencia.fecha_retorno)
+                data['total_feriados'] = licencia.total_feriados
+                data['dias_habiles'] = yesno(licencia.dias_habiles)
+            else:
+                form_html = render_crispy_form(
+                    form,
+                    context=csrf(request)
+                )
+                # Formulario con errores
+                data['message'] = u"Complete la información requerida"
+                data['form_html'] = form_html
+        else:
+            data['message'] = u"La solicitud debe ser POST"
+    else:
+        data['message'] = u"La solicitud debe ser ajax"
+
+    return data
+
+
+@login_required
+@json_view
+def nuevo_vacacion_funcionario(request):
+    """
+        Función para crear un nuevo registro de vacacion a un funcionario
+
+    :param request: Django Request
+    :return: Json
+    """
+    data = {
+        'success': False,
+        'message': u"",
+        'form_html': None
+    }
+
+    if request.is_ajax():
+        if request.method == 'POST':
+            form = VacacionFuncionarioForm(request.POST)
+            print(form.is_valid())
+            print(form)
+            if form.is_valid():
+                vacacion = form.save()
+                data['success'] = True
+                data['message'] = u"la licencia fue agregada exitosamente"
+
+                data['periodo'] = '{} - {}'.format(
+                    naturalday(vacacion.fecha_inicio),
+                    naturalday(vacacion.fecha_termino)
+                )
+                data['total_dias'] = vacacion.total_dias
+                data['dias_pendiente'] = vacacion.dias_pendiente
+                data['fecha_retorno'] = naturalday(vacacion.fecha_retorno)
+                data['total_feriados'] = vacacion.total_feriados
+                data['es_pendiente'] = yesno(vacacion.es_pendiente)
+            else:
+                form_html = render_crispy_form(
+                    form,
+                    context=csrf(request)
+                )
+                # Formulario con errores
+                data['message'] = u"Complete la información requerida"
+                data['form_html'] = form_html
+        else:
+            data['message'] = u"La solicitud debe ser POST"
+    else:
+        data['message'] = u"La solicitud debe ser ajax"
+
+    return data

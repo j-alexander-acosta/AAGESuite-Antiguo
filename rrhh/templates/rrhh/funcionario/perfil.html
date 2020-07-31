@@ -128,9 +128,13 @@
                     <div class="tab-pane fade" id="vacacion" role="tabpanel" aria-labelledby="vacacion-tab">
                         <div class="pmb-block">
                             <div class="pmbb-body">
-                                <p>Listado de Vacaciones del funcionario, ordenado del mas reciente al mas antiguo.</p>
+                                <p>Listado de Vacaciones del funcionario, ordenado del mas reciente al mas antiguo.
+                                    <button name="agregar_vacacion" type="button" class="btn btn-sm btn-primary pull-right" data-toggle="modal" data-target="#crear_vacacion">
+                                        <span><i class="fa fa-plus"></i> Agregar vacación</span>
+                                    </button>
+                                </p>
                                 <div class="pmbb-view">
-                                    <table class="table table-responsive">
+                                    <table id="vacaciones" class="table table-responsive">
                                         <thead>
                                             <tr>
                                                 <th>Periodo</th>
@@ -185,7 +189,7 @@
                                             {% for l in object.licencia_set.all|dictsortreversed:"id" %}
                                                 <tr>
                                                     <td>{% if l.tipo_licencia %} {{ l.tipo_licencia }} {% else %} {{ l.tipo_licencia_descripcion }} {% endif %}</td>
-                                                    <td>{{ l.folio_licencia }}</td>
+                                                    <td>{% if l.folio_licencia %} {{ l.folio_licencia }} {% else %} <i>No especificado</i> {% endif %}</td>
                                                     <td>{{ l.fecha_inicio|naturalday }} - {{ l.fecha_termino|naturalday }}</td>
                                                     <td>{{ l.fecha_retorno|naturalday }}</td>
                                                     <td>{{ l.total_dias }}</td>
@@ -213,17 +217,46 @@
     <div class="modal fade" id="crear_licencia" tabindex="-1" role="dialog" aria-labelledby="crear_licenciaLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                
-                <form id="licenciaForm" class="form-horizontal" action="{% comment %}{% url 'rrhh:licencia_funcionario__nuevo' %}{%endcomment%}" method="post">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Agregar licencia a {{ object }}</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Agregar licencia a {{ object }} </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="licenciaForm" class="form-horizontal" action="{% url 'rrhh:licencia_funcionario__nuevo' %}" method="post">
                     <div class="modal-body m-10">
+                        <div class="checkbox pull-right">
+                            <label for="id_licencia_tipo">
+                                <input type="checkbox" name="licencia_tipo" class="checkboxinput" id="id_licencia_tipo" checked>
+                                Utilizar licencias tipo
+                            </label>
+                        </div>
                         {% csrf_token %}
                         {% crispy lf_form %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="crear_vacacion" tabindex="-1" role="dialog" aria-labelledby="crear_vacacionLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="crear_vacacionLabel">Agregar vacación a {{ object }} </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="vacacionForm" class="form-horizontal" action="{% url 'rrhh:vacacion_funcionario__nuevo' %}" method="post">
+                    <div class="modal-body m-10">
+                        {% csrf_token %}
+                        {% crispy vf_form %}
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Guardar</button>
@@ -238,40 +271,111 @@
 {% block extra_js %}
     <script src="{% static 'rrhh/ownscripts/nueva_licencia_funcionario.js' %}"></script>
     <script>
+        function cambio_licencia_descripcion(){
+            setTimeout(function(){
+                $(document).find('#div_id_tipo_licencia_descripcion').fadeIn();
+            }, 500);
+            $(document).find('#id_tipo_licencia_descripcion').prop('disabled', false);
+            $(document).find('#div_id_tipo_licencia').fadeOut();
+            $(document).find('#id_tipo_licencia').attr('disabled', true);
+            $(document).find('#id_total_dias').attr('readonly', false);
+            $(document).find('#id_dias_habiles').attr('checked', false);
+        }
+        function cambio_tipo_licencia(){
+            $(document).find('#div_id_tipo_licencia_descripcion').fadeOut();
+            $(document).find('#id_tipo_licencia_descripcion').attr('disabled', true);
+            setTimeout(function(){
+                $(document).find('#div_id_tipo_licencia').fadeIn();
+            }, 500);
+            $(document).find('#id_tipo_licencia').prop('disabled', false);
+            $(document).find('#id_total_dias').attr('readonly', 'true');
+            $(document).find('#id_fecha_termino').attr('readonly', 'true');
+            $(document).find('#id_fecha_retorno').attr('readonly', 'true');
+            $(document).find('#id_dias_habiles').attr('checked', false);
+        }
+
+        function revision_campos_obligatorios(form){
+            let fecha_inicio = form.find('#id_fecha_inicio').val();
+            let fecha_termino = form.find('#id_fecha_termino').val();
+            let fecha_retorno = form.find('#id_fecha_retorno').val();
+            let total_dias = form.find('#id_total_dias').val();
+            let opcion = form.find('#id_tipo_licencia_chosen').find('a.chosen-single').find('span').html();
+
+            console.log(opcion);
+            if (fecha_inicio !== '' && fecha_termino !== '' && fecha_retorno !== '' && total_dias !== ''){
+                return true;
+            }
+
+            return false;
+        }
+
         function calculo_fechas(){
-            let total_dias = $(document).find('#id_total_dias').val();
             let fecha_inicio = $(document).find('#id_fecha_inicio').val();
-            let total_feriados = $(document).find('#id_total_feriados').val();
-            let fecha_inicio_part = fecha_inicio.split('/');
-            console.log(fecha_inicio)
-            let fecha = new Date(fecha_inicio_part[2] + '/' + fecha_inicio_part[1] + '/' + fecha_inicio_part[0]);
-            console.log(fecha.toLocaleString());
+            let total_dias = $(document).find('#id_total_dias').val();
+            if (fecha_inicio !== '' && total_dias !== ''){
+                let total_feriados = $(document).find('#id_total_feriados').val();
+                let fecha_inicio_part = fecha_inicio.split('/');
+                let fecha = new Date(fecha_inicio_part[2] + '/' + fecha_inicio_part[1] + '/' + fecha_inicio_part[0]);
 
-            //let fecha_termino = new Date(fecha_inicial.getFullYear() + '/' + fecha_inicial.getMonth() + '/' + (fecha_inicial.getDate() + parseInt(total_dias) - 1 + parseInt(total_feriados)));
-            fecha.setDate(fecha.getDate() + parseInt(total_dias) - 1 + parseInt(total_feriados));
-            console.log(fecha);
-            let fecha_string = fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear();
-            console.log(fecha_string);
-            $(document).find('#id_fecha_termino').val((fecha_string));
+                //let fecha_termino = new Date(fecha_inicial.getFullYear() + '/' + fecha_inicial.getMonth() + '/' + (fecha_inicial.getDate() + parseInt(total_dias) - 1 + parseInt(total_feriados)));
+                fecha.setDate(fecha.getDate() + parseInt(total_dias) - 1 + parseInt(total_feriados));
+                let fecha_string = fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear();
+                $(document).find('#id_fecha_termino').val((fecha_string));
 
-            //let fecha_retorno = new Date((fecha_termino.getFullYear()) + '/' + fecha_termino.getMonth() + '/' + (fecha_termino.getDate() + 1 ));
-            fecha.setDate(fecha.getDate() + 1);
-            console.log(fecha);
-            fecha_string = fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear();
-            console.log(fecha_string);
-            $(document).find('#id_fecha_retorno').val(fecha_string);
+                //let fecha_retorno = new Date((fecha_termino.getFullYear()) + '/' + fecha_termino.getMonth() + '/' + (fecha_termino.getDate() + 1 ));
+                fecha.setDate(fecha.getDate() + 1);
+                fecha_string = fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear();
+                $(document).find('#id_fecha_retorno').val(fecha_string);
+            }
+        }
+
+        function limpiar_form(form){
+            form.find("#id_tipo_licencia_descripcion").val('');
+            form.find("#id_folio_licencia").val('');
+            form.find("#id_total_dias").val('');
+            form.find("#id_dias_habiles").val('');
+            form.find("#id_fecha_inicio").val('');
+            form.find("#id_total_feriados").val('');
+            form.find("#id_fecha_termino").val('');
+            form.find("#id_fecha_retorno").val('');
+        }
+
+        //--------------------VACACIONES--------------------------
+        function limpiar_form_vacacion(form){
+            form.find("#id_total_dias").val('');
+            form.find("#id_es_pendiente").val('');
+            form.find("#id_fecha_inicio").val('');
+            form.find("#id_total_feriados").val('');
+            form.find("#id_fecha_termino").val('');
+            form.find("#id_fecha_retorno").val('');
+        }
+
+        function revision_campos_obligatorios_vacacion(form){
+            let fecha_inicio = form.find('#id_fecha_inicio').val();
+            let fecha_termino = form.find('#id_fecha_termino').val();
+            let fecha_retorno = form.find('#id_fecha_retorno').val();
+            let total_dias = form.find('#id_total_dias').val();
+
+            if (fecha_inicio !== '' && fecha_termino !== '' && fecha_retorno !== '' && total_dias !== ''){
+                return true;
+            }
+
+            return false;
         }
 
         $(function() {
-            console.log('Funcionando!!!');
             let total_dias = 0, dias_habiles = 0
 
-            $(document).find('#div_id_tipo_licencia_descripcion').css('display', 'none');
-            $(document).find('#id_total_dias').attr('disabled', 'true');
-            $(document).find('#id_dias_habiles').attr('disabled', 'true');
-            $(document).find('#id_fecha_termino').attr('disabled', 'true');
-            $(document).find('#id_fecha_retorno').attr('disabled', 'true');
-            $(document).find('#id_dias_habiles').attr('checked', false);
+            cambio_tipo_licencia();
+
+            $(document).find('#id_licencia_tipo').on('change', function() {
+                let checkbox = $(this);
+                if (checkbox.is(":checked")) {
+                    cambio_tipo_licencia();
+                }else{
+                    cambio_licencia_descripcion();
+                }
+            });
 
             $(document).on('change', '#id_tipo_licencia', function() {
                 let opcion = $(document).find('#id_tipo_licencia_chosen').find('a.chosen-single').find('span').html();
@@ -301,38 +405,97 @@
 
             $(document).on('submit', '#licenciaForm', function (e) {
                 e.preventDefault();
-                $.ajax({
-                    type: form.attr('method'),
-                    url: form.attr('action'),
-                    data: form.serialize(),
-                    success: function(data) {
-                        if (!(data['success'])) {
-                            if(data['form_html'] !== null){
-                                form.find('#div_id_objetivo').replaceWith(data['form_html']);
-                                alertify.warning(data['message']);
+                let form = $(this);
+                if(revision_campos_obligatorios(form)) {
+                    console.log('Si paso');
+                    $.ajax({
+                        type: form.attr('method'),
+                        url: form.attr('action'),
+                        data: form.serialize(),
+                        dataType: 'json',
+                        success: function(data) {
+                            if (!(data['success'])) {
+                                if(data['form_html'] !== null){
+                                    // console.log(data['form_html']);
+                                    form.find('.modal-body').html(data['form_html']);
+                                    // ocultar_inicial();
+                                    // alertify.warning(data['message']);
+                                }
+                            } else {
+                                let tbody = $(document).find("table[id='licencias']").find('tbody');
+                                let nueva_licencia = `<tr>
+                                    <td>${data.tipo_licencia}</td>
+                                    <td><i>${data.folio}</i></td>
+                                    <td>${data.periodo}</td>
+                                    <td>${data.fecha_retorno}</td>
+                                    <td>${data.total_dias}</td>
+                                    <td>${data.total_feriados}</td>
+                                    <td>${data.dias_habiles}</td>
+                                    </tr>`;
+                                tbody.html(nueva_licencia + tbody.html());
+                                // alertify.success(data['message']);
+                                $(document).find("div[class='modal fade show']").modal('hide');
+                                limpiar_form(form);
                             }
-                        } else {
-                            let tbody = $(document).find("table[id='licencias']").find('tbody');
-                            let nueva_licencia = `<tr>
-                                <td>${data.tipo_licencia}</td>
-                                <td>${data.folio}</td>
-                                <td>${data.periodo}</td>
-                                <td>${data.fecha_retorno}</td>
-                                <td>${data.total_dias}</td>
-                                <td>${data.total_feriados}</td>
-                                <td>${data.dias_habiles}</td>
-                                </tr>`;
-                            tbody.append(nueva_licencia);
-                            alertify.success(data['message']);
-                            $(document).find("div[class='modal fade show']").modal('hide');
+                        },
+                        error: function (err) {
+                            console.log(err);
+                            // alertify.warning("Ocurrio un error inesperado..");
                         }
-                    },
-                    error: function () {
-                        alertify.warning("Ocurrio un error inesperado..");
-                    }
-                });
+                    });
+                }else{
+                    console.log('Se deben completar todos los campos requeridos');
+                    // alertify.warning("Se deben completar todos los campos requeridos..");
+                }
+            });
+
+            //--------------------VACACIONES--------------------------
+
+            $(document).on('submit', '#vacacionForm', function (e) {
+                e.preventDefault();
+                let form = $(this);
+                if(revision_campos_obligatorios_vacacion(form)) {
+                    console.log('Si paso');
+                    $.ajax({
+                        type: form.attr('method'),
+                        url: form.attr('action'),
+                        data: form.serialize(),
+                        dataType: 'json',
+                        success: function(data) {
+                            if (!(data['success'])) {
+                                if(data['form_html'] !== null){
+                                    // console.log(data['form_html']);
+                                    form.find('.modal-body').html(data['form_html']);
+                                    // ocultar_inicial();
+                                    // alertify.warning(data['message']);
+                                }
+                            } else {
+                                let tbody = $(document).find("table[id='vacaciones']").find('tbody');
+                                let nueva_vacacion = `<tr>
+                                    <td>${data.periodo}</td>
+                                    <td>${data.fecha_retorno}</td>
+                                    <td>${data.total_dias}</td>
+                                    <td>${data.total_feriados}</td>
+                                    <td>${data.es_pendiente}</td>
+                                    </tr>`;
+                                tbody.html(nueva_vacacion + tbody.html());
+                                // alertify.success(data['message']);
+                                $(document).find("div[class='modal fade show']").modal('hide');
+                                limpiar_form_vacacion(form);
+                            }
+                        },
+                        error: function (err) {
+                            console.log(err);
+                            // alertify.warning("Ocurrio un error inesperado..");
+                        }
+                    });
+                }else{
+                    console.log('Se deben completar todos los campos requeridos');
+                    // alertify.warning("Se deben completar todos los campos requeridos..");
+                }
             });
 
         });
     </script>
 {% endblock %}
+u

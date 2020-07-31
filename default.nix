@@ -10,7 +10,7 @@ let
     };
     propagatedBuildInputs = [ qrcode pillow ];
     buildInputs = [ django_1_11 ];
-    doCheck = false;  	
+    doCheck = false;
   };
 
   django-crispy-forms = with pkgs.python3Packages; buildPythonPackage rec {
@@ -21,7 +21,7 @@ let
       sha512 = "09fm54h13xwdlhz0rl3a50jj84bifxcx38bf26cad43dx7l4pc1dnl4v9kfmxylkk04yzr1q4gpx8aqn1cyb0js9a26jm409i1dcj07";
     };
     buildInputs = [ django_1_11 ];
-    doCheck = false;  	
+    doCheck = false;
   };
 
   django-constance = with pkgs.python3Packages; buildPythonPackage rec {
@@ -32,7 +32,7 @@ let
       sha512 = "15n1m7q4mmbvmd645hn59qsa4is62pdzkn0myc1nxnr6j5vbgp28di180cqbxbk2nmfyjk9ks255znca2bb8v42y87q3yjmw6rlzdd6";
     };
     buildInputs = [ django_1_11 ];
-    doCheck = false;  	
+    doCheck = false;
   };
 
   python-crontab = with pkgs.python3Packages; buildPythonPackage rec {
@@ -197,6 +197,18 @@ let
     doCheck = false;
   };
 
+  django-jsonview = with pkgs.python3Packages; buildPythonPackage rec {
+    name = "django-jsonview-${version}";
+    version = "2.2.0";
+    src = pkgs.fetchurl {
+    	url = "https://files.pythonhosted.org/packages/0a/6d/052ceb63865bd67c0fb39a6041f45152734120cf1258a61c6fb88f35307b/django-jsonview-2.0.0.tar.gz";
+	    sha512 = "1a47f1dvb0br7rvv4s0aw6x78m57l0sb8cl2krhzq33hw775ay63hzhk0ivrnhnrmaf39nc6x467iq65wp5aw10ch6la9glnnrsj95q";
+    };
+    buildInputs = [ django_1_11 ];
+    propagatedBuildInputs = [ pkgs.wkhtmltopdf ];
+    doCheck = false;
+  };
+
 in
 { stdenv ? pkgs.stdenv }:
 
@@ -220,6 +232,7 @@ pkgs.python3Packages.buildPythonApplication {
     python3Packages.unidecode
     python3Packages.django_compressor
     python3Packages.django_guardian
+    django-jsonview
     django-qr-code
     django-crispy-forms
     django-constance

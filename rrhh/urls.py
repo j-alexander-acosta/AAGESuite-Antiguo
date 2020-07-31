@@ -165,9 +165,14 @@ urlpatterns = [
         views.LicenciaDeleteView.as_view(),
         name='licencia__eliminar'
     ),
-    # url(
-    #     r'^licencias_funcionario/nuevo/$',
-    #     views.nuevo_licencia_funcionario,
-    #     name='licencia_funcionario__nuevo'
-    # ),
+    url(
+        r'^licencias_funcionario/nuevo/$',
+        views.nuevo_licencia_tipo_funcionario,
+        name='licencia_funcionario__nuevo'
+    ),
+    url(
+        r'^vacaciones_funcionario/nuevo/$',
+        views.nuevo_vacacion_funcionario,
+        name='vacacion_funcionario__nuevo'
+    ),
 ]

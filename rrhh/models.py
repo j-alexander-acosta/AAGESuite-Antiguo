@@ -122,7 +122,7 @@ class Licencia(models.Model):
     tipo_licencia = models.ForeignKey('TipoLicencia', null=True, blank=True, verbose_name='Tipo de licencia')
     tipo_licencia_descripcion = models.TextField(max_length=500, null=True, blank=True, verbose_name='Tipo de licencia')
     folio_licencia = models.CharField(max_length=30, null=True, blank=True, verbose_name='Folio de la licencia')
-    total_dias = models.IntegerField(null=True, blank=True, verbose_name='Total de días de licencia')
+    total_dias = models.IntegerField(verbose_name='Total de días de licencia')
     fecha_inicio = models.DateField(verbose_name='Fecha de inicio')
     total_feriados = models.IntegerField(default=0, verbose_name='Total de feriados en el periodo de la licencia')
     fecha_termino = models.DateField(null=True, blank=True, verbose_name='Fecha de término')
