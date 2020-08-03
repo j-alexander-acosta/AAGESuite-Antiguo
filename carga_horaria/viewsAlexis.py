@@ -34,6 +34,15 @@ class LevelFilterMixin(object):
 # fix this!!1
 
 
+class SearchMixin(object):
+    def get_queryset(self):
+        qs = super(GetObjectsForUserMixin, self).get_queryset()
+        q = self.request.GET.get('q', None)
+        if q:
+            qs = qs.filter(nombre__icontains=q)
+        return qs
+
+
 def get_for_user(request, qs, lookup, user):
     if not user.is_superuser:
         colegios = [c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")]
@@ -97,7 +106,7 @@ class ObjPermissionRequiredMixin(object):
 """
     Comienzo Crud Profesor
 """
-class ProfesorListView(LoginRequiredMixin, GetObjectsForUserMixin, ListView):
+class ProfesorListView(LoginRequiredMixin, SearchMixin, GetObjectsForUserMixin, ListView):
     """
         Listado de profesores
     """
@@ -106,6 +115,7 @@ class ProfesorListView(LoginRequiredMixin, GetObjectsForUserMixin, ListView):
     template_name = 'carga_horaria/profesor/listado_profesor.html'
     search_fields = ['nombre', 'horas']
     paginate_by = 6
+
 
 
 class ProfesorDetailView(LoginRequiredMixin, DetailView):

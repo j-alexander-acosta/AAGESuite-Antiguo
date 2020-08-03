@@ -20,6 +20,11 @@
         <h6 class="card-subtitle mb-2 text-muted">Tabla para configuración de profesores</h6>
     </div>
     <div class="card-body">
+      <div class="pull-left">
+        <form action="." method="GET">
+          <i class="fa fa-search"></i> <input name="q" placeholder="Buscar por nombre" value="{{ request.GET.q }}">{% if 'q' in request.GET %} <a href="{% url 'carga-horaria:profesores' %}" class="text-muted">limpiar</a>{% endif %}
+        </form>
+      </div>
       <div class="pull-right" style="padding-bottom: 10px;">
         <a class="btn btn-sm btn-default" href="{% url 'carga-horaria:profesores-pdf' %}"><i class="fa fa-print"></i> Imprimir</a>
       </div>
