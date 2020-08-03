@@ -10,10 +10,10 @@
 
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title">Asignar horas no aula para {{ object }} <strong>
+        <h4 class="card-title">Asignar horas no aula para {{ object.profesor }} <strong>
         
         </h4>
-        <h6 class="card-subtitle mb-2 text-muted">{{ object }}</h6>
+        <h6 class="card-subtitle mb-2 text-muted">{{ object.profesor }}</h6>
 	<table class="table">
 	  <thead>
 	  <tr>
@@ -23,8 +23,8 @@
 	  </thead>
 	  <tbody>
 	  <tr>
-	    <td>{{ object.horas_no_aula_asignadas }}</td>
-	    <td>{{ object.horas_no_aula_disponibles }}</td>
+	    <td>{{ object.profesor.horas_no_aula_asignadas }}</td>
+	    <td>{{ object.profesor.horas_no_aula_disponibles }}</td>
 	  </tr>
 	  </tbody>
 	</table>
