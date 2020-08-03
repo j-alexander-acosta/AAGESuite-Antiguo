@@ -108,7 +108,7 @@ class ProfesorListView(LoginRequiredMixin, GetObjectsForUserMixin, ListView):
     paginate_by = 6
 
 
-class ProfesorDetailView(DetailView):
+class ProfesorDetailView(LoginRequiredMixin, DetailView):
     """
         Detalle de Profesor
     """
@@ -128,7 +128,7 @@ class ProfesorCreateView(LoginRequiredMixin, CreateView):
         return kwargs
 
 
-class ProfesorUpdateView(UpdateView):
+class ProfesorUpdateView(LoginRequiredMixin, UpdateView):
     model = Profesor
     form_class = ProfesorForm
     template_name = 'carga_horaria/profesor/editar_profesor.html'
@@ -214,7 +214,7 @@ class AsistenteListView(LoginRequiredMixin, GetObjectsForUserMixin, ListView):
     paginate_by = 6
 
 
-class AsistenteDetailView(DetailView):
+class AsistenteDetailView(LoginRequiredMixin, DetailView):
     """
         Detalle de Asistente
     """
@@ -234,7 +234,7 @@ class AsistenteCreateView(LoginRequiredMixin, CreateView):
         return kwargs
 
 
-class AsistenteUpdateView(UpdateView):
+class AsistenteUpdateView(LoginRequiredMixin, UpdateView):
     model = Asistente
     form_class = AsistenteForm
     template_name = 'carga_horaria/asistente/editar_asistente.html'
@@ -287,7 +287,7 @@ class AsignaturaBaseListView(LoginRequiredMixin, GetObjectsForUserMixin, ListVie
         return qs
 
 
-class AsignaturaBaseDetailView(DetailView):
+class AsignaturaBaseDetailView(LoginRequiredMixin, DetailView):
     """
         Detalle de asignatura base
     """
@@ -295,14 +295,14 @@ class AsignaturaBaseDetailView(DetailView):
     template_name = 'carga_horaria/asignaturabase/detalle_asignaturabase.html'
 
 
-class AsignaturaBaseCreateView(CreateView):
+class AsignaturaBaseCreateView(LoginRequiredMixin, CreateView):
     model = AsignaturaBase
     form_class = AsignaturaBaseForm
     template_name = 'carga_horaria/asignaturabase/nuevo_asignaturabase.html'
     success_url = reverse_lazy('carga-horaria:asignaturasbase')
 
 
-class AsignaturaBaseUpdateView(UpdateView):
+class AsignaturaBaseUpdateView(LoginRequiredMixin, UpdateView):
     model = AsignaturaBase
     form_class = AsignaturaBaseForm
     template_name = 'carga_horaria/asignaturabase/editar_asignaturabase.html'
@@ -327,7 +327,7 @@ class AsignaturaBaseDeleteView(LoginRequiredMixin, DeleteView):
 """
     Comienzo Crud Asignatura
 """
-class AsignaturaListView(ListView):
+class AsignaturaListView(LoginRequiredMixin, ListView):
     """
         Listado de asignatura
     """
@@ -355,7 +355,7 @@ class AsignaturaListView(ListView):
         return qs
 
 
-class AsignaturaDetailView(DetailView):
+class AsignaturaDetailView(LoginRequiredMixin, DetailView):
     """
         Detalle de asignatura
     """
@@ -363,7 +363,7 @@ class AsignaturaDetailView(DetailView):
     template_name = 'carga_horaria/asignatura/detalle_asignatura.html'
 
 
-class AsignaturaCreateView(CreateView):
+class AsignaturaCreateView(LoginRequiredMixin, CreateView):
     model = Asignatura
     form_class = AsignaturaCreateForm
     template_name = 'carga_horaria/asignatura/nuevo_asignatura.html'
@@ -392,7 +392,7 @@ class AsignaturaCreateView(CreateView):
 
 
 
-class AsignaturaUpdateView(UpdateView):
+class AsignaturaUpdateView(LoginRequiredMixin, UpdateView):
     model = Asignatura
     form_class = AsignaturaUpdateForm
     template_name = 'carga_horaria/asignatura/editar_asignatura.html'

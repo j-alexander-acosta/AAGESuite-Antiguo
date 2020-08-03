@@ -129,7 +129,7 @@ class PeriodoListView(LoginRequiredMixin, GetObjectsForUserMixin, ListView):
     ordering = ['-pk']
 
 
-class PeriodoDetailView(DetailView):
+class PeriodoDetailView(LoginRequiredMixin, DetailView):
     """
         Detalle de Periodo
     """
@@ -137,7 +137,7 @@ class PeriodoDetailView(DetailView):
     template_name = 'carga_horaria/periodo/detalle_periodo.html'
 
 
-class PeriodoCreateView(CreateView):
+class PeriodoCreateView(LoginRequiredMixin, CreateView):
     model = Periodo
     form_class = PeriodoForm
     template_name = 'carga_horaria/periodo/nuevo_periodo.html'
@@ -150,7 +150,7 @@ class PeriodoCreateView(CreateView):
         return kwargs
 
 
-class PeriodoUpdateView(UpdateView):
+class PeriodoUpdateView(LoginRequiredMixin, UpdateView):
     model = Periodo
     form_class = PeriodoForm
     template_name = 'carga_horaria/periodo/editar_periodo.html'
@@ -198,7 +198,7 @@ class ColegioDetailView(LoginRequiredMixin, ObjPermissionRequiredMixin, DetailVi
     template_name = 'carga_horaria/colegio/detalle_colegio.html'
 
 
-class ColegioCreateView(CreateView):
+class ColegioCreateView(LoginRequiredMixin, CreateView):
     model = Colegio
     form_class = ColegioForm
     template_name = 'carga_horaria/colegio/nuevo_colegio.html'
@@ -207,7 +207,7 @@ class ColegioCreateView(CreateView):
 #    error_message = "Revise que todos los campos del formulario hayan sido validados correctamente."
 
 
-class ColegioUpdateView(UpdateView):
+class ColegioUpdateView(LoginRequiredMixin, UpdateView):
     model = Colegio
     form_class = ColegioForm
     template_name = 'carga_horaria/colegio/editar_colegio.html'
@@ -249,7 +249,7 @@ class PlanListView(LoginRequiredMixin, GetObjectsForUserMixin, ListView):
     ordering = ['-pk']
 
 
-class PlanDetailView(DetailView):
+class PlanDetailView(LoginRequiredMixin, DetailView):
     """
         Detalle de Plan
     """
@@ -257,7 +257,7 @@ class PlanDetailView(DetailView):
     template_name = 'carga_horaria/plan/detalle_plan.html'
 
 
-class PlanCreateView(CreateView):
+class PlanCreateView(LoginRequiredMixin, CreateView):
     model = Plan
     form_class = PlanForm
     template_name = 'carga_horaria/plan/nuevo_plan.html'
@@ -266,6 +266,7 @@ class PlanCreateView(CreateView):
 #    error_message = "Revise que todos los campos del formulario hayan sido validados correctamente."
 
 
+@login_required
 def crear_desde_plantilla(request):
     if request.method == 'POST':
         form = PlantillaPlanForm(request.POST)
@@ -285,7 +286,7 @@ def crear_desde_plantilla(request):
     return render(request, 'carga_horaria/plantilla.html', {'form': form})
 
 
-class PlanUpdateView(UpdateView):
+class PlanUpdateView(LoginRequiredMixin, UpdateView):
     model = Plan
     form_class = PlanForm
     template_name = 'carga_horaria/plan/editar_plan.html'
@@ -310,6 +311,7 @@ class PlanDeleteView(LoginRequiredMixin, DeleteView):
     Fin Crud Planes
 """
 
+@login_required
 def asignar(request, pk):
     aa = get_object_or_404(Asignatura, pk=pk)
 
@@ -326,6 +328,7 @@ def asignar(request, pk):
                                                           'form': form})
 
 
+@login_required
 def asignar_fua(request, pk, tipo):
     pp = get_object_or_404(Profesor, pk=pk)
     tipo_display = dict(Asignacion.TIPO_CHOICES)[int(tipo)]
@@ -345,6 +348,7 @@ def asignar_fua(request, pk, tipo):
                                                               'form': form})
 
 
+@login_required
 def asignar_extra(request, pk):
     pp = get_object_or_404(Profesor, pk=pk)
 
@@ -361,6 +365,7 @@ def asignar_extra(request, pk):
                                                                 'form': form})
 
 
+@login_required
 def asignar_no_aula(request, pk):
     pp = get_object_or_404(Profesor, pk=pk)
 
@@ -385,7 +390,7 @@ class AsignacionDeleteView(LoginRequiredMixin, DeleteView):
         return self.post(request, *args, **kwargs)
 
 
-class AsignacionUpdateView(UpdateView):
+class AsignacionUpdateView(LoginRequiredMixin, UpdateView):
     model = Asignacion
     form_class = AsignacionForm
     template_name = 'carga_horaria/asignar.html'
