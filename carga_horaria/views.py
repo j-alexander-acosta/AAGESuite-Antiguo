@@ -21,7 +21,9 @@ from .models import Colegio
 from .forms import AsignacionForm
 from .forms import AsignacionUpdateForm
 from .forms import AsignacionFUAForm
+from .forms import AsignacionNoAulaFUAForm
 from .forms import AsignacionFUAUpdateForm
+from .forms import AsignacionNoAulaFUAUpdateForm
 from .forms import AsignacionExtraForm
 from .forms import AsignacionExtraUpdateForm
 from .forms import AsignacionNoAulaForm
@@ -350,6 +352,26 @@ def asignar_fua(request, pk, tipo):
     return render(request, 'carga_horaria/asignar_fua.html', {'object': pp,
                                                               'tipo': tipo_display,
                                                               'form': form})
+
+@login_required
+def asignar_no_aula_fua(request, pk, tipo):
+    pp = get_object_or_404(Profesor, pk=pk)
+    tipo_display = dict(AsignacionNoAula.TIPO_CHOICES)[int(tipo)]
+
+    if request.method == 'POST':
+        form = AsignacionNoAulaFUAForm(request.POST, profesor=pp, user=request.user, colegio=request.session.get('colegio__pk', None))
+        if form.is_valid():
+            asignacion = form.save(commit=False)
+            asignacion.profesor = pp
+            asignacion.tipo = tipo
+            asignacion.save()
+            return redirect('carga-horaria:profesor', pp.pk)
+    else:
+        form = AsignacionNoAulaFUAForm(user=request.user, colegio=request.session.get('colegio__pk', None))
+    return render(request, 'carga_horaria/asignar_no_aula_fua.html', {'object': pp,
+                                                                      'tipo': tipo_display,
+                                                                      'form': form})
+
 
 
 @login_required
