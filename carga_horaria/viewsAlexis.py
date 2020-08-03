@@ -39,7 +39,7 @@ class SearchMixin(object):
         qs = super(GetObjectsForUserMixin, self).get_queryset()
         q = self.request.GET.get('q', None)
         if q:
-            qs = qs.filter(nombre__icontains=q)
+            qs = qs.filter(nombre__unaccent__icontains=q)
         return qs
 
 

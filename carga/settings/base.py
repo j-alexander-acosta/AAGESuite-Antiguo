@@ -29,6 +29,7 @@ PREREQ_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'django.contrib.postgres',
     'base',
     'django_extensions',
     'widget_tweaks',
