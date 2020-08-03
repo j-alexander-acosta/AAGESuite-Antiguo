@@ -272,6 +272,11 @@ urlpatterns = [
         name='asignar-extra'
     ),
     url(
+        r'^profesores/(?P<profesor_pk>\d+)/asignaciones-extra/(?P<pk>\d+)/editar/$',
+        views.AsignacionExtraUpdateView.as_view(),
+        name='asignacion-extra__editar'
+    ),
+    url(
         r'^asignaciones-extra/(?P<pk>\d+)/eliminar/$',
         views.AsignacionExtraDeleteView.as_view(),
         name='asignacion-extra__eliminar'
@@ -280,6 +285,11 @@ urlpatterns = [
         r'^profesores/(?P<pk>\d+)/asignar-no-aula/$',
         views.asignar_no_aula,
         name='asignar-no-aula'
+    ),
+    url(
+        r'^profesores/(?P<profesor_pk>\d+)/asignaciones-no-aula/(?P<pk>\d+)/editar/$',
+        views.AsignacionNoAulaUpdateView.as_view(),
+        name='asignacion-no-aula__editar'
     ),
     url(
         r'^asignaciones-no-aula/(?P<pk>\d+)/eliminar/$',

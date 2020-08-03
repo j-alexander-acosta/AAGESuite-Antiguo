@@ -43,6 +43,17 @@ class AsignacionForm(forms.ModelForm):
         # self.fields['profesor'] = forms.ChoiceField(choices=profesores)
 
 
+class AsignacionUpdateForm(AsignacionForm):
+    def clean_horas(self):
+        horas = self.cleaned_data['horas']
+        profesor = self.cleaned_data['profesor']
+        if horas - self.instance.horas > profesor.horas_disponibles:
+            raise forms.ValidationError("Excede las horas que {} tiene disponibles ({})".format(profesor, profesor.horas_disponibles))
+        if self.asignatura and horas > self.asignatura.horas_disponibles:
+            raise forms.ValidationError("Excede las horas que {} tiene disponibles ({})".format(self.asignatura, self.asignatura.horas_disponibles))
+        return horas
+
+
 class AsignacionFUAForm(forms.ModelForm):
     """
         Formulario para asignar lo que se proyecta hacia el universo
@@ -89,6 +100,15 @@ class AsignacionFUAForm(forms.ModelForm):
         self.fields['curso'].empty_label = "Todos"
 
 
+class AsignacionFUAUpdateForm(AsignacionFUAForm):
+    def clean_horas(self):
+        horas = self.cleaned_data['horas']
+        profesor = self.profesor
+        if horas - self.instance.horas > profesor.horas_disponibles:
+            raise forms.ValidationError("Excede las horas que {} tiene disponibles ({})".format(profesor, profesor.horas_disponibles))
+        return horas
+    
+
 class AsignacionExtraForm(forms.ModelForm):
     """
         Formulario para asignar una cosa extra
@@ -131,6 +151,15 @@ class AsignacionExtraForm(forms.ModelForm):
         self.fields['curso'].empty_label = "Todos"
 
 
+class AsignacionExtraUpdateForm(AsignacionExtraForm):
+    def clean_horas(self):
+        horas = self.cleaned_data['horas']
+        profesor = self.profesor
+        if horas - self.instance.horas > profesor.horas_no_lectivas_disponibles:
+            raise forms.ValidationError("Excede las horas que {} tiene disponibles ({})".format(profesor, profesor.horas_no_lectivas_disponibles))
+        return horas
+
+
 class AsignacionNoAulaForm(forms.ModelForm):
     """
         Formulario para asignar una cosa NoAula
@@ -153,16 +182,29 @@ class AsignacionNoAulaForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.profesor = kwargs.pop('profesor', None)
+        self.colegio = kwargs.pop('colegio', None)
         user = kwargs.pop('user', None)
         super(AsignacionNoAulaForm, self).__init__(*args, **kwargs)
 
         if user:
-            if not user.is_superuser:
-                self.fields['curso'].queryset = self.fields['curso'].queryset.filter(colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")])
+            if self.colegio:
+                self.fields['curso'].queryset = self.fields['curso'].queryset.filter(colegio__pk__in=[self.colegio])
+            else:
+                if not user.is_superuser:
+                    # cursos of owned colegios
+                    self.fields['curso'].queryset = self.fields['curso'].queryset.filter(colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")])
         else:
             del(self.fields['curso'])
-
 
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['curso'].empty_label = "Todos"
+
+
+class AsignacionNoAulaUpdateForm(AsignacionNoAulaForm):
+    def clean_horas(self):
+        horas = self.cleaned_data['horas']
+        profesor = self.profesor
+        if horas - self.instance.horas > profesor.horas_no_aula_disponibles:
+            raise forms.ValidationError("Excede las horas que {} tiene disponibles ({})".format(profesor, profesor.horas_no_aula_disponibles))
+        return horas

@@ -341,6 +341,7 @@
                       <td> {{ ax.curso|default:"Todos" }} </td>
                       <td> {{ ax.horas }} </td>
 		      <td>
+                        <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignacion-extra__editar' profesor_pk=object.pk pk=ax.pk %}"><i class="fa fa-edit"></i></a>
                         <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_extra_{{ax.pk}}"><i class="fa fa-trash"></i></a>
 			
 		      </td>
@@ -401,6 +402,7 @@
                       <td> {{ ax.curso|default:"Todos" }} </td>
                       <td> {{ ax.horas }} </td>
 		      <td>
+                        <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignacion-no-aula__editar' profesor_pk=object.pk pk=ax.pk %}"><i class="fa fa-edit"></i></a>
                         <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_no_aula_{{ax.pk}}"><i class="fa fa-trash"></i></a>
 			
 		      </td>

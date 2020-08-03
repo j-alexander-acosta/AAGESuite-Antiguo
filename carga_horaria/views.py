@@ -19,9 +19,13 @@ from .models import AsignacionExtra
 from .models import AsignacionNoAula
 from .models import Colegio
 from .forms import AsignacionForm
+from .forms import AsignacionUpdateForm
 from .forms import AsignacionFUAForm
+from .forms import AsignacionFUAUpdateForm
 from .forms import AsignacionExtraForm
+from .forms import AsignacionExtraUpdateForm
 from .forms import AsignacionNoAulaForm
+from .forms import AsignacionNoAulaUpdateForm
 from .formsDani import PlantillaPlanForm
 
 
@@ -370,14 +374,14 @@ def asignar_no_aula(request, pk):
     pp = get_object_or_404(Profesor, pk=pk)
 
     if request.method == 'POST':
-        form = AsignacionNoAulaForm(request.POST, profesor=pp, user=request.user)
+        form = AsignacionNoAulaForm(request.POST, profesor=pp, user=request.user, colegio=request.session.get('colegio__pk', None))
         if form.is_valid():
             asignacion = form.save(commit=False)
             asignacion.profesor = pp
             asignacion.save()
             return redirect('carga-horaria:profesor', pp.pk)
     else:
-        form = AsignacionNoAulaForm(user=request.user)
+        form = AsignacionNoAulaForm(user=request.user, colegio=request.session.get('colegio__pk', None))
     return render(request, 'carga_horaria/asignar_no_aula.html', {'object': pp,
                                                                   'form': form})
 
@@ -392,14 +396,38 @@ class AsignacionDeleteView(LoginRequiredMixin, DeleteView):
 
 class AsignacionUpdateView(LoginRequiredMixin, UpdateView):
     model = Asignacion
-    form_class = AsignacionForm
+    form_class = AsignacionUpdateForm
     template_name = 'carga_horaria/asignar.html'
+
 
     def get_success_url(self):
         return reverse(
             'carga-horaria:periodo',
             kwargs={
                 'pk': self.object.asignatura.periodo.pk,
+            }
+        )
+
+
+class AsignacionExtraUpdateView(LoginRequiredMixin, UpdateView):
+    model = AsignacionExtra
+    form_class = AsignacionExtraUpdateForm
+    template_name = 'carga_horaria/asignar_extra.html'
+
+    def get_form_kwargs(self, *args, **kwargs):
+        pp = get_object_or_404(Profesor, pk=self.kwargs.get('profesor_pk'))
+
+        kwargs = super(AsignacionExtraUpdateView, self).get_form_kwargs(*args, **kwargs)
+        kwargs.update({'profesor': pp,
+                       'user': self.request.user,
+                       'colegio': self.request.session.get('colegio__pk', None)})
+        return kwargs
+
+    def get_success_url(self):
+        return reverse(
+            'carga-horaria:profesor',
+            kwargs={
+                'pk': self.object.profesor.pk,
             }
         )
 
@@ -419,6 +447,28 @@ class AsignacionExtraDeleteView(LoginRequiredMixin, DeleteView):
             }
         )
 
+
+class AsignacionNoAulaUpdateView(LoginRequiredMixin, UpdateView):
+    model = AsignacionNoAula
+    form_class = AsignacionNoAulaUpdateForm
+    template_name = 'carga_horaria/asignar_no_aula.html'
+
+    def get_form_kwargs(self, *args, **kwargs):
+        pp = get_object_or_404(Profesor, pk=self.kwargs.get('profesor_pk'))
+
+        kwargs = super(AsignacionNoAulaUpdateView, self).get_form_kwargs(*args, **kwargs)
+        kwargs.update({'profesor': pp,
+                       'user': self.request.user,
+                       'colegio': self.request.session.get('colegio__pk', None)})
+        return kwargs
+
+    def get_success_url(self):
+        return reverse(
+            'carga-horaria:profesor',
+            kwargs={
+                'pk': self.object.profesor.pk,
+            }
+        )
 
 class AsignacionNoAulaDeleteView(LoginRequiredMixin, DeleteView):
     model = AsignacionNoAula
