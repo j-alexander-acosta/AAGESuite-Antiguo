@@ -3,7 +3,7 @@ from .base import *  # noqa
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'TLvsQkkZQZE6pyiva5pmDcOzHvnLVr6CRClpwByCj2g='
 
-DEBUG = False
+DEBUG = True
 
 DEVELOPMENT_APPS = []
 
