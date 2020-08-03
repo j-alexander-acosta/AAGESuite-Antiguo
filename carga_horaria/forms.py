@@ -111,12 +111,17 @@ class AsignacionExtraForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.profesor = kwargs.pop('profesor', None)
+        self.colegio = kwargs.pop('colegio', None)
         user = kwargs.pop('user', None)
         super(AsignacionExtraForm, self).__init__(*args, **kwargs)
 
         if user:
-            if not user.is_superuser:
-                self.fields['curso'].queryset = self.fields['curso'].queryset.filter(colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")])
+            if self.colegio:
+                self.fields['curso'].queryset = self.fields['curso'].queryset.filter(colegio__pk__in=[self.colegio])
+            else:
+                if not user.is_superuser:
+                    # cursos of owned colegios
+                    self.fields['curso'].queryset = self.fields['curso'].queryset.filter(colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")])
         else:
             del(self.fields['curso'])
 

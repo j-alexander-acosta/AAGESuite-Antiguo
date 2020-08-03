@@ -353,14 +353,14 @@ def asignar_extra(request, pk):
     pp = get_object_or_404(Profesor, pk=pk)
 
     if request.method == 'POST':
-        form = AsignacionExtraForm(request.POST, profesor=pp, user=request.user)
+        form = AsignacionExtraForm(request.POST, profesor=pp, user=request.user, colegio=request.session.get('colegio__pk', None))
         if form.is_valid():
             asignacion = form.save(commit=False)
             asignacion.profesor = pp
             asignacion.save()
             return redirect('carga-horaria:profesor', pp.pk)
     else:
-        form = AsignacionExtraForm(user=request.user)
+        form = AsignacionExtraForm(user=request.user, colegio=request.session.get('colegio__pk', None))
     return render(request, 'carga_horaria/asignar_extra.html', {'object': pp,
                                                                 'form': form})
 
