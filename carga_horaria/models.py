@@ -308,11 +308,36 @@ class AsignacionExtra(models.Model):
         return "{} - {} ({})".format(self.profesor, self.descripcion, self.horas)
 
 
+class AsignacionNoAulaQuerySet(models.QuerySet):
+    @property
+    def ordinaria(self):
+        return self.filter(tipo=AsignacionNoAula.ORDINARIA)
+
+    @property
+    def sep(self):
+        return self.filter(tipo=AsignacionNoAula.SEP)
+
+    @property
+    def pie(self):
+        return self.filter(tipo=AsignacionNoAula.PIE)
+
+
 class AsignacionNoAula(models.Model):
+    ORDINARIA = 1
+    SEP = 2
+    PIE = 3
+
+    TIPO_CHOICES = ((ORDINARIA, 'ordinaria'),
+                    (SEP, 'SEP'),
+                    (PIE, 'PIE'))
+
     profesor = models.ForeignKey('Profesor')
     curso = models.ForeignKey('Periodo', null=True, blank=True)
     descripcion = models.CharField(max_length=255)
+    tipo = models.PositiveSmallIntegerField(default=ORDINARIA)
     horas = models.DecimalField(max_digits=4, decimal_places=2)
+
+    objects = AsignacionNoAulaQuerySet.as_manager()
 
     def __str__(self): 
         return "{} - {} ({})".format(self.profesor, self.descripcion, self.horas)
