@@ -1,6 +1,9 @@
 from .base import *  # noqa
 # import raven
 
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'EKBtun0hsgtjTjViBGJpD5/54Pd7wC51sHDHUGZsbpM='
+
 DEBUG = False
 
 # PRODUCTION_APPS = ['raven.contrib.django.raven_compat']
