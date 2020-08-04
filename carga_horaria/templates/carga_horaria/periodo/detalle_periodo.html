@@ -67,7 +67,10 @@
                 </thead>
                 <tbody>
 		  {% for a in object.asignatura_set.all %}
-                <tr{% if a.horas_disponibles == 0 %} class="table-success"{% else %} class="table-warning"{% endif %}>
+                  {% comment %}
+                  <tr{% if a.horas_disponibles == 0 %} class="table-success"{% else %} class="table-warning"{% endif %}>
+                  {% endcomment %}
+                  <tr {% if a.base %} class="table-success"{% else %} class="table-warning"{% endif %}>
                   <td>  <a href="{% url 'carga-horaria:asignatura' a.pk %}">{{ a }} </a> </td>
                     <td>  {{ a.horas }}  </td>
                     <td>  {{ a.horas_asignadas }}  </td>
