@@ -177,6 +177,10 @@ class Profesor(models.Model):
     fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
 
     @property
+    def horas_contratadas(self):
+        return self.horas + self.horas_no_aula
+
+    @property
     def horas_asignadas_crono(self):
         return self.horas_asignadas * 45 / 60
 
