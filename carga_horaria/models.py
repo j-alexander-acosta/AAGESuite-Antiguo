@@ -95,7 +95,7 @@ class Periodo(models.Model):
     plan = models.ForeignKey('Plan')
     nombre = models.CharField(max_length=255, blank=True, null=True)
     horas = models.DecimalField(max_digits=4, decimal_places=2, default=0)
-    horas_dif = models.DecimalField(max_digits=4, decimal_places=2, default=0, validators=[MinValueValidator(0), MaxValueValidator(9)])
+    horas_dif = models.DecimalField(max_digits=4, decimal_places=2, default=0, validators=[MinValueValidator(0), MaxValueValidator(22)])
     colegio = models.ForeignKey('Colegio')
 
     @property
