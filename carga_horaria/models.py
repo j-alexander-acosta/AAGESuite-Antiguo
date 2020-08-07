@@ -224,7 +224,7 @@ class Profesor(models.Model):
 
     @property
     def horas_asignadas_total_crono(self):
-        return self.horas_no_lectivas_asignadas_anexo + self.horas_asignadas_crono + self.horas_no_aula_asignadas
+        return Decimal(self.horas_no_lectivas_asignadas_anexo) + Decimal(self.horas_asignadas_crono) + Decimal(self.horas_no_aula_asignadas)
 
     @property
     def horas_asignadas(self):
