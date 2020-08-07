@@ -88,7 +88,7 @@
 		    {% for ax in object.asignacion_set.all.plan %}
                     <tr>
                       <td> {{ ax.asignatura }} </td>
-                      <td> {{ ax.asignatura.periodo }} </td>
+                      <td><a href="{{ ax.asignatura.periodo.get_absolute_url }}">{{ ax.asignatura.periodo }}</a></td>
                       <td> {{ ax.horas }} </td>
 		      <td>
                         <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignacion__editar' ax.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>

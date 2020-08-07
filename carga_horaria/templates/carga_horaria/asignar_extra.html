@@ -10,10 +10,10 @@
 
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title">Asignar horas no lectivas para {{ object }} <strong>
+        <h4 class="card-title">Asignar horas no lectivas para {{ profesor }} <strong>
         
         </h4>
-        <h6 class="card-subtitle mb-2 text-muted">{{ object }}</h6>
+        <h6 class="card-subtitle mb-2 text-muted">{{ profesor.especialidad }}</h6>
 	<table class="table">
 	  <thead>
 	  <tr>
@@ -23,8 +23,8 @@
 	  </thead>
 	  <tbody>
 	  <tr>
-	    <td>{{ object.horas_no_lectivas_asignadas }}</td>
-	    <td>{{ object.horas_no_lectivas_disponibles }}</td>
+	    <td>{{ profesor.horas_no_lectivas_asignadas }}</td>
+	    <td>{{ profesor.horas_no_lectivas_disponibles }}</td>
 	  </tr>
 	  </tbody>
 	</table>
@@ -36,10 +36,10 @@
             <div class="form-group">
                 <div class="col-sm-10 col-sm-offset-2">
                     <button type="submit" class="btn btn-success">Guardar</button>
-                    <a {% if object %}
-                        href="{% url 'carga-horaria:profesor' object.pk%}"
+                    <a {% if profesor %}
+                        href="{% url 'carga-horaria:profesor' profesor.pk %}"
                     {% else %}
-                        href="{% url 'carga-horaria:profesor' object.pk%}"
+                        href="{% url 'carga-horaria:profesor' profesor.pk %}"
                     {% endif %}
                     role="button" class="btn btn-default">
                         Volver
