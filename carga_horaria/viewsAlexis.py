@@ -36,7 +36,7 @@ class LevelFilterMixin(object):
 
 class SearchMixin(object):
     def get_queryset(self):
-        qs = super(GetObjectsForUserMixin, self).get_queryset()
+        qs = super(SearchMixin, self).get_queryset()
         q = self.request.GET.get('q', None)
         if q:
             qs = qs.filter(nombre__unaccent__icontains=q)
@@ -111,7 +111,7 @@ class ProfesorListView(LoginRequiredMixin, SearchMixin, GetObjectsForUserMixin, 
         Listado de profesores
     """
     model = Profesor
-    lookup = 'fundacion__colegio'
+    lookup = 'fundacion__colegio__pk'
     template_name = 'carga_horaria/profesor/listado_profesor.html'
     search_fields = ['nombre', 'horas']
     paginate_by = 6
@@ -218,7 +218,7 @@ class AsistenteListView(LoginRequiredMixin, GetObjectsForUserMixin, ListView):
         Listado de asistentes
     """
     model = Asistente
-    lookup = 'fundacion__colegio'
+    lookup = 'fundacion__colegio__pk'
     template_name = 'carga_horaria/asistente/listado_asistente.html'
     search_fields = ['nombre', 'horas']
     paginate_by = 6
