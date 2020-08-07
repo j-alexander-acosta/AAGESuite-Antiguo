@@ -25,18 +25,22 @@
       <thead>
         <tr>
           <th>Nombre</th>
-          <th>Horas Contrato</th>
-          <th>Horas Docentes</th>
-          <th>Horas Disponibles</th>
+          <th>Hrs contrato</th>
+          <th>Hrs docentes</th>
+          <th>Hrs no aula</th>
+          <th>Hrs disp. docentes</th>
+          <th>Hrs disp. no aula</th>
         </tr>
       </thead>
       <tbody>
         {% for p in profesores %}
 	<tr>
 	  <td>{{ p.nombre }}</td>
-	  <td>{{ p.horas }}</td>
+	  <td>{{ p.horas_contratadas }}</td>
 	  <td>{{ p.horas_docentes }}</td>
+	  <td>{{ p.horas_no_aula }}</td>
 	  <td>{{ p.horas_disponibles }}</td>
+	  <td>{{ p.horas_no_aula_disponibles }}</td>
 	</tr>
         {% endfor %}
       </tbody>
