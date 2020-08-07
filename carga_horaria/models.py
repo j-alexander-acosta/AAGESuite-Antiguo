@@ -148,11 +148,23 @@ class Periodo(models.Model):
         return reverse('carga-horaria:periodo', args=[str(self.pk)])
 
 
+class AsignaturaQuerySet(models.QuerySet):
+    @property
+    def base(self):
+        return self.filter(base__isnull=False)
+
+    @property
+    def custom(self):
+        return self.filter(base__isnull=True)
+
+
 class Asignatura(models.Model):
     base = models.ForeignKey('AsignaturaBase', null=True, blank=True)
     nombre = models.CharField(max_length=255, null=True, blank=True)
     periodo = models.ForeignKey('Periodo')
     horas = models.DecimalField(max_digits=4, decimal_places=2)
+
+    objects = AsignaturaQuerySet.as_manager()
 
     @property
     def horas_asignadas(self):

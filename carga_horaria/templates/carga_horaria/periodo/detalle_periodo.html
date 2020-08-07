@@ -66,11 +66,8 @@
 		</tr>
                 </thead>
                 <tbody>
-		  {% for a in object.asignatura_set.all %}
-                  {% comment %}
+		  {% for a in object.asignatura_set.all.base %}
                   <tr{% if a.horas_disponibles == 0 %} class="table-success"{% else %} class="table-warning"{% endif %}>
-                  {% endcomment %}
-                  <tr {% if a.base %} class="table-success"{% else %} class="table-warning"{% endif %}>
                   <td>  <a href="{% url 'carga-horaria:asignatura' a.pk %}">{{ a }} </a> </td>
                     <td>  {{ a.horas }}  </td>
                     <td>  {{ a.horas_asignadas }}  </td>
@@ -80,9 +77,21 @@
                       <i class="fa fa-trash"></i>
                     </a>{% endif %}
 		  </td>
-                </tr>
+                  </tr>
 		{% endfor %}
-		  <tr>
+                {% for a in object.asignatura_set.all.custom %}
+                  <tr{% if a.horas_disponibles == 0 %} class="table-success"{% else %} style="background-color: #ffbfb878;"{% endif %}>
+                  <td>  <a href="{% url 'carga-horaria:asignatura' a.pk %}">{{ a }} </a> </td>
+                    <td>  {{ a.horas }}  </td>
+                    <td>  {{ a.horas_asignadas }}  </td>
+                    <td>  {{ a.horas_disponibles }}  </td>
+                    <td>  {% for p in a.profesores %}<a href="{% url 'carga-horaria:profesor' p.pk %}">{{ p }} ({{ p.horas_disponibles }}) </a>{% endfor %}  </td>
+                  <td>  {% if not a.completa %}<a href="{% url 'carga-horaria:asignar' a.pk %}">Asignar</a>{% if not a.base %} | {% endif %}{% endif %}{% if not a.base %}<a class="btn btn-sm btn-danger" href="{% url 'carga-horaria:asignatura__eliminar' a.pk %}?periodo={{ object.pk }}" onclick="return confirm('¿Está seguro de eliminar {{ a }}?')">
+                      <i class="fa fa-trash"></i>
+                    </a>{% endif %}
+		  </td>
+                  </tr>
+		{% endfor %}		  <tr>
 		    <td colspan="3">
 		    <td colspan="2">Subtotal tiempo mínimo</td>
 		    <td>{{ object.floor }}</td>
