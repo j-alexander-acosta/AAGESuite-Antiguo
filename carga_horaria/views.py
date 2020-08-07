@@ -132,7 +132,14 @@ class PeriodoListView(LoginRequiredMixin, GetObjectsForUserMixin, ListView):
     template_name = 'carga_horaria/periodo/listado_periodos.html'
     search_fields = ['nombre', 'colegio']
     paginate_by = 10
-    ordering = ['-pk']
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super(PeriodoListView, self).get_context_data(*args, **kwargs)
+        ox = ctx['object_list']
+        ordering = {str(value): index for index, value in enumerate(Nivel)}
+        ctx['object_list'] = sorted(ox, key=lambda x: ordering["Nivel."+x.plan.nivel])
+        return ctx
+
 
 
 class PeriodoDetailView(LoginRequiredMixin, DetailView):
