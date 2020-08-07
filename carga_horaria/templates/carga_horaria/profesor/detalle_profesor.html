@@ -23,7 +23,13 @@
                   </a>
               </div>
           {% endblock %}
-        </h4>
+      </h4>
+      	<div class="progress pull-right" style="width: 50%;">
+	  <div class="progress-bar progress-bar-striped progress-bar-animated" style="width:{{ object.completion_percentage }}%;">
+	    <strong>{{ object.get_progress_display }}</strong>
+	  </div>
+	</div>
+
       <h6 class="card-subtitle mb-2">Título: <strong>{{ profesor.especialidad|default:"Ninguna" }}</strong> | Horas contrato total: <strong>{{ profesor.horas_contratadas }}</strong></h6>
       <br>
       <h6 class="card-subtitle mb-2">

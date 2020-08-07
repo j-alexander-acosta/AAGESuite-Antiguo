@@ -194,6 +194,27 @@ class Profesor(models.Model):
     fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
 
     @property
+    def ceiling(self):
+        return self.horas_contratadas
+
+    @property
+    def progress(self):
+        return self.horas_asignadas_total_crono
+
+    @property
+    def get_progress_display(self):
+        hours = int(self.progress)
+        minutes = int(self.progress*60) % 60
+        return "%d:%02d" % (hours, minutes)
+
+    @property
+    def completion_percentage(self):
+        try:
+            return round(self.progress * 100 / self.ceiling)
+        except InvalidOperation:
+            return 0
+
+    @property
     def horas_contratadas(self):
         return self.horas + self.horas_no_aula
 
@@ -203,7 +224,7 @@ class Profesor(models.Model):
 
     @property
     def horas_asignadas_total_crono(self):
-        return self.horas_no_lectivas_asignadas_anexo + self.horas_asignadas_crono
+        return self.horas_no_lectivas_asignadas_anexo + self.horas_asignadas_crono + self.horas_no_aula_asignadas
 
     @property
     def horas_asignadas(self):
