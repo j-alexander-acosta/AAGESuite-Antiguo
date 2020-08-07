@@ -32,6 +32,7 @@ class Plan(models.Model):
     class Meta:
         verbose_name = u"Plan"
         verbose_name_plural = u"Planes"
+        ordering = ["nivel"]
 
     def get_absolute_url(self):
         """
@@ -134,6 +135,7 @@ class Periodo(models.Model):
     class Meta:
         verbose_name = u"Curso"
         verbose_name_plural = u"Cursos"
+        ordering = ["plan"]
     
     def get_absolute_url(self):
         """
@@ -245,6 +247,9 @@ class Profesor(models.Model):
     def __str__(self): 
         return self.nombre
 
+    class Meta:
+        ordering = ['nombre']
+
 
 class Asistente(models.Model):
     nombre = models.CharField(max_length=255)
@@ -254,6 +259,9 @@ class Asistente(models.Model):
 
     def __str__(self):
         return self.nombre
+
+    class Meta:
+        ordering = ['nombre']
 
 
 class AsignacionQuerySet(models.QuerySet):
