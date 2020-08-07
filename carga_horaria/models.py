@@ -2,7 +2,7 @@ from enum import Enum
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
-from decimal import Decimal, ROUND_HALF_DOWN, ROUND_HALF_UP
+from decimal import Decimal, ROUND_HALF_DOWN, ROUND_HALF_UP, InvalidOperation
 
 
 class Nivel(Enum):
@@ -127,7 +127,10 @@ class Periodo(models.Model):
 
     @property
     def completion_percentage(self):
-        return round(self.progress * 100 / self.ceiling)
+        try:
+            return round(self.progress * 100 / self.ceiling)
+        except InvalidOperation:
+            return 0
 
     def __str__(self): 
         return "{} {}".format(getattr(Nivel, self.plan.nivel).value.title(), str(self.nombre or '')).strip()
