@@ -34,8 +34,10 @@
                     <td><a href="{% url 'carga-horaria:colegio' c.pk %}">{{ c.nombre }}</a></td>
                     <td>{{c.jec|yesno}}</td>
                     <td>
-                        <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:colegio__editar' c.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
-                        <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_colegio_{{c.pk}}"><i class="fa fa-trash"></i></a>
+                      <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:colegio__editar' c.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
+                      {% if request.user.is_superuser %}
+                      <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_colegio_{{c.pk}}"><i class="fa fa-trash"></i></a>
+                      {% endif %}
                     </td>
                 </tr>
                 <div class="modal" tabindex="-1" role="dialog" id="eliminar_colegio_{{c.pk}}">
