@@ -54,7 +54,7 @@ def get_for_user(request, qs, lookup, user):
         # end
             
         kwargs = {"{}__in".format(lookup): colegios}
-        return qs.filter(**kwargs)
+        return qs.filter(**kwargs).distinct()
     else:
         colegios = [c.pk for c in Colegio.objects.all()]
         # new logic for colegio switcher
@@ -64,7 +64,7 @@ def get_for_user(request, qs, lookup, user):
         # end
             
         kwargs = {"{}__in".format(lookup): colegios}
-        return qs.filter(**kwargs)
+        return qs.filter(**kwargs).distinct()
         
     
 
@@ -81,7 +81,7 @@ class GetObjectsForUserMixin(object):
             # end
             
             kwargs = {"{}__in".format(self.lookup): colegios}
-            return qs.filter(**kwargs)
+            return qs.filter(**kwargs).distinct()
         else:
             colegios = [c.pk for c in Colegio.objects.all()]
             # new logic for colegio switcher
@@ -91,7 +91,7 @@ class GetObjectsForUserMixin(object):
             # end
             
             kwargs = {"{}__in".format(self.lookup): colegios}
-            return qs.filter(**kwargs)
+            return qs.filter(**kwargs).distinct()
 
 
 class ObjPermissionRequiredMixin(object):
