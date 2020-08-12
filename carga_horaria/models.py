@@ -129,7 +129,7 @@ class Periodo(models.Model):
     def completion_percentage(self):
         try:
             return round(self.progress * 100 / self.ceiling)
-        except InvalidOperation:
+        except:
             return 0
 
     def __str__(self): 
