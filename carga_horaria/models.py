@@ -192,6 +192,7 @@ class Profesor(models.Model):
     horas_no_aula = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(44)], default=0)
     especialidad = models.ForeignKey('Especialidad', verbose_name='título', blank=True, null=True)
     fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
+    colegio = models.ForeignKey('Colegio', null=True)
 
     @property
     def ceiling(self):
@@ -292,6 +293,7 @@ class Asistente(models.Model):
     horas = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(1), MaxValueValidator(45)])
     funcion = models.CharField(max_length=255)
     fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
+    colegio = models.ForeignKey('Colegio', null=True)
 
     def __str__(self):
         return self.nombre

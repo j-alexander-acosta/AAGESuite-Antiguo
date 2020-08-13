@@ -426,7 +426,7 @@ class AsignacionDeleteView(LoginRequiredMixin, DeleteView):
 class AsignacionUpdateView(LoginRequiredMixin, UpdateView):
     model = Asignacion
     form_class = AsignacionUpdateForm
-    template_name = 'carga_horaria/asignar.html'
+    template_name = 'carga_horaria/asignar_update.html'
 
 
     def get_success_url(self):
