@@ -232,6 +232,10 @@ class Profesor(models.Model):
         return sum(self.asignacion_set.values_list('horas', flat=True))
 
     @property
+    def horas_asignadas_plan(self):
+        return sum(self.asignacion_set.all().plan.values_list('horas', flat=True))
+
+    @property
     def horas_disponibles(self):
         return self.horas_docentes - self.horas_asignadas
 
