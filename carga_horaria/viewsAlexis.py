@@ -213,7 +213,7 @@ class ProfesorDeleteView(LoginRequiredMixin, DeleteView):
 """
     Comienzo Crud Asistente
 """
-class AsistenteListView(LoginRequiredMixin, GetObjectsForUserMixin, ListView):
+class AsistenteListView(LoginRequiredMixin, SearchMixin, GetObjectsForUserMixin, ListView):
     """
         Listado de asistentes
     """
