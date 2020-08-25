@@ -41,6 +41,15 @@ class ProfesorForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super(ProfesorForm, self).clean()
 
+        if self.instance and self.instance.asignacion_set.count() > 0:
+            if self.fields['horas'].has_changed(self.instance.horas, cleaned_data['horas']):
+                raise forms.ValidationError("No se pueden modificar horas de contrato mientras tenga asignaciones.")
+
+        if self.instance and self.instance.asignacionnoaula_set.count() >0:
+            if self.fields['horas_no_aula'].has_changed(self.instance.horas_no_aula, cleaned_data['horas_no_aula']):
+                raise forms.ValidationError("No se pueden modificar horas de contrato mientras tenga asignaciones.")
+
+
         if cleaned_data['horas'] + cleaned_data['horas_no_aula'] > 44:
             raise forms.ValidationError("La suma de horas de aula y no aula no debe superar 44 horas.")
         return cleaned_data
