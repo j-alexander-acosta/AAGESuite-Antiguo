@@ -185,6 +185,9 @@ class Asignatura(models.Model):
     def __str__(self): 
         return str(self.base or self.nombre)
 
+    class Meta:
+        ordering = ['base']
+
 
 class Profesor(models.Model):
     nombre = models.CharField(max_length=255)
