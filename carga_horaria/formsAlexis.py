@@ -26,6 +26,7 @@ class ProfesorForm(forms.ModelForm):
             'especialidad',
             'fundacion',
             'colegio',
+            'adventista',
         ]
         labels = {
             'horas': u'Horas de contrato en docencia de aula',
@@ -68,6 +69,7 @@ class AsistenteForm(forms.ModelForm):
             'funcion',
             'fundacion',
             'colegio',
+            'adventista',
         ]
         labels = {
             'horas': u'Horas de contrato',

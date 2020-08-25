@@ -196,6 +196,7 @@ class Profesor(models.Model):
     especialidad = models.ForeignKey('Especialidad', verbose_name='título', blank=True, null=True)
     fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
     colegio = models.ForeignKey('Colegio', null=True)
+    adventista = models.BooleanField(default=False)
 
     @property
     def ceiling(self):
@@ -301,6 +302,7 @@ class Asistente(models.Model):
     funcion = models.CharField(max_length=255)
     fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
     colegio = models.ForeignKey('Colegio', null=True)
+    adventista = models.BooleanField(default=False)
 
     def __str__(self):
         return self.nombre
