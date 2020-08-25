@@ -33,6 +33,10 @@ class ProfesorForm(forms.ModelForm):
             'horas_no_aula': u'Horas de contrato en docencia no aula',
             'fundacion': 'Fundación que lo contrata'
         }
+        widgets = {
+            'horas': forms.NumberInput(attrs={'step': '1'}),
+            'horas_no_aula': forms.NumberInput(attrs={'step': '1'}),
+        }
 
     def clean(self):
         cleaned_data = super(ProfesorForm, self).clean()
