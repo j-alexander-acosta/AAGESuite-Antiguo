@@ -138,7 +138,20 @@ class PeriodoListView(LoginRequiredMixin, GetObjectsForUserMixin, ListView):
         ox = ctx['object_list']
         ordering = {str(value): index for index, value in enumerate(Nivel)}
         ctx['object_list'] = sorted(ox, key=lambda x: ordering["Nivel."+x.plan.nivel])
+        # added for convenience, pasted from AsignaturaBaseListView
+        ctx['levels'] = [(tag.name, tag.value) for tag in Nivel]
+        ctx['nivel_actual'] = self.request.GET.get('nivel')
         return ctx
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        nivel = self.request.GET.get('nivel')
+        if nivel:
+            qs = qs.filter(plan__nivel=nivel)
+
+        return qs
+
 
 
 

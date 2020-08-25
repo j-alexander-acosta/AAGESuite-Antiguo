@@ -20,6 +20,9 @@
         <h6 class="card-subtitle mb-2 text-muted">Tabla para configuración de cursos</h6>
     </div>
     <div class="card-body">
+
+      <div class="row">
+	<div class="col-md-10">
         <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -63,8 +66,16 @@
             </tbody>
         </table>
 	</div>
-
-    </div>
+        </div>
+	<div class="col-md-2">
+	  <h5>Nivel</h5>
+	  <ul class="nav nav-pills flex-column">
+	    {% for tag, name in levels %}
+	    <li class="nav-item"><a class="nav-link{% if nivel_actual == tag %} active{% endif %}" href="?nivel={{ tag }}">{{ name }}</a></li>
+	    {% endfor %}
+	  </ul>
+	</div>
+        </div>
                     <div class="card-footer">
                     <div align="center">
                         {% bootstrap_paginate page_obj range=5 %}
