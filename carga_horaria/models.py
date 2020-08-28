@@ -100,6 +100,10 @@ class Periodo(models.Model):
     colegio = models.ForeignKey('Colegio')
 
     @property
+    def can_dif(self):
+        return self.plan.nivel in ['M3', 'M4']
+
+    @property
     def floor(self):
         if self.colegio.jec:
             lookup = 'base__horas_jec'

@@ -54,12 +54,14 @@
 		  </span>
 		</a>
 
+                {% if object.can_dif %}
 		<a class="btn btn-sm btn-info float-right" href="{% url 'carga-horaria:asignatura_dif__nuevo' object.pk %}" role="button">
 		  <span>
 		    Crear Asignatura Plan Diferenciado
                     <i class="fa fa-plus"></i>
 		  </span>
 		</a>
+                {% endif %}
 
                     </th>
                 </tr>
