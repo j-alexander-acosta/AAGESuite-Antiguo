@@ -91,7 +91,8 @@ class ColegioForm(forms.ModelForm):
             'pie',
             'sep',
             'web',
-            'financiamiento'
+            'financiamiento',
+            'alumnos',
         ]
         help_texts = {
             'nombre': u"Defina un nombre para el colegio",

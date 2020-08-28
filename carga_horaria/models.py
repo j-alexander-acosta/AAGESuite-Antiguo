@@ -80,6 +80,7 @@ class Colegio(models.Model):
     sep = models.BooleanField('SEP', default=True)
     web = models.URLField(max_length=255, blank=True, null=True)
     financiamiento = models.PositiveSmallIntegerField(default=PAID, choices=FINANCING_CHOICES)
+    alumnos = models.PositiveIntegerField(default=0)
     
     def __str__(self): 
         return self.nombre
