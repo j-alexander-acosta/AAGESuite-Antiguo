@@ -1,0 +1,130 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">{% block action %}Crear{% endblock action %} Asignatura Plan Diferenciado
+        </h4>
+    </div>
+    <div class="card-body">
+
+        <form class="form-horizontal" method="post">
+            {% csrf_token %}
+
+            <div id="div_id_area" class="form-group">
+              <label for="id_area" class="control-label  requiredField">Área<span class="asteriskField">*</span></label>
+              <div class="controls">
+                <select name="area" class="select form-control" id="id_area">
+                  <option value="" selected="">---------</option>
+                  <option value="a">A</option>
+                  <option value="b">B</option>
+                  <option value="c">C</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="div_id_disciplina" class="form-group">
+              <label for="id_disciplina" class="control-label  requiredField">Disciplina<span class="asteriskField">*</span></label>
+              <div class="controls">
+                <select name="disciplina" class="select form-control" id="id_disciplina">
+                </select>
+              </div>
+            </div>
+
+            <div id="div_id_asignatura" class="form-group">
+              <label for="id_asignatura" class="control-label  requiredField">Asignatura<span class="asteriskField">*</span></label>
+              <div class="controls">
+                <select name="asignatura" class="select form-control" id="id_asignatura">
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-10 col-sm-offset-2">
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <a href="{{ request.META.HTTP_REFERER }}"
+                    role="button" class="btn btn-default">
+                        Volver
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  var areas = {
+      a: [{id: 1, name: "Lengua y Literatura"},
+          {id: 2, name: "Filosofía"},
+          {id: 3, name: "Historia, Geografía y Ciencias Sociales"}],
+      b: [{id: 4, name: "Matemática"},
+          {id: 5, name: "Ciencias"}],
+      c: [{id: 6, name: "Artes"},
+          {id: 7, name: "Educación Física y Salud"}],
+  }
+
+  var disciplinas = {
+      1: ["Taller de Literatura",
+          "Lectura y Escritura Especializadas",
+          "Participación y Argumentación en Democracia"],
+      2: ["Estética",
+          "Filosofía Política",
+          "Seminario de Filosofía"],
+      3: ["Comprensión Histórica del Presente",
+          "Geografía, Territorio y Desafíos Socioambientales",
+          "Economía y Sociedad"],
+      4: ["Límites, Derivadas e Integrales",
+          "Probabilidades y Estadística Descriptiva Inferencial",
+          "Pensamiento Computacional y Programación",
+          "Geometría 3D"],
+      5: ["Biología de los Ecosistemas",
+          "Biología Celular y Molecular",
+          "Ciencias de la Salud",
+          "Física",
+          "Química"],
+      6: ["Artes Visuales, Audiovisuales y Multimediales",
+          "Creación y Composición Musical",
+          "Diseño y Arquitectura",
+          "Interpretación y Creación en Danza",
+          "Interpretación y Creación en Teatro",
+          "Interpretación Musical"],
+      7: ["Promoción de Estilos de Vida Activos y Saludables",
+          "Ciencias del Ejercicio Físico y Deportivo",
+          "Expresión Corporal"]
+  }
+
+  $(function() {
+      $('#id_area').change(function(){
+          var dd = areas[$(this).val()];
+          var target = $('#id_disciplina');
+
+          
+          target.empty();
+          dd.forEach(function(d){
+              var el = document.createElement('option');
+              el.value = d.id;
+              el.textContent = d.name;
+              target.append(el);
+          });
+      });
+
+      $('#id_disciplina').change(function(){
+          var aa = disciplinas[$(this).val()];
+          var target = $('#id_asignatura');
+
+          target.empty();
+          aa.forEach(function(a){
+              var el = document.createElement('option');
+              el.value = a;
+              el.textContent = a;
+              target.append(el);
+          });
+      });
+    });
+</script>
+{% endblock %}

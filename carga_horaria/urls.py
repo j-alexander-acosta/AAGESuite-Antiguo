@@ -155,6 +155,11 @@ urlpatterns = [
         name='asignatura__nuevo'
     ),
     url(
+        r'^periodos/(?P<pk>\d+)/nueva-asignatura-dif/$',
+        views.asignatura_dif,
+        name='asignatura_dif__nuevo'
+    ),
+    url(
         r'^asignaturas/(?P<pk>\d+)/editar/$',
         views.AsignaturaUpdateView.as_view(),
         name='asignatura__editar'

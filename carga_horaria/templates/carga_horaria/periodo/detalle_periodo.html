@@ -47,9 +47,16 @@
 		    Asignaturas
                 </span>
 
-		<a class="btn btn-sm btn-warning float-right" href="{% url 'carga-horaria:asignatura__nuevo' object.pk %}" role="button">
+		<a class="btn btn-sm btn-warning float-right" style="margin-left: 20px;" href="{% url 'carga-horaria:asignatura__nuevo' object.pk %}" role="button">
 		  <span>
 		    Crear Asignatura
+                    <i class="fa fa-plus"></i>
+		  </span>
+		</a>
+
+		<a class="btn btn-sm btn-info float-right" href="{% url 'carga-horaria:asignatura_dif__nuevo' object.pk %}" role="button">
+		  <span>
+		    Crear Asignatura Plan Diferenciado
                     <i class="fa fa-plus"></i>
 		  </span>
 		</a>

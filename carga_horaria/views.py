@@ -338,6 +338,18 @@ class PlanDeleteView(LoginRequiredMixin, DeleteView):
 """
 
 @login_required
+def asignatura_dif(request, pk):
+    pp = get_object_or_404(Periodo, pk=pk)
+
+    if request.method == 'POST':
+        Asignatura.objects.create(nombre=request.POST['asignatura'],
+                                  periodo=pp,
+                                  horas=6)
+        return redirect('carga-horaria:periodo', pp.pk)
+    return render(request, 'carga_horaria/asignatura/asignatura_dif.html', {'object': pp})
+
+
+@login_required
 def asignar(request, pk):
     aa = get_object_or_404(Asignatura, pk=pk)
 
