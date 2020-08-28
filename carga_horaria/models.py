@@ -202,6 +202,7 @@ class Profesor(models.Model):
     fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
     colegio = models.ForeignKey('Colegio', null=True)
     adventista = models.BooleanField(default=False)
+    directivo = models.BooleanField(default=False)
 
     @property
     def ceiling(self):

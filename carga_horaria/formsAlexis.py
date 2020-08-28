@@ -27,11 +27,13 @@ class ProfesorForm(forms.ModelForm):
             'fundacion',
             'colegio',
             'adventista',
+            'directivo'
         ]
         labels = {
             'horas': u'Horas de contrato en docencia de aula',
             'horas_no_aula': u'Horas de contrato en docencia no aula',
-            'fundacion': 'Fundación que lo contrata'
+            'fundacion': 'Fundación que lo contrata',
+            'directivo': '¿Es directivo?'
         }
         widgets = {
             'horas': forms.NumberInput(attrs={'step': '1'}),
