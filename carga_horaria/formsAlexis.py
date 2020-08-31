@@ -142,9 +142,17 @@ class AsignaturaBaseForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        colegio = kwargs.pop('colegio', None)
         super(AsignaturaBaseForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+
+        if colegio:
+            self.fields['plan'].queryset = self.fields['plan'].queryset.filter(colegio__pk=colegio)
+        else:
+            if user and not user.is_superuser:
+                self.fields['plan'].queryset = self.fields['plan'].queryset.filter(colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")]).distinct()
 
 
 class AsignaturaUpdateForm(forms.ModelForm):

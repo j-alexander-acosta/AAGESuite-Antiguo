@@ -311,6 +311,12 @@ class AsignaturaBaseCreateView(LoginRequiredMixin, CreateView):
     template_name = 'carga_horaria/asignaturabase/nuevo_asignaturabase.html'
     success_url = reverse_lazy('carga-horaria:asignaturasbase')
 
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(AsignaturaBaseCreateView, self).get_form_kwargs(*args, **kwargs)
+        kwargs.update({'user': self.request.user,
+                       'colegio': self.request.session.get('colegio__pk', None)})
+        return kwargs
+
 
 class AsignaturaBaseUpdateView(LoginRequiredMixin, UpdateView):
     model = AsignaturaBase
