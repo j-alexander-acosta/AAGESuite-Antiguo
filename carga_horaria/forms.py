@@ -32,7 +32,7 @@ class AsignacionForm(forms.ModelForm):
 
         if user:
             if not user.is_superuser:
-                self.fields['profesor'].queryset = self.fields['profesor'].queryset.filter(fundacion__colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")]).distinct()
+                self.fields['profesor'].queryset = self.fields['profesor'].queryset.filter(colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")]).distinct()
         else:
             # del(self.fields['profesor'])
             self.fields['profesor'].disabled = True
