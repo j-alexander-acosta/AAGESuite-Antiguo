@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.forms import ModelChoiceField
 from guardian.shortcuts import get_objects_for_user
+from .models import Colegio
 from .models import Plan
 from .models import Nivel
 
@@ -53,6 +54,11 @@ class PeriodoForm(forms.ModelForm):
         if colegio:
             self.fields['colegio'].initial = colegio
             self.fields['colegio'].disabled = True
+
+        if colegio:
+            cc = Colegio.objects.get(pk=colegio)
+            if not cc.jec:
+                self.fields['horas'].disabled = True
 
 
         if colegio:
