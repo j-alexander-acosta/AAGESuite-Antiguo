@@ -27,7 +27,8 @@ class PeriodoForm(forms.ModelForm):
             'plan',
             'nombre',
             'horas',
-            'horas_dif'
+            'horas_dif',
+            'horas_adicionales'
         ]
         help_texts = {
             'nombre': u"Defina un nombre para el curso",
@@ -35,7 +36,8 @@ class PeriodoForm(forms.ModelForm):
         labels = {
             'plan': u"Plan",
             'horas': "Horas Libre Disposición",
-            'horas_dif': "Horas Educación Diferenciada"
+            'horas_dif': "Horas Educación Diferenciada",
+            'horas_adicionales': "Horas Adicionales"
         }
 
     def clean_horas_dif(self):

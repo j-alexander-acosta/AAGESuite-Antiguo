@@ -97,6 +97,7 @@ class Periodo(models.Model):
     nombre = models.CharField(max_length=255, blank=True, null=True)
     horas = models.DecimalField(max_digits=4, decimal_places=2, default=0)
     horas_dif = models.DecimalField(max_digits=4, decimal_places=2, default=0, validators=[MinValueValidator(0), MaxValueValidator(22)])
+    horas_adicionales = models.DecimalField(max_digits=4, decimal_places=2, default=0)
     colegio = models.ForeignKey('Colegio')
 
     @property
@@ -114,9 +115,9 @@ class Periodo(models.Model):
     @property
     def ceiling(self):
         if self.colegio.jec:
-            return self.floor + self.horas_dif + self.horas
+            return self.floor + self.horas_dif + self.horas_adicionales + self.horas
         else:
-            return self.floor + self.horas_dif
+            return self.floor + self.horas_dif + self.horas_adicionales
 
     @property
     def capacity(self):
