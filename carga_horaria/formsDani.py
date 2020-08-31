@@ -54,6 +54,13 @@ class PeriodoForm(forms.ModelForm):
             self.fields['colegio'].initial = colegio
             self.fields['colegio'].disabled = True
 
+
+        if colegio:
+            self.fields['plan'].queryset = self.fields['plan'].queryset.filter(colegio__pk=colegio)
+        else:
+            if user and not user.is_superuser:
+                self.fields['plan'].queryset = self.fields['plan'].queryset.filter(colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")]).distinct()
+
         if user:
             if not user.is_superuser:
                 self.fields['colegio'].queryset = get_objects_for_user(user, "carga_horaria.change_colegio")
