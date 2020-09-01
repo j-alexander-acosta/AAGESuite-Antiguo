@@ -183,7 +183,7 @@ class Asignatura(models.Model):
     def get_horas_display(self):
         if self.base and self.base.horas != self.horas:
             import locale
-            locale.setlocale(locale.LC_ALL, 'es_CL')
+            locale.setlocale(locale.LC_ALL, 'es_CL.UTF-8')
             horas_base = self.base.horas
             horas_extra = self.horas - horas_base
             return "{:n} + {:n} LD".format(horas_base, horas_extra)
