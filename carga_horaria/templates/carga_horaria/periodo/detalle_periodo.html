@@ -10,6 +10,10 @@
 <div class="card">
     <div class="card-header">
       <h4 class="card-title">Curso: <strong> {{ object }} </strong>
+        {% if object.profesor_jefe %}
+        <h6 class="card-subtitle mb-2">        <strong>Profesor Jefe: </strong>{{ object.profesor_jefe }}
+</h6>
+        {% endif %}
         
         {% block buttons %}
             <div class="btn-group pull-right">
@@ -78,7 +82,7 @@
 		  {% for a in object.asignatura_set.all.base %}
                   <tr{% if a.horas_disponibles == 0 %} class="table-success"{% else %} class="table-warning"{% endif %}>
                   <td>  <a href="{% url 'carga-horaria:asignatura' a.pk %}">{{ a }} </a> </td>
-                    <td>  {{ a.horas }}  </td>
+                    <td>  {{ a.get_horas_display }}  </td>
                     <td>  {{ a.horas_asignadas }}  </td>
                     <td>  {{ a.horas_disponibles }}  </td>
                     <td>  {% for p in a.profesores %}<a href="{% url 'carga-horaria:profesor' p.pk %}">{{ p }} ({{ p.horas_disponibles }}) </a>{% endfor %}  </td>

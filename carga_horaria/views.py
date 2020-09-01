@@ -181,6 +181,12 @@ class PeriodoUpdateView(LoginRequiredMixin, UpdateView):
     form_class = PeriodoForm
     template_name = 'carga_horaria/periodo/editar_periodo.html'
 
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(PeriodoUpdateView, self).get_form_kwargs(*args, **kwargs)
+        kwargs.update({'user': self.request.user,
+                       'colegio': self.request.session.get('colegio__pk', None)})
+        return kwargs
+
     def get_success_url(self):
         return reverse(
             'carga-horaria:periodo',

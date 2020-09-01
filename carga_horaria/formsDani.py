@@ -1,3 +1,4 @@
+from itertools import chain
 from crispy_forms.bootstrap import FieldWithButtons, StrictButton
 from django.contrib.auth.models import User
 from django import forms
@@ -28,7 +29,8 @@ class PeriodoForm(forms.ModelForm):
             'nombre',
             'horas',
             'horas_dif',
-            'horas_adicionales'
+            'horas_adicionales',
+            'profesor_jefe'
         ]
         help_texts = {
             'nombre': u"Defina un nombre para el curso",
@@ -37,7 +39,8 @@ class PeriodoForm(forms.ModelForm):
             'plan': u"Plan",
             'horas': "Horas Libre Disposición",
             'horas_dif': "Horas Educación Diferenciada",
-            'horas_adicionales': "Horas Adicionales"
+            'horas_adicionales': "Horas Adicionales",
+            'profesor_jefe': "Profesor Jefe"
         }
 
     def clean_horas_dif(self):
@@ -68,6 +71,15 @@ class PeriodoForm(forms.ModelForm):
         else:
             if user and not user.is_superuser:
                 self.fields['plan'].queryset = self.fields['plan'].queryset.filter(colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")]).distinct()
+
+        if colegio:
+            base_qs = self.fields['profesor_jefe'].queryset.filter(colegio__pk=colegio)
+
+            # if self.instance:
+            #     assigned = list(chain.from_iterable(filter(None, [aa.asignacion_set.values_list('profesor', flat=True) for aa in self.instance.asignatura_set.all()])))
+            #     self.fields['profesor_jefe'].queryset = base_qs.filter(pk__in=[assigned])
+            # else:
+            #     self.fields['profesor_jefe'].queryset = base_qs
 
         if user:
             if not user.is_superuser:

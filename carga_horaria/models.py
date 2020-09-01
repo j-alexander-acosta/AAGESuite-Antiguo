@@ -48,6 +48,13 @@ class AsignaturaBase(models.Model):
     horas_jec = models.DecimalField(max_digits=4, decimal_places=2)
     horas_nec = models.DecimalField(max_digits=4, decimal_places=2)
 
+    @property
+    def horas(self):
+        if self.plan.colegio.jec:
+            return self.horas_jec
+        else:
+            return self.horas_nec
+
     def __str__(self):
         return self.nombre
 
@@ -99,6 +106,7 @@ class Periodo(models.Model):
     horas_dif = models.DecimalField(max_digits=4, decimal_places=2, default=0, validators=[MinValueValidator(0), MaxValueValidator(22)])
     horas_adicionales = models.DecimalField(max_digits=4, decimal_places=2, default=0)
     colegio = models.ForeignKey('Colegio')
+    profesor_jefe = models.ForeignKey('Profesor', blank=True, null=True)
 
     @property
     def can_dif(self):
@@ -171,6 +179,16 @@ class Asignatura(models.Model):
     horas = models.DecimalField(max_digits=4, decimal_places=2)
 
     objects = AsignaturaQuerySet.as_manager()
+
+    def get_horas_display(self):
+        if self.base and self.base.horas != self.horas:
+            import locale
+            locale.setlocale(locale.LC_ALL, 'es_CL')
+            horas_base = self.base.horas
+            horas_extra = self.horas - horas_base
+            return "{:n} + {:n} LD".format(horas_base, horas_extra)
+        else:
+            return self.horas
 
     @property
     def horas_asignadas(self):
