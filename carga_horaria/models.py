@@ -50,10 +50,12 @@ class AsignaturaBase(models.Model):
 
     @property
     def horas(self):
-        if self.plan.colegio.jec:
-            return self.horas_jec
-        else:
-            return self.horas_nec
+        try:
+            if self.plan.colegio.jec:
+                return self.horas_jec
+            else:
+                return self.horas_nec
+        return horas_jec
 
     def __str__(self):
         return self.nombre
