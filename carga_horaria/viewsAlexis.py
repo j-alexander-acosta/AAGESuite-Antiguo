@@ -139,7 +139,7 @@ class ProfesorCreateView(LoginRequiredMixin, CreateView):
         if colegio_pk:
             kwargs.update({'user': self.request.user,
                            'colegio': colegio_pk,
-                           'fundacion': Colegio.objects.get(pk=self.request.session.get('colegio__pk', None)).fundacion})
+                           'fundacion': Colegio.objects.get(pk=self.request.session.get('colegio__pk', None)).fundacion.pk})
         else:
             kwargs.update({'user': self.request.user})
 
