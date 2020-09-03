@@ -73,7 +73,7 @@ class PeriodoForm(forms.ModelForm):
                 self.fields['plan'].queryset = self.fields['plan'].queryset.filter(colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")]).distinct()
 
         if colegio:
-            base_qs = self.fields['profesor_jefe'].queryset.filter(colegio__pk=colegio)
+            self.fields['profesor_jefe'].queryset = self.fields['profesor_jefe'].queryset.filter(colegio__pk=colegio)
 
             # if self.instance:
             #     assigned = list(chain.from_iterable(filter(None, [aa.asignacion_set.values_list('profesor', flat=True) for aa in self.instance.asignatura_set.all()])))
