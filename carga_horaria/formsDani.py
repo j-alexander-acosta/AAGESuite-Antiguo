@@ -152,9 +152,15 @@ class PlanForm(forms.ModelForm):
 
 
     def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        colegio = kwargs.pop('colegio', None)
         super(PlanForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+
+        if colegio:
+            self.fields['colegio'].initial = colegio
+            self.fields['colegio'].disabled = True
 
 
 class PlantillaPlanForm(forms.Form):

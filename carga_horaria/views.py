@@ -297,6 +297,12 @@ class PlanCreateView(LoginRequiredMixin, CreateView):
 #    success_message = u"Nuevo periodo %(nombre)s creado satisfactoriamente."
 #    error_message = "Revise que todos los campos del formulario hayan sido validados correctamente."
 
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(PlanCreateView, self).get_form_kwargs(*args, **kwargs)
+        kwargs.update({'user': self.request.user,
+                       'colegio': self.request.session.get('colegio__pk', None)})
+        return kwargs
+
 
 @login_required
 def crear_desde_plantilla(request):
