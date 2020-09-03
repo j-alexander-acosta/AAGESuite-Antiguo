@@ -312,7 +312,12 @@ def crear_desde_plantilla(request):
             plantilla = form.cleaned_data['plantilla']
             nivel = form.cleaned_data['nivel']
 
-            nuevo = Plan.objects.create(nivel=nivel)
+            colegio_pk = request.session.get('colegio__pk', None)
+            if colegio_pk:
+                colegio = Colegio.objects.get(pk=colegio_pk)
+                nuevo = Plan.objects.create(nivel=nivel, colegio=colegio)
+            else:
+                nuevo = Plan.objects.create(nivel=nivel)
             for ab in plantilla.asignaturabase_set.all():
                 AsignaturaBase.objects.create(nombre=ab.nombre,
                                               plan=nuevo,
