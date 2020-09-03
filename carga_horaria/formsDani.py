@@ -43,6 +43,14 @@ class PeriodoForm(forms.ModelForm):
             'profesor_jefe': "Profesor Jefe"
         }
 
+    def clean_horas(self):
+        hh = self.cleaned_data['horas']
+        nivel = self.cleaned_data['plan'].nivel
+        if hh != 0 and not self.colegio.jec and nivel not in [Nivel.B7.name, Nivel.B8.name]:
+            raise forms.ValidationError("Sólo Séptimo y Octavo básico pueden tener horas LD en colegios sin JEC")
+        else:
+            return hh
+
     def clean_horas_dif(self):
         hd = self.cleaned_data['horas_dif']
         nivel = self.cleaned_data['plan'].nivel
@@ -54,16 +62,17 @@ class PeriodoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         colegio = kwargs.pop('colegio', None)
+        self.colegio = Colegio.objects.get(pk=colegio)
         super(PeriodoForm, self).__init__(*args, **kwargs)
 
         if colegio:
             self.fields['colegio'].initial = colegio
             self.fields['colegio'].disabled = True
 
-        if colegio:
-            cc = Colegio.objects.get(pk=colegio)
-            if not cc.jec:
-                self.fields['horas'].disabled = True
+        # if colegio:
+        #     cc = Colegio.objects.get(pk=colegio)
+        #     if not cc.jec:
+        #         self.fields['horas'].disabled = True
 
 
         if colegio:
