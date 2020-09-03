@@ -366,14 +366,14 @@ def asignar(request, pk):
     aa = get_object_or_404(Asignatura, pk=pk)
 
     if request.method == 'POST':
-        form = AsignacionForm(request.POST, asignatura=aa, user=request.user)
+        form = AsignacionForm(request.POST, asignatura=aa, user=request.user, colegio=request.session.get('colegio__pk', None))
         if form.is_valid():
             asignacion = form.save(commit=False)
             asignacion.asignatura = aa
             asignacion.save()
             return redirect('carga-horaria:periodo', aa.periodo.pk)
     else:
-        form = AsignacionForm(user=request.user)
+        form = AsignacionForm(user=request.user, colegio=request.session.get('colegio__pk', None))
     return render(request, 'carga_horaria/asignar.html', {'object': aa,
                                                           'form': form})
 

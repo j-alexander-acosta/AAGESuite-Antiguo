@@ -28,11 +28,18 @@ class AsignacionForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.asignatura = kwargs.pop('asignatura', None)
         user = kwargs.pop('user', None)
+        colegio = kwargs.pop('colegio', None)
         super(AsignacionForm, self).__init__(*args, **kwargs)
 
         if user:
             if not user.is_superuser:
-                self.fields['profesor'].queryset = self.fields['profesor'].queryset.filter(colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")]).distinct()
+                if colegio:
+                    self.fields['profesor'].queryset = self.fields['profesor'].queryset.filter(colegio__pk__in=[colegio])
+                else:
+                    self.fields['profesor'].queryset = self.fields['profesor'].queryset.filter(colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")]).distinct()
+            else:
+                if colegio:
+                    self.fields['profesor'].queryset = self.fields['profesor'].queryset.filter(colegio__pk__in=[colegio])
         else:
             # del(self.fields['profesor'])
             self.fields['profesor'].disabled = True

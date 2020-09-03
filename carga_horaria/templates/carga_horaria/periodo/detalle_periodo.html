@@ -109,11 +109,13 @@
 		    <td colspan="2">Subtotal tiempo mínimo</td>
 		    <td>{{ object.floor }}</td>
 		  </tr>
+                  {% if object.horas %}
 		  <tr>
 		    <td colspan="3">
 		    <td colspan="2">Horas de libre disposición</td>
 		    <td>{{ object.horas }}</td>
 		  </tr>
+                  {% endif %}
 		  {% if object.horas_dif > 0 %}
 		  <tr>
 		    <td colspan="3">
