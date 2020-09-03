@@ -112,6 +112,10 @@ class Periodo(models.Model):
     profesor_jefe = models.ForeignKey('Profesor', blank=True, null=True)
 
     @property
+    def used_ld_hours(self):
+        return self.capacity - self.floor
+
+    @property
     def can_dif(self):
         return self.plan.nivel in ['M3', 'M4']
 

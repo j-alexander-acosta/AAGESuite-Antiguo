@@ -113,7 +113,7 @@
 		  <tr>
 		    <td colspan="3">
 		    <td colspan="2">Horas de libre disposición</td>
-		    <td>{{ object.horas }}</td>
+		    <td style="color: #f00;">{{ object.used_ld_hours }} / {{ object.horas }}</td>
 		  </tr>
                   {% endif %}
 		  {% if object.horas_dif > 0 %}
@@ -123,6 +123,13 @@
 		    <td>{{ object.horas_dif }}</td>
 		  </tr>
 		  {% endif %}
+                  {% if object.horas_adicionales %}
+		  <tr>
+		    <td colspan="3">
+		    <td colspan="2">Horas adicionales</td>
+		    <td>{{ object.horas_adicionales }}</td>
+		  </tr>
+                  {% endif %}
 		  <tr>
 		    <td colspan="3">
 		    <td colspan="2">Total tiempo mínimo</td>
