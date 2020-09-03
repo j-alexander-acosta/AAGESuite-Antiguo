@@ -56,7 +56,7 @@ class AsignaturaBase(models.Model):
             else:
                 return self.horas_nec
         except:
-            return horas_jec
+            return self.horas_jec
 
     def __str__(self):
         return self.nombre
