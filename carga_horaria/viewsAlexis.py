@@ -6,6 +6,7 @@ from carga_horaria.models import Profesor, AsignaturaBase, Asignatura, Asistente
 from carga_horaria.formsAlexis import ProfesorForm, AsignaturaBaseForm, AsignaturaCreateForm, AsignaturaUpdateForm, AsistenteForm
 from django.core.urlresolvers import reverse_lazy, reverse
 from guardian.shortcuts import get_objects_for_user
+from .models import Fundacion
 from .models import Colegio
 from .models import Periodo
 from .models import Nivel
@@ -134,7 +135,14 @@ class ProfesorCreateView(LoginRequiredMixin, CreateView):
 
     def get_form_kwargs(self, *args, **kwargs):
         kwargs = super(ProfesorCreateView, self).get_form_kwargs(*args, **kwargs)
-        kwargs.update({'user': self.request.user})
+        colegio_pk = self.request.session.get('colegio__pk', None)
+        if colegio_pk:
+            kwargs.update({'user': self.request.user,
+                           'colegio': colegio_pk,
+                           'fundacion': Colegio.objects.get(pk=self.request.session.get('colegio__pk', None)).fundacion})
+        else:
+            kwargs.update({'user': self.request.user})
+
         return kwargs
 
 

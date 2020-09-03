@@ -58,6 +58,8 @@ class ProfesorForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
+        colegio = kwargs.pop('colegio', None)
+        fundacion = kwargs.pop('fundacion', None)
         super(ProfesorForm, self).__init__(*args, **kwargs)
 
         if user:
@@ -66,6 +68,12 @@ class ProfesorForm(forms.ModelForm):
         else:
             del(self.fields['fundacion'])
         
+        if colegio:
+            self.fields['fundacion'].initial = fundacion
+            self.fields['fundacion'].disabled = True
+            self.fields['colegio'].initial = colegio
+            self.fields['colegio'].disabled = True
+
         self.helper = FormHelper()
         self.helper.form_tag = False
 
