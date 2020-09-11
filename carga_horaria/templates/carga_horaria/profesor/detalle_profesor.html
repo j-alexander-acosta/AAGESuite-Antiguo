@@ -89,7 +89,7 @@
                     <tr>
                       <td> {{ ax.asignatura }} </td>
                       <td><a href="{{ ax.asignatura.periodo.get_absolute_url }}">{{ ax.asignatura.periodo }}</a></td>
-                      <td> {{ ax.horas }} </td>
+                      <td> {{ ax.horas|stringformat:'d' }} </td>
 		      <td>
                         <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignacion__editar' ax.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
                         <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_{{ax.pk}}"><i class="fa fa-trash"></i></a>
@@ -119,7 +119,7 @@
 		    {% endfor %}
                     <tr>
                       <td colspan="2" align="right"><strong>Total</strong></td>
-                      <td colspan="2" align="left"><strong>{{ object.horas_asignadas_plan }}</strong></td>
+                      <td colspan="2" align="left"><strong>{{ object.horas_asignadas_plan|stringformat:'d' }}</strong></td>
                     </tr>
                 </tbody>
 		    </table>
@@ -155,7 +155,7 @@
                     <tr>
                       <td> {{ ax.descripcion }} </td>
                       <td> {{ ax.curso|default:"Todos" }} </td>
-                      <td> {{ ax.horas }} </td>
+                      <td> {{ ax.horas|stringformat:'d' }} </td>
 		      <td>
                         <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignacion__editar' ax.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
                         <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_{{ax.pk}}"><i class="fa fa-trash"></i></a>
@@ -218,7 +218,7 @@
                     <tr>
                       <td> {{ ax.descripcion }} </td>
                       <td> {{ ax.curso|default:"Todos" }} </td>
-                      <td> {{ ax.horas }} </td>
+                      <td> {{ ax.horas|stringformat:'d' }} </td>
 		      <td>
                         <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignacion__editar' ax.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
                         <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_{{ax.pk}}"><i class="fa fa-trash"></i></a>
@@ -282,7 +282,7 @@
                     <tr>
                       <td> {{ ax.descripcion }} </td>
                       <td> {{ ax.curso|default:"Todos" }} </td>
-                      <td> {{ ax.horas }} </td>
+                      <td> {{ ax.horas|stringformat:'d' }} </td>
 		      <td>
                         <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignacion__editar' ax.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
                         <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_{{ax.pk}}"><i class="fa fa-trash"></i></a>
@@ -586,11 +586,11 @@
                 <tbody>
                 <tr>
                     <th> Horas docentes asignadas </th>
-                    <td> {{ object.horas_asignadas }}  </td>
+                    <td> {{ object.horas_asignadas|stringformat:'d' }}  </td>
                 </tr>
                 <tr>
                     <th> Horas docentes disponibles </th>
-                    <td> {{ object.horas_disponibles }}  </td>
+                    <td> {{ object.horas_disponibles|stringformat:'d' }}  </td>
                 </tr>
                 <tr>
                     <th> Horas no lectivas asignadas </th>

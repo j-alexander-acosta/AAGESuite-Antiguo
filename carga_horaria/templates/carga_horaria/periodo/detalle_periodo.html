@@ -83,9 +83,9 @@
                   <tr{% if a.horas_disponibles == 0 %} class="table-success"{% else %} class="table-warning"{% endif %}>
                   <td>  <a href="{% url 'carga-horaria:asignatura' a.pk %}">{{ a }} </a> </td>
                     <td>  {{ a.get_horas_display }}  </td>
-                    <td>  {{ a.horas_asignadas }}  </td>
-                    <td>  {{ a.horas_disponibles }}  </td>
-                    <td>  {% for p in a.profesores %}<a href="{% url 'carga-horaria:profesor' p.pk %}">{{ p }} ({{ p.horas_disponibles }}) </a>{% endfor %}  </td>
+                    <td>  {{ a.horas_asignadas|stringformat:'d' }}  </td>
+                    <td>  {{ a.horas_disponibles|stringformat:'d' }}  </td>
+                    <td>  {% for p in a.profesores %}<a href="{% url 'carga-horaria:profesor' p.pk %}">{{ p }} ({{ p.horas_disponibles|stringformat:'d' }}) </a>{% endfor %}  </td>
                   <td>  {% if not a.completa %}<a href="{% url 'carga-horaria:asignar' a.pk %}">Asignar</a>{% if not a.base %} | {% endif %}{% endif %}{% if not a.base %}<a class="btn btn-sm btn-danger" href="{% url 'carga-horaria:asignatura__eliminar' a.pk %}?periodo={{ object.pk }}" onclick="return confirm('¿Está seguro de eliminar {{ a }}?')">
                       <i class="fa fa-trash"></i>
                     </a>{% endif %}
@@ -95,10 +95,10 @@
                 {% for a in object.asignatura_set.all.custom %}
                   <tr{% if a.horas_disponibles == 0 %} class="table-success"{% else %} style="background-color: #ffbfb878;"{% endif %}>
                   <td>  <a href="{% url 'carga-horaria:asignatura' a.pk %}">{{ a }} </a> </td>
-                    <td>  {{ a.horas }}  </td>
-                    <td>  {{ a.horas_asignadas }}  </td>
-                    <td>  {{ a.horas_disponibles }}  </td>
-                    <td>  {% for p in a.profesores %}<a href="{% url 'carga-horaria:profesor' p.pk %}">{{ p }} ({{ p.horas_disponibles }}) </a>{% endfor %}  </td>
+                    <td>  {{ a.horas|stringformat:'d' }}  </td>
+                    <td>  {{ a.horas_asignadas|stringformat:'d' }}  </td>
+                    <td>  {{ a.horas_disponibles|stringformat:'d' }}  </td>
+                    <td>  {% for p in a.profesores %}<a href="{% url 'carga-horaria:profesor' p.pk %}">{{ p }} ({{ p.horas_disponibles|stringformat:'d' }}) </a>{% endfor %}  </td>
                   <td>  {% if not a.completa %}<a href="{% url 'carga-horaria:asignar' a.pk %}">Asignar</a>{% if not a.base %} | {% endif %}{% endif %}{% if not a.base %}<a class="btn btn-sm btn-danger" href="{% url 'carga-horaria:asignatura__eliminar' a.pk %}?periodo={{ object.pk }}" onclick="return confirm('¿Está seguro de eliminar {{ a }}?')">
                       <i class="fa fa-trash"></i>
                     </a>{% endif %}
@@ -107,38 +107,38 @@
 		{% endfor %}		  <tr>
 		    <td colspan="3">
 		    <td colspan="2">Subtotal tiempo mínimo</td>
-		    <td>{{ object.floor }}</td>
+		    <td>{{ object.floor|stringformat:'d' }}</td>
 		  </tr>
                   {% if object.horas %}
 		  <tr>
 		    <td colspan="3">
 		    <td colspan="2">Horas de libre disposición</td>
-		    <td style="color: #f00;">{{ object.used_ld_hours }} / {{ object.horas }}</td>
+		    <td style="color: #f00;">{{ object.used_ld_hours|stringformat:'d' }} / {{ object.horas|stringformat:'d' }}</td>
 		  </tr>
                   {% endif %}
 		  {% if object.horas_dif > 0 %}
 		  <tr>
 		    <td colspan="3">
 		    <td colspan="2">Horas Educación Diferenciada</td>
-		    <td>{{ object.horas_dif }}</td>
+		    <td>{{ object.horas_dif|stringformat:'d' }}</td>
 		  </tr>
 		  {% endif %}
-                  {% if object.horas_adicionales %}
+                  {% if object.horas_adicionales|stringformat:'d' %}
 		  <tr>
 		    <td colspan="3">
 		    <td colspan="2">Horas adicionales</td>
-		    <td>{{ object.horas_adicionales }}</td>
+		    <td>{{ object.horas_adicionales|stringformat:'d' }}</td>
 		  </tr>
                   {% endif %}
 		  <tr>
 		    <td colspan="3">
 		    <td colspan="2">Total tiempo mínimo</td>
-		    <td>{{ object.ceiling }}</td>
+		    <td>{{ object.ceiling|stringformat:'d' }}</td>
 		  </tr>
 		  <tr>
 		    <td colspan="3">
 		    <td colspan="2">Total actual</td>
-		    <td>{{ object.progress }}</td>
+		    <td>{{ object.progress|stringformat:'d' }}</td>
 		  </tr>
                 </tbody>
             </table>

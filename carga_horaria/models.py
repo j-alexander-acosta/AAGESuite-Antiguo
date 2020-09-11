@@ -195,9 +195,9 @@ class Asignatura(models.Model):
             # locale.setlocale(locale.LC_ALL, 'es_CL.UTF-8')
             horas_base = self.base.get_horas(self.periodo.jec)
             horas_extra = self.horas - horas_base
-            return "{:n} + {:n} LD".format(horas_base, horas_extra)
+            return "{:n} + {:n} LD".format(int(horas_base), int(horas_extra))
         else:
-            return self.horas
+            return int(self.horas)
 
     @property
     def horas_asignadas(self):
