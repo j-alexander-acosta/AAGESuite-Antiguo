@@ -35,8 +35,8 @@
                 <th><i class="fa fa-user"></i> Nombre </th>
                 <th><i class="fa fa-clock-o"></i> Hrs contrato</th>
                 <th><i class="fa fa-clock-o"></i> Hrs docentes </th>
-                <th><i class="fa fa-clock-o"></i> Hrs no aula </th>
                 <th><i class="fa fa-clock-o"></i> Hrs disp. docentes </th>
+                <th><i class="fa fa-clock-o"></i> Hrs no aula </th>
                 <th><i class="fa fa-clock-o"></i> Hrs disp. no aula </th>
                 <th><i class="fa fa-cogs"></i> Acciones </th>
             </tr>
@@ -47,8 +47,8 @@
                     <td><a href="{% url 'carga-horaria:profesor' p.pk %}"> {{ p.nombre }} </a></td>
                     <td> {{ p.horas_contratadas }} </td>
                     <td> {{ p.horas_docentes }} </td>
-                    <td> {{ p.horas_no_aula }} </td>
                     <td> {{ p.horas_disponibles }} </td>
+                    <td> {{ p.horas_no_aula }} </td>
                     <td> {{ p.horas_no_aula_disponibles }} </td>
                     <td>
                         <a class="btn btn-sm btn-success" href="{% url 'carga-horaria:profesor__anexo' p.pk %}" data-toggle="tooltip" data-placement="top" title="Generar Anexo 1"><i class="fa fa-handshake-o"></i></a>
