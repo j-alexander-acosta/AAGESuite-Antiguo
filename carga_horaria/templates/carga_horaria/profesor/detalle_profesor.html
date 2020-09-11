@@ -1,6 +1,6 @@
 {% extends 'base/base.html' %}
 {% load staticfiles %}
-
+{% load carga_filters %}
 {% block title_page %}
     Profesor - Detalle
 {% endblock %}
@@ -30,20 +30,20 @@
 	  </div>
 	</div>
 
-      <h6 class="card-subtitle mb-2">Título: <strong>{{ profesor.especialidad|default:"Ninguna" }}</strong> | Horas contrato total: <strong>{{ profesor.horas_contratadas }}</strong></h6>
+      <h6 class="card-subtitle mb-2">Título: <strong>{{ profesor.especialidad|default:"Ninguna" }}</strong> | Horas contrato total: <strong>{{ profesor.horas_contratadas|stringformat:'d' }}</strong></h6>
       <br>
       <h6 class="card-subtitle mb-2">
         <table class="table table-sm">
           <tbody>
             <tr>
-              <td>Hrs. contratadas Docencia: <strong>{{ object.horas_docentes }}</strong></td>
-              <td>Hrs Aula: <strong>{{ object.horas }}</strong></td>
-              <td>Hrs. lectivas: <strong>{{ object.horas_lectivas }}</strong></td>
-              <td>Recreo: <strong>{{ object.horas_recreo }}</strong></td>
-              <td>Hrs. no lectivas: <strong>{{ object.horas_no_lectivas }}</strong></td>
+              <td>Hrs. contratadas Docencia: <strong>{{ object.horas_docentes|stringformat:'d' }}</strong></td>
+              <td>Hrs Aula: <strong>{{ object.horas|stringformat:'d' }}</strong></td>
+              <td>Hrs. lectivas: <strong>{{ object.horas_lectivas|stringformat:'d' }}</strong></td>
+              <td>Recreo: <strong>{{ object.horas_recreo|hhmm }}</strong></td>
+              <td>Hrs. no lectivas: <strong>{{ object.horas_no_lectivas|hhmm }}</strong></td>
             </tr>
             <tr>
-              <td>Horas contratadas otras funciones: <strong>{{ object.horas_no_aula }}</strong></td>
+              <td>Horas contratadas otras funciones: <strong>{{ object.horas_no_aula|hhmm }}</strong></td>
             </tr>
           </tbody>
         </table>
@@ -106,7 +106,7 @@
                             </button>
                           </div>
                           <div class="modal-body">
-                            <p>¿Está seguro que desea eliminar {{ ax.horas }} horas de {{ ax.asignatura }} para {{ ax.profesor }}?.</p>
+                            <p>¿Está seguro que desea eliminar {{ ax.horas|stringformat:'d' }} horas de {{ ax.asignatura }} para {{ ax.profesor }}?.</p>
                             <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta asignación.</p>
                           </div>
                           <div class="modal-footer">
@@ -172,7 +172,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <p>¿Está seguro que desea eliminar {{ ax.horas }} horas de {{ ax.descripcion }} para {{ ax.profesor }}?.</p>
+                                <p>¿Está seguro que desea eliminar {{ ax.horas|stringformat:'d' }} horas de {{ ax.descripcion }} para {{ ax.profesor }}?.</p>
                                 <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta asignación.</p>
                             </div>
                             <div class="modal-footer">
@@ -235,7 +235,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <p>¿Está seguro que desea eliminar {{ ax.horas }} horas de {{ ax.descripcion }} para {{ ax.profesor }}?.</p>
+                                <p>¿Está seguro que desea eliminar {{ ax.horas|stringformat:'d' }} horas de {{ ax.descripcion }} para {{ ax.profesor }}?.</p>
                                 <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta asignación.</p>
                             </div>
                             <div class="modal-footer">
@@ -299,7 +299,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <p>¿Está seguro que desea eliminar {{ ax.horas }} horas de {{ ax.descripcion }} para {{ ax.profesor }}?.</p>
+                                <p>¿Está seguro que desea eliminar {{ ax.horas|stringformat:'d' }} horas de {{ ax.descripcion }} para {{ ax.profesor }}?.</p>
                                 <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta asignación.</p>
                             </div>
                             <div class="modal-footer">
@@ -345,7 +345,7 @@
                     <tr>
                       <td>Planificación</td>
                       <td>Todos</td>
-                      <td>{{ object.horas_planificacion }}</td>
+                      <td>{{ object.horas_planificacion|hhmm }}</td>
 		      <td>
 		      </td>
                     </tr>
@@ -353,7 +353,7 @@
                     <tr>
                       <td> {{ ax.descripcion }} </td>
                       <td> {{ ax.curso|default:"Todos" }} </td>
-                      <td> {{ ax.horas }} </td>
+                      <td> {{ ax.horas|hhmm }} </td>
 		      <td>
                         <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignacion-extra__editar' profesor_pk=object.pk pk=ax.pk %}"><i class="fa fa-edit"></i></a>
                         <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_extra_{{ax.pk}}"><i class="fa fa-trash"></i></a>
@@ -414,7 +414,7 @@
                     <tr>
                       <td> {{ ax.descripcion }} </td>
                       <td> {{ ax.curso|default:"Todos" }} </td>
-                      <td> {{ ax.horas }} </td>
+                      <td> {{ ax.horas|hhmm }} </td>
 		      <td>
                         <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignacion-no-aula__editar' profesor_pk=object.pk pk=ax.pk %}"><i class="fa fa-edit"></i></a>
                         <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_no_aula_{{ax.pk}}"><i class="fa fa-trash"></i></a>
@@ -476,7 +476,7 @@
                     <tr>
                       <td> {{ ax.descripcion }} </td>
                       <td> {{ ax.curso|default:"Todos" }} </td>
-                      <td> {{ ax.horas }} </td>
+                      <td> {{ ax.horas|hhmm }} </td>
 		      <td>
                         <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignacion-no-aula__editar' profesor_pk=object.pk pk=ax.pk %}"><i class="fa fa-edit"></i></a>
                         <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_no_aula_{{ax.pk}}"><i class="fa fa-trash"></i></a>
@@ -539,7 +539,7 @@
                     <tr>
                       <td> {{ ax.descripcion }} </td>
                       <td> {{ ax.curso|default:"Todos" }} </td>
-                      <td> {{ ax.horas }} </td>
+                      <td> {{ ax.horas|hhmm }} </td>
 		      <td>
                         <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignacion-no-aula__editar' profesor_pk=object.pk pk=ax.pk %}"><i class="fa fa-edit"></i></a>
                         <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_no_aula_{{ax.pk}}"><i class="fa fa-trash"></i></a>
@@ -594,19 +594,19 @@
                 </tr>
                 <tr>
                     <th> Horas no lectivas asignadas </th>
-                    <td> {{ object.horas_no_lectivas_asignadas }}  </td>
+                    <td> {{ object.horas_no_lectivas_asignadas|hhmm }}  </td>
                 </tr>
                 <tr>
                     <th> Horas no lectivas disponibles </th>
-                    <td> {{ object.horas_no_lectivas_disponibles }}  </td>
+                    <td> {{ object.horas_no_lectivas_disponibles|hhmm }}  </td>
                 </tr>
                 <tr>
                     <th> Horas contratadas no aula asignadas </th>
-                    <td> {{ object.horas_no_aula_asignadas }}  </td>
+                    <td> {{ object.horas_no_aula_asignadas|hhmm }}  </td>
                 </tr>
                 <tr>
                     <th> Horas contratadas no aula disponibles </th>
-                    <td> {{ object.horas_no_aula_disponibles }}  </td>
+                    <td> {{ object.horas_no_aula_disponibles|hhmm }}  </td>
                 </tr>
                 <!--
                 <tr>
