@@ -129,7 +129,11 @@ class ColegioForm(forms.ModelForm):
             'web',
             'financiamiento',
             'alumnos',
-        ]
+            'prioritarios'
+        ] 
+        labels = {
+            'prioritarios': u'Porcentaje de alumnos prioritarios',
+        }
         help_texts = {
             'nombre': u"Defina un nombre para el colegio",
             'jec': u"Marque solo si el colegio tiene Jornada Escolar Completa."

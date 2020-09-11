@@ -91,6 +91,7 @@ class Colegio(models.Model):
     web = models.URLField(max_length=255, blank=True, null=True)
     financiamiento = models.PositiveSmallIntegerField(default=PAID, choices=FINANCING_CHOICES)
     alumnos = models.PositiveIntegerField(default=0)
+    prioritarios = models.PositiveSmallIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100)])
     
     def __str__(self): 
         return self.nombre
