@@ -5,15 +5,20 @@ from .models import Asignatura, AsignaturaBase
 
 
 @receiver(post_save, sender=Periodo)
-def create_asignaturas(sender, instance, created, **kwargs):
+def horas_asignaturas(sender, instance, created, **kwargs):
     if created:
-        colegio = instance.colegio
         for ab in instance.plan.asignaturabase_set.all():
-            if colegio.jec:
+            if instance.jec:
                 horas = ab.horas_jec
             else:
                 horas = ab.horas_nec
             Asignatura.objects.create(base=ab,
                                       periodo=instance,
                                       horas=horas)
-
+    else:
+        for aa in instance.asignatura_set.filter(base__isnull=False):
+            if instance.jec:
+                aa.horas = aa.base.horas_jec
+            else:
+                aa.horas = aa.base.horas_nec
+            aa.save()

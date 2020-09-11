@@ -48,15 +48,11 @@ class AsignaturaBase(models.Model):
     horas_jec = models.DecimalField(max_digits=4, decimal_places=2)
     horas_nec = models.DecimalField(max_digits=4, decimal_places=2)
 
-    @property
-    def horas(self):
-        try:
-            if self.plan.colegio.jec:
-                return self.horas_jec
-            else:
-                return self.horas_nec
-        except:
+    def get_horas(self, jec=True):
+        if jec:
             return self.horas_jec
+        else:
+            return self.horas_nec
 
     def __str__(self):
         return self.nombre
@@ -106,6 +102,7 @@ class Colegio(models.Model):
 class Periodo(models.Model):
     plan = models.ForeignKey('Plan')
     nombre = models.CharField(max_length=255, blank=True, null=True)
+    jec = models.BooleanField('JEC', default=True)
     horas = models.DecimalField(max_digits=4, decimal_places=2, default=0)
     horas_dif = models.DecimalField(max_digits=4, decimal_places=2, default=0, validators=[MinValueValidator(0)])
     horas_adicionales = models.DecimalField(max_digits=4, decimal_places=2, default=0)
@@ -193,10 +190,10 @@ class Asignatura(models.Model):
     objects = AsignaturaQuerySet.as_manager()
 
     def get_horas_display(self):
-        if self.base and self.base.horas != self.horas:
+        if self.base and self.base.get_horas(self.periodo.jec) != self.horas:
             # import locale
             # locale.setlocale(locale.LC_ALL, 'es_CL.UTF-8')
-            horas_base = self.base.horas
+            horas_base = self.base.get_horas(self.periodo.jec)
             horas_extra = self.horas - horas_base
             return "{:n} + {:n} LD".format(horas_base, horas_extra)
         else:

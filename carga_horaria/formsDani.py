@@ -27,6 +27,7 @@ class PeriodoForm(forms.ModelForm):
             'colegio',
             'plan',
             'nombre',
+            'jec',
             'horas',
             'horas_dif',
             'horas_adicionales',
@@ -34,8 +35,10 @@ class PeriodoForm(forms.ModelForm):
         ]
         help_texts = {
             'nombre': u"Defina un nombre para el curso",
+            'jec': u"Marque solo si el curso tiene Jornada Escolar Completa."
         }
         labels = {
+            'jec': "JEC",
             'plan': u"Plan",
             'horas': "Horas Libre Disposición",
             'horas_dif': "Horas Educación Diferenciada",
@@ -65,9 +68,13 @@ class PeriodoForm(forms.ModelForm):
         self.colegio = Colegio.objects.get(pk=colegio)
         super(PeriodoForm, self).__init__(*args, **kwargs)
 
+
         if colegio:
             self.fields['colegio'].initial = colegio
             self.fields['colegio'].disabled = True
+            if not self.instance.pk:
+                self.fields['jec'].initial = self.colegio.jec
+                self.fields['jec'].disabled = True
 
         # if colegio:
         #     cc = Colegio.objects.get(pk=colegio)
