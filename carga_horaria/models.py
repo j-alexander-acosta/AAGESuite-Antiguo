@@ -84,7 +84,7 @@ class Colegio(models.Model):
     ciudad = models.CharField(max_length=255, blank=True, null=True)
     comuna = models.CharField(max_length=255, blank=True, null=True)
     telefono = models.CharField(max_length=255, blank=True, null=True)
-    rbd = models.CharField(max_length=255, blank=True, null=True)
+    rbd = models.CharField(max_length=255, blank=True, null=True, unique=True)
     jec = models.BooleanField('JEC', default=True)
     pie = models.BooleanField('PIE', default=True)
     sep = models.BooleanField('SEP', default=True)
