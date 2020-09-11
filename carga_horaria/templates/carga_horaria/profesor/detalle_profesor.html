@@ -85,7 +85,7 @@
 		</tr>
                 </thead>
                 <tbody>
-		    {% for ax in object.asignacion_set.all.plan %}
+		    {% for ax in object.asignacion_set.all.plan.sorted %}
                     <tr>
                       <td> {{ ax.asignatura }} </td>
                       <td><a href="{{ ax.asignatura.periodo.get_absolute_url }}">{{ ax.asignatura.periodo }}</a></td>

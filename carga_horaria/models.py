@@ -346,6 +346,11 @@ class Asistente(models.Model):
 
 class AsignacionQuerySet(models.QuerySet):
     @property
+    def sorted(self):
+        ordering = {str(value): index for index, value in enumerate(Nivel)}
+        return sorted(self, key=lambda x: ordering["Nivel."+x.asignatura.periodo.plan.nivel])
+
+    @property
     def plan(self):
         return self.filter(tipo=Asignacion.PLAN)
 
