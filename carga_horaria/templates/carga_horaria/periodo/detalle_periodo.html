@@ -123,11 +123,11 @@
 		    <td>{{ object.horas_dif|stringformat:'d' }}</td>
 		  </tr>
 		  {% endif %}
-                  {% if object.horas_adicionales|stringformat:'d' %}
+                  {% if object.horas_adicionales %}
 		  <tr>
 		    <td colspan="3">
 		    <td colspan="2">Horas adicionales</td>
-		    <td>{{ object.horas_adicionales|stringformat:'d' }}</td>
+		    <td style="color: #f00;">{{ object.used_additional_hours|stringformat:'d' }} / {{ object.horas_adicionales|stringformat:'d' }}</td>
 		  </tr>
                   {% endif %}
 		  <tr>

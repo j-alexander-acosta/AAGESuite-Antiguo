@@ -111,7 +111,11 @@ class Periodo(models.Model):
 
     @property
     def used_ld_hours(self):
-        return self.base_capacity - self.floor
+        return min(self.base_capacity - self.floor, self.horas)
+
+    @property
+    def used_additional_hours(self):
+        return min(self.capacity - self.horas - self.floor, self.horas_adicionales)
 
     @property
     def can_dif(self):
@@ -119,7 +123,7 @@ class Periodo(models.Model):
 
     @property
     def floor(self):
-        if self.colegio.jec:
+        if self.jec:
             lookup = 'base__horas_jec'
         else:
             lookup = 'base__horas_nec'
@@ -127,7 +131,7 @@ class Periodo(models.Model):
 
     @property
     def ceiling(self):
-        if self.colegio.jec:
+        if self.jec:
             return self.floor + self.horas_dif + self.horas_adicionales + self.horas
         else:
             return self.floor + self.horas_dif + self.horas_adicionales
