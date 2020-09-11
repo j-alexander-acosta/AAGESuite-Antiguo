@@ -248,7 +248,10 @@ class AsistenteCreateView(LoginRequiredMixin, CreateView):
 
     def get_form_kwargs(self, *args, **kwargs):
         kwargs = super(AsistenteCreateView, self).get_form_kwargs(*args, **kwargs)
-        kwargs.update({'user': self.request.user})
+        colegio_pk = self.request.session.get('colegio__pk', None)
+        kwargs.update({'user': self.request.user,
+                       'colegio': colegio_pk,
+                       'fundacion': Colegio.objects.get(pk=self.request.session.get('colegio__pk', None)).fundacion.pk})
         return kwargs
 
 
