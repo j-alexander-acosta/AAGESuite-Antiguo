@@ -114,7 +114,7 @@ class Periodo(models.Model):
 
     @property
     def used_ld_hours(self):
-        return self.capacity - self.floor
+        return self.base_capacity - self.floor
 
     @property
     def can_dif(self):
@@ -134,6 +134,10 @@ class Periodo(models.Model):
             return self.floor + self.horas_dif + self.horas_adicionales + self.horas
         else:
             return self.floor + self.horas_dif + self.horas_adicionales
+
+    @property
+    def base_capacity(self):
+        return sum(self.asignatura_set.filter(base__isnull=False).values_list('horas', flat=True))
 
     @property
     def capacity(self):
