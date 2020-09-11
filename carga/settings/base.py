@@ -30,6 +30,7 @@ PREREQ_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'django.contrib.postgres',
+    'localflavor',
     'base',
     'django_extensions',
     'widget_tweaks',

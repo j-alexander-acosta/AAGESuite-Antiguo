@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.forms import ModelChoiceField
 from guardian.shortcuts import get_objects_for_user
+from localflavor.cl.forms import CLRutField
 
 from carga_horaria import models
 
@@ -16,11 +17,13 @@ class ProfesorForm(forms.ModelForm):
         Formulario para crear y editar un profesor
 
     """
+    rut = CLRutField(label="RUT")
 
     class Meta:
         model = models.Profesor
         fields = [
             'nombre',
+            'rut',
             'horas',
             'horas_no_aula',
             'especialidad',
@@ -83,11 +86,13 @@ class AsistenteForm(forms.ModelForm):
         Formulario para crear y editar un asistente
 
     """
+    rut = CLRutField(label="RUT")
 
     class Meta:
         model = models.Asistente
         fields = [
             'nombre',
+            'rut',
             'horas',
             'funcion',
             'fundacion',

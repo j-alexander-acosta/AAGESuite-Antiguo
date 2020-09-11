@@ -223,6 +223,7 @@ class Asignatura(models.Model):
 
 class Profesor(models.Model):
     nombre = models.CharField(max_length=255)
+    rut = models.CharField(max_length=13, blank=True, null=True, unique=True)
     horas = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(44)])
     horas_no_aula = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(44)], default=0)
     especialidad = models.ForeignKey('Especialidad', verbose_name='título', blank=True, null=True)
@@ -331,6 +332,7 @@ class Profesor(models.Model):
 
 class Asistente(models.Model):
     nombre = models.CharField(max_length=255)
+    rut = models.CharField(max_length=13, blank=True, null=True, unique=True)
     horas = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(1), MaxValueValidator(45)])
     funcion = models.CharField(max_length=255)
     fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
