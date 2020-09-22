@@ -31,7 +31,7 @@
             <tbody>
             {% for v in object_list %}
                 <tr>
-                    <td><a href="{% url 'rrhh:vacacion' v.pk %}"> {{ v.funcionario }} </a></td>
+                    <td><a href="{% url 'rrhh:vacacion' v.pk %}"> {{ v.contrato }} </a></td>
                     <td> {{ v.fecha_inicio }} </td>
                     <td> {{ v.fecha_termino }} </td>
                     <td> {{ v.total_dias }} </td>

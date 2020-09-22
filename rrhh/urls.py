@@ -6,29 +6,29 @@ app_name = 'rrhh'
 urlpatterns = [
     url(r'^$', views.home, name='home_rrhh'),
     url(
-        r'^funcionarios/$',
-        views.FuncionarioListView.as_view(),
-        name='funcionarios'
+        r'^pesonas/$',
+        views.PersonaListView.as_view(),
+        name='personas'
     ),
     url(
-        r'^funcionarios/nuevo/$',
-        views.FuncionarioCreateView.as_view(),
-        name='funcionario__nuevo'
+        r'^personas/nuevo/$',
+        views.PersonaCreateView.as_view(),
+        name='persona__nuevo'
     ),
     url(
-        r'^funcionarios/(?P<pk_funcionario>\d+)/$',
-        views.funcionario_detail,
-        name='funcionario'
+        r'^personas/(?P<pk_persona>\d+)/$',
+        views.persona_detail,
+        name='persona'
     ),
     url(
-        r'^funcionarios/(?P<pk>\d+)/editar/$',
-        views.FuncionarioUpdateView.as_view(),
-        name='funcionario__editar'
+        r'^personas/(?P<pk>\d+)/editar/$',
+        views.PersonaUpdateView.as_view(),
+        name='persona__editar'
     ),
     url(
-        r'^funcionarios/(?P<pk>\d+)/eliminar/$',
-        views.FuncionarioDeleteView.as_view(),
-        name='funcionario__eliminar'
+        r'^personas/(?P<pk>\d+)/eliminar/$',
+        views.PersonaDeleteView.as_view(),
+        name='persona__eliminar'
     ),
     url(
         r'^entrevistas/$',
@@ -174,5 +174,115 @@ urlpatterns = [
         r'^vacaciones_funcionario/nuevo/$',
         views.nuevo_vacacion_funcionario,
         name='vacacion_funcionario__nuevo'
+    ),
+    url(
+        r'^contratos/$',
+        views.ContratoListView.as_view(),
+        name='contratos'
+    ),
+    url(
+        r'^contratos/nuevo/$',
+        views.ContratoCreateView.as_view(),
+        name='contrato__nuevo'
+    ),
+    url(
+        r'^contratos/(?P<pk>\d+)/$',
+        views.ContratoDetailView.as_view(),
+        name='contrato'
+    ),
+    url(
+        r'^contratos/(?P<pk>\d+)/editar/$',
+        views.ContratoUpdateView.as_view(),
+        name='contrato__editar'
+    ),
+    url(
+        r'^contratos/(?P<pk>\d+)/eliminar/$',
+        views.ContratoDeleteView.as_view(),
+        name='contrato__eliminar'
+    ),
+    url(
+        r'^funciones/$',
+        views.FuncionListView.as_view(),
+        name='funciones'
+    ),
+    url(
+        r'^funciones/nuevo/$',
+        views.FuncionCreateView.as_view(),
+        name='funcion__nuevo'
+    ),
+    url(
+        r'^funciones/(?P<pk>\d+)/$',
+        views.FuncionDetailView.as_view(),
+        name='funcion'
+    ),
+    url(
+        r'^funciones/(?P<pk>\d+)/editar/$',
+        views.FuncionUpdateView.as_view(),
+        name='funcion__editar'
+    ),
+    url(
+        r'^funciones/(?P<pk>\d+)/eliminar/$',
+        views.FuncionDeleteView.as_view(),
+        name='funcion__eliminar'
+    ),
+    url(
+        r'^afps/$',
+        views.AFPListView.as_view(),
+        name='afps'
+    ),
+    url(
+        r'^afps/nuevo/$',
+        views.AFPCreateView.as_view(),
+        name='afp__nuevo'
+    ),
+    url(
+        r'^afps/(?P<pk>\d+)/$',
+        views.AFPDetailView.as_view(),
+        name='afp'
+    ),
+    url(
+        r'^afps/(?P<pk>\d+)/editar/$',
+        views.AFPUpdateView.as_view(),
+        name='afp__editar'
+    ),
+    url(
+        r'^afps/(?P<pk>\d+)/eliminar/$',
+        views.AFPDeleteView.as_view(),
+        name='afp__eliminar'
+    ),
+    url(
+        r'^isapres/$',
+        views.IsapreListView.as_view(),
+        name='isapres'
+    ),
+    url(
+        r'^isapres/nuevo/$',
+        views.IsapreCreateView.as_view(),
+        name='isapre__nuevo'
+    ),
+    url(
+        r'^isapres/(?P<pk>\d+)/$',
+        views.IsapreDetailView.as_view(),
+        name='isapre'
+    ),
+    url(
+        r'^isapres/(?P<pk>\d+)/editar/$',
+        views.IsapreUpdateView.as_view(),
+        name='isapre__editar'
+    ),
+    url(
+        r'^isapres/(?P<pk>\d+)/eliminar/$',
+        views.IsapreDeleteView.as_view(),
+        name='isapre__eliminar'
+    ),
+    url(
+        r'^finiquito/(?P<id_contrato>\d+)/$',
+        views.nuevo_finiquito,
+        name='finiquito__nuevo'
+    ),
+    url(
+        r'^finiquitos/(?P<pk>\d+)/eliminar/$',
+        views.FiniquitoDeleteView.as_view(),
+        name='finiquito__eliminar'
     ),
 ]

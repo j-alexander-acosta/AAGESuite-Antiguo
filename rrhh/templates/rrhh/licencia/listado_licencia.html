@@ -36,7 +36,7 @@
             <tbody>
             {% for l in object_list %}
                 <tr>
-                    <td><a href="{% url 'rrhh:licencia' l.pk %}"> {{ l.funcionario }} </a></td>
+                    <td><a href="{% url 'rrhh:licencia' l.pk %}"> {{ l.contrato }} </a></td>
                     <td> {% if l.tipo_licencia %} {{ l.tipo_licencia }} {% else %} {{ l.tipo_licencia_descripcion }} {% endif %}</td>
                     <td> {{ l.total_dias }} </td>
                     <td>

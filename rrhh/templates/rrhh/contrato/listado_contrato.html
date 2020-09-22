@@ -1,0 +1,68 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+{% load bootstrap_pagination %}
+
+{% block title_page %}
+    Personal
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Funcionarios
+            <a class="btn btn-sm btn-primary pull-right" href="{% url 'rrhh:contrato__nuevo'%}" role="button">
+        	    <span> Crear contrato <i class="fa fa-plus"></i></span>
+            </a>
+        </h4>
+        <h6 class="card-subtitle mb-2 text-muted">Tabla para configuración de Contratos</h6>
+    </div>
+    <div class="card-body">
+        <div>
+            <p>
+                <a class="btn btn-outline-dark" href="{% url 'rrhh:funciones' %}"><i class="fa fa-star-o"></i> Nueva Función de personal</a>
+                <a class="btn btn-outline-dark" href="{% url 'rrhh:isapres' %}"><i class="fa fa-star-o"></i> Nueva ISAPRE</a>
+                <a class="btn btn-outline-dark" href="{% url 'rrhh:afps' %}"><i class="fa fa-star-o"></i> Nueva AFP</a>
+            </p>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th><i class="fa fa-user"></i> Persona </th>
+                    <th><i class="fa fa-building"></i> Colegio </th>
+                    <th><i class="fa fa-list"></i> Categoria </th>
+                    <th><i class="fa fa-check"></i> Vigente </th>
+                    <th><i class="fa fa-clock"></i> Opciones </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for c in object_list %}
+                    <tr>
+                        <td><a href="{% url 'rrhh:contrato' c.pk %}"> {{ c.persona }} </a></td>
+                        <td> {{ c.colegio }} </td>
+                        <td> {{ c.get_categoria_display }} </td>
+                        <td class="text-center"> <span class="badge badge-pill {% if c.vigente %}badge-success{% else %}badge-danger{% endif%}">{{ c.vigente|yesno }}</span></td>
+                        <td>
+                            <a class="btn btn-sm btn-primary" href="{% url 'rrhh:contrato__editar' c.pk %}" data-toggle="tooltip" data-placement="top" title="Editar contrato">
+                                <i class="fa fa-edit"></i></a>
+                            <a class="btn btn-sm btn-info" href="{% url 'rrhh:persona__editar' c.persona.pk %}" data-toggle="tooltip" data-placement="top" title="Editar persona">
+                                <i class="fa fa-edit"></i></a>
+                            <a class="btn btn-sm btn-danger" href="{% url 'rrhh:finiquito__nuevo' c.pk %}" data-toggle="tooltip" data-placement="top" title="Dar de baja">
+                                <i class="fa fa-user-times"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card-footer">
+        <div align="center">
+            {% bootstrap_paginate page_obj range=5 %}
+        </div>
+    </div>
+
+</div>
+
+{% endblock content  %}

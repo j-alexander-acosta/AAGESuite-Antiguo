@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block title_page %}
-    Funcionario - Detalle
+    Perosona - Detalle
 {% endblock %}
 
 {% block content %}
@@ -12,19 +12,19 @@
       <h4 class="card-title"><strong> {{ object.nombre }}</strong>
           {% block buttons %}
               <div class="btn-group pull-right">
-                  <a href="{% url 'rrhh:funcionarios' %}" type="button" class="btn btn-sm btn-dark">
+                  <a href="{% url 'rrhh:personas' %}" type="button" class="btn btn-sm btn-dark">
                       <i class="fa fa-arrow-left"></i>
                   </a>
-                  <a href="{% url 'rrhh:funcionario__editar' object.pk %}" type="button" class="btn btn-sm btn-primary">
+                  <a href="{% url 'rrhh:persona__editar' object.pk %}" type="button" class="btn btn-sm btn-primary">
                       <i class="fa fa-edit"></i>
                   </a>
-                  <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_funcionario_{{object.pk}}">
+                  <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_persona_{{object.pk}}">
                       <i class="fa fa-trash"></i>
                   </a>
               </div>
           {% endblock %}
         </h4>
-        <h6 class="card-subtitle mb-2 text-muted">Detalle del funcionario</h6>
+        <h6 class="card-subtitle mb-2 text-muted">Detalle de la persona</h6>
 
     </div>
     <div class="card-body">
@@ -122,21 +122,21 @@
   </div>
 </div>
 
-<div class="modal" tabindex="-1" role="dialog" id="eliminar_funcionario_{{object.pk}}">
+<div class="modal" tabindex="-1" role="dialog" id="eliminar_persona_{{object.pk}}">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar un Funcionario</h5>
+                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar una Persona</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Está seguro que desea eliminar el funcionario "{{ object.nombre }}"?.</p>
-                <p class="text-muted">Recuerde que eliminará todos los registros asociados a este funcionario.</p>
+                <p>Está seguro que desea eliminar a la persona "{{ object.nombre }}"?.</p>
+                <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta persona.</p>
             </div>
             <div class="modal-footer">
-                <a role="button" class="btn btn-danger" href="{% url 'rrhh:funcionario__eliminar' object.pk %}">Eliminar</a>
+                <a role="button" class="btn btn-danger" href="{% url 'rrhh:persona__eliminar' object.pk %}">Eliminar</a>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
