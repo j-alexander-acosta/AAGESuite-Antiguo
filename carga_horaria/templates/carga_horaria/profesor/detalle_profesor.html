@@ -79,7 +79,7 @@
                 </tr>
 		<tr>
 		  <th>Asignatura</th>
-		  <th>Curso</th>
+		  <th>Cursos</th>
 		  <th>Horas</th>
 		  <th>Acciones</th>
 		</tr>
@@ -88,7 +88,7 @@
 		    {% for ax in object.asignacion_set.all.plan.sorted %}
                     <tr>
                       <td> {{ ax.asignatura }} </td>
-                      <td><a href="{{ ax.asignatura.periodo.get_absolute_url }}">{{ ax.asignatura.periodo }}</a></td>
+                      <td>{% for periodo in ax.asignatura.periodos.all %}<a href="{{ periodo.get_absolute_url }}">{{ periodo }}</a> {% endfor %}</td>
                       <td> {{ ax.horas|stringformat:'d' }} </td>
 		      <td>
                         <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignacion__editar' ax.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>

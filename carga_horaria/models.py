@@ -115,7 +115,7 @@ class Periodo(models.Model):
 
     @property
     def used_additional_hours(self):
-        return min(self.capacity - self.horas - self.floor, self.horas_adicionales)
+        return max(0, min(self.capacity - self.horas - self.floor, self.horas_adicionales))
 
     @property
     def can_dif(self):
@@ -188,16 +188,20 @@ class AsignaturaQuerySet(models.QuerySet):
 class Asignatura(models.Model):
     base = models.ForeignKey('AsignaturaBase', null=True, blank=True)
     nombre = models.CharField(max_length=255, null=True, blank=True)
-    periodo = models.ForeignKey('Periodo')
+    periodos = models.ManyToManyField('Periodo')
     horas = models.DecimalField(max_digits=4, decimal_places=2)
 
     objects = AsignaturaQuerySet.as_manager()
 
+    @property
+    def profesores(self):
+        return self.asignacion_set.values('profesor', flat=True)
+
     def get_horas_display(self):
-        if self.base and self.base.get_horas(self.periodo.jec) != self.horas:
+        if self.base and self.base.get_horas(self.periodos.first().jec) != self.horas:
             # import locale
             # locale.setlocale(locale.LC_ALL, 'es_CL.UTF-8')
-            horas_base = self.base.get_horas(self.periodo.jec)
+            horas_base = self.base.get_horas(self.periodo.first().jec)
             horas_extra = self.horas - horas_base
             return "{:n} + {:n} LD".format(int(horas_base), int(horas_extra))
         else:
@@ -306,7 +310,7 @@ class Profesor(models.Model):
     def vuln_asign_ratio(self):
         afectos = ['PK', 'K', 'B1', 'B2', 'B3', 'B4']
         fantasy_hours = Decimal(self.horas * Decimal(60.0)/Decimal(45.0) * Decimal(.65)).quantize(Decimal(0), rounding=ROUND_HALF_DOWN)
-        vuln_hours = self.asignacion_set.filter(asignatura__periodo__plan__nivel__in=afectos).filter(asignatura__periodo__colegio__prioritarios__gte=80).aggregate(models.Sum('horas'))['horas__sum'] or Decimal(0)
+        vuln_hours = self.asignacion_set.filter(asignatura__periodos__plan__nivel__in=afectos, asignatura__periodos__colegio__prioritarios__gte=80).aggregate(models.Sum('horas'))['horas__sum'] or Decimal(0)
         return vuln_hours / fantasy_hours
 
     @property
@@ -365,7 +369,7 @@ class AsignacionQuerySet(models.QuerySet):
     @property
     def sorted(self):
         ordering = {str(value): index for index, value in enumerate(Nivel)}
-        return sorted(self, key=lambda x: ordering["Nivel."+x.asignatura.periodo.plan.nivel])
+        return sorted(self, key=lambda x: ordering["Nivel."+x.asignatura.periodos.first().plan.nivel])
 
     @property
     def plan(self):

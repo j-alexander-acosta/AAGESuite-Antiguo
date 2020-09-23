@@ -81,7 +81,7 @@
                 <tbody>
 		  {% for a in object.asignatura_set.all.base %}
                   <tr{% if a.horas_disponibles == 0 %} class="table-success"{% else %} class="table-warning"{% endif %}>
-                  <td>  <a href="{% url 'carga-horaria:asignatura' a.pk %}">{{ a }} </a> </td>
+                  <td>  <a href="{% url 'carga-horaria:asignatura' a.pk object.pk %}">{{ a }} </a> </td>
                     <td>  {{ a.get_horas_display }}  </td>
                     <td>  {{ a.horas_asignadas|stringformat:'d' }}  </td>
                     <td>  {{ a.horas_disponibles|stringformat:'d' }}  </td>
@@ -94,7 +94,7 @@
 		{% endfor %}
                 {% for a in object.asignatura_set.all.custom %}
                   <tr{% if a.horas_disponibles == 0 %} class="table-success"{% else %} style="background-color: #ffbfb878;"{% endif %}>
-                  <td>  <a href="{% url 'carga-horaria:asignatura' a.pk %}">{{ a }} </a> </td>
+                  <td>  <a href="{% url 'carga-horaria:asignatura' a.pk object.pk %}">{{ a }} </a> </td>
                     <td>  {{ a.horas|stringformat:'d' }}  </td>
                     <td>  {{ a.horas_asignadas|stringformat:'d' }}  </td>
                     <td>  {{ a.horas_disponibles|stringformat:'d' }}  </td>

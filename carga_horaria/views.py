@@ -359,11 +359,28 @@ def asignatura_dif(request, pk):
     pp = get_object_or_404(Periodo, pk=pk)
 
     if request.method == 'POST':
-        Asignatura.objects.create(nombre=request.POST['asignatura'],
-                                  periodo=pp,
-                                  horas=6)
-        return redirect('carga-horaria:periodo', pp.pk)
+        # check first if there are any candidates for merging
+        nombre = request.POST['asignatura']
+        colegio_pk = request.session.get('colegio__pk', None)
+        can_confirm = request.POST.get('can_confirm', False)
+        if colegio_pk and Asignatura.objects.filter(periodos__colegio=colegio_pk, nombre=nombre) and not can_confirm:
+            ax = Asignatura.objects.filter(periodos__colegio=colegio_pk, nombre=nombre)
+            return render(request, 'carga_horaria/asignatura/asignatura_dif_confirm.html', {'object': pp,
+                                                                                            'candidatas': ax})
+        else:
+            aa = Asignatura.objects.create(nombre=request.POST['asignatura'],
+                                           horas=6)
+            aa.periodos.add(pp)
+            return redirect('carga-horaria:periodo', pp.pk)
     return render(request, 'carga_horaria/asignatura/asignatura_dif.html', {'object': pp})
+
+
+@login_required
+def asignatura_dif_merge(request, pk, asignatura_pk):
+    pp = get_object_or_404(Periodo, pk=pk)
+    aa = get_object_or_404(Asignatura, pk=asignatura_pk)
+    aa.periodos.add(pp)
+    return redirect('carga-horaria:periodo', pk)
 
 
 @login_required
@@ -376,7 +393,7 @@ def asignar(request, pk):
             asignacion = form.save(commit=False)
             asignacion.asignatura = aa
             asignacion.save()
-            return redirect('carga-horaria:periodo', aa.periodo.pk)
+            return redirect('carga-horaria:profesor', asignacion.profesor.pk)
     else:
         form = AsignacionForm(user=request.user, colegio=request.session.get('colegio__pk', None))
     return render(request, 'carga_horaria/asignar.html', {'object': aa,

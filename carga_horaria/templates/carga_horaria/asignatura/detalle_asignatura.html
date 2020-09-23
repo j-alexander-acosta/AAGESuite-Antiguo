@@ -15,7 +15,7 @@
                   <a href="{% url 'carga-horaria:asignaturas' %}" type="button" class="btn btn-sm btn-dark">
                       <i class="fa fa-arrow-left"></i>
                   </a>
-                  <a href="{% url 'carga-horaria:asignatura__editar' object.pk %}" type="button" class="btn btn-sm btn-primary" onclick="return confirm('¿Está seguro de editar las horas del plan de estudio?')">
+                  <a href="{% url 'carga-horaria:asignatura__editar' object.pk view.kwargs.periodo_pk %}" type="button" class="btn btn-sm btn-primary" onclick="return confirm('¿Está seguro de editar las horas del plan de estudio?')">
                       <i class="fa fa-edit"></i>
                   </a>
 		  {% if not object.base %}
@@ -26,7 +26,7 @@
               </div>
           {% endblock %}
         </h4>
-        <h6 class="card-subtitle mb-2 text-muted">Detalle de la asignatura perteneciente al curso {{ object.periodo }}</h6>
+        <h6 class="card-subtitle mb-2 text-muted">Detalle de la asignatura perteneciente al curso {{ periodo }}</h6>
 
     </div>
     <div class="card-body">
@@ -50,7 +50,7 @@
                 </tr>
                 <tr>
                     <th> Curso </th>
-                    <td> {{ object.periodo }}  </td>
+                    <td> {{ periodo }}  </td>
                 </tr>
                 <tr>
                     <th> Horas </th>

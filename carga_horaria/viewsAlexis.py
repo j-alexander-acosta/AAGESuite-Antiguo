@@ -389,6 +389,10 @@ class AsignaturaDetailView(LoginRequiredMixin, DetailView):
     model = Asignatura
     template_name = 'carga_horaria/asignatura/detalle_asignatura.html'
 
+    def get_context_data(self, *args, **kwargs):
+        ctx = super().get_context_data(*args, **kwargs)
+        ctx['periodo'] = Periodo.objects.get(pk=self.kwargs['periodo_pk'])
+        return ctx
 
 class AsignaturaCreateView(LoginRequiredMixin, CreateView):
     model = Asignatura
@@ -404,16 +408,15 @@ class AsignaturaCreateView(LoginRequiredMixin, CreateView):
             form.add_error('horas', "Horas superan el tiempo disponible ({})".format(available))
             return self.form_invalid(form)
         else:
-            self.object = form.save(commit=False)
-            self.object.periodo = periodo
-            self.object.save()
+            self.object = form.save()
+            self.object.periodos.add(periodo)
             return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
         return reverse(
             'carga-horaria:periodo',
             kwargs={
-                'pk': self.object.periodo.pk,
+                'pk': self.kwargs['pk'],
             }
         )
 
@@ -426,7 +429,7 @@ class AsignaturaUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         # dirty validation
-        periodo = self.object.periodo
+        periodo = Periodo.objects.get(pk=self.kwargs['periodo_pk'])
         horas = form.cleaned_data['horas']
         old_horas = Asignatura.objects.get(pk=self.object.pk).horas
         delta = horas - old_horas
@@ -436,7 +439,7 @@ class AsignaturaUpdateView(LoginRequiredMixin, UpdateView):
             form.add_error('horas', "Horas superan el tiempo disponible ({})".format(available + old_horas))
             return self.form_invalid(form)
         elif self.object.base:
-            if self.object.periodo.colegio.jec:
+            if periodo.colegio.jec:
                 horas_base = self.object.base.horas_jec
             else:
                 horas_base = self.object.base.horas_nec

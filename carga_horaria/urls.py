@@ -145,7 +145,7 @@ urlpatterns = [
         name='asignaturas'
     ),
     url(
-        r'^asignaturas/(?P<pk>\d+)/$',
+        r'^asignaturas/(?P<pk>\d+)/(?P<periodo_pk>\d+)/$',
         views.AsignaturaDetailView.as_view(),
         name='asignatura'
     ),
@@ -160,7 +160,12 @@ urlpatterns = [
         name='asignatura_dif__nuevo'
     ),
     url(
-        r'^asignaturas/(?P<pk>\d+)/editar/$',
+        r'^periodos/(?P<pk>\d+)/nueva-asignatura-dif-merge/(?P<asignatura_pk>\d+)/$',
+        views.asignatura_dif_merge,
+        name='asignatura_dif_merge'
+    ),
+    url(
+        r'^asignaturas/(?P<pk>\d+)/editar/(?P<periodo_pk>\d+)/$',
         views.AsignaturaUpdateView.as_view(),
         name='asignatura__editar'
     ),

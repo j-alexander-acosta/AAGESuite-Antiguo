@@ -12,9 +12,9 @@ def horas_asignaturas(sender, instance, created, **kwargs):
                 horas = ab.horas_jec
             else:
                 horas = ab.horas_nec
-            Asignatura.objects.create(base=ab,
-                                      periodo=instance,
-                                      horas=horas)
+            aa = Asignatura.objects.create(base=ab,
+                                           horas=horas)
+            aa.periodos.add(instance)
     else:
         for aa in instance.asignatura_set.filter(base__isnull=False):
             if instance.jec:
