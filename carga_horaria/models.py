@@ -303,9 +303,19 @@ class Profesor(models.Model):
         return self.horas_no_aula - self.horas_no_aula_asignadas
 
     @property
+    def vuln_asign_ratio(self):
+        afectos = ['PK', 'K', 'B1', 'B2', 'B3', 'B4']
+        fantasy_hours = Decimal(self.horas * Decimal(60.0)/Decimal(45.0) * Decimal(.65)).quantize(Decimal(0), rounding=ROUND_HALF_DOWN)
+        vuln_hours = self.asignacion_set.filter(asignatura__periodo__plan__nivel__in=afectos).filter(asignatura__periodo__colegio__prioritarios__gte=80).aggregate(models.Sum('horas'))['horas__sum']
+        return vuln_hours / fantasy_hours
+
+    @property
     def horas_docentes(self):
-        # considerar luego 60/40 colegios vulnerables
-        return Decimal(self.horas * Decimal(60.0)/Decimal(45.0) * Decimal(.65)).quantize(Decimal(0), rounding=ROUND_HALF_DOWN)
+        horas_sin = self.horas * Decimal(.65)
+        horas_con = self.horas * Decimal(.60)
+        partial_sin = Decimal(horas_sin * Decimal(60.0)/Decimal(45.0)).quantize(Decimal(0), rounding=ROUND_HALF_DOWN)
+        partial_con = Decimal(horas_con * Decimal(60.0)/Decimal(45.0)).quantize(Decimal(0), rounding=ROUND_HALF_DOWN)
+        return partial_sin * (Decimal(1) - self.vuln_asign_ratio) + partial_con * self.vuln_asign_ratio
 
     @property
     def horas_lectivas(self):
