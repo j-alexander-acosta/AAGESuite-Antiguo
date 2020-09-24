@@ -309,7 +309,7 @@ class Profesor(models.Model):
     @property
     def vuln_asign_ratio(self):
         afectos = ['PK', 'K', 'B1', 'B2', 'B3', 'B4']
-        fantasy_hours = Decimal(self.horas * Decimal(60.0)/Decimal(45.0) * Decimal(.65)).quantize(Decimal(0), rounding=ROUND_HALF_DOWN)
+        fantasy_hours = Decimal(self.horas * Decimal(60.0)/Decimal(45.0) * Decimal(.65)).quantize(Decimal(0), rounding=ROUND_HALF_DOWN) or Decimal(1)
         vuln_hours = self.asignacion_set.filter(asignatura__periodos__plan__nivel__in=afectos, asignatura__periodos__colegio__prioritarios__gte=80).aggregate(models.Sum('horas'))['horas__sum'] or Decimal(0)
         return vuln_hours / fantasy_hours
 
