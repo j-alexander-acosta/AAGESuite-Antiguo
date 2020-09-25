@@ -1,5 +1,6 @@
 from .base import *  # noqa
-# import raven
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'EKBtun0hsgtjTjViBGJpD5/54Pd7wC51sHDHUGZsbpM='
@@ -30,7 +31,12 @@ DATABASES = {
 STATIC_ROOT = '/var/lib/carga/static/'
 MEDIA_ROOT = '/var/lib/carga/media/'
 
+sentry_sdk.init(
+    dsn="https://cdae7540ad1f42c9af3bb4aa30aa1fb5@o453173.ingest.sentry.io/5441705",
+    integrations=[DjangoIntegration()],
+    traces_sample_rate=1.0,
 
-# RAVEN_CONFIG = {
-#     'dsn': 'https://27acb2e2da0942f4b39671a1bd1b555a:f5d77bcf8fd8400db22710d5c1774bb5@sentry.io/1398653',
-# }
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True
+)

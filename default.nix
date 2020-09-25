@@ -244,6 +244,7 @@ pkgs.python3Packages.buildPythonApplication {
     python3Packages.unidecode
     python3Packages.django_compressor
     python3Packages.django_guardian
+    python3Packages.sentry-sdk
     django-inline-static
     django-jsonview
     django-qr-code
