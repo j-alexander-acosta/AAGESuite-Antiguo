@@ -22,10 +22,12 @@ def horas_asignaturas_jec(sender, instance, **kwargs):
     if instance.pk is None:
         pass
     else:
-        for aa in instance.asignatura_set.filter(base__isnull=False):
-            if instance.jec:
-                aa.horas = aa.base.horas_jec
-            else:
-                aa.horas = aa.base.horas_nec
-            aa.save()
+        old = Periodo.objects.get(pk=instance.pk)
+        if old.jec != instance.jec:
+            for aa in instance.asignatura_set.filter(base__isnull=False):
+                if instance.jec:
+                    aa.horas = aa.base.horas_jec
+                else:
+                    aa.horas = aa.base.horas_nec
+                aa.save()
         
