@@ -34,6 +34,7 @@ MEDIA_ROOT = '/var/lib/carga/media/'
 sentry_sdk.init(
     dsn="https://cdae7540ad1f42c9af3bb4aa30aa1fb5@o453173.ingest.sentry.io/5441705",
     integrations=[DjangoIntegration()],
+    environment='prod',
     #traces_sample_rate=1.0,
 
     # If you wish to associate users to errors (assuming you are using
