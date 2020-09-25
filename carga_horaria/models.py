@@ -201,7 +201,7 @@ class Asignatura(models.Model):
         if self.base and self.base.get_horas(self.periodos.first().jec) != self.horas:
             # import locale
             # locale.setlocale(locale.LC_ALL, 'es_CL.UTF-8')
-            horas_base = self.base.get_horas(self.periodo.first().jec)
+            horas_base = self.base.get_horas(self.periodos.first().jec)
             horas_extra = self.horas - horas_base
             return "{:n} + {:n} LD".format(int(horas_base), int(horas_extra))
         else:
