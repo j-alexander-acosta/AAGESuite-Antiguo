@@ -1,4 +1,4 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from .models import Periodo
 from .models import Asignatura, AsignaturaBase
@@ -15,6 +15,12 @@ def horas_asignaturas(sender, instance, created, **kwargs):
             aa = Asignatura.objects.create(base=ab,
                                            horas=horas)
             aa.periodos.add(instance)
+
+
+@receiver(pre_save, sender=Periodo)
+def horas_asignaturas_jec(sender, instance, **kwargs):
+    if instance.pk is None:
+        pass
     else:
         for aa in instance.asignatura_set.filter(base__isnull=False):
             if instance.jec:
@@ -22,3 +28,4 @@ def horas_asignaturas(sender, instance, created, **kwargs):
             else:
                 aa.horas = aa.base.horas_nec
             aa.save()
+        
