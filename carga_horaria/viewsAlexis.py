@@ -455,6 +455,7 @@ class AsignaturaUpdateView(LoginRequiredMixin, UpdateView):
             'carga-horaria:asignatura',
             kwargs={
                 'pk': self.object.pk,
+                'periodo_pk': self.kwargs['periodo_pk']
             }
         )
 
