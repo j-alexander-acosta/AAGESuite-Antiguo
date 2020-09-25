@@ -49,8 +49,6 @@ def clear(request):
 
 @login_required
 def home(request):
-    user = 'yo'
-    1 / 0
     return render(request, 'carga_horaria/home.html')
 
 
