@@ -49,6 +49,7 @@ def clear(request):
 
 @login_required
 def home(request):
+    1 / 0
     return render(request, 'carga_horaria/home.html')
 
 
