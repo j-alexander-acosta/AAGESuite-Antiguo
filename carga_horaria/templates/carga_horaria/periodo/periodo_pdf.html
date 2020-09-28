@@ -37,7 +37,7 @@
       <tbody>
 		  {% for a in object.asignatura_set.all %}
                 <tr{% if a.horas_disponibles == 0 %} class="table-success"{% else %} class="table-warning"{% endif %}>
-                  <td>  <a href="{% url 'carga-horaria:asignatura' a.pk %}">{{ a }} </a> </td>
+                  <td>  <a href="{% url 'carga-horaria:asignatura' a.pk object.pk %}">{{ a }} </a> </td>
                     <td>  {{ a.horas }}  </td>
                     <td>  {{ a.horas_asignadas }}  </td>
                     <td>  {{ a.horas_disponibles }}  </td>
