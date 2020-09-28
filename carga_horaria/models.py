@@ -138,7 +138,7 @@ class Periodo(models.Model):
 
     @property
     def base_capacity(self):
-        return sum(self.asignatura_set.filter(base__isnull=False).values_list('horas', flat=True))
+        return sum(self.asignatura_set.exclude(diferenciada=True).values_list('horas', flat=True))
 
     @property
     def capacity(self):
@@ -190,6 +190,7 @@ class Asignatura(models.Model):
     nombre = models.CharField(max_length=255, null=True, blank=True)
     periodos = models.ManyToManyField('Periodo')
     horas = models.DecimalField(max_digits=4, decimal_places=2)
+    diferenciada = models.BooleanField(default=False)
 
     objects = AsignaturaQuerySet.as_manager()
 

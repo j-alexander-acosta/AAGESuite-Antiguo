@@ -427,6 +427,9 @@ class AsignaturaUpdateView(LoginRequiredMixin, UpdateView):
     form_class = AsignaturaUpdateForm
     template_name = 'carga_horaria/asignatura/editar_asignatura.html'
 
+    def get_success_url(self):
+        return reverse('carga-horaria:periodo', kwargs={'pk': self.kwargs['periodo_pk']})
+
     def form_valid(self, form):
         # dirty validation
         periodo = Periodo.objects.get(pk=self.kwargs['periodo_pk'])
@@ -449,15 +452,6 @@ class AsignaturaUpdateView(LoginRequiredMixin, UpdateView):
                 return self.form_invalid(form)
 
         return super().form_valid(form)
-
-    def get_success_url(self):
-        return reverse(
-            'carga-horaria:asignatura',
-            kwargs={
-                'pk': self.object.pk,
-                'periodo_pk': self.kwargs['periodo_pk']
-            }
-        )
 
 
 class AsignaturaDeleteView(LoginRequiredMixin, DeleteView):

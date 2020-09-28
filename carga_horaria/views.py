@@ -369,6 +369,7 @@ def asignatura_dif(request, pk):
                                                                                             'candidatas': ax})
         else:
             aa = Asignatura.objects.create(nombre=request.POST['asignatura'],
+                                           diferenciada=True,
                                            horas=6)
             aa.periodos.add(pp)
             return redirect('carga-horaria:periodo', pp.pk)
