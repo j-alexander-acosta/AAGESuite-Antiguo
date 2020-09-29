@@ -28,14 +28,16 @@
             <thead>
             <tr>
                 <th><i class="fa fa-calendar-check-o"></i> Curso </th>
-                <th><i class="fa fa-check-circle"></i> Plan </th>
+                <th><i class="fa fa-check-circle"></i> Progreso </th>
+                <th><i class="fa fa-edit"></i> Plan </th>
                 <th><i class="fa fa-cogs"></i> Acciones </th>
             </tr>
             </thead>
             <tbody>
             {% for p in object_list %}
-                <tr>
+                <tr{% if p.completion_percentage == 100 %} class="text-success" {% endif %}>
                     <td><a href="{% url 'carga-horaria:periodo' p.pk %}">{{ p }}</a></td>
+                    <td align="right">{{ p.completion_percentage }}%</td>
                     <td>{{ p.plan }}</td>
                     <td>
                         <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:periodo__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
