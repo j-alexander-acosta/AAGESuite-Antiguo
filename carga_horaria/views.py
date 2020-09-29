@@ -503,7 +503,7 @@ class AsignacionUpdateView(LoginRequiredMixin, UpdateView):
         return reverse(
             'carga-horaria:profesor',
             kwargs={
-                'pk': self.object.asignatura.profesor.pk,
+                'pk': self.object.profesor.pk,
             }
         )
 
