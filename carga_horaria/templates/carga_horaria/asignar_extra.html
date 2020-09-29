@@ -1,5 +1,6 @@
 {% extends 'base/base.html' %}
 {% load staticfiles %}
+{% load carga_filters %}
 {% load crispy_forms_tags %}
 
 {% block title_page %}
@@ -23,8 +24,8 @@
 	  </thead>
 	  <tbody>
 	  <tr>
-	    <td>{{ profesor.horas_no_lectivas_asignadas }}</td>
-	    <td>{{ profesor.horas_no_lectivas_disponibles }}</td>
+	    <td>{{ profesor.horas_no_lectivas_asignadas|hhmm }}</td>
+	    <td>{{ profesor.horas_no_lectivas_disponibles|hhmm }}</td>
 	  </tr>
 	  </tbody>
 	</table>

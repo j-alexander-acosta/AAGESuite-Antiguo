@@ -193,6 +193,9 @@ class AsignacionExtraForm(forms.ModelForm):
             'descripcion',
             'horas',
         ]
+        help_texts = {
+            'horas': "Para asignar el resto de horas disponibles, deje este valor en 0."
+        }
 
     def clean_horas(self):
         horas = self.cleaned_data['horas']
@@ -216,6 +219,8 @@ class AsignacionExtraForm(forms.ModelForm):
                     self.fields['curso'].queryset = self.fields['curso'].queryset.filter(colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")])
         else:
             del(self.fields['curso'])
+
+        self.fields['horas'].initial = 0
 
 
         self.helper = FormHelper()

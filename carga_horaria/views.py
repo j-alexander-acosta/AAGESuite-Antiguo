@@ -458,6 +458,8 @@ def asignar_extra(request, pk):
         if form.is_valid():
             asignacion = form.save(commit=False)
             asignacion.profesor = pp
+            if asignacion.horas == 0:
+                asignacion.horas = pp.horas_no_lectivas_disponibles
             asignacion.save()
             return redirect('carga-horaria:profesor', pp.pk)
     else:
