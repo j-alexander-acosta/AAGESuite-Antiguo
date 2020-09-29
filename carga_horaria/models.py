@@ -356,32 +356,37 @@ class Profesor(models.Model):
 
     @property
     def horas_docentes(self):
+        if self.horas == 11:
+            method = ROUND_HALF_UP
+        else:
+            method = ROUND_HALF_DOWN
+
         horas_sin = self.horas * Decimal(.65)
         horas_con = self.horas * Decimal(.60)
-        partial_sin = Decimal(horas_sin * Decimal(60.0)/Decimal(45.0)).quantize(Decimal(0), rounding=ROUND_HALF_DOWN)
-        partial_con = Decimal(horas_con * Decimal(60.0)/Decimal(45.0)).quantize(Decimal(0), rounding=ROUND_HALF_DOWN)
-        return partial_sin * (Decimal(1) - self.vuln_asign_ratio) + partial_con * self.vuln_asign_ratio
+        partial_sin = Decimal(horas_sin * Decimal(60.0)/Decimal(45.0)).quantize(Decimal('0.0'), rounding=ROUND_HALF_DOWN).quantize(Decimal('0'), rounding=method)
+        partial_con = Decimal(horas_con * Decimal(60.0)/Decimal(45.0)).quantize(Decimal('0.0'), rounding=ROUND_HALF_DOWN).quantize(Decimal('0'), rounding=method)
+        return partial_sin * (Decimal(1.00) - self.vuln_asign_ratio) + partial_con * self.vuln_asign_ratio
 
     @property
     def horas_lectivas(self):
-        return Decimal(self.horas_docentes * Decimal(45.0)/Decimal(60.0)).quantize(Decimal('0.0'), rounding=ROUND_HALF_DOWN)
+        return Decimal(self.horas_docentes * Decimal('45.00')/Decimal('60.0'))  # 44.96?
 
     @property
     def horas_no_lectivas(self):
-        return Decimal(self.horas - self.horas_lectivas - self.horas_recreo).quantize(Decimal('0.0'), rounding=ROUND_HALF_UP)
+        return Decimal(self.horas - self.horas_lectivas - self.horas_recreo) + Decimal('0.016')
 
     @property
     def horas_no_lectivas_anexo(self):
-        return Decimal(self.horas - self.horas_lectivas).quantize(Decimal('0.0'), rounding=ROUND_HALF_UP)
+        return Decimal(self.horas - self.horas_lectivas)
 
     @property
     def horas_planificacion(self):
-        return Decimal(self.horas_no_lectivas * Decimal(.40)).quantize(Decimal('0.0'), rounding=ROUND_HALF_UP)
+        return Decimal(self.horas_no_lectivas * Decimal(.40))
 
-    # FIXME: verificar según la tabla (horas recreo), puta locura
+    # FIXME: verificar según la tabla (horas recreo)
     @property
     def horas_recreo(self):
-        return Decimal(self.horas * Decimal(4.1)/Decimal(60.0)).quantize(Decimal('0.0'), rounding=ROUND_HALF_DOWN)
+        return Decimal(self.horas * Decimal('4.10')/Decimal('60.00'))
 
     def __str__(self): 
         return self.nombre

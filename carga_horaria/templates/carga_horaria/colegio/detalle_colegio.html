@@ -83,7 +83,7 @@
                 </tr>
                 <tr>
                     <th> Sitio web oficial </th>
-                    <td>  {{ object.web }}  </td>
+                    <td>  {{ object.web|default:'Ninguno' }}  </td>
                 </tr>
                 <tr>
                     <th> Fundacion </th>
@@ -92,6 +92,10 @@
                 <tr>
                     <th> Tipo de financiamiento </th>
                     <td>  {{ object.get_financiamiento_display }}  </td>
+                </tr>
+                <tr>
+                    <th> Porcentaje de alumnos prioritarios </th>
+                    <td>  {{ object.prioritarios }}%  </td>
                 </tr>
                 </tbody>
             </table>
