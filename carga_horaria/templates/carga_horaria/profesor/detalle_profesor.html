@@ -121,13 +121,10 @@
                       <td colspan="2" align="right"><strong>Total</strong></td>
                       <td colspan="2" align="left"><strong>{{ object.horas_asignadas_plan|decimal_maybe }}</strong></td>
                     </tr>
-                </tbody>
-		    </table>
 
 
+                    <!-- segunda tabla -->
                 {% if object.colegio.sep %}
-		    		    <table class="table table-hover table-sm">
-                <thead>
                 <tr>
                     <th colspan="4" class="table-info">
                 <span>
@@ -149,8 +146,7 @@
 		  <th>Horas</th>
 		  <th>Acciones</th>
 		</tr>
-                </thead>
-                <tbody>
+
 		    {% for ax in object.asignacion_set.all.sep %}
                     <tr>
                       <td> {{ ax.descripcion }} </td>
@@ -183,14 +179,12 @@
                     </div>    
                 </div>
 		    {% endfor %}
-                </tbody>
-				    </table>
-                                    {% endif %}
+                    {% endif %}
 
 
+
+                    <!-- tercera tabla -->
                 {% if object.colegio.pie %}
-				    		    <table class="table table-hover table-sm">
-                <thead>
                 <tr>
                     <th colspan="4" class="table-info">
                 <span>
@@ -212,8 +206,7 @@
 		  <th>Horas</th>
 		  <th>Acciones</th>
 		</tr>
-                </thead>
-                <tbody>
+
 		    {% for ax in object.asignacion_set.all.pie %}
                     <tr>
                       <td> {{ ax.descripcion }} </td>
@@ -246,14 +239,11 @@
                     </div>    
                 </div>
 		    {% endfor %}
-                </tbody>
-						    </table>
+
                                                     {% endif %}
 
 
-
-				    		    <table class="table table-hover table-sm">
-                <thead>
+                <!-- cuarta tabla -->
                 <tr>
                     <th colspan="4" class="table-info">
                 <span>
@@ -276,8 +266,7 @@
 		  <th>Horas</th>
 		  <th>Acciones</th>
 		</tr>
-                </thead>
-                <tbody>
+
 		    {% for ax in object.asignacion_set.all.sostenedor %}
                     <tr>
                       <td> {{ ax.descripcion }} </td>
@@ -311,10 +300,9 @@
                 </div>
 		    {% endfor %}
                 </tbody>
-						    </table>
+				    </table>
 
-						    
-						    
+
         </div>
         <div class="col-md-6">
             <table class="table table-hover table-sm">
