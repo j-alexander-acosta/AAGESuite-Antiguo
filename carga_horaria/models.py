@@ -450,7 +450,7 @@ class Asignacion(models.Model):
     curso = models.ForeignKey('Periodo', null=True, blank=True)
     descripcion = models.CharField(max_length=255, null=True, blank=True)
     tipo = models.PositiveSmallIntegerField(default=PLAN)
-    horas = models.DecimalField(max_digits=4, decimal_places=2)
+    horas = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(0.5)])
 
     objects = AsignacionQuerySet.as_manager()
 
