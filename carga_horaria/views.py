@@ -363,6 +363,13 @@ class PlanDeleteView(LoginRequiredMixin, DeleteView):
 """
 
 @login_required
+def asignatura_limpiar(request, pk, periodo_pk):
+    aa = get_object_or_404(Asignatura, pk=pk)
+    aa.asignacion_set.all().delete()
+    return redirect(reverse('carga-horaria:periodo', kwargs={'pk': periodo_pk}))
+
+
+@login_required
 def asignatura_dif(request, pk):
     pp = get_object_or_404(Periodo, pk=pk)
 

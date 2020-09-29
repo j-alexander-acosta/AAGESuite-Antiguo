@@ -150,6 +150,11 @@ urlpatterns = [
         name='asignatura'
     ),
     url(
+        r'^asignaturas/(?P<pk>\d+)/limpiar/(?P<periodo_pk>\d+)/$',
+        views.asignatura_limpiar,
+        name='asignatura__limpiar'
+    ),
+    url(
         r'^periodos/(?P<pk>\d+)/nueva-asignatura/$',
         views.AsignaturaCreateView.as_view(),
         name='asignatura__nuevo'
