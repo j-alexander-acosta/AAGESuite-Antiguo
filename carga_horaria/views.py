@@ -529,6 +529,14 @@ class AsignacionExtraUpdateView(LoginRequiredMixin, UpdateView):
                        'colegio': self.request.session.get('colegio__pk', None)})
         return kwargs
 
+    def form_valid(self, form):
+        asignacion = form.save(commit=False)
+        if asignacion.horas == 0:
+            asignacion_old = Asignacion.objects.get(pk=asignacion.pk)
+            asignacion.horas = asignacion.profesor.horas_no_lectivas_disponibles + asignacion_old.horas
+        asignacion.save()
+        return redirect(self.get_success_url())
+
     def get_success_url(self):
         return reverse(
             'carga-horaria:profesor',
