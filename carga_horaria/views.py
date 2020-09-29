@@ -501,9 +501,9 @@ class AsignacionUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse(
-            'carga-horaria:periodo',
+            'carga-horaria:profesor',
             kwargs={
-                'pk': self.object.asignatura.periodo.pk,
+                'pk': self.object.asignatura.profesor.pk,
             }
         )
 
