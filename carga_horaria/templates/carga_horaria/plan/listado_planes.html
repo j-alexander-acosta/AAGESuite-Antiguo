@@ -33,8 +33,9 @@
                 <tr>
                     <td><a href="{% url 'carga-horaria:plan' p.pk %}">{{ p }}</a></td>
                     <td>
-                        <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:plan__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
-                        <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_plan_{{p.pk}}"><i class="fa fa-trash"></i></a>
+                      <a class="btn btn-sm btn-success" href="{% url 'carga-horaria:plan__actualizar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Actualizar"><i class="fa fa-refresh"></i></a>
+                      <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:plan__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
+                      <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_plan_{{p.pk}}"><i class="fa fa-trash"></i></a>
                     </td>
                 </tr>
                 <div class="modal" tabindex="-1" role="dialog" id="eliminar_plan_{{p.pk}}">

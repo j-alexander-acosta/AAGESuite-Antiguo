@@ -2,6 +2,7 @@ from django.conf import settings
 from django.http import Http404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.views.generic.detail import DetailView
 from django.shortcuts import render, get_object_or_404, redirect
 from .viewsAlexis import *
@@ -99,6 +100,13 @@ def periodo_pdf(request, pk):
                                    context={'object': periodo},
                                    show_content_in_browser=settings.DEBUG)
     return response
+
+@login_required
+def plan_refresh(request, pk):
+    plan = get_object_or_404(Plan, pk=pk)
+    plan.refresh_asignaturas()
+    messages.success(request, "Se han actualizado los cursos asociados al plan ID: {}".format(plan.pk))
+    return redirect('carga-horaria:planes')
 
 # class AnexoView(PDFTemplateView):
 #     template_name = 'carga_horaria/profesor/anexo_profesor.html'

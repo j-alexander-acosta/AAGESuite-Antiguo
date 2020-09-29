@@ -26,6 +26,10 @@ class Plan(models.Model):
     nivel = models.CharField(max_length=8, choices=[(tag.name, tag.value) for tag in Nivel])
     colegio = models.ForeignKey('Colegio', null=True)
 
+    def refresh_asignaturas(self):
+        for periodo in self.periodo_set.all():
+            periodo.refresh()
+
     def __str__(self): 
         return "Plan de Estudios - {} (ID: {})".format(getattr(Nivel, self.nivel).value.title(), self.pk)
 
@@ -108,6 +112,42 @@ class Periodo(models.Model):
     horas_adicionales = models.DecimalField(max_digits=4, decimal_places=2, default=0)
     colegio = models.ForeignKey('Colegio')
     profesor_jefe = models.ForeignKey('Profesor', blank=True, null=True)
+
+    def refresh(self):
+        own = {aa.pop('base__pk'): aa for aa in self.asignatura_set.filter(base__isnull=False).values('pk', 'base__pk', 'horas')}
+        plan = {ab.pop('pk'): ab for ab in self.plan.asignaturabase_set.values('pk', 'horas_jec', 'horas_nec')}
+
+        # delete if not found in plan
+        to_delete = own.keys() - plan.keys()
+        for base__pk in to_delete:
+            Asignatura.objects.get(pk=own[base__pk]['pk']).delete()
+            del own[base__pk]
+
+        # update hours if different with plan hours
+        for base_pk, values in own.items():
+            current_hours = values['horas']
+            if self.jec:
+                base_hours = plan[base_pk]['horas_jec']
+            else:
+                base_hours = plan[base_pk]['horas_nec']
+
+            if current_hours != base_hours:
+                aa = Asignatura.objects.get(pk=values['pk'])
+                aa.asignacion_set.all().delete()
+                aa.horas = base_hours
+                aa.save()
+
+        # add new asignaturas if not found in periodo
+        to_add = plan.keys() - own.keys()
+        for base_pk in to_add:
+            if self.jec:
+                horas = plan[base_pk]['horas_jec']
+            else:
+                horas = plan[base_pk]['horas_nec']
+
+            base = AsignaturaBase.objects.get(pk=base_pk)
+            aa = Asignatura.objects.create(base=base, horas=horas)
+            aa.periodos.add(self)
 
     @property
     def used_ld_hours(self):

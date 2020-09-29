@@ -252,6 +252,11 @@ urlpatterns = [
         name='plan__editar'
     ),
     url(
+        r'^planes/(?P<pk>\d+)/actualizar/$',
+        views.plan_refresh,
+        name='plan__actualizar'
+    ),
+    url(
         r'^planes/(?P<pk>\d+)/eliminar/$',
         views.PlanDeleteView.as_view(),
         name='plan__eliminar'
