@@ -23,7 +23,7 @@
                   </a>
               </div>
           {% endblock %}
-      </h4>
+      </h4>{% if object.periodo_set.count %}<p class="text-muted text-xs">Profesor Jefe de {{ object.periodo_set.first }}</p>{% endif %}
       	<div class="progress pull-right" style="width: 50%;">
 	  <div class="progress-bar progress-bar-striped progress-bar-animated" style="width:{{ object.completion_percentage }}%;">
 	    <strong>{{ object.get_progress_display }}</strong>
