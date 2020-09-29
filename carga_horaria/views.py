@@ -439,6 +439,8 @@ def asignar_no_aula_fua(request, pk, tipo):
             asignacion = form.save(commit=False)
             asignacion.profesor = pp
             asignacion.tipo = tipo
+            if asignacion.horas == 0:
+                asignacion.horas = pp.horas_no_aula_disponibles
             asignacion.save()
             return redirect('carga-horaria:profesor', pp.pk)
     else:
@@ -477,6 +479,8 @@ def asignar_no_aula(request, pk):
         if form.is_valid():
             asignacion = form.save(commit=False)
             asignacion.profesor = pp
+            if asignacion.horas == 0:
+                asignacion.horas = pp.horas_no_aula_disponibles
             asignacion.save()
             return redirect('carga-horaria:profesor', pp.pk)
     else:
@@ -566,6 +570,14 @@ class AsignacionNoAulaUpdateView(LoginRequiredMixin, UpdateView):
     model = AsignacionNoAula
     form_class = AsignacionNoAulaUpdateForm
     template_name = 'carga_horaria/asignar_no_aula.html'
+
+    def form_valid(self, form):
+        asignacion = form.save(commit=False)
+        if asignacion.horas == 0:
+            asignacion_old = AsignacionNoAula.objects.get(pk=asignacion.pk)
+            asignacion.horas = asignacion.profesor.horas_no_aula_disponibles + asignacion_old.horas
+        asignacion.save()
+        return redirect(self.get_success_url())
 
     def get_context_data(self, *args, **kwargs):
         ctx = super(AsignacionNoAulaUpdateView, self).get_context_data(*args, **kwargs)

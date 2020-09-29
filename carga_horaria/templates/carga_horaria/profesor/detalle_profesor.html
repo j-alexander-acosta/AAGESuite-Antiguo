@@ -39,11 +39,11 @@
               <td>Hrs. Jornada Semanal: <strong>{{ object.horas|decimal_maybe }}</strong></td>
               <td>Hrs. Aula: <strong>{{ object.horas_docentes|decimal_maybe }}</strong></td>
               <td>Hrs. lectivas: <strong>{{ object.horas_lectivas|hhmm }}</strong></td>
-              <td>Recreo: <strong>{{ object.horas_recreo|hhmm }}</strong></td>
+              <td class="text-primary">Recreo: <strong>{{ object.horas_recreo|hhmm }}</strong></td>
               <td>Hrs. no lectivas: <strong>{{ object.horas_no_lectivas|hhmm }}</strong></td>
             </tr>
             <tr>
-              <td>Horas contratadas otras funciones: <strong>{{ object.horas_no_aula|hhmm }}</strong></td>
+              <td>Hrs. otras funciones: <strong>{{ object.horas_no_aula|hhmm }}</strong></td>
             </tr>
           </tbody>
         </table>

@@ -249,6 +249,9 @@ class AsignacionNoAulaForm(forms.ModelForm):
             'descripcion',
             'horas',
         ]
+        help_texts = {
+            'horas': "Para asignar el resto de horas disponibles, deje este valor en 0."
+        }
 
     def clean_horas(self):
         horas = self.cleaned_data['horas']
