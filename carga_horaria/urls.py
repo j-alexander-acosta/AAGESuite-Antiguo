@@ -262,7 +262,7 @@ urlpatterns = [
         name='plan__eliminar'
     ),
     url(
-        r'^asignaturas/(?P<pk>\d+)/asignar/$',
+        r'^asignaturas/(?P<pk>\d+)/asignar/(?P<periodo_pk>\d+)/$',
         views.asignar,
         name='asignar'
     ),

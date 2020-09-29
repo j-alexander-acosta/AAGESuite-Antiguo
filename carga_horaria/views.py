@@ -393,7 +393,7 @@ def asignatura_dif_merge(request, pk, asignatura_pk):
 
 
 @login_required
-def asignar(request, pk):
+def asignar(request, pk, periodo_pk):
     aa = get_object_or_404(Asignatura, pk=pk)
 
     if request.method == 'POST':
@@ -402,7 +402,7 @@ def asignar(request, pk):
             asignacion = form.save(commit=False)
             asignacion.asignatura = aa
             asignacion.save()
-            return redirect('carga-horaria:profesor', asignacion.profesor.pk)
+            return redirect('carga-horaria:periodo', periodo_pk)
     else:
         form = AsignacionForm(user=request.user, colegio=request.session.get('colegio__pk', None))
     return render(request, 'carga_horaria/asignar.html', {'object': aa,
