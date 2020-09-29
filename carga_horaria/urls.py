@@ -282,7 +282,7 @@ urlpatterns = [
         name='asignacion__editar'
     ),
     url(
-        r'^asignaciones/(?P<pk>\d+)/eliminar/$',
+        r'^asignaciones/(?P<pk>\d+)/eliminar/(?P<profesor_pk>\d+)/$',
         views.AsignacionDeleteView.as_view(),
         name='asignacion__eliminar'
     ),

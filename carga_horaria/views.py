@@ -484,8 +484,10 @@ def asignar_no_aula(request, pk):
 
 class AsignacionDeleteView(LoginRequiredMixin, DeleteView):
     model = Asignacion
-    success_url = reverse_lazy('carga-horaria:periodos')
     template_name = 'carga_horaria/periodo/eliminar_periodo.html'
+
+    def get_success_url(self):
+        return reverse('carga-horaria:profesor', kwargs={'pk': self.kwargs['profesor_pk']})
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
