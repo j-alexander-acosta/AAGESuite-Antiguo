@@ -272,6 +272,21 @@ class Asignatura(models.Model):
 
 
 class Profesor(models.Model):
+    DOCENTE = 1
+    RECTOR = 2
+    DIRECTOR = 3
+    SUBDIRECTOR = 4
+    INSPECTOR = 5
+    UTP = 6
+    CAPELLAN = 7
+    CARGO_CHOICES = ((DOCENTE, 'Docente'),
+                     (RECTOR, 'Rector'),
+                     (DIRECTOR, 'Director'),
+                     (SUBDIRECTOR, 'Subdirector'),
+                     (INSPECTOR, 'Inspector General'),
+                     (UTP, 'Jefe de UTP'),
+                     (CAPELLAN, 'Capellán'))
+
     nombre = models.CharField(max_length=255)
     rut = models.CharField(max_length=13, blank=True, null=True, unique=True)
     horas = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(44)])
@@ -281,6 +296,7 @@ class Profesor(models.Model):
     colegio = models.ForeignKey('Colegio', null=True)
     adventista = models.BooleanField(default=False)
     directivo = models.BooleanField(default=False)
+    cargo = models.PositiveSmallIntegerField(default=DOCENTE, choices=CARGO_CHOICES)
 
     @property
     def ceiling(self):

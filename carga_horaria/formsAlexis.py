@@ -30,7 +30,8 @@ class ProfesorForm(forms.ModelForm):
             'fundacion',
             'colegio',
             'adventista',
-            'directivo'
+            'directivo',
+            'cargo'
         ]
         labels = {
             'horas': u'Horas de contrato en docencia de aula',
