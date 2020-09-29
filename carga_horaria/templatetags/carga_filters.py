@@ -10,6 +10,7 @@ def hhmm(value):
     return "%d:%02d" % (hours, minutes)
 
 
+
 @register.filter
 def decimal_maybe(value):
     if value % 1 == 0:
