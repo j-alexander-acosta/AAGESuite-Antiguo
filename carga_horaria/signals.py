@@ -1,19 +1,33 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from .models import Periodo
 from .models import Asignatura, AsignaturaBase
 
 
 @receiver(post_save, sender=Periodo)
-def create_asignaturas(sender, instance, created, **kwargs):
+def horas_asignaturas(sender, instance, created, **kwargs):
     if created:
-        colegio = instance.colegio
         for ab in instance.plan.asignaturabase_set.all():
-            if colegio.jec:
+            if instance.jec:
                 horas = ab.horas_jec
             else:
                 horas = ab.horas_nec
-            Asignatura.objects.create(base=ab,
-                                      periodo=instance,
-                                      horas=horas)
+            aa = Asignatura.objects.create(base=ab,
+                                           horas=horas)
+            aa.periodos.add(instance)
 
+
+@receiver(pre_save, sender=Periodo)
+def horas_asignaturas_jec(sender, instance, **kwargs):
+    if instance.pk is None:
+        pass
+    else:
+        old = Periodo.objects.get(pk=instance.pk)
+        if old.jec != instance.jec:
+            for aa in instance.asignatura_set.filter(base__isnull=False):
+                if instance.jec:
+                    aa.horas = aa.base.horas_jec
+                else:
+                    aa.horas = aa.base.horas_nec
+                aa.save()
+        

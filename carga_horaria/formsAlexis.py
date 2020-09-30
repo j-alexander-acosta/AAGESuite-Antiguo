@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.forms import ModelChoiceField
 from guardian.shortcuts import get_objects_for_user
+from localflavor.cl.forms import CLRutField
 
 from carga_horaria import models
 
@@ -16,14 +17,88 @@ class ProfesorForm(forms.ModelForm):
         Formulario para crear y editar un profesor
 
     """
+    rut = CLRutField(label="RUT")
 
     class Meta:
         model = models.Profesor
         fields = [
             'nombre',
+            'rut',
             'horas',
+            'horas_no_aula',
             'especialidad',
-            'fundacion'
+            'fundacion',
+            'colegio',
+            'adventista',
+            'directivo',
+            'cargo'
+        ]
+        labels = {
+            'horas': u'Horas de contrato en docencia de aula',
+            'horas_no_aula': u'Horas de contrato en docencia no aula',
+            'fundacion': 'Fundación que lo contrata',
+            'directivo': '¿Es directivo?'
+        }
+        widgets = {
+            'horas': forms.NumberInput(attrs={'step': '1'}),
+            'horas_no_aula': forms.NumberInput(attrs={'step': '1'}),
+        }
+
+    def clean(self):
+        cleaned_data = super(ProfesorForm, self).clean()
+
+        if self.instance and self.instance.asignacion_set.count() > 0:
+            if self.fields['horas'].has_changed(self.instance.horas, cleaned_data['horas']):
+                raise forms.ValidationError("No se pueden modificar horas de contrato mientras tenga asignaciones.")
+
+        if self.instance and self.instance.asignacionnoaula_set.count() >0:
+            if self.fields['horas_no_aula'].has_changed(self.instance.horas_no_aula, cleaned_data['horas_no_aula']):
+                raise forms.ValidationError("No se pueden modificar horas de contrato mientras tenga asignaciones.")
+
+
+        if cleaned_data['horas'] + cleaned_data['horas_no_aula'] > 44:
+            raise forms.ValidationError("La suma de horas de aula y no aula no debe superar 44 horas.")
+        return cleaned_data
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        colegio = kwargs.pop('colegio', None)
+        fundacion = kwargs.pop('fundacion', None)
+        super(ProfesorForm, self).__init__(*args, **kwargs)
+
+        if user:
+            if not user.is_superuser:
+                self.fields['fundacion'].queryset = self.fields['fundacion'].queryset.filter(colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")])
+        else:
+            del(self.fields['fundacion'])
+        
+        if colegio:
+            self.fields['fundacion'].initial = fundacion
+            self.fields['fundacion'].disabled = True
+            self.fields['colegio'].initial = colegio
+            self.fields['colegio'].disabled = True
+
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+
+
+class AsistenteForm(forms.ModelForm):
+    """
+        Formulario para crear y editar un asistente
+
+    """
+    rut = CLRutField(label="RUT")
+
+    class Meta:
+        model = models.Asistente
+        fields = [
+            'nombre',
+            'rut',
+            'horas',
+            'funcion',
+            'fundacion',
+            'colegio',
+            'adventista',
         ]
         labels = {
             'horas': u'Horas de contrato',
@@ -32,7 +107,15 @@ class ProfesorForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
-        super(ProfesorForm, self).__init__(*args, **kwargs)
+        colegio = kwargs.pop('colegio', None)
+        fundacion = kwargs.pop('fundacion', None)
+        super(AsistenteForm, self).__init__(*args, **kwargs)
+
+        if colegio:
+            self.fields['fundacion'].initial = fundacion
+            self.fields['fundacion'].disabled = True
+            self.fields['colegio'].initial = colegio
+            self.fields['colegio'].disabled = True
 
         if user:
             if not user.is_superuser:
@@ -42,7 +125,6 @@ class ProfesorForm(forms.ModelForm):
         
         self.helper = FormHelper()
         self.helper.form_tag = False
-
 
 # class CursoForm(forms.ModelForm):
 #     """
@@ -82,9 +164,17 @@ class AsignaturaBaseForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        colegio = kwargs.pop('colegio', None)
         super(AsignaturaBaseForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+
+        if colegio:
+            self.fields['plan'].queryset = self.fields['plan'].queryset.filter(colegio__pk=colegio)
+        else:
+            if user and not user.is_superuser:
+                self.fields['plan'].queryset = self.fields['plan'].queryset.filter(colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")]).distinct()
 
 
 class AsignaturaUpdateForm(forms.ModelForm):

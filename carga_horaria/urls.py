@@ -21,15 +21,28 @@ app_name = 'carga-horaria'
 
 urlpatterns = [
     url(r'^$', views.home, name='home'),
+    url(r'^switch/$', views.switch, name='switch'),
+    url(r'^switch/(?P<pk>\d+)/$', views.switch, name='switch'),
+    url(r'^clear/$', views.clear, name='clear'),
     url(
         r'^profesores/$',
         views.ProfesorListView.as_view(),
         name='profesores'
     ),
     url(
+        r'^profesores/pdf/$',
+        views.profesores_pdf,
+        name='profesores-pdf'
+    ),
+    url(
         r'^profesores/(?P<pk>\d+)/$',
         views.ProfesorDetailView.as_view(),
         name='profesor'
+    ),
+    url(
+        r'^profesores/(?P<pk>\d+)/anexo/$',
+        views.anexo,
+        name='profesor__anexo'
     ),
     url(
         r'^profesores/nuevo/$',
@@ -72,6 +85,36 @@ urlpatterns = [
     #     name='curso__eliminar'
     # ),
     url(
+        r'^asistentes/$',
+        views.AsistenteListView.as_view(),
+        name='asistentes'
+    ),
+    url(
+        r'^asistentes/pdf/$',
+        views.asistentes_pdf,
+        name='asistentes-pdf'
+    ),
+    url(
+        r'^asistentes/(?P<pk>\d+)/$',
+        views.AsistenteDetailView.as_view(),
+        name='asistente'
+    ),
+    url(
+        r'^asistentes/nuevo/$',
+        views.AsistenteCreateView.as_view(),
+        name='asistente__nuevo'
+    ),
+    url(
+        r'^asistentes/(?P<pk>\d+)/editar/$',
+        views.AsistenteUpdateView.as_view(),
+        name='asistente__editar'
+    ),
+    url(
+        r'^asistentes/(?P<pk>\d+)/eliminar/$',
+        views.AsistenteDeleteView.as_view(),
+        name='asistente__eliminar'
+    ),
+    url(
         r'^asignaturasbase/$',
         views.AsignaturaBaseListView.as_view(),
         name='asignaturasbase'
@@ -102,9 +145,14 @@ urlpatterns = [
         name='asignaturas'
     ),
     url(
-        r'^asignaturas/(?P<pk>\d+)/$',
+        r'^asignaturas/(?P<pk>\d+)/(?P<periodo_pk>\d+)/$',
         views.AsignaturaDetailView.as_view(),
         name='asignatura'
+    ),
+    url(
+        r'^asignaturas/(?P<pk>\d+)/limpiar/(?P<periodo_pk>\d+)/$',
+        views.asignatura_limpiar,
+        name='asignatura__limpiar'
     ),
     url(
         r'^periodos/(?P<pk>\d+)/nueva-asignatura/$',
@@ -112,7 +160,17 @@ urlpatterns = [
         name='asignatura__nuevo'
     ),
     url(
-        r'^asignaturas/(?P<pk>\d+)/editar/$',
+        r'^periodos/(?P<pk>\d+)/nueva-asignatura-dif/$',
+        views.asignatura_dif,
+        name='asignatura_dif__nuevo'
+    ),
+    url(
+        r'^periodos/(?P<pk>\d+)/nueva-asignatura-dif-merge/(?P<asignatura_pk>\d+)/$',
+        views.asignatura_dif_merge,
+        name='asignatura_dif_merge'
+    ),
+    url(
+        r'^asignaturas/(?P<pk>\d+)/editar/(?P<periodo_pk>\d+)/$',
         views.AsignaturaUpdateView.as_view(),
         name='asignatura__editar'
     ),
@@ -131,6 +189,11 @@ urlpatterns = [
         r'^periodos/(?P<pk>\d+)/$',
         views.PeriodoDetailView.as_view(),
         name='periodo'
+    ),
+    url(
+        r'^periodos/(?P<pk>\d+)/pdf/$',
+        views.periodo_pdf,
+        name='periodo-pdf'
     ),
     url(
         r'^periodos/nuevo/$',
@@ -194,14 +257,29 @@ urlpatterns = [
         name='plan__editar'
     ),
     url(
+        r'^planes/(?P<pk>\d+)/actualizar/$',
+        views.plan_refresh,
+        name='plan__actualizar'
+    ),
+    url(
         r'^planes/(?P<pk>\d+)/eliminar/$',
         views.PlanDeleteView.as_view(),
         name='plan__eliminar'
     ),
     url(
-        r'^asignaturas/(?P<pk>\d+)/asignar/$',
+        r'^asignaturas/(?P<pk>\d+)/asignar/(?P<periodo_pk>\d+)/$',
         views.asignar,
         name='asignar'
+    ),
+    url(
+        r'^profesores/(?P<pk>\d+)/fua/(?P<tipo>\d+)/$',
+        views.asignar_fua,
+        name='asignar-fua'
+    ),
+    url(
+        r'^profesores/(?P<pk>\d+)/no-aula-fua/(?P<tipo>\d+)/$',
+        views.asignar_no_aula_fua,
+        name='asignar-no-aula-fua'
     ),
     url(
         r'^asignaciones/(?P<pk>\d+)/editar/$',
@@ -209,7 +287,7 @@ urlpatterns = [
         name='asignacion__editar'
     ),
     url(
-        r'^asignaciones/(?P<pk>\d+)/eliminar/$',
+        r'^asignaciones/(?P<pk>\d+)/eliminar/(?P<profesor_pk>\d+)/$',
         views.AsignacionDeleteView.as_view(),
         name='asignacion__eliminar'
     ),
@@ -219,9 +297,29 @@ urlpatterns = [
         name='asignar-extra'
     ),
     url(
+        r'^profesores/(?P<profesor_pk>\d+)/asignaciones-extra/(?P<pk>\d+)/editar/$',
+        views.AsignacionExtraUpdateView.as_view(),
+        name='asignacion-extra__editar'
+    ),
+    url(
         r'^asignaciones-extra/(?P<pk>\d+)/eliminar/$',
         views.AsignacionExtraDeleteView.as_view(),
         name='asignacion-extra__eliminar'
+    ),
+    url(
+        r'^profesores/(?P<pk>\d+)/asignar-no-aula/$',
+        views.asignar_no_aula,
+        name='asignar-no-aula'
+    ),
+    url(
+        r'^profesores/(?P<profesor_pk>\d+)/asignaciones-no-aula/(?P<pk>\d+)/editar/$',
+        views.AsignacionNoAulaUpdateView.as_view(),
+        name='asignacion-no-aula__editar'
+    ),
+    url(
+        r'^asignaciones-no-aula/(?P<pk>\d+)/eliminar/$',
+        views.AsignacionNoAulaDeleteView.as_view(),
+        name='asignacion-no-aula__eliminar'
     ),
     url(
         r'^planes/plantila/$',

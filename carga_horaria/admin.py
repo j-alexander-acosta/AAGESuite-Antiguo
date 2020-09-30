@@ -9,6 +9,7 @@ from .models import Profesor
 from .models import Asignacion
 from .models import AsignacionExtra
 from .models import Especialidad
+from .models import Fundacion
 
 
 @admin.register(Plan)
@@ -19,6 +20,10 @@ class PlanAdmin(admin.ModelAdmin):
 #        'creado_en',
 #        'modificado_en'
     )
+
+@admin.register(Fundacion)
+class FundacionAdmin(admin.ModelAdmin):
+    list_display = ('nombre',)
 
 @admin.register(AsignaturaBase)
 class AsignaturaBaseAdmin(admin.ModelAdmin):

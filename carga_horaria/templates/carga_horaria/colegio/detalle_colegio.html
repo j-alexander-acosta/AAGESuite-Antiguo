@@ -18,10 +18,12 @@
                 </a>
                 <a href="{% url 'carga-horaria:colegio__editar' object.pk %}" type="button" class="btn btn-sm btn-primary">
                       <i class="fa fa-edit"></i>
-                  </a>
+                </a>
+                {% if request.user.is_superuser %}
                   <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_colegio_{{object.pk}}">
                       <i class="fa fa-trash"></i>
                   </a>
+                {% endif %}
 
             </div>
         {% endblock %}
@@ -48,12 +50,52 @@
                     <td>  {{ object.nombre }}  </td>
                 </tr>
                 <tr>
-                    <th> Fundacion </th>
-                    <td>  {{ object.fundacion.nombre }}  </td>
+                    <th> Abreviatura </th>
+                    <td>  {{ object.abrev }}  </td>
+                </tr>
+                <tr>
+                    <th> Dirección </th>
+                    <td>  {{ object.direccion|default:'' }}  </td>
+                </tr>
+                <tr>
+                    <th> Ciudad </th>
+                    <td>  {{ object.ciudad|default:'' }}  </td>
+                </tr>
+                <tr>
+                    <th> Comuna </th>
+                    <td>  {{ object.comuna|default:'' }}  </td>
+                </tr>
+                <tr>
+                    <th> Teléfono </th>
+                    <td>  {{ object.telefono|default:'' }}  </td>
+                </tr>
+                <tr>
+                    <th> RBD </th>
+                    <td>  {{ object.rbd|default:'' }}  </td>
                 </tr>
                 <tr>
                     <th> JEC </th>
                     <td>  {{ object.jec|yesno }}  </td>
+                </tr>
+                <tr>
+                    <th> PIE </th>
+                    <td>  {{ object.pie|yesno }}  </td>
+                </tr>
+                <tr>
+                    <th> Sitio web oficial </th>
+                    <td>  {{ object.web|default:'Ninguno' }}  </td>
+                </tr>
+                <tr>
+                    <th> Fundacion </th>
+                    <td>  {{ object.fundacion.nombre }}  </td>
+                </tr>
+                <tr>
+                    <th> Tipo de financiamiento </th>
+                    <td>  {{ object.get_financiamiento_display }}  </td>
+                </tr>
+                <tr>
+                    <th> Porcentaje de alumnos prioritarios </th>
+                    <td>  {{ object.prioritarios }}%  </td>
                 </tr>
                 </tbody>
             </table>

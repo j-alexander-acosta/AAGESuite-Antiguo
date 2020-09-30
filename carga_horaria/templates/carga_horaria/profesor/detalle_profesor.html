@@ -1,6 +1,6 @@
 {% extends 'base/base.html' %}
 {% load staticfiles %}
-
+{% load carga_filters %}
 {% block title_page %}
     Profesor - Detalle
 {% endblock %}
@@ -9,7 +9,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title"><strong> {{ object.nombre }}
+      <h4 class="card-title"><strong> {{ object.nombre }}</strong>
           {% block buttons %}
               <div class="btn-group pull-right">
                   <a href="{% url 'carga-horaria:profesores' %}" type="button" class="btn btn-sm btn-dark">
@@ -23,8 +23,44 @@
                   </a>
               </div>
           {% endblock %}
-        </h4>
-        <h6 class="card-subtitle mb-2 text-muted">Detalle del profesor</h6>
+      </h4>{% if object.periodo_set.count %}<p class="text-muted text-xs">Profesor Jefe de {{ object.periodo_set.first }}</p>{% endif %}
+      	<div class="progress pull-right" style="width: 50%;">
+	  <div class="progress-bar progress-bar-striped progress-bar-animated" style="width:{{ object.completion_percentage }}%;">
+	    <strong>{{ object.get_progress_display }}</strong>
+	  </div>
+	</div>
+
+      <h6 class="card-subtitle mb-2">Título: <strong>{{ profesor.especialidad|default:"Ninguna" }}</strong> | Horas contrato total: <strong>{{ profesor.horas_contratadas|decimal_maybe }}</strong></h6>
+      <br>
+      <h6 class="card-subtitle mb-2">
+        <table class="table table-sm">
+          <tbody>
+            <tr>
+              <td>Hrs. Jornada semanal: <strong>{{ object.horas|decimal_maybe }}</strong></td>
+              <Td>Hrs. Aula: <strong>{{ object.horas_docentes|decimal_maybe }}</strong></td>
+              <td>Hrs. Lectivas: <strong>{{ object.horas_lectivas|hhmm }}</strong></td>
+              <td class="text-primary">Recreo: <strong>{{ object.horas_recreo|hhmm }}</strong></td>
+              <td>Hrs. No lectivas: <strong>{{ object.horas_no_lectivas|hhmm }}</strong></td>
+            </tr>
+            <tr>
+              <td>Hrs. Otras funciones: <strong>{{ object.horas_no_aula|hhmm }}</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </h6>
+
+      <!--
+      <div class="btn-group pull-right">
+        <table class="table table-sm">
+          <tbody>
+            <tr>
+              <td>Horas contratadas</td>
+              <td>{{ object.horas }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      -->
 
     </div>
     <div class="card-body">
@@ -34,24 +70,88 @@
 		    <table class="table table-hover table-sm">
                 <thead>
                 <tr>
-                    <th colspan="3" class="table-info">
+                    <th colspan="4" class="table-info">
                 <span>
                     <i class="fa fa-info-circle"></i>
-		    Asignaciones Plan de Estudio
+		    Asignaciones Aula Plan de Estudio (45 minutos)
                 </span>
                     </th>
                 </tr>
 		<tr>
 		  <th>Asignatura</th>
+		  <th>Cursos</th>
 		  <th>Horas</th>
 		  <th>Acciones</th>
 		</tr>
                 </thead>
                 <tbody>
-		    {% for ax in object.asignacion_set.all %}
+		    {% for ax in object.asignacion_set.all.plan.sorted %}
                     <tr>
                       <td> {{ ax.asignatura }} </td>
-                      <td> {{ ax.horas }} </td>
+                      <td>{% for periodo in ax.asignatura.periodos.all %}<a href="{{ periodo.get_absolute_url }}">{{ periodo }}</a> {% endfor %}</td>
+                      <td> {{ ax.horas|decimal_maybe }} </td>
+		      <td>
+                        <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignacion__editar' ax.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
+                        <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_{{ax.pk}}"><i class="fa fa-trash"></i></a>
+			
+		      </td>
+                    </tr>
+		    <div class="modal" tabindex="-1" role="dialog" id="eliminar_asignacion_{{ax.pk}}">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar una asignación</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <p>¿Está seguro que desea eliminar {{ ax.horas|decimal_maybe }} horas de {{ ax.asignatura }} para {{ ax.profesor }}?.</p>
+                            <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta asignación.</p>
+                          </div>
+                          <div class="modal-footer">
+                            <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:asignacion__eliminar' ax.pk ax.profesor.pk %}">Eliminar</a>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                          </div>
+                        </div>
+                      </div>    
+                    </div>
+		    {% endfor %}
+                    <tr>
+                      <td colspan="2" align="right"><strong>Total</strong></td>
+                      <td colspan="2" align="left"><strong>{{ object.horas_asignadas_plan|decimal_maybe }}</strong></td>
+                    </tr>
+
+
+                    <!-- segunda tabla -->
+                {% if object.colegio.sep %}
+                <tr>
+                    <th colspan="4" class="table-info">
+                <span>
+                    <i class="fa fa-info-circle"></i>
+		    Asignaciones Aula SEP (45 minutos)
+                </span>
+
+		{% if object.horas_disponibles > 0 %}
+		<a class="btn btn-sm btn-primary float-right" href="{% url 'carga-horaria:asignar-fua' object.pk 2 %}" role="button">
+                  <i class="fa fa-plus"></i>
+		</a>
+		{% endif %}
+
+                    </th>
+                </tr>
+		<tr>
+		  <th>Descripción</th>
+		  <th>Curso</th>
+		  <th>Horas</th>
+		  <th>Acciones</th>
+		</tr>
+
+		    {% for ax in object.asignacion_set.all.sep %}
+                    <tr>
+                      <td> {{ ax.descripcion }} </td>
+                      <td> {{ ax.curso|default:"Todos" }} </td>
+                      <td> {{ ax.horas|decimal_maybe }} </td>
 		      <td>
                         <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignacion__editar' ax.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
                         <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_{{ax.pk}}"><i class="fa fa-trash"></i></a>
@@ -68,11 +168,131 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <p>¿Está seguro que desea eliminar {{ ax.horas }} horas de {{ ax.asignatura }} para {{ ax.profesor }}?.</p>
+                                <p>¿Está seguro que desea eliminar {{ ax.horas|decimal_maybe }} horas de {{ ax.descripcion }} para {{ ax.profesor }}?.</p>
                                 <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta asignación.</p>
                             </div>
                             <div class="modal-footer">
-                                <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:asignacion__eliminar' ax.pk %}">Eliminar</a>
+                                <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:asignacion__eliminar' ax.pk profesor.pk %}">Eliminar</a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+		    {% endfor %}
+                    {% endif %}
+
+
+
+                    <!-- tercera tabla -->
+                {% if object.colegio.pie %}
+                <tr>
+                    <th colspan="4" class="table-info">
+                <span>
+                    <i class="fa fa-info-circle"></i>
+		    Asignaciones Aula PIE (45 minutos)
+                </span>
+
+		{% if object.horas_disponibles > 0 %}
+		<a class="btn btn-sm btn-primary float-right" href="{% url 'carga-horaria:asignar-fua' object.pk 3 %}" role="button">
+                  <i class="fa fa-plus"></i>
+		</a>
+		{% endif %}
+
+                    </th>
+                </tr>
+		<tr>
+		  <th>Descripción</th>
+		  <th>Curso</th>
+		  <th>Horas</th>
+		  <th>Acciones</th>
+		</tr>
+
+		    {% for ax in object.asignacion_set.all.pie %}
+                    <tr>
+                      <td> {{ ax.descripcion }} </td>
+                      <td> {{ ax.curso|default:"Todos" }} </td>
+                      <td> {{ ax.horas|decimal_maybe }} </td>
+		      <td>
+                        <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignacion__editar' ax.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
+                        <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_{{ax.pk}}"><i class="fa fa-trash"></i></a>
+			
+		      </td>
+                    </tr>
+		    <div class="modal" tabindex="-1" role="dialog" id="eliminar_asignacion_{{ax.pk}}">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar una asignación</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>¿Está seguro que desea eliminar {{ ax.horas|decimal_maybe }} horas de {{ ax.descripcion }} para {{ ax.profesor }}?.</p>
+                                <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta asignación.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:asignacion__eliminar' ax.pk profesor.pk %}">Eliminar</a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+		    {% endfor %}
+
+                                                    {% endif %}
+
+
+                <!-- cuarta tabla -->
+                <tr>
+                    <th colspan="4" class="table-info">
+                <span>
+                    <i class="fa fa-info-circle"></i>
+		    Asignaciones Aula Sostenedor (45 minutos)
+                </span>
+
+		{% if object.horas_disponibles > 0 %}
+		<a class="btn btn-sm btn-primary float-right" href="{% url 'carga-horaria:asignar-fua' object.pk 4 %}" role="button">
+                  <i class="fa fa-plus"></i>
+		</a>
+		{% endif %}
+
+
+                    </th>
+                </tr>
+		<tr>
+		  <th>Descripción</th>
+		  <th>Curso</th>
+		  <th>Horas</th>
+		  <th>Acciones</th>
+		</tr>
+
+		    {% for ax in object.asignacion_set.all.sostenedor %}
+                    <tr>
+                      <td> {{ ax.descripcion }} </td>
+                      <td> {{ ax.curso|default:"Todos" }} </td>
+                      <td> {{ ax.horas|decimal_maybe }} </td>
+		      <td>
+                        <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignacion__editar' ax.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
+                        <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_{{ax.pk}}"><i class="fa fa-trash"></i></a>
+			
+		      </td>
+                    </tr>
+		    <div class="modal" tabindex="-1" role="dialog" id="eliminar_asignacion_{{ax.pk}}">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar una asignación</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>¿Está seguro que desea eliminar {{ ax.horas|decimal_maybe }} horas de {{ ax.descripcion }} para {{ ax.profesor }}?.</p>
+                                <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta asignación.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:asignacion__eliminar' ax.pk profesor.pk %}">Eliminar</a>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
@@ -80,7 +300,9 @@
                 </div>
 		    {% endfor %}
                 </tbody>
-            </table>
+				    </table>
+
+
         </div>
         <div class="col-md-6">
             <table class="table table-hover table-sm">
@@ -89,7 +311,7 @@
                     <th colspan="4" class="table-info">
                 <span>
                     <i class="fa fa-info-circle"></i>
-		    Asignaciones No Lectivas 
+		    Asignaciones No Lectivas (60 minutos)
                 </span>
 
 		{% if object.horas_no_lectivas_disponibles > 0 %}
@@ -108,12 +330,20 @@
 		</tr>
                 </thead>
                 <tbody>
+                    <tr>
+                      <td>Planificación</td>
+                      <td>Todos</td>
+                      <td>{{ object.horas_planificacion|hhmm }}</td>
+		      <td>
+		      </td>
+                    </tr>
 		    {% for ax in object.asignacionextra_set.all %}
                     <tr>
                       <td> {{ ax.descripcion }} </td>
                       <td> {{ ax.curso|default:"Todos" }} </td>
-                      <td> {{ ax.horas }} </td>
+                      <td> {{ ax.horas|hhmm }} </td>
 		      <td>
+                        <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignacion-extra__editar' profesor_pk=object.pk pk=ax.pk %}"><i class="fa fa-edit"></i></a>
                         <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_extra_{{ax.pk}}"><i class="fa fa-trash"></i></a>
 			
 		      </td>
@@ -139,70 +369,216 @@
                     </div>    
                 </div>
 		    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-		</div>
-
-
-		<div class="row">
-		  <div class="col-md-6">
-		  </div>
-        <div class="col-md-6">
-            <table class="table table-hover table-sm">
-                <thead>
+                    <!-- segunda tabla -->
                 <tr>
-                    <th colspan="2" class="table-info">
+                    <th colspan="4" class="table-warning">
                 <span>
                     <i class="fa fa-info-circle"></i>
-                     Descripción
+		    Asignaciones No Aula (60 minutos)
+                </span>
+
+		{% if object.horas_no_aula_disponibles > 0 %}
+		<a class="btn btn-sm btn-primary float-right" href="{% url 'carga-horaria:asignar-no-aula' object.pk %}" role="button">
+                  <i class="fa fa-plus"></i>
+		</a>
+		{% endif %}
+
+                    </th>
+                </tr>
+		<tr>
+		  <th>Descripción</th>
+		  <th>Curso</th>
+		  <th>Horas</th>
+		  <th>Acciones</th>
+		</tr>
+		    {% for ax in object.asignacionnoaula_set.all.ordinaria %}
+                    <tr>
+                      <td> {{ ax.descripcion }} </td>
+                      <td> {{ ax.curso|default:"Todos" }} </td>
+                      <td> {{ ax.horas|hhmm }} </td>
+		      <td>
+                        <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignacion-no-aula__editar' profesor_pk=object.pk pk=ax.pk %}"><i class="fa fa-edit"></i></a>
+                        <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_no_aula_{{ax.pk}}"><i class="fa fa-trash"></i></a>
+			
+		      </td>
+                    </tr>
+		    <div class="modal" tabindex="-1" role="dialog" id="eliminar_asignacion_no_aula_{{ax.pk}}">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar una asignación no aula</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>¿Está seguro que desea eliminar esta asignación no aula?.</p>
+                                <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta asignación.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:asignacion-no-aula__eliminar' ax.pk %}">Eliminar</a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+		    {% endfor %}
+
+                    <!-- tercera tabla -->
+
+            {% if object.colegio.sep %}
+                <tr>
+                    <th colspan="4" class="table-warning">
+                <span>
+                    <i class="fa fa-info-circle"></i>
+		    Asignaciones No Aula SEP (60 minutos)
+                </span>
+
+		{% if object.horas_no_aula_disponibles > 0 %}
+		<a class="btn btn-sm btn-primary float-right" href="{% url 'carga-horaria:asignar-no-aula-fua' object.pk 2 %}" role="button">
+                  <i class="fa fa-plus"></i>
+		</a>
+		{% endif %}
+
+                    </th>
+                </tr>
+		<tr>
+		  <th>Descripción</th>
+		  <th>Curso</th>
+		  <th>Horas</th>
+		  <th>Acciones</th>
+		</tr>
+		    {% for ax in object.asignacionnoaula_set.all.sep %}
+                    <tr>
+                      <td> {{ ax.descripcion }} </td>
+                      <td> {{ ax.curso|default:"Todos" }} </td>
+                      <td> {{ ax.horas|hhmm }} </td>
+		      <td>
+                        <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignacion-no-aula__editar' profesor_pk=object.pk pk=ax.pk %}"><i class="fa fa-edit"></i></a>
+                        <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_no_aula_{{ax.pk}}"><i class="fa fa-trash"></i></a>
+			
+		      </td>
+                    </tr>
+		    <div class="modal" tabindex="-1" role="dialog" id="eliminar_asignacion_no_aula_{{ax.pk}}">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar una asignación no aula</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>¿Está seguro que desea eliminar esta asignación no aula?.</p>
+                                <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta asignación.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:asignacion-no-aula__eliminar' ax.pk %}">Eliminar</a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+		    {% endfor %}
+{% endif %}
+
+                    <!-- cuarta tabla -->
+            {% if object.colegio.pie %}
+                <tr>
+                    <th colspan="4" class="table-warning">
+                <span>
+                    <i class="fa fa-info-circle"></i>
+		    Asignaciones No Aula PIE (60 minutos)
+                </span>
+
+		{% if object.horas_no_aula_disponibles > 0 %}
+		<a class="btn btn-sm btn-primary float-right" href="{% url 'carga-horaria:asignar-no-aula-fua' object.pk 3 %}" role="button">
+                  <i class="fa fa-plus"></i>
+		</a>
+		{% endif %}
+
+                    </th>
+                </tr>
+		<tr>
+		  <th>Descripción</th>
+		  <th>Curso</th>
+		  <th>Horas</th>
+		  <th>Acciones</th>
+		</tr>
+                    
+		    {% for ax in object.asignacionnoaula_set.all.pie %}
+                    <tr>
+                      <td> {{ ax.descripcion }} </td>
+                      <td> {{ ax.curso|default:"Todos" }} </td>
+                      <td> {{ ax.horas|hhmm }} </td>
+		      <td>
+                        <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignacion-no-aula__editar' profesor_pk=object.pk pk=ax.pk %}"><i class="fa fa-edit"></i></a>
+                        <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_no_aula_{{ax.pk}}"><i class="fa fa-trash"></i></a>
+			
+		      </td>
+                    </tr>
+		    <div class="modal" tabindex="-1" role="dialog" id="eliminar_asignacion_no_aula_{{ax.pk}}">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar una asignación no aula</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>¿Está seguro que desea eliminar esta asignación no aula?.</p>
+                                <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta asignación.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:asignacion-no-aula__eliminar' ax.pk %}">Eliminar</a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+		    {% endfor %}
+ {% endif %}
+
+                </tbody>
+            </table>
+
+
+            <table class="table table-hover table-sm table-striped">
+                <thead>
+                <tr>
+                    <th colspan="2" class="table-success">
+                <span>
+                    <i class="fa fa-info-circle"></i>
+                     Resumen Horas
                 </span>
                     </th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
-                    <th> Nombre </th>
-                    <td>  {{ object.nombre }}  </td>
-                </tr>
-                <tr>
-                    <th> Especialidad </th>
-                    <td>  {{ object.especialidad|default:"Ninguna" }}  </td>
-                </tr>
-                <tr>
-                    <th> Horas contratadas </th>
-                    <td> {{ object.horas }}  </td>
-                </tr>
-                <tr>
-                    <th> Horas docentes </th>
-                    <td> {{ object.horas_docentes }}  </td>
-                </tr>
-                <tr>
-                    <th> Horas lectivas </th>
-                    <td> {{ object.horas_lectivas }}  </td>
-                </tr>
-                <tr>
-                    <th> Horas recreo </th>
-                    <td> {{ object.horas_recreo }}  </td>
-                </tr>                <tr>
-                    <th> Horas no lectivas </th>
-                    <td> {{ object.horas_no_lectivas }}  </td>
-                </tr>
-                <tr>
                     <th> Horas docentes asignadas </th>
-                    <td> {{ object.horas_asignadas }}  </td>
+                    <td> {{ object.horas_asignadas|decimal_maybe }}  </td>
                 </tr>
                 <tr>
                     <th> Horas docentes disponibles </th>
-                    <td> {{ object.horas_disponibles }}  </td>
+                    <td> {{ object.horas_disponibles|decimal_maybe }}  </td>
                 </tr>
                 <tr>
                     <th> Horas no lectivas asignadas </th>
-                    <td> {{ object.horas_no_lectivas_asignadas }}  </td>
+                    <td> {{ object.horas_no_lectivas_asignadas|hhmm }}  </td>
                 </tr>
                 <tr>
                     <th> Horas no lectivas disponibles </th>
-                    <td> {{ object.horas_no_lectivas_disponibles }}  </td>
+                    <td> {{ object.horas_no_lectivas_disponibles|hhmm }}  </td>
+                </tr>
+                <tr>
+                    <th> Horas contratadas no aula asignadas </th>
+                    <td> {{ object.horas_no_aula_asignadas|hhmm }}  </td>
+                </tr>
+                <tr>
+                    <th> Horas contratadas no aula disponibles </th>
+                    <td> {{ object.horas_no_aula_disponibles|hhmm }}  </td>
                 </tr>
                 <!--
                 <tr>
@@ -217,7 +593,14 @@
                 -->
                 </tbody>
             </table>
+
         </div>
+		</div>
+
+
+		<div class="row">
+		  <div class="col-md-6">
+		  </div>
 	</div>
 
     </div>

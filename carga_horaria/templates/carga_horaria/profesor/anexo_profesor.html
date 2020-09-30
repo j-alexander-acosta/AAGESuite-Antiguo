@@ -1,0 +1,152 @@
+{% load inline_static_tags %}
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <style type="text/css">
+      {% inline_style 'base/css/bootstrap.min.css' %}
+      
+      @media print {
+	  body{
+              width: 21cm;
+              height: 29.7cm;
+              margin: 15mm 45mm 30mm 30mm; 
+	  } 
+      }
+    </style>
+    <title>Anexo 1</title>
+  </head>
+  <body>
+    <h1>ANEXO N°1</h1>
+    <h2>Carga Horaria para {{ profesor }} Año 2020</h2>
+
+    <br>
+    
+    <table class="table table-small">
+      <thead>
+      </thead>
+      <tbody>
+	<tr>
+	  <td>Horas de contrato</td>
+	  <td>{{ profesor.horas }}</td>
+	</tr>
+	<tr>
+	  <td>Horas de docencia</td>
+	  <td>{{ profesor.horas_docentes }}</td>
+	</tr>
+	<tr>
+	  <td>Horas curriculares</td>
+	  <td>{{ profesor.horas_no_lectivas }}</td>
+	</tr>
+	<tr>
+	  <td>Recreo</td>
+	  <td>{{ profesor.horas_recreo }}</td>
+	</tr>
+      </tbody>
+    </table>
+
+    <h3>Docencia de Aula 65%</h3>
+
+    <table class="table table-small">
+      <thead>
+	<tr>
+	  <th>N°</th>
+	  <th>Asignatura</th>
+	  <th>Curso</th>
+	  <th style="width: 1cm;">Horas pedagógicas</th>
+	  <th style="width: 1cm;">Horas cronológicas</th>
+	</tr>
+      </thead>
+      <tbody>
+	{% for a in asignaciones %}
+	<tr>
+	  <td>{{ forloop.counter }}</td>
+	  <td>{{ a.asignatura|default:"" }}{{ a.descripcion|default:"" }}</td>
+	  <td>{{ a.curso|default:"" }}</td>
+	  <td>{{ a.horas }}</td>
+	  <td>{{ a.horas_crono }}</td>
+	</tr>
+        {% endfor %}
+	<tr>
+	  <td colspan="3" style="text-align: center;">
+	    Total de horas pedagógicas
+	  </td>
+	  <td>{{ profesor.horas_asignadas }}</td>
+	</tr>
+	<tr>
+	  <td colspan="3" style="text-align: center;">
+	    Máximo de horas pedagógicas a realizar ley 20.203
+	  </td>
+	  <td>{{ profesor.horas_docentes }}</td>
+	</tr>
+	<tr>
+	  <td colspan="4" style="text-align: center;">
+	    <strong>Total de horas cronológicas, 70%</strong>
+	  </td>
+	  <td>{{ profesor.horas_asignadas_crono }}</td>
+	</tr>
+      </tbody>
+    </table>
+
+
+    <h3>Actividades curriculares no lectivas 35%</h3>
+
+    <table class="table table-small">
+      <thead>
+	<tr>
+	  <th>N°</th>
+	  <th>Asignatura</th>
+	  <th>Curso</th>
+	  <th style="width: 1cm;">Horas cronológicas</th>
+	</tr>
+      </thead>
+      <tbody>
+	{% for a in asignaciones_extra %}
+	<tr>
+	  <td>{{ forloop.counter }}</td>
+	  <td>{{ a.descripcion }}</td>
+	  <td>{{ a.curso|default:"" }}</td>
+	  <td>{{ a.horas }}</td>
+	</tr>
+        {% endfor %}
+	<tr>
+	  <td colspan="3" style="text-align: center;">
+	    Horas no lectivas asignadas
+	  </td>
+	  <td>{{ profesor.horas_no_lectivas_asignadas_anexo }}</td>
+	</tr>
+	<tr>
+	  <td colspan="3" style="text-align: center;">
+	    Total de horas no lectivas según ley 20.203
+	  </td>
+	  <td>{{ profesor.horas_no_lectivas_anexo }}</td>
+	</tr>
+	<tr>
+	  <td colspan="3" style="text-align: center;">
+	    <strong>Total de horas cronológicas, 30%</strong>
+	  </td>
+	  <td>{{ profesor.horas_no_lectivas_asignadas_anexo }}</td>
+	</tr>
+	<tr><td colspan="4"></td></tr>
+	<tr>
+	  <td colspan="3" style="text-align: center;">
+	    <strong>Total de horas cronológicas, 100%</strong>
+	  </td>
+	  <td><strong>{{ profesor.horas_asignadas_total_crono }}</strong></td>
+	</tr>
+      </tbody>
+    </table>
+
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <table class="table">
+      <tr>
+	<td>Firma trabajador</td>
+	<td>Firma empleador</td>
+      </tr>
+    </table>
+  </body>
+</html>

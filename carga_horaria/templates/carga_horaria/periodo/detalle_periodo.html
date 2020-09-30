@@ -1,5 +1,6 @@
 {% extends 'base/base.html' %}
 {% load staticfiles %}
+{% load carga_filters %}
 
 {% block title_page %}
     Curso - Detalle
@@ -10,6 +11,10 @@
 <div class="card">
     <div class="card-header">
       <h4 class="card-title">Curso: <strong> {{ object }} </strong>
+        {% if object.profesor_jefe %}
+        <h6 class="card-subtitle mb-2">        <strong>Profesor Jefe: </strong>{{ object.profesor_jefe }}
+</h6>
+        {% endif %}
         
         {% block buttons %}
             <div class="btn-group pull-right">
@@ -35,6 +40,9 @@
         <div class="card-body">
         <div class="row">
         <div class="col-md-12">
+      <div class="pull-right" style="padding-bottom: 10px;">
+        <a class="btn btn-sm btn-default" href="{% url 'carga-horaria:periodo-pdf' pk=object.pk %}"><i class="fa fa-print"></i> Imprimir</a>
+      </div>
             <table class="table table-hover table-sm">
                 <thead>
                 <tr>
@@ -44,12 +52,21 @@
 		    Asignaturas
                 </span>
 
-		<a class="btn btn-sm btn-warning float-right" href="{% url 'carga-horaria:asignatura__nuevo' object.pk %}" role="button">
+		<a class="btn btn-sm btn-warning float-right" style="margin-left: 20px;" href="{% url 'carga-horaria:asignatura__nuevo' object.pk %}" role="button">
 		  <span>
 		    Crear Asignatura
                     <i class="fa fa-plus"></i>
 		  </span>
 		</a>
+
+                {% if object.can_dif %}
+		<a class="btn btn-sm btn-info float-right" href="{% url 'carga-horaria:asignatura_dif__nuevo' object.pk %}" role="button">
+		  <span>
+		    Crear Asignatura Plan Diferenciado
+                    <i class="fa fa-plus"></i>
+		  </span>
+		</a>
+                {% endif %}
 
                     </th>
                 </tr>
@@ -63,45 +80,72 @@
 		</tr>
                 </thead>
                 <tbody>
-		  {% for a in object.asignatura_set.all %}
-                <tr{% if a.horas_disponibles == 0 %} class="table-success"{% else %} class="table-warning"{% endif %}>
-                  <td>  <a href="{% url 'carga-horaria:asignatura' a.pk %}">{{ a }} </a> </td>
-                    <td>  {{ a.horas }}  </td>
-                    <td>  {{ a.horas_asignadas }}  </td>
-                    <td>  {{ a.horas_disponibles }}  </td>
-                    <td>  {% for p in a.profesores %}<a href="{% url 'carga-horaria:profesor' p.pk %}">{{ p }} ({{ p.horas_disponibles }}) </a>{% endfor %}  </td>
-                  <td>  {% if not a.completa %}<a href="{% url 'carga-horaria:asignar' a.pk %}">Asignar</a>{% if not a.base %} | {% endif %}{% endif %}{% if not a.base %}<a class="btn btn-sm btn-danger" href="{% url 'carga-horaria:asignatura__eliminar' a.pk %}?periodo={{ object.pk }}" onclick="return confirm('¿Está seguro de eliminar {{ a }}?')">
+		  {% for a in object.asignatura_set.all.base %}
+                  <tr{% if a.horas_disponibles == 0 %} class="table-success"{% else %} class="table-warning"{% endif %}>
+                  <td>  <a href="{% url 'carga-horaria:asignatura' a.pk object.pk %}">{{ a }} </a> </td>
+                    <td>  {{ a.get_horas_display }}  </td>
+                    <td>  {{ a.horas_asignadas|decimal_maybe }}  </td>
+                    <td>  {{ a.horas_disponibles|decimal_maybe }}  </td>
+                    <td>  {% for p in a.profesores %}<a href="{% url 'carga-horaria:profesor' p.pk %}">{{ p }} ({{ p.horas_disponibles|decimal_maybe }}) </a>{% endfor %}  </td>
+                  <td>  {% if not a.completa %}<a href="{% url 'carga-horaria:asignar' a.pk object.pk %}">Asignar</a>{% if not a.base %} | {% endif %}{% endif %}
+
+                    {% if a.asignacion_set.count %}<a class="btn btn-sm btn-warning" href="{% url 'carga-horaria:asignatura__limpiar' a.pk object.pk %}">
+                      <i class="fa fa-close"></i>
+                    </a>{% endif %}
+                    
+                    {% if not a.base %}<a class="btn btn-sm btn-danger" href="{% url 'carga-horaria:asignatura__eliminar' a.pk %}?periodo={{ object.pk }}" onclick="return confirm('¿Está seguro de eliminar {{ a }}?')">
                       <i class="fa fa-trash"></i>
                     </a>{% endif %}
 		  </td>
-                </tr>
+                  </tr>
 		{% endfor %}
-		  <tr>
+                {% for a in object.asignatura_set.all.custom %}
+                  <tr{% if a.horas_disponibles == 0 %} class="table-success"{% else %} style="background-color: #ffbfb878;"{% endif %}>
+                  <td>  <a href="{% url 'carga-horaria:asignatura' a.pk object.pk %}">{{ a }} </a> </td>
+                    <td>  {{ a.horas|decimal_maybe }}  </td>
+                    <td>  {{ a.horas_asignadas|decimal_maybe }}  </td>
+                    <td>  {{ a.horas_disponibles|decimal_maybe }}  </td>
+                    <td>  {% for p in a.profesores %}<a href="{% url 'carga-horaria:profesor' p.pk %}">{{ p }} ({{ p.horas_disponibles|decimal_maybe }}) </a>{% endfor %}  </td>
+                  <td>  {% if not a.completa %}<a href="{% url 'carga-horaria:asignar' a.pk object.pk %}">Asignar</a>{% if not a.base %} | {% endif %}{% endif %}{% if not a.base %}<a class="btn btn-sm btn-danger" href="{% url 'carga-horaria:asignatura__eliminar' a.pk %}?periodo={{ object.pk }}" onclick="return confirm('¿Está seguro de eliminar {{ a }}?')">
+                      <i class="fa fa-trash"></i>
+                    </a>{% endif %}
+		  </td>
+                  </tr>
+		{% endfor %}		  <tr>
 		    <td colspan="3">
 		    <td colspan="2">Subtotal tiempo mínimo</td>
-		    <td>{{ object.floor }}</td>
+		    <td>{{ object.floor|decimal_maybe }}</td>
 		  </tr>
+                  {% if object.horas %}
 		  <tr>
 		    <td colspan="3">
 		    <td colspan="2">Horas de libre disposición</td>
-		    <td>{{ object.horas }}</td>
+		    <td style="color: #f00;">{{ object.used_ld_hours|decimal_maybe }} / {{ object.horas|decimal_maybe }}</td>
 		  </tr>
+                  {% endif %}
 		  {% if object.horas_dif > 0 %}
 		  <tr>
 		    <td colspan="3">
 		    <td colspan="2">Horas Educación Diferenciada</td>
-		    <td>{{ object.horas_dif }}</td>
+		    <td>{{ object.horas_dif|decimal_maybe }}</td>
 		  </tr>
 		  {% endif %}
+                  {% if object.horas_adicionales %}
+		  <tr>
+		    <td colspan="3">
+		    <td colspan="2">Horas adicionales</td>
+		    <td style="color: #f00;">{{ object.used_additional_hours|decimal_maybe }} / {{ object.horas_adicionales|decimal_maybe }}</td>
+		  </tr>
+                  {% endif %}
 		  <tr>
 		    <td colspan="3">
 		    <td colspan="2">Total tiempo mínimo</td>
-		    <td>{{ object.ceiling }}</td>
+		    <td>{{ object.ceiling|decimal_maybe }}</td>
 		  </tr>
 		  <tr>
 		    <td colspan="3">
 		    <td colspan="2">Total actual</td>
-		    <td>{{ object.capacity }}</td>
+		    <td>{{ object.progress|decimal_maybe }}</td>
 		  </tr>
                 </tbody>
             </table>

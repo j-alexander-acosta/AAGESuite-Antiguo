@@ -1,0 +1,87 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Asistente
+        </h4>
+        <h6 class="card-subtitle mb-2 text-muted">Datos del asistente</h6>
+    </div>
+    <div class="card-body">
+
+        <form class="form-horizontal" method="post">
+            {% csrf_token %}
+            {% crispy form %}
+            <div class="form-group">
+                <div class="col-sm-10 col-sm-offset-2">
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <a {% if object %}
+                        href="{% url 'carga-horaria:asistente' object.pk %}"
+                    {% else %}
+                        href="{% url 'carga-horaria:asistentes' %}"
+                    {% endif %}
+                    role="button" class="btn btn-default">
+                        Volver
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $( function() {
+    var availableTags = [
+        "Asesoría legal ",
+        "Asistente administrativo ",
+        "Asistente diferencial ",
+        "Asistente social ",
+        "Asistente/ Técnico párvulos",
+        "Auxiliar de aseo",
+        "Auxiliar de servicio menores ",
+        "Bibliotecario/a Encargado CRA",
+        "Chofer",
+        "Contador/a",
+        "Cuidado del establecimiento ",
+        "Ecónomo /a",
+        "Educador tradicional ",
+        "Encargado Impresiones ",
+        "Encargado Laboratorio",
+        "Encargado de FICOM ",
+        "Encargado de adquisiciones ",
+        "Encargado de inventario ",
+        "Encargado de mantención ",
+        "Encargado nutrición",
+        "Enfermera/o",
+        "Fonoaudiólogo/a",
+        "Inspector/a",
+        "Jardinero",
+        "Junior ",
+        "Kinesiologo/a",
+        "Manipulador/a de alimentos ",
+        "Monitor/a Taller",
+        "Nochero ",
+        "Operario ",
+        "Paramédico",
+        "Pañolero",
+        "Psicopedagogo/a",
+        "Psicólogo /a",
+        "Recepcionista",
+        "Secretaria/o",
+        "Soporte informático ",
+        "Terapeuta ocupacional",
+    ];
+    $( "#id_funcion" ).autocomplete({
+      source: availableTags
+    });
+  } );
+</script>
+{% endblock %}

@@ -1,3 +1,6 @@
+recursive-include templates *
+recursive-include base *
+recursive-include carga_horaria *
 recursive-include carga/locale *
 recursive-include schedules *
 recursive-exclude * __pycache__

@@ -209,6 +209,18 @@ let
     doCheck = false;
   };
 
+  django-inline-static = with pkgs.python3Packages; buildPythonPackage rec {
+    name = "django-inline-static-${version}";
+    version = "0.1.0";
+    src = pkgs.fetchurl {
+    	url = "https://files.pythonhosted.org/packages/80/a2/deae217eaaa0396c375db0dd40e67df1c6379ba77fa156b81c6a57368e18/django-inline-static-0.1.0.tar.gz";
+	    sha512 = "0cd0a3lrz6qh7acy695ikxnw9v97707vjk5vc71vh0i74lflp966qgv6j0k81nx9dwf1vmdw284lxvik7pv19p65wy7kznn78crv3md";
+    };
+    buildInputs = [ django_1_11 ];
+    #propagatedBuildInputs = [ future pynliner ];
+    doCheck = false;
+  };
+  
 in
 { stdenv ? pkgs.stdenv }:
 
@@ -232,6 +244,8 @@ pkgs.python3Packages.buildPythonApplication {
     python3Packages.unidecode
     python3Packages.django_compressor
     python3Packages.django_guardian
+    python3Packages.sentry-sdk
+    django-inline-static
     django-jsonview
     django-qr-code
     django-crispy-forms

@@ -2,20 +2,6 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: #203c53">
     <a class="navbar-brand" href="#">
         <img src="{% static 'base/img/logotipo.png' %}" height="45" alt="">
-        {% if request.user.usuariofuncion.es_dirplac_or_admin %}
-            Administrador
-        {% elif request.user.usuariofuncion.es_departamental and request.user.fundacion_set.all.count == 1 %}
-            {{ request.user.fundacion_set.all.first.nombre }}
-        {% elif request.user.usuariofuncion.es_departamental and request.user.fundacion_set.all.count > 1 %}
-            Departamental SEA
-        {% elif request.user.usuariofuncion.es_supervisor %}
-            Supervisor Agencia de Calidad
-        {% elif request.user.colegio_set.all %}
-            {{ request.user.colegio_set.all.first.nombre }}
-        {% else %}
-            Invitado
-        {% endif %}
-        <span class="badge badge-secondary">Periodo {{ request.session.p_anio }}</span>
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
@@ -125,17 +111,36 @@
             {% endif %}
         </ul>
         <ul class="navbar-nav pull-right mr-5">
+            {% if request.session.colegio__nombre %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#"
+                       id="dropdownUsuario" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-institution"></i> {{ request.session.colegio__nombre }}</a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownUsuario">
+                        <a class="dropdown-item" href="{% url 'carga-horaria:switch' %}">
+                            <i class="fa fa-refresh"></i> Cambiar </a>
+                        <a class="dropdown-item" href="{% url 'carga-horaria:clear' %}">
+                            <i class="fa fa-window-close"></i> Limpiar </a>
+                    </div>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a href="{% url 'carga-horaria:switch' %}">
+                        <i class="fa fa-check-square"></i> Elegir Colegio</a>
+                </li>
+            {% endif %}
+        </ul>
+        <ul class="navbar-nav pull-right mr-5">
             {% if request.user.is_authenticated %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#"
                        id="dropdownUsuario" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-user-o"></i> {{ request.user.username }}</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownUsuario">
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownUsuario">
                         <a class="dropdown-item" href="#">
                             <i class="fa fa-user-secret"></i> Perfil </a>
-                        <a class="dropdown-item" href="#">
-                            <i class="fa fa-lock"></i> Bloquear Pantalla</a>
                         <a class="dropdown-item" href="/admin/logout/?next=/">
                             <i class="fa fa-sign-out"></i> Cerrar Sesión</a>
                     </div>

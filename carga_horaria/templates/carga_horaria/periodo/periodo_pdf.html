@@ -1,0 +1,79 @@
+{% load inline_static_tags %}
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <style type="text/css">
+      {% inline_style 'base/css/bootstrap.min.css' %}
+      
+      @media print {
+	  body{
+              width: 21cm;
+              height: 29.7cm;
+              margin: 15mm 45mm 30mm 30mm; 
+	  } 
+      }
+    </style>
+    <title>Carga Horaria</title>
+  </head>
+  <body>
+    <h1>Curso: {{ object }}</h1>
+    <h2>Carga Horaria</h2>
+
+    <br>
+
+    <h3>Asignaturas</h3>
+    
+    <table class="table table-small">
+      <thead>
+        <tr>
+	  <th>Nombre</th>
+		  <th>Horas Requeridas</th>
+		  <th>Horas Asignadas</th>
+		  <th>Horas Sin Asignar</th>
+		  <th>Profesores</th>
+        </tr>
+      </thead>
+      <tbody>
+		  {% for a in object.asignatura_set.all %}
+                <tr{% if a.horas_disponibles == 0 %} class="table-success"{% else %} class="table-warning"{% endif %}>
+                  <td>  <a href="{% url 'carga-horaria:asignatura' a.pk object.pk %}">{{ a }} </a> </td>
+                    <td>  {{ a.horas }}  </td>
+                    <td>  {{ a.horas_asignadas }}  </td>
+                    <td>  {{ a.horas_disponibles }}  </td>
+                    <td>  {% for p in a.profesores %}<a href="{% url 'carga-horaria:profesor' p.pk %}">{{ p }} ({{ p.horas_disponibles }}) </a>{% endfor %}  </td>
+                </tr>
+		{% endfor %}
+		  <tr>
+		    <td colspan="2">
+		    <td colspan="2">Subtotal tiempo mínimo</td>
+		    <td>{{ object.floor }}</td>
+		  </tr>
+		  <tr>
+		    <td colspan="2">
+		    <td colspan="2">Horas de libre disposición</td>
+		    <td>{{ object.horas }}</td>
+		  </tr>
+		  {% if object.horas_dif > 0 %}
+		  <tr>
+		    <td colspan="2">
+		    <td colspan="2">Horas Educación Diferenciada</td>
+		    <td>{{ object.horas_dif }}</td>
+		  </tr>
+		  {% endif %}
+		  <tr>
+		    <td colspan="2">
+		    <td colspan="2">Total tiempo mínimo</td>
+		    <td>{{ object.ceiling }}</td>
+		  </tr>
+		  <tr>
+		    <td colspan="2">
+		    <td colspan="2">Total actual</td>
+		    <td>{{ object.progress }}</td>
+		  </tr>
+      </tbody>
+    </table>
+
+
+  </body>
+</html>

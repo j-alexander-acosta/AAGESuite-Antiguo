@@ -20,14 +20,24 @@
         <h6 class="card-subtitle mb-2 text-muted">Tabla para configuración de profesores</h6>
     </div>
     <div class="card-body">
+      <div class="pull-left">
+        <form action="." method="GET">
+          <i class="fa fa-search"></i> <input name="q" placeholder="Buscar por nombre" value="{{ request.GET.q }}">{% if 'q' in request.GET %} <a href="{% url 'carga-horaria:profesores' %}" class="text-muted">limpiar</a>{% endif %}
+        </form>
+      </div>
+      <div class="pull-right" style="padding-bottom: 10px;">
+        <a class="btn btn-sm btn-default" href="{% url 'carga-horaria:profesores-pdf' %}"><i class="fa fa-print"></i> Imprimir</a>
+      </div>
         <div class="table-responsive">
         <table class="table table-striped">
             <thead>
             <tr>
                 <th><i class="fa fa-user"></i> Nombre </th>
-                <th><i class="fa fa-clock-o"></i> Horas contrato </th>
-                <th><i class="fa fa-clock-o"></i> Horas docentes </th>
-                <th><i class="fa fa-clock-o"></i> Horas disponibles </th>
+                <th><i class="fa fa-clock-o"></i> Hrs contrato</th>
+                <th><i class="fa fa-clock-o"></i> Hrs docentes </th>
+                <th><i class="fa fa-clock-o"></i> Hrs disp. docentes </th>
+                <th><i class="fa fa-clock-o"></i> Hrs no aula </th>
+                <th><i class="fa fa-clock-o"></i> Hrs disp. no aula </th>
                 <th><i class="fa fa-cogs"></i> Acciones </th>
             </tr>
             </thead>
@@ -35,10 +45,13 @@
             {% for p in object_list %}
                 <tr>
                     <td><a href="{% url 'carga-horaria:profesor' p.pk %}"> {{ p.nombre }} </a></td>
-                    <td> {{ p.horas }} </td>
+                    <td> {{ p.horas_contratadas }} </td>
                     <td> {{ p.horas_docentes }} </td>
                     <td> {{ p.horas_disponibles }} </td>
+                    <td> {{ p.horas_no_aula }} </td>
+                    <td> {{ p.horas_no_aula_disponibles }} </td>
                     <td>
+                        <a class="btn btn-sm btn-success" href="{% url 'carga-horaria:profesor__anexo' p.pk %}" data-toggle="tooltip" data-placement="top" title="Generar Anexo 1"><i class="fa fa-handshake-o"></i></a>
                         <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:profesor__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
                         <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_profesor_{{p.pk}}"><i class="fa fa-trash"></i></a>
                     </td>

@@ -1,0 +1,54 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title_page %}
+    Asignar horas
+{% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Asignar horas no aula para {{ profesor }} <strong>
+        
+        </h4>
+        <h6 class="card-subtitle mb-2 text-muted">{{ profesor.especialidad }}</h6>
+	<table class="table">
+	  <thead>
+	  <tr>
+	    <th>Horas asignadas</th>
+	    <th>Horas disponibles</th>
+	  </tr>
+	  </thead>
+	  <tbody>
+	  <tr>
+	    <td>{{ profesor.horas_no_aula_asignadas }}</td>
+	    <td>{{ profesor.horas_no_aula_disponibles }}</td>
+	  </tr>
+	  </tbody>
+	</table>
+    </div>
+    <div class="card-body">
+        <form class="form-horizontal" method="post">
+            {% csrf_token %}
+            {% crispy form %}
+            <div class="form-group">
+                <div class="col-sm-10 col-sm-offset-2">
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <a {% if profesor %}
+                        href="{% url 'carga-horaria:profesor' profesor.pk %}"
+                    {% else %}
+                        href="{% url 'carga-horaria:profesor' profesor.pk %}"
+                    {% endif %}
+                    role="button" class="btn btn-default">
+                        Volver
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+{% endblock content %}
