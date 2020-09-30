@@ -10,7 +10,7 @@ let
     };
     propagatedBuildInputs = [ qrcode pillow ];
     buildInputs = [ django_1_11 ];
-    doCheck = false;  	
+    doCheck = false;
   };
 
   django-crispy-forms = with pkgs.python3Packages; buildPythonPackage rec {
@@ -21,7 +21,7 @@ let
       sha512 = "09fm54h13xwdlhz0rl3a50jj84bifxcx38bf26cad43dx7l4pc1dnl4v9kfmxylkk04yzr1q4gpx8aqn1cyb0js9a26jm409i1dcj07";
     };
     buildInputs = [ django_1_11 ];
-    doCheck = false;  	
+    doCheck = false;
   };
 
   django-constance = with pkgs.python3Packages; buildPythonPackage rec {
@@ -32,7 +32,7 @@ let
       sha512 = "15n1m7q4mmbvmd645hn59qsa4is62pdzkn0myc1nxnr6j5vbgp28di180cqbxbk2nmfyjk9ks255znca2bb8v42y87q3yjmw6rlzdd6";
     };
     buildInputs = [ django_1_11 ];
-    doCheck = false;  	
+    doCheck = false;
   };
 
   python-crontab = with pkgs.python3Packages; buildPythonPackage rec {

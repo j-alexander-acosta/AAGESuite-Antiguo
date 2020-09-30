@@ -5,30 +5,70 @@
 {% endblock %}
 
 {% block content %}
+    <div class="">
+        <a href="{% url 'rrhh:contratos' %}" style="color: #fff;">
+            <div class="card text-white card-inverse bgm-lightblue text-center">
+                <div class="card-header">
+                    <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
+                    <h6>Funcionarios</h6>
+                </div>
+            </div>
+        </a>
+    </div>
+    <br>
     <div class="row">
-        <div class="col-md-3">
-            <div class="card text-white card-inverse bgm-red text-center">
-                <div class="card-header">
-                    <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                    <h6><a href="{% url 'rrhh:funcionarios' %}" style="color: #fff;">Funcionarios</a></h6>
+        <div class="col-md-4">
+            <a href="{% url 'rrhh:personas' %}" style="color: #fff;">
+                <div class="card text-white card-inverse bgm-red text-center">
+                    <div class="card-header">
+                        <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
+                        <h6>Personas</h6>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
-        <div class="col-md-3">
-            <div class="card text-white card-inverse bgm-lightgreen text-center">
-                <div class="card-header">
-                    <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                    <h6><a href="{% url 'rrhh:archivos' %}" style="color: #fff;">Archivos</a></h6>
+        <div class="col-md-4">
+            <a href="{% url 'rrhh:vacaciones' %}" style="color: #fff;">
+                <div class="card text-white card-inverse bgm-indigo text-center">
+                    <div class="card-header">
+                        <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
+                        <h6>Vacaciones</h6>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
-        <div class="col-md-3">
-            <div class="card text-white card-inverse bgm-purple text-center">
-                <div class="card-header">
-                    <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                    <h6><a href="{% url 'rrhh:entrevistas' %}" style="color: #fff;">Entrevistas</a></h6>
+        <div class="col-md-4">
+            <a href="{% url 'rrhh:licencias' %}" style="color: #fff;">
+                <div class="card text-white card-inverse bgm-purple text-center">
+                    <div class="card-header">
+                        <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
+                        <h6>Licencias</h6>
+                    </div>
                 </div>
-            </div>
+            </a>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-4">
+            <a href="{% url 'rrhh:archivos' %}" style="color: #fff;">
+                <div class="card text-white card-inverse bgm-teal text-center">
+                    <div class="card-header">
+                        <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
+                        <h6>Archivos</h6>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="{% url 'rrhh:entrevistas' %}" style="color: #fff;">
+                <div class="card text-white card-inverse bgm-lightgreen text-center">
+                    <div class="card-header">
+                        <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
+                        <h6>Entrevistas</h6>
+                    </div>
+                </div>
+            </a>
         </div>
     </div>
     <br>

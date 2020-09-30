@@ -1,0 +1,567 @@
+{% extends 'base/base.html' %}
+{% load humanize crispy_forms_tags staticfiles rrhh_utils %}
+
+{% block title_page %}
+    Contrato - Detalle
+{% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-header {% if not object.vigente %}alert-danger{% endif %}">
+      <h4 class="card-title"><strong>Detalle del Trabajador</strong></h4>
+        {% block buttons %}
+            <div class="btn-group pull-right">
+                <a href="{% url 'rrhh:contratos' %}" type="button" class="btn btn-sm btn-dark">
+                    <i class="fa fa-arrow-left"> Volver</i>
+                </a>
+            </div>
+        {% endblock %}
+        <h6 class="card-subtitle mb-2 text-muted">{{ object }}</h6>
+    </div>
+    <div class="card-body">
+        <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+            <li class="nav-item" role="contrato">
+                <a class="nav-link active" id="contrato-tab" data-toggle="tab" href="#contrato" role="tab" aria-controls="contrato" aria-selected="true">Contrato</a>
+            </li>
+            <li class="nav-item" role="licencia">
+                <a class="nav-link" id="licencia-tab" data-toggle="tab" href="#licencia" role="tab" aria-controls="licencia" aria-selected="false">Licencias</a>
+            </li>
+            <li class="nav-item" role="vacacion">
+                <a class="nav-link" id="vacacion-tab" data-toggle="tab" href="#vacacion" role="tab" aria-controls="vacacion" aria-selected="false">Vacaciones</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="contrato" role="tabpanel" aria-labelledby="contrato-tab">
+                <br>
+                <div class="pmb-block">
+                    <div class="pmbb-body">
+                        <p>Información del contrato y finiquito, en caso de existencia, del trabajador.
+                                <button name="eliminar_contrato" type="button" class="btn btn-sm btn-danger pull-right" data-toggle="modal" data-target="#eliminar_contrato_{{object.pk}}" style="cursor: pointer">
+                                    <span><i class="fa fa-trash"></i> Eliminar</span>
+                                </button>
+                                <a href="{% url 'rrhh:contrato__editar' object.pk %}" type="button" class="btn btn-sm btn-primary pull-right">
+                                    <i class="fa fa-edit"> Editar</i>
+                                </a>
+                        </p>
+                        <div class="pmbb-view">
+                            <table class="table table-hover table-sm">
+                                <tbody>
+                                <tr>
+                                    <th> Persona </th>
+                                    <td><a href="{% url 'rrhh:persona' object.persona.id %}" data-toggle="tooltip" data-placement="top" title="Ver información de la Persona">
+                                        {{ object.persona }}</a></td>
+                                </tr>
+                                <tr>
+                                    <th> Establecimiento </th>
+                                    <td>  {{ object.colegio }} - {{ object.colegio.fundacion|beauty_none }} </td>
+                                </tr>
+                                <tr>
+                                    <th> Tipo de contrato </th>
+                                    <td>  {{ object.get_tipo_contrato_display }}  </td>
+                                </tr>
+                                <tr>
+                                    <th> Horas contratadas </th>
+                                    <td>  {{ object.horas }}  </td>
+                                </tr>
+                                <tr>
+                                    <th> Periodo de contrato </th>
+                                    <td>  {{ object.fecha_inicio|naturalday }} -
+                                        {% if object.tipo_contrato == 1 %}
+                                            Indefinido
+                                        {% else %}
+                                            {{ object.fecha_termino|beauty_none|naturalday }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th> En reemplazo de</th>
+                                    <td> {{ object.reemplazando }} </td>
+                                </tr>
+                                <tr>
+                                    <th>Estado Trabajador</th>
+                                    <td> {% if object.vigente %}
+                                            <i class="text-success">Contratado</i>
+                                        {% else %}
+                                            <i class="text-danger">Desvinculado</i>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th> Categoria </th>
+                                    <td>  {{ object.get_categoria_display }}  </td>
+                                </tr>
+                                <tr>
+                                    <th> Función principal </th>
+                                    <td>  {{ object.funcion_principal }}  </td>
+                                </tr>
+                                <tr>
+                                    <th> Función secundaria </th>
+                                    <td>  {{ object.funcion_secundaria }}  </td>
+                                </tr>
+                                <tr>
+                                    <th> Jornada de trabajo </th>
+                                    <td>  {{ object.get_jornada_trabajo_display }}  </td>
+                                </tr>
+                                <tr>
+                                    <th> Horiario de trabajo </th>
+                                    <td>  {{ object.hora_inicio_jornada }} - {{ object.hora_termino_jornada }} </td>
+                                </tr>
+                                <tr>
+                                    <th> Sistema de Salud </th>
+                                    <td>  {{ object.get_salud_display }}
+                                        {% if object.salud == 2 %}
+                                            , {{ object.isapre|beauty_none }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th> AFP </th>
+                                    <td> {{ object.afp|beauty_none }} </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <br>
+                            {% if object.finiquito %}
+                                <h5 class="card-title">Finiquito</h5>
+                                <table class="table table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th>Razón de Baja</th>
+                                            <th>Descripción</th>
+                                            <th>Opciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{ object.finiquito.get_razon_baja_display }}</td>
+                                            <td>{{ object.finiquito.descripcion }}</td>
+                                            <td>
+                                                <a class="btn btn-info" href="{{ MEDIA_URL }}{{ object.finiquito.archivo.url }}" target="_blank">
+                                                    <i class="fa fa-download"></i> Descargar</a>
+                                                <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#eliminar_finiquito_{{object.finiquito.pk}}">
+                                                    <i class="fa fa-trash"></i> Eliminar</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="modal" tabindex="-1" role="dialog" id="eliminar_finiquito_{{object.finiquito.pk}}">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar El Finiquito de {{ object }}</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Está seguro que desea eliminar el Finiquito de "{{ object }}"?.</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a role="button" class="btn btn-danger" href="{% url 'rrhh:finiquito__eliminar' object.finiquito.pk %}">Eliminar</a>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="vacacion" role="tabpanel" aria-labelledby="vacacion-tab">
+                <br>
+                <div class="pmb-block">
+                    <div class="pmbb-body">
+                        <p>Listado de Vacaciones del funcionario, ordenado del mas reciente al mas antiguo.
+                            <button name="agregar_vacacion" type="button" class="btn btn-sm btn-primary pull-right" data-toggle="modal" data-target="#crear_vacacion">
+                                <span><i class="fa fa-plus"></i> Agregar vacación</span>
+                            </button>
+                        </p>
+                        <div class="pmbb-view">
+                            <table id="vacaciones" class="table table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>Periodo</th>
+                                        <th>Fecha de retorno</th>
+                                        <th>Total de días</th>
+                                        <th>Total feriados</th>
+                                        <th>Es pendiente</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for v in object.vacacion_set.all %}
+                                        <tr>
+                                            <td>{{ v.fecha_inicio|naturalday }} - {{ v.fecha_termino|naturalday }}</td>
+                                            <td>{{ v.fecha_retorno|naturalday }}</td>
+                                            <td>{{ v.total_dias }}</td>
+                                            <td>{{ v.total_feriados }}</td>
+                                            <td>{{ v.es_pendiente|yesno }}</td>
+                                        </tr>
+                                    {% empty %}
+                                        <tr>
+                                            <td>No existen registros de licencias</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="licencia" role="tabpanel" aria-labelledby="licencia-tab">
+                <br>
+                <div class="pmb-block">
+                    <div class="pmbb-body">
+                        <p>Listado de Licencias del funcionario, ordenado del mas reciente al mas antiguo.
+                            <button name="agregar_licencia" type="button" class="btn btn-sm btn-primary pull-right" data-toggle="modal" data-target="#crear_licencia">
+                                <span><i class="fa fa-plus"></i> Agregar licencia</span>
+                            </button>
+                        </p>
+                        <div class="pmbb-view">
+                            <table id="licencias" class="table table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>Tipo de Licencia</th>
+                                        <th>Folio de Licencia</th>
+                                        <th>Periodo</th>
+                                        <th>Fecha de retorno</th>
+                                        <th>Total de días</th>
+                                        <th>Total feriados</th>
+                                        <th>Son días hábiles</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for l in object.licencia_set.all|dictsortreversed:"id" %}
+                                        <tr>
+                                            <td>{% if l.tipo_licencia %} {{ l.tipo_licencia }} {% else %} {{ l.tipo_licencia_descripcion }} {% endif %}</td>
+
+                                            <td>{{ l.folio_licencia|beauty_none }}</td>
+                                            <td>{{ l.fecha_inicio|naturalday }} - {{ l.fecha_termino|naturalday }}</td>
+                                            <td>{{ l.fecha_retorno|naturalday }}</td>
+                                            <td>{{ l.total_dias }}</td>
+                                            <td>{{ l.total_feriados }}</td>
+                                            <td>{{ l.dias_habiles|yesno }}</td>
+                                        </tr>
+                                    {% empty %}
+                                        <tr>
+                                            <td>No existen registros de licencias</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="eliminar_contrato_{{object.pk}}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar el registro de Contraton</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Está seguro que desea eliminar el contrato "{{ object }}"?.</p>
+                <p class="text-muted">Recuerde que eliminará todos los registros asociados a este contrato.</p>
+            </div>
+            <div class="modal-footer">
+                <a role="button" class="btn btn-danger" href="{% url 'rrhh:contrato__eliminar' object.pk %}">Eliminar</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="crear_licencia" tabindex="-1" role="dialog" aria-labelledby="crear_licenciaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar licencia a {{ object }} </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="licenciaForm" class="form-horizontal" action="{% url 'rrhh:licencia_funcionario__nuevo' %}" method="post">
+                <div class="modal-body m-10">
+                    <div class="checkbox pull-right">
+                        <label for="id_licencia_tipo">
+                            <input type="checkbox" name="licencia_tipo" class="checkboxinput" id="id_licencia_tipo" checked>
+                            Utilizar licencias tipo
+                        </label>
+                    </div>
+                    {% csrf_token %}
+                    {% crispy lf_form %}
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="crear_vacacion" tabindex="-1" role="dialog" aria-labelledby="crear_vacacionLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="crear_vacacionLabel">Agregar vacación a {{ object }} </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="vacacionForm" class="form-horizontal" action="{% url 'rrhh:vacacion_funcionario__nuevo' %}" method="post">
+                <div class="modal-body m-10">
+                    {% csrf_token %}
+                    {% crispy vf_form %}
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block extra_js %}
+    <script src="{% static 'rrhh/ownscripts/nueva_licencia_funcionario.js' %}"></script>
+    <script>
+        function cambio_licencia_descripcion(){
+            setTimeout(function(){
+                $(document).find('#div_id_tipo_licencia_descripcion').fadeIn();
+            }, 500);
+            $(document).find('#id_tipo_licencia_descripcion').prop('disabled', false);
+            $(document).find('#div_id_tipo_licencia').fadeOut();
+            $(document).find('#id_tipo_licencia').attr('disabled', true);
+            $(document).find('#id_total_dias').attr('readonly', false);
+            $(document).find('#id_dias_habiles').attr('checked', false);
+        }
+        function cambio_tipo_licencia(){
+            $(document).find('#div_id_tipo_licencia_descripcion').fadeOut();
+            $(document).find('#id_tipo_licencia_descripcion').attr('disabled', true);
+            setTimeout(function(){
+                $(document).find('#div_id_tipo_licencia').fadeIn();
+            }, 500);
+            $(document).find('#id_tipo_licencia').prop('disabled', false);
+            $(document).find('#id_total_dias').attr('readonly', 'true');
+            $(document).find('#id_fecha_termino').attr('readonly', 'true');
+            $(document).find('#id_fecha_retorno').attr('readonly', 'true');
+            $(document).find('#id_dias_habiles').attr('checked', false);
+        }
+
+        function revision_campos_obligatorios(form){
+            let fecha_inicio = form.find('#id_fecha_inicio').val();
+            let fecha_termino = form.find('#id_fecha_termino').val();
+            let fecha_retorno = form.find('#id_fecha_retorno').val();
+            let total_dias = form.find('#id_total_dias').val();
+            let opcion = form.find('#id_tipo_licencia_chosen').find('a.chosen-single').find('span').html();
+
+            console.log(opcion);
+            if (fecha_inicio !== '' && fecha_termino !== '' && fecha_retorno !== '' && total_dias !== ''){
+                return true;
+            }
+
+            return false;
+        }
+
+        function calculo_fechas(){
+            let fecha_inicio = $(document).find('#id_fecha_inicio').val();
+            let total_dias = $(document).find('#id_total_dias').val();
+            if (fecha_inicio !== '' && total_dias !== ''){
+                let total_feriados = $(document).find('#id_total_feriados').val();
+                let fecha_inicio_part = fecha_inicio.split('/');
+                let fecha = new Date(fecha_inicio_part[2] + '/' + fecha_inicio_part[1] + '/' + fecha_inicio_part[0]);
+
+                //let fecha_termino = new Date(fecha_inicial.getFullYear() + '/' + fecha_inicial.getMonth() + '/' + (fecha_inicial.getDate() + parseInt(total_dias) - 1 + parseInt(total_feriados)));
+                fecha.setDate(fecha.getDate() + parseInt(total_dias) - 1 + parseInt(total_feriados));
+                let fecha_string = fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear();
+                $(document).find('#id_fecha_termino').val((fecha_string));
+
+                //let fecha_retorno = new Date((fecha_termino.getFullYear()) + '/' + fecha_termino.getMonth() + '/' + (fecha_termino.getDate() + 1 ));
+                fecha.setDate(fecha.getDate() + 1);
+                fecha_string = fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear();
+                $(document).find('#id_fecha_retorno').val(fecha_string);
+            }
+        }
+
+        function limpiar_form(form){
+            form.find("#id_tipo_licencia_descripcion").val('');
+            form.find("#id_folio_licencia").val('');
+            form.find("#id_total_dias").val('');
+            form.find("#id_dias_habiles").val('');
+            form.find("#id_fecha_inicio").val('');
+            form.find("#id_total_feriados").val('');
+            form.find("#id_fecha_termino").val('');
+            form.find("#id_fecha_retorno").val('');
+        }
+
+        //--------------------VACACIONES--------------------------
+        function limpiar_form_vacacion(form){
+            form.find("#id_total_dias").val('');
+            form.find("#id_es_pendiente").val('');
+            form.find("#id_fecha_inicio").val('');
+            form.find("#id_total_feriados").val('');
+            form.find("#id_fecha_termino").val('');
+            form.find("#id_fecha_retorno").val('');
+        }
+
+        function revision_campos_obligatorios_vacacion(form){
+            let fecha_inicio = form.find('#id_fecha_inicio').val();
+            let fecha_termino = form.find('#id_fecha_termino').val();
+            let fecha_retorno = form.find('#id_fecha_retorno').val();
+            let total_dias = form.find('#id_total_dias').val();
+
+            if (fecha_inicio !== '' && fecha_termino !== '' && fecha_retorno !== '' && total_dias !== ''){
+                return true;
+            }
+
+            return false;
+        }
+
+        $(function() {
+            let total_dias = 0, dias_habiles = 0
+
+            cambio_tipo_licencia();
+
+            $(document).find('#id_licencia_tipo').on('change', function() {
+                let checkbox = $(this);
+                if (checkbox.is(":checked")) {
+                    cambio_tipo_licencia();
+                }else{
+                    cambio_licencia_descripcion();
+                }
+            });
+
+            $(document).on('change', '#id_tipo_licencia', function() {
+                let opcion = $(document).find('#id_tipo_licencia_chosen').find('a.chosen-single').find('span').html();
+                try {
+                    total_dias = opcion.split('(')[1].split(')')[0].split('-')[0];
+                    dias_habiles = opcion.split('(')[1].split(')')[0].split('-')[1];
+                }catch(err){
+                    console.log(err.message);
+                    total_dias = 0;
+                    dias_habiles = 0;
+                }
+                if (dias_habiles == '1') {
+                    $(document).find('#id_dias_habiles').attr('checked', true);
+                }else {
+                    $(document).find('#id_dias_habiles').attr('checked', false);
+                }
+                $(document).find('#id_total_dias').val(total_dias);
+            });
+
+            $(document).on('change', '[id^="id_"]', function() {
+                calculo_fechas();
+            });
+
+            $(document).on('keyup', '[id^="id_"]', function() {
+                calculo_fechas();
+            });
+
+            $(document).on('submit', '#licenciaForm', function (e) {
+                e.preventDefault();
+                let form = $(this);
+                if(revision_campos_obligatorios(form)) {
+                    console.log('Si paso');
+                    $.ajax({
+                        type: form.attr('method'),
+                        url: form.attr('action'),
+                        data: form.serialize(),
+                        dataType: 'json',
+                        success: function(data) {
+                            if (!(data['success'])) {
+                                if(data['form_html'] !== null){
+                                    // console.log(data['form_html']);
+                                    form.find('.modal-body').html(data['form_html']);
+                                    // ocultar_inicial();
+                                    // alertify.warning(data['message']);
+                                }
+                            } else {
+                                let tbody = $(document).find("table[id='licencias']").find('tbody');
+                                let nueva_licencia = `<tr>
+                                    <td>${data.tipo_licencia}</td>
+                                    <td><i>${data.folio}</i></td>
+                                    <td>${data.periodo}</td>
+                                    <td>${data.fecha_retorno}</td>
+                                    <td>${data.total_dias}</td>
+                                    <td>${data.total_feriados}</td>
+                                    <td>${data.dias_habiles}</td>
+                                    </tr>`;
+                                tbody.html(nueva_licencia + tbody.html());
+                                // alertify.success(data['message']);
+                                $(document).find("div[class='modal fade show']").modal('hide');
+                                limpiar_form(form);
+                            }
+                        },
+                        error: function (err) {
+                            console.log(err);
+                            // alertify.warning("Ocurrio un error inesperado..");
+                        }
+                    });
+                }else{
+                    console.log('Se deben completar todos los campos requeridos');
+                    // alertify.warning("Se deben completar todos los campos requeridos..");
+                }
+            });
+
+            //--------------------VACACIONES--------------------------
+
+            $(document).on('submit', '#vacacionForm', function (e) {
+                e.preventDefault();
+                let form = $(this);
+                if(revision_campos_obligatorios_vacacion(form)) {
+                    console.log('Si paso');
+                    $.ajax({
+                        type: form.attr('method'),
+                        url: form.attr('action'),
+                        data: form.serialize(),
+                        dataType: 'json',
+                        success: function(data) {
+                            if (!(data['success'])) {
+                                if(data['form_html'] !== null){
+                                    // console.log(data['form_html']);
+                                    form.find('.modal-body').html(data['form_html']);
+                                    // ocultar_inicial();
+                                    // alertify.warning(data['message']);
+                                }
+                            } else {
+                                let tbody = $(document).find("table[id='vacaciones']").find('tbody');
+                                let nueva_vacacion = `<tr>
+                                    <td>${data.periodo}</td>
+                                    <td>${data.fecha_retorno}</td>
+                                    <td>${data.total_dias}</td>
+                                    <td>${data.total_feriados}</td>
+                                    <td>${data.es_pendiente}</td>
+                                    </tr>`;
+                                tbody.html(nueva_vacacion + tbody.html());
+                                // alertify.success(data['message']);
+                                $(document).find("div[class='modal fade show']").modal('hide');
+                                limpiar_form_vacacion(form);
+                            }
+                        },
+                        error: function (err) {
+                            console.log(err);
+                            // alertify.warning("Ocurrio un error inesperado..");
+                        }
+                    });
+                }else{
+                    console.log('Se deben completar todos los campos requeridos');
+                    // alertify.warning("Se deben completar todos los campos requeridos..");
+                }
+            });
+
+        });
+    </script>
+{% endblock %}

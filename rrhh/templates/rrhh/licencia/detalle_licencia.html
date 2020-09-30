@@ -1,0 +1,87 @@
+{% extends 'base/base.html' %}
+{% load staticfiles humanize %}
+
+{% block title_page %}
+    Licencia - Detalle
+{% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-header">
+      <h4 class="card-title"><strong>Detalle de Licencia</strong>
+          {% block buttons %}
+              <div class="btn-group pull-right">
+                  <a href="{% url 'rrhh:licencias' %}" type="button" class="btn btn-sm btn-dark">
+                      <i class="fa fa-arrow-left"></i>
+                  </a>
+                  <a href="{% url 'rrhh:licencia__editar' object.pk %}" type="button" class="btn btn-sm btn-primary">
+                      <i class="fa fa-edit"></i>
+                  </a>
+                  <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_licencia_{{object.pk}}">
+                      <i class="fa fa-trash"></i>
+                  </a>
+              </div>
+          {% endblock %}
+        </h4>
+        <h6 class="card-subtitle mb-2 text-muted">{{ object }}</h6>
+
+    </div>
+    <div class="card-body">
+        <table class="table table-hover table-sm">
+            <tbody>
+                <tr>
+                    <th> Funcionario </th>
+                    <td>  {{ object.contrato }}  </td>
+                </tr>
+                <tr>
+                    <th> Tipo Licencia </th>
+                    <td>  {% if object.tipo_licencia %} {{ object.tipo_licencia }} {% else %} {{ object.tipo_licencia_descripcion }} {% endif %}  </td>
+                </tr>
+                <tr>
+                    <th> Folio licencia </th>
+                    <td>  {{ object.folio_licencia }}  </td>
+                </tr>
+                <tr>
+                    <th> Total de días </th>
+                    <td>  {{ object.total_dias }}  </td>
+                </tr>
+                <tr>
+                    <th> Periodo de licencia </th>
+                    <td>  {{ object.fecha_inicio|naturalday }} - {{ object.fecha_termino|naturalday }}  </td>
+                </tr>
+                <tr>
+                    <th> Fecha de retorno </th>
+                    <td>  {{ object.fecha_retorno|naturalday }}  </td>
+                </tr>
+                <tr>
+                    <th> Total de días feriados en el rango de licencia</th>
+                    <td>  {{ object.total_feriados }}  </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+ </div>
+
+<div class="modal" tabindex="-1" role="dialog" id="eliminar_licencia_{{object.pk}}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar la licencia</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Está seguro que desea eliminar la licencia "{{ object }}"?.</p>
+                <p class="text-muted">Recuerde que eliminará todos los registros asociados a la licencia.</p>
+            </div>
+            <div class="modal-footer">
+                <a role="button" class="btn btn-danger" href="{% url 'rrhh:licencia__eliminar' object.pk %}">Eliminar</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

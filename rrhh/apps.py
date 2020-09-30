@@ -2,4 +2,7 @@ from django.apps import AppConfig
 
 
 class RrhhConfig(AppConfig):
-    name = 'rrhh'
+    name = 'recursos_humanos'
+
+    def ready(self):
+        from . import signals

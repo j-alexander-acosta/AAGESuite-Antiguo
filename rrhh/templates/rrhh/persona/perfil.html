@@ -1,0 +1,216 @@
+{% extends 'base/base.html' %}
+{% load humanize crispy_forms_tags staticfiles rrhh_utils %}
+
+{% block title_page %}
+    Perfil de {{ object }}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="card" id="profile-main">
+            <div class="pm-overview c-overflow">
+                <div class="pmo-pic">
+                    <div class="p-relative">
+                        <a href="">
+                            <img class="img-responsive" src="{{ object.foto}}" alt="{{ object.username }}">
+                        </a>
+                    </div>
+
+                    <div class="pmo-stat">
+                        <h5 class="m-0 c-white">{{ object.rut }}</h5>
+                        {{ object.get_full_name }}
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="pm-body clearfix m-l-5">
+                <br>
+                <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="perfil-tab" data-toggle="tab" href="#perfil"
+                        role="tab" aria-controls="perfil" aria-selected="true">Perfil</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="profesional-tab" data-toggle="tab" href="#profesional"
+                        role="tab" aria-controls="profesional" aria-selected="false">Inf. Profesional</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="historial-contrato-tab" data-toggle="tab" href="#historial-contrato"
+                        role="tab" aria-controls="ihstorial-contrato" aria-selected="false">Hitorial</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="perfil" role="tabpanel" aria-labelledby="perfil-tab">
+                        <div class="pmb-block">
+                            <div class="pmbb-body">
+                                <div class="pmbb-view">
+                                    <table class="table table-responsive">
+                                        <body>
+                                            <tr>
+                                                <th>Fecha de Nacimiento</th>
+                                                <td>{{ object.fecha_nacimiento }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Genero</th>
+                                                <td>{{ object.genero }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Nacionalidad</th>
+                                                <td>{{ object.nacionalidad|beauty_none }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Estado Civil</th>
+                                                <td>{{ object.estado_civil|beauty_none }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Religión</th>
+                                                <td>{{ object.religion|beauty_none }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Dirección</th>
+                                                <td>{{ object.direccion }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Teléfono</th>
+                                                <td>{{ object.telefono }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Correo Electrónico</th>
+                                                <td>{{ object.email }}</td>
+                                            </tr>
+                                        </body>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="profesional" role="tabpanel" aria-labelledby="profesional-tab">
+                        <div class="pmb-block">
+                            <div class="pmbb-body">
+                                <div class="pmbb-view">
+                                    <table class="table table-responsive">
+                                        <body>
+                                            <tr>
+                                                <th>Título</th>
+                                                <td>{{ object.titulo|beauty_none }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Casa Formadora</th>
+                                                <td>{{ object.casa_formadora|beauty_none }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Fecha de titulación</th>
+                                                <td>{{ object.fecha_titulacion|beauty_none }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Fecha de ingreso al sistema Docente</th>
+                                                <td>{{ object.fecha_ingreso_docente|beauty_none }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Fecha de ingreso al SEA</th>
+                                                <td>{{ object.fecha_ingreso_sea|beauty_none }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Estado del Funcionario</th>
+                                                <td>{{ object.get_estado_display }}</td>
+                                            </tr>
+                                            {% if object.estado == 2 %}
+                                                <tr>
+                                                    <th>Tipo de misionero</th>
+                                                    <td>{{ object.get_tipo_misionero_display }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Puntos</th>
+                                                    <td>{{ object.puntos }}</td>
+                                                </tr>
+                                            {% endif %}
+                                        </body>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show active" id="historial-contrato" role="tabpanel" aria-labelledby="historial-contrato-tab">
+                        <div class="pmb-block">
+                            <div class="accordion" id="accordionExample">
+                                {% for contrato in object.contrato_set.all|dictsortreversed:"vigente" %}
+                                    <div class="card">
+                                        <div class="card-header" id="heading{{contrato.id}}" data-toggle="collapse" data-target="#collapse{{contrato.id}}" aria-expanded="true" aria-controls="collapse{{contrato.id}}">
+                                            <h2 class="mb-0">
+                                                <button class="btn btn-link" type="button">
+                                                    {{ contrato.colegio }}
+                                                </button>
+                                            </h2>
+                                        </div>
+                                        <div id="collapse{{contrato.id}}" class="collapse {% if forloop.first %}show{% endif %}" aria-labelledby="heading{{contrato.id}}" data-parent="#accordionExample">
+                                            <div class="card-body">
+                                                <table class="table table-responsive">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th> Tipo de contrato </th>
+                                                            <td> {{ contrato.get_tipo_contrato_display }} </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th> Horas contratadas </th>
+                                                            <td> {{ contrato.horas }} hrs. ({{ contrato.get_tipo_horas_display }}) </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th> Periodo </th>
+                                                            <td>  {{ contrato.fecha_inicio|naturalday }} -
+                                                                {% if contrato.tipo_contrato == 1 %}
+                                                                    Indefinido
+                                                                {% else %}
+                                                                    {{ contrato.fecha_termino|beauty_none|naturalday }}
+                                                                {% endif %}
+                                                            </td>
+                                                        </tr>
+                                                        {% if contrato.reemplazando %}
+                                                        <tr>
+                                                            <th> En reemplazo de</th>
+                                                            <td> {{ contrato.reemplazando }} </td>
+                                                        </tr>
+                                                        {% endif %}
+                                                        <tr>
+                                                            <th> Categoria </th>
+                                                            <td> {{ contrato.get_categoria_display }} </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th> Función principal </th>
+                                                            <td> {{ contrato.funcion_principal }} </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th> Estado Trabajador </th>
+                                                            <td> {% if contrato.vigente %}
+                                                                    <i class="text-success">Contratado</i>
+                                                                {% else %}
+                                                                    <i class="text-danger">Desvinculado</i>
+                                                                {% endif %}
+                                                            </td>
+                                                        </tr>
+                                                        {% if not contrato.vigente %}
+                                                        <tr>
+                                                            <th> Razón de baja </th>
+                                                            <td> {{ contrato.finiquito.get_razon_baja_display }} </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th> Fecha de finiquito </th>
+                                                            <td> {{ contrato.fecha }} </td>
+                                                        </tr>
+                                                        {% endif %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br><br><br>
+
+{% endblock %}

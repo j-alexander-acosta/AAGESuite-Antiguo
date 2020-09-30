@@ -1,0 +1,82 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+{% load bootstrap_pagination %}
+
+{% block title_page %}
+    Tipos de Licencias
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Tipos de Licencia
+            <div class="btn-group pull-right" role="group">
+                <a class="btn btn-sm btn-secondary" href="{% url 'rrhh:licencias' %}" role="button"
+                    data-target='tooltip' title='Volver a Licencias'>
+                     <span><i class="fa fa-arrow-left"></i></span>
+                </a>
+                <a class="btn btn-sm btn-primary" href="{% url 'rrhh:tipolicencia__nuevo'%}" role="button">
+                     <span> Crear Tipo de Licencia <i class="fa fa-plus"></i></span>
+                </a>
+            </div>
+        </h4>
+        <h6 class="card-subtitle mb-2 text-muted">Tabla para configuración de tipo de licencia</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th><i class="fa fa-user"></i> Nombre </th>
+                <th><i class="fa fa-calendar"></i> Total de días </th>
+                <th><i class="fa fa-calendar"></i> Corresponde a días hábiles </th>
+                <th><i class="fa fa-clock"></i> Opciones </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for tl in object_list %}
+                <tr>
+                    <td><a href="{% url 'rrhh:tipolicencia' tl.pk %}"> {{ tl.nombre }} </a></td>
+                    <td> {{ tl.total_dias }} </td>
+                    <td> {{ tl.dias_habiles|yesno }} </td>
+                    <td>
+                        <a class="btn btn-sm btn-primary" href="{% url 'rrhh:tipolicencia__editar' tl.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
+                        <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_tipolicencia_{{tl.pk}}"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+                <div class="modal" tabindex="-1" role="dialog" id="eliminar_tipolicencia_{{tl.pk}}">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar un tipo de licencia</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Está seguro que desea eliminar el tipo de licencia "{{ tl }}"?.</p>
+                                <p class="text-muted">Recuerde que eliminará todos los registros asociados a este tipo licencia.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a role="button" class="btn btn-danger" href="{% url 'rrhh:tipolicencia__eliminar' tl.pk %}">Eliminar</a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    </div>
+
+    <div class="card-footer">
+        <div align="center">
+            {% bootstrap_paginate page_obj range=5 %}
+        </div>
+    </div>
+
+</div>
+
+{% endblock content  %}
