@@ -9,6 +9,10 @@ shell: .make.nix-exists
 	nix-shell
 .PHONY: shell
 
+test: .make.nix-exists
+	nix-shell --run 'python3 manage.py test --parallel --settings=carga.settings.testing'
+.PHONY: test
+
 migrate: .make.nix-exists
 	nix-shell --run 'python3 manage.py migrate'
 .PHONY: migrate

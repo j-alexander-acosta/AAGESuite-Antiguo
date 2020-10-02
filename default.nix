@@ -1,6 +1,17 @@
 let
   pkgs = import <carga-nixpkgs> {};
 
+  redgreenunittest = with pkgs.python3Packages; buildPythonPackage rec {
+    name = "redgreenunittest-${version}";
+    version = "0.1.1";
+    src = pkgs.fetchurl {
+      url = "https://files.pythonhosted.org/packages/28/4f/8bf056d2861160aeaa1fd69c88561966cd014b85f5994f5692a5278e19d5/redgreenunittest-0.1.1.tar.gz";
+      sha512 = "3l8ni6n87mq7j7n4r38y9z7fg5ar9d1xhx0yf26hgf98dvsrw4ik5yvymwhvc51in2bhj1lr84d9qzfn5c1bbyp0qwpy62ka45ij6g8";
+    };
+    propagatedBuildInputs = [ pygments ];
+    doCheck = false;  	
+  };
+
   django-qr-code = with pkgs.python3Packages; buildPythonPackage rec {
     name = "django-qr-code-${version}";
     version = "0.3.3";
@@ -245,6 +256,7 @@ pkgs.python3Packages.buildPythonApplication {
     python3Packages.django_compressor
     python3Packages.django_guardian
     python3Packages.sentry-sdk
+    redgreenunittest
     django-inline-static
     django-jsonview
     django-qr-code
