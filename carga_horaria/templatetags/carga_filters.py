@@ -6,7 +6,7 @@ register = template.Library()
 @register.filter
 def hhmm(value):
     hours = value
-    minutes = Decimal('60.00') * (hours % 1)
+    minutes = 60 * (hours % 1)
     return "%d:%02d" % (hours, minutes)
 
 

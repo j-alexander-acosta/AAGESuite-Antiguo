@@ -147,11 +147,29 @@ class TestProfesorModel(TestCase):
         )
 
     def test_65_35(self):
-        self.assertEqual(self.profesor_impeque.horas_docentes, self.horas_impeque)
-        self.assertEqual(self.profesor_impeque_igual.horas_docentes, self.horas_impeque_igual)
+        # 11, 8:15, 0:53, 3:52
+        self.assertEqual(self.profesor_impeque.horas_docentes_total, self.horas_impeque)
+        self.assertEqual(self.profesor_impeque.horas_lectivas_total, 8.25)
+        # self.assertEqual(self.profesor_impeque.horas_recreo_total, 0.8833333333333333)
+        # self.assertEqual(self.profesor_impeque.horas_no_lectivas_total, 3.8666666666666667)
+        
+        # 5, 3:45, 0:25, 1:50
+        self.assertEqual(self.profesor_impeque_igual.horas_docentes_total, self.horas_impeque_igual)
+        self.assertEqual(self.profesor_impeque_igual.horas_lectivas_total, 3.75)
+        # self.assertEqual(self.profesor_impeque_igual.horas_recreo_total, 0.4166666666666667)
+        # self.assertEqual(self.profesor_impeque_igual.horas_no_lectivas_total, 1.8333333333333335)
 
     def test_60_40(self):
-        self.assertEqual(self.profesor_vulnerable.horas_docentes, self.horas_vulnerable)
+        # 6, 4:30, 0:29, 2:01
+        self.assertEqual(self.profesor_vulnerable.horas_docentes_total, self.horas_vulnerable)
+        self.assertEqual(self.profesor_vulnerable.horas_lectivas_total, 4.5)
+        # self.assertEqual(self.profesor_vulnerable.horas_recreo_total, 0.48333333333333334)
+        # self.assertEqual(self.profesor_vulnerable.horas_no_lectivas_total, 2.0166666666666666)
+
 
     def test_mestizaje(self):
-        self.assertEqual(self.profesor_mestizo.horas_docentes, self.horas_impeque_igual+self.horas_vulnerable)
+        # 11, 8:15, 0:54, 3:51
+        self.assertEqual(self.profesor_mestizo.horas_docentes_total, self.horas_impeque_igual+self.horas_vulnerable)
+        self.assertEqual(self.profesor_mestizo.horas_lectivas_total, 8.25)
+        # self.assertEqual(self.profesor_mestizo.horas_recreo_total, 0.9)
+        # self.assertEqual(self.profesor_mestizo.horas_no_lectivas_total, 3.85)

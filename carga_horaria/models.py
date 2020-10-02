@@ -94,6 +94,10 @@ class Colegio(models.Model):
     alumnos = models.PositiveIntegerField(default=0)
     prioritarios = models.PositiveSmallIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100)])
     
+    @property
+    def is_vuln(self):
+        return self.prioritarios >= 80
+
     def __str__(self): 
         return self.nombre
 
@@ -113,6 +117,10 @@ class Periodo(models.Model):
     horas_adicionales = models.DecimalField(max_digits=4, decimal_places=2, default=0)
     colegio = models.ForeignKey('Colegio')
     profesor_jefe = models.ForeignKey('Profesor', blank=True, null=True)
+
+    @property
+    def is_vuln(self):
+        return self.colegio.is_vuln and self.plan.nivel in ['PK', 'K', 'B1', 'B2', 'B3', 'B4']
 
     def refresh(self):
         own = {aa.pop('base__pk'): aa for aa in self.asignatura_set.filter(base__isnull=False).values('pk', 'base__pk', 'horas')}
@@ -234,6 +242,10 @@ class Asignatura(models.Model):
     diferenciada = models.BooleanField(default=False)
 
     objects = AsignaturaQuerySet.as_manager()
+
+    @property
+    def is_vuln(self):
+        return any([pp.is_vuln for pp in self.periodos.all()])
 
     @property
     def profesores(self):
@@ -364,33 +376,60 @@ class Profesor(models.Model):
     def horas_no_aula_disponibles(self):
         return self.horas_no_aula - self.horas_no_aula_asignadas
 
+    # @property
+    # def vuln_asign_ratio(self):
+    #     afectos = ['PK', 'K', 'B1', 'B2', 'B3', 'B4']
+    #     fantasy_hours = Decimal(self.horas * Decimal(60.0)/Decimal(45.0) * Decimal(.65)).quantize(Decimal(0), rounding=ROUND_HALF_DOWN) or Decimal(1)
+    #     vuln_hours = self.asignacion_set.filter(asignatura__periodos__plan__nivel__in=afectos, asignatura__periodos__colegio__prioritarios__gte=80).aggregate(models.Sum('horas'))['horas__sum'] or Decimal(0)
+    #     return vuln_hours / fantasy_hours
+
     @property
-    def vuln_asign_ratio(self):
-        afectos = ['PK', 'K', 'B1', 'B2', 'B3', 'B4']
-        fantasy_hours = Decimal(self.horas * Decimal(60.0)/Decimal(45.0) * Decimal(.65)).quantize(Decimal(0), rounding=ROUND_HALF_DOWN) or Decimal(1)
-        vuln_hours = self.asignacion_set.filter(asignatura__periodos__plan__nivel__in=afectos, asignatura__periodos__colegio__prioritarios__gte=80).aggregate(models.Sum('horas'))['horas__sum'] or Decimal(0)
-        return vuln_hours / fantasy_hours
+    def horas_docentes_total(self):
+        return self.horas_docentes + self.horas_docentes_vulnerables
 
     @property
     def horas_docentes(self):
-        if self.horas == 11:
-            method = ROUND_HALF_UP
-        else:
-            method = ROUND_HALF_DOWN
+        return int(sum([aa.horas for aa in filter(lambda aa: not aa.is_vuln, self.asignacion_set.all())]))
 
-        horas_sin = self.horas * Decimal(.65)
-        horas_con = self.horas * Decimal(.60)
-        partial_sin = Decimal(horas_sin * Decimal(60.0)/Decimal(45.0)).quantize(Decimal('0.0'), rounding=ROUND_HALF_DOWN).quantize(Decimal('0'), rounding=method)
-        partial_con = Decimal(horas_con * Decimal(60.0)/Decimal(45.0)).quantize(Decimal('0.0'), rounding=ROUND_HALF_DOWN).quantize(Decimal('0'), rounding=method)
-        return partial_sin * (Decimal(1.00) - self.vuln_asign_ratio) + partial_con * self.vuln_asign_ratio
+    @property
+    def horas_docentes_vulnerables(self):
+        return int(sum([aa.horas for aa in filter(lambda aa: aa.is_vuln, self.asignacion_set.all())]))
+
+    @property
+    def horas_lectivas_total(self):
+        return self.horas_lectivas + self.horas_lectivas_vulnerables
 
     @property
     def horas_lectivas(self):
-        return Decimal(self.horas_docentes * Decimal('45.00')/Decimal('60.0'))  # 44.96?
+        return Ley20903(self.horas_docentes).horas_lectivas
+
+    @property
+    def horas_lectivas_vulnerables(self):
+        return Ley20903(self.horas_docentes_vulnerables).horas_lectivas_vulnerables
+
+    @property
+    def horas_recreo_total(self):
+        self.horas_recreo + self.horas_recreo_vulnerables
+        
+    @property
+    def horas_recreo(self):
+        return Ley20903(self.horas_docentes).horas_recreo
+
+    @property
+    def horas_recreo_vulnerables(self):
+        return Ley20903(self.horas_docentes).horas_recreo_vulnerables
+
+    @property
+    def horas_no_lectivas_total(self):
+        return self.horas_lectivas + self.horas_lectivas_vulnerables
 
     @property
     def horas_no_lectivas(self):
-        return Decimal(self.horas - self.horas_lectivas - self.horas_recreo) + Decimal('0.016')
+        return Ley20903(self.horas_docentes).horas_lectivas
+
+    @property
+    def horas_no_lectivas_vulnerables(self):
+        return Ley20903(self.horas_docentes).horas_lectivas_vulnerables
 
     @property
     def horas_no_lectivas_anexo(self):
@@ -398,12 +437,7 @@ class Profesor(models.Model):
 
     @property
     def horas_planificacion(self):
-        return Decimal(self.horas_no_lectivas * Decimal(.40))
-
-    # FIXME: verificar según la tabla (horas recreo)
-    @property
-    def horas_recreo(self):
-        return Decimal(self.horas * Decimal('4.10')/Decimal('60.00'))
+        return Decimal(self.horas_no_lectivas_total * 0.4)
 
     def __str__(self): 
         return self.nombre
@@ -470,6 +504,13 @@ class Asignacion(models.Model):
     horas = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(0.5)])
 
     objects = AsignacionQuerySet.as_manager()
+
+    @property
+    def is_vuln(self):
+        if self.asignatura:
+            return self.asignatura.is_vuln
+        else:
+            return False
 
     @property
     def horas_crono(self):
