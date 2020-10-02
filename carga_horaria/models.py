@@ -3,6 +3,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
 from decimal import Decimal, ROUND_HALF_DOWN, ROUND_HALF_UP, InvalidOperation
+from .fucklogic import Ley20903
 
 
 class Nivel(Enum):
