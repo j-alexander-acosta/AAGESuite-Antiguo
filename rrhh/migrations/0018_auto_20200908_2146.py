@@ -41,13 +41,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='archivo',
             name='contrato',
-            field=models.ForeignKey(default=4, on_delete=django.db.models.deletion.CASCADE, to='rrhh.Contrato'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rrhh.Contrato'),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='entrevista',
             name='contrato',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='rrhh.Contrato'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rrhh.Contrato'),
             preserve_default=False,
         ),
     ]
