@@ -267,7 +267,7 @@ class Asignatura(models.Model):
 
     @property
     def horas_disponibles(self):
-        return self.horas - self.horas_asignadas
+        return self.horas - self.horas_asignadas  # FIXME?
 
     @property
     def completa(self):
@@ -354,7 +354,7 @@ class Profesor(models.Model):
 
     @property
     def horas_disponibles(self):
-        return self.horas_docentes - self.horas_asignadas
+        return (self.horas or 44) - self.horas_asignadas  # FIXME BUG
 
     @property
     def horas_no_lectivas_asignadas(self):
@@ -409,7 +409,7 @@ class Profesor(models.Model):
 
     @property
     def horas_recreo_total(self):
-        self.horas_recreo + self.horas_recreo_vulnerables
+        return self.horas_recreo + self.horas_recreo_vulnerables
         
     @property
     def horas_recreo(self):
@@ -417,19 +417,19 @@ class Profesor(models.Model):
 
     @property
     def horas_recreo_vulnerables(self):
-        return Ley20903(self.horas_docentes).horas_recreo_vulnerables
+        return Ley20903(self.horas_docentes_vulnerables).horas_recreo_vulnerables
 
     @property
     def horas_no_lectivas_total(self):
-        return self.horas_lectivas + self.horas_lectivas_vulnerables
+        return self.horas_no_lectivas + self.horas_no_lectivas_vulnerables
 
     @property
     def horas_no_lectivas(self):
-        return Ley20903(self.horas_docentes).horas_lectivas
+        return Ley20903(self.horas_docentes).horas_no_lectivas
 
     @property
     def horas_no_lectivas_vulnerables(self):
-        return Ley20903(self.horas_docentes).horas_lectivas_vulnerables
+        return Ley20903(self.horas_docentes_vulnerables).horas_no_lectivas_vulnerables
 
     @property
     def horas_no_lectivas_anexo(self):
@@ -437,7 +437,7 @@ class Profesor(models.Model):
 
     @property
     def horas_planificacion(self):
-        return Decimal(self.horas_no_lectivas_total * 0.4)
+        return self.horas_no_lectivas_total * 0.4
 
     def __str__(self): 
         return self.nombre
