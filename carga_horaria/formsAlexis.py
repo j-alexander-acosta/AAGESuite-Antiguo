@@ -25,7 +25,6 @@ class ProfesorForm(forms.ModelForm):
             'nombre',
             'rut',
             'horas',
-            'horas_no_aula',
             'especialidad',
             'fundacion',
             'colegio',
@@ -35,29 +34,18 @@ class ProfesorForm(forms.ModelForm):
         ]
         labels = {
             'horas': u'Horas contratadas indefinidas aula',
-            'horas_no_aula': u'Horas contratadas indefinidas no aula',
             'fundacion': 'Fundación que lo contrata',
             'directivo': '¿Es directivo?'
         }
         widgets = {
             'horas': forms.NumberInput(attrs={'step': '1'}),
-            'horas_no_aula': forms.NumberInput(attrs={'step': '1'}),
         }
 
     def clean(self):
         cleaned_data = super(ProfesorForm, self).clean()
 
-        if self.instance and self.instance.asignacion_set.count() > 0:
-            if self.fields['horas'].has_changed(self.instance.horas, cleaned_data['horas']):
-                raise forms.ValidationError("No se pueden modificar horas de contrato mientras tenga asignaciones.")
-
-        if self.instance and self.instance.asignacionnoaula_set.count() >0:
-            if self.fields['horas_no_aula'].has_changed(self.instance.horas_no_aula, cleaned_data['horas_no_aula']):
-                raise forms.ValidationError("No se pueden modificar horas de contrato mientras tenga asignaciones.")
-
-
-        if cleaned_data['horas'] + cleaned_data['horas_no_aula'] > 44:
-            raise forms.ValidationError("La suma de horas de aula y no aula no debe superar 44 horas.")
+        # if cleaned_data['horas'] > 44:
+        #     raise forms.ValidationError("La suma de horas de aula y no aula no debe superar 44 horas.")
         return cleaned_data
 
     def __init__(self, *args, **kwargs):

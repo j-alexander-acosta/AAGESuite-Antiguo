@@ -303,7 +303,6 @@ class Profesor(models.Model):
     nombre = models.CharField(max_length=255)
     rut = models.CharField(max_length=13, blank=True, null=True, unique=True)
     horas = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(44)])
-    horas_no_aula = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(44)], default=0)
     especialidad = models.ForeignKey('Especialidad', verbose_name='título', blank=True, null=True)
     fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
     colegio = models.ForeignKey('Colegio', null=True)
@@ -334,7 +333,7 @@ class Profesor(models.Model):
 
     @property
     def horas_contratadas(self):
-        return self.horas + self.horas_no_aula
+        return self.horas
 
     @property
     def horas_asignadas_crono(self):
@@ -374,7 +373,7 @@ class Profesor(models.Model):
 
     @property
     def horas_no_aula_disponibles(self):
-        return self.horas_no_aula - self.horas_no_aula_asignadas
+        return (self.horas or 44) - self.horas_no_aula_asignadas
 
     # @property
     # def vuln_asign_ratio(self):
