@@ -267,7 +267,7 @@ class Asignatura(models.Model):
 
     @property
     def horas_disponibles(self):
-        return self.horas - self.horas_asignadas  # FIXME?
+        return self.horas - self.horas_asignadas
 
     @property
     def completa(self):
@@ -312,11 +312,11 @@ class Profesor(models.Model):
 
     @property
     def ceiling(self):
-        return self.horas_contratadas
+        return self.horas_contratadas or 44
 
     @property
     def progress(self):
-        return self.horas_asignadas_total_crono
+        return self.horas_semanales_total
 
     @property
     def get_progress_display(self):
@@ -340,10 +340,6 @@ class Profesor(models.Model):
         return self.horas_asignadas * 45 / 60
 
     @property
-    def horas_asignadas_total_crono(self):
-        return Decimal(self.horas_no_lectivas_asignadas_anexo) + Decimal(self.horas_asignadas_crono) + Decimal(self.horas_no_aula_asignadas)
-
-    @property
     def horas_asignadas(self):
         return sum(self.asignacion_set.values_list('horas', flat=True))
 
@@ -353,7 +349,7 @@ class Profesor(models.Model):
 
     @property
     def horas_disponibles(self):
-        return (self.horas or 44) - self.horas_asignadas  # FIXME BUG
+        return (self.horas or 44) - self.horas_semanales_total
 
     @property
     def horas_no_lectivas_asignadas(self):
@@ -365,7 +361,7 @@ class Profesor(models.Model):
 
     @property
     def horas_no_lectivas_disponibles(self):
-        return self.horas_no_lectivas - self.horas_no_lectivas_asignadas
+        return self.horas_no_lectivas_total - self.horas_no_lectivas_asignadas
 
     @property
     def horas_no_aula_asignadas(self):
@@ -373,14 +369,19 @@ class Profesor(models.Model):
 
     @property
     def horas_no_aula_disponibles(self):
-        return (self.horas or 44) - self.horas_no_aula_asignadas
+        return self.horas_disponibles
 
-    # @property
-    # def vuln_asign_ratio(self):
-    #     afectos = ['PK', 'K', 'B1', 'B2', 'B3', 'B4']
-    #     fantasy_hours = Decimal(self.horas * Decimal(60.0)/Decimal(45.0) * Decimal(.65)).quantize(Decimal(0), rounding=ROUND_HALF_DOWN) or Decimal(1)
-    #     vuln_hours = self.asignacion_set.filter(asignatura__periodos__plan__nivel__in=afectos, asignatura__periodos__colegio__prioritarios__gte=80).aggregate(models.Sum('horas'))['horas__sum'] or Decimal(0)
-    #     return vuln_hours / fantasy_hours
+    @property
+    def horas_semanales_total(self):
+        return self.horas_semanales + self.horas_semanales_vulnerables + self.horas_no_aula_asignadas
+
+    @property
+    def horas_semanales(self):
+        return Ley20903(self.horas_docentes).horas_semanales
+
+    @property
+    def horas_semanales_vulnerables(self):
+        return Ley20903(self.horas_docentes_vulnerables).horas_semanales_vulnerables
 
     @property
     def horas_docentes_total(self):
@@ -388,11 +389,11 @@ class Profesor(models.Model):
 
     @property
     def horas_docentes(self):
-        return int(sum([aa.horas for aa in filter(lambda aa: not aa.is_vuln, self.asignacion_set.all())]))
+        return sum([aa.horas for aa in filter(lambda aa: not aa.is_vuln, self.asignacion_set.all())])
 
     @property
     def horas_docentes_vulnerables(self):
-        return int(sum([aa.horas for aa in filter(lambda aa: aa.is_vuln, self.asignacion_set.all())]))
+        return sum([aa.horas for aa in filter(lambda aa: aa.is_vuln, self.asignacion_set.all())])
 
     @property
     def horas_lectivas_total(self):
@@ -432,7 +433,7 @@ class Profesor(models.Model):
 
     @property
     def horas_no_lectivas_anexo(self):
-        return Decimal(self.horas - self.horas_lectivas)
+        return Decimal(self.horas - self.horas_lectivas_total)
 
     @property
     def horas_planificacion(self):

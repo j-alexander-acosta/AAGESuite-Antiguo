@@ -10,7 +10,7 @@ class Ley20903(object):
                 33: (24.75, 2.5833333333333335, 10.666666666666666, 38),
                 32: (24.0, 2.5166666666666666, 10.483333333333333, 37),
                 31: (23.25, 2.45, 10.3, 36),
-                30: (22.5, 2.3833333333333333, 10.116666666666667),
+                30: (22.5, 2.3833333333333333, 10.116666666666667, 35),
                 29: (21.75, 2.25, 9.0, 33),
                 28: (21.0, 2.183333333333333, 8.816666666666666, 32),
                 27: (20.25, 2.1166666666666667, 8.633333333333333, 31),
@@ -42,6 +42,9 @@ class Ley20903(object):
                 1: (0.75, 0.06666666666666667, 0.18333333333333332, 1),
                 # TODO: make an entry for .5
                 0: (0, 0, 0, 0)}
+    PUNTO_CINCO_IMPEQUE = (0.38333333333333336, 0.03333333333333333, 0.1, 1)
+    IMPEQUES_BY_HH = {values[3]: key for key, values in IMPEQUES.items()}
+
     VULNERABLES = {35: (26.25, 3.0, 14.75, 44),
                    34: (25.5, 2.9333333333333336, 14.566666666666666, 43),
                    33: (24.75, 2.8, 13.45, 41),
@@ -77,32 +80,68 @@ class Ley20903(object):
                    3: (2.25, 0.26666666666666666, 1.4833333333333334, 4),
                    2: (1.5, 0.13333333333333333, 0.36666666666666664, 2),
                    1: (0.75, 0.06666666666666667, 0.18333333333333332, 1),
-                   # TODO: make an entry for .5
                    0: (0, 0, 0, 0)}
+    PUNTO_CINCO_VULNERABLE = (0.38333333333333336, 0.03333333333333333, 0.1, 1)
+    VULNERABLES_BY_HH = {values[3]: key for key, values in VULNERABLES.items()}
 
     def __init__(self, horas_docentes):
-        self.horas_docentes = horas_docentes
+        # should be always .5 the mod
+        self.punto_cinco = bool(horas_docentes % 1)
+        self.horas_docentes = int(horas_docentes)
 
     @property
     def horas_lectivas(self):
-        return self.IMPEQUES[self.horas_docentes][0]
+        v = self.IMPEQUES[self.horas_docentes][0]
+        if self.punto_cinco:
+            v += self.PUNTO_CINCO_IMPEQUE[0]
+        return v
 
     @property
     def horas_lectivas_vulnerables(self):
-        return self.VULNERABLES[self.horas_docentes][0]
+        v = self.VULNERABLES[self.horas_docentes][0]
+        if self.punto_cinco:
+            v += self.PUNTO_CINCO_VULNERABLE[0]
+        return v
 
     @property
     def horas_recreo(self):
-        return self.IMPEQUES[self.horas_docentes][1]
+        v = self.IMPEQUES[self.horas_docentes][1]
+        if self.punto_cinco:
+            v += self.PUNTO_CINCO_IMPEQUE[1]
+        return v
 
     @property
     def horas_recreo_vulnerables(self):
-        return self.VULNERABLES[self.horas_docentes][1]
+        v = self.VULNERABLES[self.horas_docentes][1]
+        if self.punto_cinco:
+            v += self.PUNTO_CINCO_VULNERABLE[1]
+        return v
 
     @property
     def horas_no_lectivas(self):
-        return self.IMPEQUES[self.horas_docentes][2]
+        v = self.IMPEQUES[self.horas_docentes][2]
+        if self.punto_cinco:
+            v += self.PUNTO_CINCO_IMPEQUE[2]
+        return v
 
     @property
     def horas_no_lectivas_vulnerables(self):
-        return self.VULNERABLES[self.horas_docentes][2]
+        v = self.VULNERABLES[self.horas_docentes][2]
+        if self.punto_cinco:
+            v += self.PUNTO_CINCO_VULNERABLE[2]
+        return v
+
+    @property
+    def horas_semanales(self):
+        v = self.IMPEQUES[self.horas_docentes][3]
+        if self.punto_cinco:
+            v += self.PUNTO_CINCO_IMPEQUE[3]
+        return v
+
+    @property
+    def horas_semanales_vulnerables(self):
+        v = self.VULNERABLES[self.horas_docentes][3]
+        if self.punto_cinco:
+            v += self.PUNTO_CINCO_VULNERABLE[3]
+        return v
+

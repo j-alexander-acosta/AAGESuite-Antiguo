@@ -30,13 +30,13 @@
 	  </div>
 	</div>
 
-      <h6 class="card-subtitle mb-2">Título: <strong>{{ profesor.especialidad|default:"Ninguna" }}</strong> | Horas contrato total: <strong>{{ profesor.horas_contratadas|decimal_maybe }}</strong></h6>
+      <h6 class="card-subtitle mb-2">Título: <strong>{{ profesor.especialidad|default:"Ninguna" }}</strong> | Horas contratadas: <strong>{{ profesor.horas_contratadas|decimal_maybe }}</strong> | Horas propuestas: <strong>{{ profesor.horas_semanales_total|decimal_maybe }}</strong></h6>
       <br>
       <h6 class="card-subtitle mb-2">
         <table class="table table-sm">
           <tbody>
             <tr>
-              <td>Hrs. Jornada semanal: <strong>{{ object.horas|decimal_maybe }}</strong></td>
+              <td>Hrs. Jornada semanal: <strong>{{ object.horas_semanales|decimal_maybe }}</strong></td>
               <Td>Hrs. Aula: <strong>{{ object.horas_docentes|decimal_maybe }}</strong></td>
               <td>Hrs. Lectivas: <strong>{{ object.horas_lectivas|hhmm }}</strong></td>
               <td class="text-primary">Recreo: <strong>{{ object.horas_recreo|hhmm }}</strong></td>
@@ -44,7 +44,7 @@
               <td><strong>65/35</strong></td>
             </tr>
             <tr>
-              <td>Hrs. Jornada semanal: <strong>{{ object.horas|decimal_maybe }}</strong></td>
+              <td>Hrs. Jornada semanal: <strong>{{ object.horas_semanales_vulnerables|decimal_maybe }}</strong></td>
               <Td>Hrs. Aula: <strong>{{ object.horas_docentes_vulnerables|decimal_maybe }}</strong></td>
               <td>Hrs. Lectivas: <strong>{{ object.horas_lectivas_vulnerables|hhmm }}</strong></td>
               <td class="text-primary">Recreo: <strong>{{ object.horas_recreo_vulnerables|hhmm }}</strong></td>
@@ -52,7 +52,7 @@
               <td><strong>60/40</strong></td>
             </tr>
             <tr>
-              <td>Hrs. Otras funciones: <strong>{{ object.horas_no_aula|hhmm }}</strong></td>
+              <td>Hrs. Otras funciones: <strong>{{ object.horas_no_aula_asignadas|hhmm }}</strong></td>
             </tr>
           </tbody>
         </table>
