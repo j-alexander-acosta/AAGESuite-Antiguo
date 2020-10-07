@@ -34,8 +34,8 @@ class ProfesorForm(forms.ModelForm):
             'cargo'
         ]
         labels = {
-            'horas': u'Horas de contrato en docencia de aula',
-            'horas_no_aula': u'Horas de contrato en docencia no aula',
+            'horas': u'Horas contratadas indefinidas aula',
+            'horas_no_aula': u'Horas contratadas indefinidas no aula',
             'fundacion': 'Fundación que lo contrata',
             'directivo': '¿Es directivo?'
         }
