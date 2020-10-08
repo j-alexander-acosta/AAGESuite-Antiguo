@@ -353,11 +353,11 @@ class Profesor(models.Model):
 
     @property
     def horas_no_lectivas_asignadas(self):
-        return sum(self.asignacionextra_set.values_list('horas', flat=True)) + self.horas_planificacion
+        return float(sum(self.asignacionextra_set.values_list('horas', flat=True))) + self.horas_planificacion
 
     @property
     def horas_no_lectivas_asignadas_anexo(self):
-        return sum(self.asignacionextra_set.values_list('horas', flat=True)) + self.horas_planificacion + self.horas_recreo
+        return float(sum(self.asignacionextra_set.values_list('horas', flat=True))) + self.horas_planificacion + self.horas_recreo
 
     @property
     def horas_no_lectivas_disponibles(self):
