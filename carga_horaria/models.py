@@ -433,7 +433,7 @@ class Profesor(models.Model):
 
     @property
     def horas_no_lectivas_anexo(self):
-        return Decimal(self.horas - self.horas_lectivas_total)
+        return Decimal(float(self.horas) - self.horas_lectivas_total)
 
     @property
     def horas_planificacion(self):
