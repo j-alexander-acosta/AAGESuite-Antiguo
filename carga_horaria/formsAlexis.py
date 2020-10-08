@@ -33,7 +33,7 @@ class ProfesorForm(forms.ModelForm):
             'cargo'
         ]
         labels = {
-            'horas': u'Horas contratadas indefinidas aula',
+            'horas': u'Horas contratadas',
             'fundacion': 'Fundación que lo contrata',
             'directivo': '¿Es directivo?'
         }
