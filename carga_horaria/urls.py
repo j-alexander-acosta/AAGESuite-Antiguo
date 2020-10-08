@@ -139,11 +139,11 @@ urlpatterns = [
         views.AsignaturaBaseDeleteView.as_view(),
         name='asignaturabase__eliminar'
     ),
-    url(
-        r'^asignaturas/$',
-        views.AsignaturaListView.as_view(),
-        name='asignaturas'
-    ),
+    # url(
+    #     r'^asignaturas/$',
+    #     views.AsignaturaListView.as_view(),
+    #     name='asignaturas'
+    # ),
     url(
         r'^asignaturas/(?P<pk>\d+)/(?P<periodo_pk>\d+)/$',
         views.AsignaturaDetailView.as_view(),
