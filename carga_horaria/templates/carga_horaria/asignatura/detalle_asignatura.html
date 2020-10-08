@@ -12,7 +12,7 @@
         <h4 class="card-title"><strong> {{ object }}
           {% block buttons %}
               <div class="btn-group pull-right">
-                  <a href="{% url 'carga-horaria:asignaturas' %}" type="button" class="btn btn-sm btn-dark">
+                  <a href="#" type="button" class="btn btn-sm btn-dark">
                       <i class="fa fa-arrow-left"></i>
                   </a>
                   <a href="{% url 'carga-horaria:asignatura__editar' object.pk view.kwargs.periodo_pk %}" type="button" class="btn btn-sm btn-primary" onclick="return confirm('¿Está seguro de editar las horas del plan de estudio?')">
