@@ -88,7 +88,7 @@ class GetObjectsForUserMixin(object):
             # end
             
             kwargs = {"{}__in".format(self.lookup): colegios,
-                      "{}periode".format(lookup[:-2]): periodo}
+                      "{}periode".format(self.lookup[:-2]): periodo}
             return qs.filter(**kwargs).distinct()
         else:
             colegios = [c.pk for c in Colegio.objects.all()]
@@ -99,7 +99,7 @@ class GetObjectsForUserMixin(object):
             # end
             
             kwargs = {"{}__in".format(self.lookup): colegios,
-                      "{}periode".format(lookup[:-2]): periodo}
+                      "{}periode".format(self.lookup[:-2]): periodo}
             return qs.filter(**kwargs).distinct()
 
 
