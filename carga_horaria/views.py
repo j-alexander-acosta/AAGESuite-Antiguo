@@ -33,6 +33,11 @@ from .formsDani import PlantillaPlanForm
 
 
 @login_required
+def switch_periodo(request, year=2020):
+    request.session['periodo'] = year
+    return redirect('carga-horaria:home')
+
+@login_required
 def switch(request, pk=None):
     if pk:
         colegio = get_object_or_404(Colegio, pk=pk)

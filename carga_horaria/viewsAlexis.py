@@ -45,6 +45,8 @@ class SearchMixin(object):
 
 
 def get_for_user(request, qs, lookup, user):
+    periodo = request.session.get('periodo', 2020)
+
     if not user.is_superuser:
         colegios = [c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")]
         
@@ -54,7 +56,8 @@ def get_for_user(request, qs, lookup, user):
             colegios = [selected]
         # end
             
-        kwargs = {"{}__in".format(lookup): colegios}
+        kwargs = {"{}__in".format(lookup): colegios,
+                  'periodo': periodo}
         return qs.filter(**kwargs).distinct()
     else:
         colegios = [c.pk for c in Colegio.objects.all()]
@@ -64,7 +67,8 @@ def get_for_user(request, qs, lookup, user):
             colegios = [selected]
         # end
             
-        kwargs = {"{}__in".format(lookup): colegios}
+        kwargs = {"{}__in".format(lookup): colegios,
+                  'periodo': periodo}
         return qs.filter(**kwargs).distinct()
         
     
@@ -72,6 +76,8 @@ def get_for_user(request, qs, lookup, user):
 class GetObjectsForUserMixin(object):
     def get_queryset(self):
         qs = super(GetObjectsForUserMixin, self).get_queryset()
+        periodo = self.request.session.get('periodo', 2020)
+
         if not self.request.user.is_superuser:
             colegios = [c.pk for c in get_objects_for_user(self.request.user, "carga_horaria.change_colegio")]
 
@@ -81,7 +87,8 @@ class GetObjectsForUserMixin(object):
                 colegios = [selected]
             # end
             
-            kwargs = {"{}__in".format(self.lookup): colegios}
+            kwargs = {"{}__in".format(self.lookup): colegios,
+                      'periodo': periodo}
             return qs.filter(**kwargs).distinct()
         else:
             colegios = [c.pk for c in Colegio.objects.all()]
@@ -91,7 +98,8 @@ class GetObjectsForUserMixin(object):
                 colegios = [selected]
             # end
             
-            kwargs = {"{}__in".format(self.lookup): colegios}
+            kwargs = {"{}__in".format(self.lookup): colegios,
+                      'periodo': periodo}
             return qs.filter(**kwargs).distinct()
 
 
