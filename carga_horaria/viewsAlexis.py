@@ -57,7 +57,7 @@ def get_for_user(request, qs, lookup, user):
         # end
             
         kwargs = {"{}__in".format(lookup): colegios,
-                  'periode': periodo}
+                  "{}periode".format(lookup[:-2]): periodo}
         return qs.filter(**kwargs).distinct()
     else:
         colegios = [c.pk for c in Colegio.objects.all()]
@@ -68,7 +68,7 @@ def get_for_user(request, qs, lookup, user):
         # end
             
         kwargs = {"{}__in".format(lookup): colegios,
-                  'periode': periodo}
+                  "{}periode".format(lookup[:-2]): periodo}
         return qs.filter(**kwargs).distinct()
         
     
@@ -88,7 +88,7 @@ class GetObjectsForUserMixin(object):
             # end
             
             kwargs = {"{}__in".format(self.lookup): colegios,
-                      'periode': periodo}
+                      "{}periode".format(lookup[:-2]): periodo}
             return qs.filter(**kwargs).distinct()
         else:
             colegios = [c.pk for c in Colegio.objects.all()]
@@ -99,7 +99,7 @@ class GetObjectsForUserMixin(object):
             # end
             
             kwargs = {"{}__in".format(self.lookup): colegios,
-                      'periode': periodo}
+                      "{}periode".format(lookup[:-2]): periodo}
             return qs.filter(**kwargs).distinct()
 
 
