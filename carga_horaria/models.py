@@ -93,7 +93,7 @@ class Colegio(models.Model):
     financiamiento = models.PositiveSmallIntegerField(default=PAID, choices=FINANCING_CHOICES)
     alumnos = models.PositiveIntegerField(default=0)
     prioritarios = models.PositiveSmallIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100)])
-    periodo = models.PositiveSmallIntegerField(default=2020)
+    periode = models.PositiveSmallIntegerField(default=2020)
     
     @property
     def is_vuln(self):
@@ -116,7 +116,7 @@ class Periodo(models.Model):
     horas = models.DecimalField(max_digits=4, decimal_places=2, default=0)
     horas_dif = models.DecimalField(max_digits=4, decimal_places=2, default=0, validators=[MinValueValidator(0)])
     horas_adicionales = models.DecimalField(max_digits=4, decimal_places=2, default=0)
-    colegio = models.ForeignKey('Colegio', related_name='+')
+    colegio = models.ForeignKey('Colegio')
     profesor_jefe = models.ForeignKey('Profesor', blank=True, null=True)
 
     @property
