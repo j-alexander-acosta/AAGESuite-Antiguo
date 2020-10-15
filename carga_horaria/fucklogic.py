@@ -91,56 +91,56 @@ class Ley20903(object):
 
     @property
     def horas_lectivas(self):
-        v = self.IMPEQUES[self.horas_docentes][0]
+        v = self.IMPEQUES.get(self.horas_docentes, (99, 99, 99, 99))[0]
         if self.punto_cinco:
             v += self.PUNTO_CINCO_IMPEQUE[0]
         return v
 
     @property
     def horas_lectivas_vulnerables(self):
-        v = self.VULNERABLES[self.horas_docentes][0]
+        v = self.VULNERABLES.get(self.horas_docentes, (99, 99, 99, 99))[0]
         if self.punto_cinco:
             v += self.PUNTO_CINCO_VULNERABLE[0]
         return v
 
     @property
     def horas_recreo(self):
-        v = self.IMPEQUES[self.horas_docentes][1]
+        v = self.IMPEQUES.get(self.horas_docentes, (99, 99, 99, 99))[1]
         if self.punto_cinco:
             v += self.PUNTO_CINCO_IMPEQUE[1]
         return v
 
     @property
     def horas_recreo_vulnerables(self):
-        v = self.VULNERABLES[self.horas_docentes][1]
+        v = self.VULNERABLES.get(self.horas_docentes, (99, 99, 99, 99))[1]
         if self.punto_cinco:
             v += self.PUNTO_CINCO_VULNERABLE[1]
         return v
 
     @property
     def horas_no_lectivas(self):
-        v = self.IMPEQUES[self.horas_docentes][2]
+        v = self.IMPEQUES.get(self.horas_docentes, (99, 99, 99, 99))[2]
         if self.punto_cinco:
             v += self.PUNTO_CINCO_IMPEQUE[2]
         return v
 
     @property
     def horas_no_lectivas_vulnerables(self):
-        v = self.VULNERABLES[self.horas_docentes][2]
+        v = self.VULNERABLES.get(self.horas_docentes, (99, 99, 99, 99))[2]
         if self.punto_cinco:
             v += self.PUNTO_CINCO_VULNERABLE[2]
         return v
 
     @property
     def horas_semanales(self):
-        v = self.IMPEQUES[self.horas_docentes][3]
+        v = self.IMPEQUES.get(self.horas_docentes, (99, 99, 99, 99))[3]
         if self.punto_cinco:
             v += self.PUNTO_CINCO_IMPEQUE[3]
         return v
 
     @property
     def horas_semanales_vulnerables(self):
-        v = self.VULNERABLES[self.horas_docentes][3]
+        v = self.VULNERABLES.get(self.horas_docentes, (99, 99, 99, 99))[3]
         if self.punto_cinco:
             v += self.PUNTO_CINCO_VULNERABLE[3]
         return v
