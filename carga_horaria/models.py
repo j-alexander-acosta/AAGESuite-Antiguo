@@ -258,7 +258,10 @@ class Asignatura(models.Model):
             # locale.setlocale(locale.LC_ALL, 'es_CL.UTF-8')
             horas_base = self.base.get_horas(self.periodos.first().jec)
             horas_extra = self.horas - horas_base
-            return "{:n} + {:n}".format(int(horas_base), int(horas_extra))
+            if horas_base == Decimal('0.5') or horas_extra == Decimal('0.5'):
+                return "{:.1f} + {:.1f}".format(horas_base, horas_extra)
+            else:
+                return "{:n} + {:n}".format(int(horas_base), int(horas_extra))
         else:
             return int(self.horas)
 
