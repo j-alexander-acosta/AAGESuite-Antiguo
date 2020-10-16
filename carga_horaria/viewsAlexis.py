@@ -472,6 +472,6 @@ class AsignaturaDeleteView(LoginRequiredMixin, DeleteView):
         return reverse(
             'carga-horaria:periodo',
             kwargs={
-                'pk': self.request.GET.get('periodo'),
+                'pk': self.kwargs['periodo_pk'],
             }
         )

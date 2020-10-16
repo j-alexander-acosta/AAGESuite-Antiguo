@@ -176,7 +176,7 @@ urlpatterns = [
         name='asignatura__editar'
     ),
     url(
-        r'^asignaturas/(?P<pk>\d+)/eliminar/$',
+        r'^asignaturas/(?P<pk>\d+)/eliminar/(?P<periodo_pk>\d+)/$',
         views.AsignaturaDeleteView.as_view(),
         name='asignatura__eliminar'
     ),
