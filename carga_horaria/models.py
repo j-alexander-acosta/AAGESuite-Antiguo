@@ -109,6 +109,10 @@ class Colegio(models.Model):
         """
         return reverse('carga-horaria:colegio', args=[str(self.pk)])
 
+    class Meta:
+        unique_together = ['rbd', 'periode']
+
+
 class Periodo(models.Model):
     plan = models.ForeignKey('Plan')
     nombre = models.CharField(max_length=255, blank=True, null=True)
