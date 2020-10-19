@@ -35,6 +35,8 @@ from .formsDani import PlantillaPlanForm
 @login_required
 def switch_periodo(request, year=2020):
     request.session['periodo'] = year
+    del request.session['colegio__pk']
+    del request.session['colegio__nombre']
     return redirect('carga-horaria:home')
 
 @login_required
@@ -250,6 +252,12 @@ class ColegioCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('carga-horaria:colegios')
 #    success_message = u"Nuevo periodo %(nombre)s creado satisfactoriamente."
 #    error_message = "Revise que todos los campos del formulario hayan sido validados correctamente."
+
+    def form_valid(self, form):
+        colegio = form.save(commit=False)
+        colegio.periode = self.request.session.get('periodo', 2020)
+        colegio.save()
+        return redirect(self.get_success_url())
 
 
 class ColegioUpdateView(LoginRequiredMixin, UpdateView):
