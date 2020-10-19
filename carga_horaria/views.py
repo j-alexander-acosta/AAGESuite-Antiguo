@@ -35,8 +35,11 @@ from .formsDani import PlantillaPlanForm
 @login_required
 def switch_periodo(request, year=2020):
     request.session['periodo'] = year
-    del request.session['colegio__pk']
-    del request.session['colegio__nombre']
+    try:
+        del request.session['colegio__pk']
+        del request.session['colegio__nombre']
+    except KeyError:
+        pass
     return redirect('carga-horaria:home')
 
 @login_required
@@ -46,7 +49,7 @@ def switch(request, pk=None):
         request.session['colegio__pk'] = colegio.pk
         request.session['colegio__nombre'] = colegio.nombre
         return redirect('carga-horaria:home')
-    colegios = get_objects_for_user(request.user, "carga_horaria.change_colegio")
+    colegios = get_objects_for_user(request.user, "carga_horaria.change_colegio", Colegio.objects.filter(periode=request.session.get('periodo', 2020)))
     return render(request, 'carga_horaria/switch.html', {'colegios': colegios})
 
 @login_required
