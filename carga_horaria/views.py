@@ -260,7 +260,7 @@ class ColegioCreateView(LoginRequiredMixin, CreateView):
         colegio = form.save(commit=False)
         colegio.periode = self.request.session.get('periodo', 2020)
         colegio.save()
-        return redirect(self.get_success_url())
+        return redirect(reverse('carga-horaria:colegios'))
 
 
 class ColegioUpdateView(LoginRequiredMixin, UpdateView):
