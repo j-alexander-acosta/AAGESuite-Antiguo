@@ -1,11 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from carga_horaria.models import Profesor, AsignaturaBase, Asignatura, Asistente
 from carga_horaria.formsAlexis import ProfesorForm, AsignaturaBaseForm, AsignaturaCreateForm, AsignaturaUpdateForm, AsistenteForm
 from django.core.urlresolvers import reverse_lazy, reverse
 from guardian.shortcuts import get_objects_for_user
+from .models import Persona
 from .models import Fundacion
 from .models import Colegio
 from .models import Periodo
@@ -153,11 +154,28 @@ class ProfesorCreateView(LoginRequiredMixin, CreateView):
 
         return kwargs
 
+    def form_valid(self, form):
+        profesor = form.save(commit=False)
+        profesor.persona, _ = Persona.objects.update_or_create(rut=form.cleaned_data['rut'],
+                                                               defaults={'nombre': form.cleaned_data['nombre'],
+                                                                         'adventista': form.cleaned_data['adventista']})
+        profesor.save()
+        return redirect(reverse('carga-horaria:profesores'))
+
 
 class ProfesorUpdateView(LoginRequiredMixin, UpdateView):
     model = Profesor
     form_class = ProfesorForm
     template_name = 'carga_horaria/profesor/editar_profesor.html'
+
+    def form_valid(self, form):
+        profesor = form.save(commit=False)
+        profesor.persona, _ = Persona.objects.update_or_create(rut=form.cleaned_data['rut'],
+                                                               defaults={'nombre': form.cleaned_data['nombre'],
+                                                                         'adventista': form.cleaned_data['adventista']})
+        profesor.save()
+        return redirect(self.get_success_url())
+
 
     def get_success_url(self):
         return reverse(
@@ -257,10 +275,23 @@ class AsistenteCreateView(LoginRequiredMixin, CreateView):
     def get_form_kwargs(self, *args, **kwargs):
         kwargs = super(AsistenteCreateView, self).get_form_kwargs(*args, **kwargs)
         colegio_pk = self.request.session.get('colegio__pk', None)
-        kwargs.update({'user': self.request.user,
-                       'colegio': colegio_pk,
-                       'fundacion': Colegio.objects.get(pk=self.request.session.get('colegio__pk', None)).fundacion.pk})
+        if colegio_pk:
+            kwargs.update({'user': self.request.user,
+                           'colegio': colegio_pk,
+                           'fundacion': Colegio.objects.get(pk=self.request.session.get('colegio__pk', None)).fundacion.pk})
+        else:
+            kwargs.update({'user': self.request.user})
+
         return kwargs
+
+
+    def form_valid(self, form):
+        asistente = form.save(commit=False)
+        asistente.persona, _ = Persona.objects.update_or_create(rut=form.cleaned_data['rut'],
+                                                                defaults={'nombre': form.cleaned_data['nombre'],
+                                                                          'adventista': form.cleaned_data['adventista']})
+        asistente.save()
+        return redirect(reverse('carga-horaria:asistentes'))
 
 
 class AsistenteUpdateView(LoginRequiredMixin, UpdateView):
@@ -275,6 +306,14 @@ class AsistenteUpdateView(LoginRequiredMixin, UpdateView):
                 'pk': self.object.pk,
             }
         )
+
+    def form_valid(self, form):
+        asistente = form.save(commit=False)
+        asistente.persona, _ = Persona.objects.update_or_create(rut=form.cleaned_data['rut'],
+                                                                defaults={'nombre': form.cleaned_data['nombre'],
+                                                                          'adventista': form.cleaned_data['adventista']})
+        asistente.save()
+        return redirect(self.get_success_url())
 
 
 class AsistenteDeleteView(LoginRequiredMixin, DeleteView):

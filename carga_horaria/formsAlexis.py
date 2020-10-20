@@ -18,17 +18,16 @@ class ProfesorForm(forms.ModelForm):
 
     """
     rut = CLRutField(label="RUT")
+    nombre = forms.CharField()
+    adventista = forms.BooleanField(required=False)
 
     class Meta:
         model = models.Profesor
         fields = [
-            'nombre',
-            'rut',
             'horas',
             'especialidad',
             'fundacion',
             'colegio',
-            'adventista',
             'directivo',
             'cargo'
         ]
@@ -66,6 +65,11 @@ class ProfesorForm(forms.ModelForm):
             self.fields['colegio'].initial = colegio
             self.fields['colegio'].disabled = True
 
+        if self.instance.pk:
+            self.fields['nombre'].initial = self.instance.persona.nombre
+            self.fields['rut'].initial = self.instance.persona.rut
+            self.fields['adventista'].initial = self.instance.persona.adventista
+
         self.helper = FormHelper()
         self.helper.form_tag = False
 
@@ -76,17 +80,16 @@ class AsistenteForm(forms.ModelForm):
 
     """
     rut = CLRutField(label="RUT")
+    nombre = forms.CharField()
+    adventista = forms.BooleanField(required=False)
 
     class Meta:
         model = models.Asistente
         fields = [
-            'nombre',
-            'rut',
             'horas',
             'funcion',
             'fundacion',
             'colegio',
-            'adventista',
         ]
         labels = {
             'horas': u'Horas de contrato',
@@ -111,6 +114,12 @@ class AsistenteForm(forms.ModelForm):
         else:
             del(self.fields['fundacion'])
         
+        if self.instance.pk:
+            self.fields['nombre'].initial = self.instance.persona.nombre
+            self.fields['rut'].initial = self.instance.persona.rut
+            self.fields['adventista'].initial = self.instance.persona.adventista
+
+
         self.helper = FormHelper()
         self.helper.form_tag = False
 

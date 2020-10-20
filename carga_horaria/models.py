@@ -308,15 +308,25 @@ class Profesor(models.Model):
                      (UTP, 'Jefe de UTP'),
                      (CAPELLAN, 'Capellán'))
 
-    nombre = models.CharField(max_length=255)
-    rut = models.CharField(max_length=13, blank=True, null=True, unique=True)
+    persona = models.ForeignKey('Persona')
     horas = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(44)])
     especialidad = models.ForeignKey('Especialidad', verbose_name='título', blank=True, null=True)
     fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
     colegio = models.ForeignKey('Colegio', null=True)
-    adventista = models.BooleanField(default=False)
     directivo = models.BooleanField(default=False)
     cargo = models.PositiveSmallIntegerField(default=DOCENTE, choices=CARGO_CHOICES)
+
+    @property
+    def nombre(self):
+        return self.persona.nombre
+
+    @property
+    def rut(self):
+        return self.persona.rut
+
+    @property
+    def adventista(self):
+        return self.persona.adventista
 
     @property
     def ceiling(self):
@@ -450,24 +460,28 @@ class Profesor(models.Model):
     def __str__(self): 
         return self.nombre
 
-    class Meta:
-        ordering = ['nombre']
-
 
 class Asistente(models.Model):
-    nombre = models.CharField(max_length=255)
-    rut = models.CharField(max_length=13, blank=True, null=True, unique=True)
+    persona = models.ForeignKey('Persona')
     horas = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(1), MaxValueValidator(45)])
     funcion = models.CharField(max_length=255)
     fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
     colegio = models.ForeignKey('Colegio', null=True)
-    adventista = models.BooleanField(default=False)
+
+    @property
+    def nombre(self):
+        return self.persona.nombre
+
+    @property
+    def rut(self):
+        return self.persona.rut
+
+    @property
+    def adventista(self):
+        return self.persona.adventista
 
     def __str__(self):
         return self.nombre
-
-    class Meta:
-        ordering = ['nombre']
 
 
 class AsignacionQuerySet(models.QuerySet):
@@ -578,3 +592,12 @@ class Especialidad(models.Model):
 
     def __str__(self):
         return self.nombre
+
+
+class Persona(models.Model):
+    nombre = models.CharField(max_length=255)
+    rut = models.CharField(max_length=13, blank=True, null=True, unique=True)
+    adventista = models.BooleanField(default=False)
+
+    def __str__(self):
+        return "{} ({})".format(self.nombre, self.rut)

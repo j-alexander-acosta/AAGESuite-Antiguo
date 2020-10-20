@@ -10,6 +10,11 @@ from .models import Asignacion
 from .models import AsignacionExtra
 from .models import Especialidad
 from .models import Fundacion
+from .models import Persona
+
+@admin.register(Persona)
+class PersonaAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'rut', 'adventista')
 
 
 @admin.register(Plan)
