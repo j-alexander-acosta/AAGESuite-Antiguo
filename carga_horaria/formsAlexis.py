@@ -55,7 +55,7 @@ class ProfesorForm(forms.ModelForm):
 
         if user:
             if not user.is_superuser:
-                self.fields['fundacion'].queryset = self.fields['fundacion'].queryset.filter(colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")])
+                self.fields['fundacion'].queryset = self.fields['fundacion'].queryset.filter(colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")]).distinct()
         else:
             del(self.fields['fundacion'])
         
