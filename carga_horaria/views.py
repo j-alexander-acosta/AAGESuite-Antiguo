@@ -420,7 +420,7 @@ def asignar(request, pk, periodo_pk):
     aa = get_object_or_404(Asignatura, pk=pk)
 
     if request.method == 'POST':
-        form = AsignacionForm(request.POST, asignatura=aa, user=request.user, colegio=request.session.get('colegio__pk', None))
+        form = AsignacionForm(request.POST, asignatura=aa, user=request.user, colegio=request.session.get('colegio__pk', None), periodo=request.session.get('periodo', 2020))
         if form.is_valid():
             asignacion = form.save(commit=False)
             asignacion.asignatura = aa
@@ -438,7 +438,7 @@ def asignar_fua(request, pk, tipo):
     tipo_display = dict(Asignacion.TIPO_CHOICES)[int(tipo)]
 
     if request.method == 'POST':
-        form = AsignacionFUAForm(request.POST, profesor=pp, user=request.user, colegio=request.session.get('colegio__pk', None))
+        form = AsignacionFUAForm(request.POST, profesor=pp, user=request.user, colegio=request.session.get('colegio__pk', None), periodo=request.session.get('periodo', 2020))
         if form.is_valid():
             asignacion = form.save(commit=False)
             asignacion.profesor = pp
@@ -457,7 +457,7 @@ def asignar_no_aula_fua(request, pk, tipo):
     tipo_display = dict(AsignacionNoAula.TIPO_CHOICES)[int(tipo)]
 
     if request.method == 'POST':
-        form = AsignacionNoAulaFUAForm(request.POST, profesor=pp, user=request.user, colegio=request.session.get('colegio__pk', None))
+        form = AsignacionNoAulaFUAForm(request.POST, profesor=pp, user=request.user, colegio=request.session.get('colegio__pk', None), periodo=request.session.get('periodo', 2020))
         if form.is_valid():
             asignacion = form.save(commit=False)
             asignacion.profesor = pp
@@ -479,7 +479,7 @@ def asignar_extra(request, pk):
     pp = get_object_or_404(Profesor, pk=pk)
 
     if request.method == 'POST':
-        form = AsignacionExtraForm(request.POST, profesor=pp, user=request.user, colegio=request.session.get('colegio__pk', None))
+        form = AsignacionExtraForm(request.POST, profesor=pp, user=request.user, colegio=request.session.get('colegio__pk', None), periodo=request.session.get('periodo', 2020))
         if form.is_valid():
             asignacion = form.save(commit=False)
             asignacion.profesor = pp
@@ -498,7 +498,7 @@ def asignar_no_aula(request, pk):
     pp = get_object_or_404(Profesor, pk=pk)
 
     if request.method == 'POST':
-        form = AsignacionNoAulaForm(request.POST, profesor=pp, user=request.user, colegio=request.session.get('colegio__pk', None))
+        form = AsignacionNoAulaForm(request.POST, profesor=pp, user=request.user, colegio=request.session.get('colegio__pk', None), periodo=request.session.get('periodo', 2020))
         if form.is_valid():
             asignacion = form.save(commit=False)
             asignacion.profesor = pp

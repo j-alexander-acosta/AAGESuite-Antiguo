@@ -271,11 +271,18 @@ class Asignatura(models.Model):
 
     @property
     def horas_asignadas(self):
-        return sum(self.asignacion_set.values_list('horas', flat=True))
+        asignadas = sum(self.asignacion_set.values_list('horas', flat=True))
+        if asignadas > self.horas:
+            return self.horas
+        else:
+            return asignadas
 
     @property
     def horas_disponibles(self):
-        return self.horas - self.horas_asignadas
+        if self.horas_asignadas > self.horas:
+            return 0
+        else:
+            return self.horas - self.horas_asignadas
 
     @property
     def completa(self):

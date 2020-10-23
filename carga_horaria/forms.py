@@ -2,7 +2,7 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from guardian.shortcuts import get_objects_for_user
 from .models import Asignacion, AsignacionExtra, AsignacionNoAula
-from .models import Profesor
+from .models import Profesor, Colegio
 
 class AsignacionForm(forms.ModelForm):
     """
@@ -21,14 +21,15 @@ class AsignacionForm(forms.ModelForm):
         profesor = self.cleaned_data['profesor']
         if horas > profesor.horas_disponibles:
             raise forms.ValidationError("Excede las horas que {} tiene disponibles ({})".format(profesor, profesor.horas_disponibles))
-        if self.asignatura and horas > self.asignatura.horas_disponibles:
-            raise forms.ValidationError("Excede las horas que {} tiene disponibles ({})".format(self.asignatura, self.asignatura.horas_disponibles))
+        # if self.asignatura and horas > self.asignatura.horas_disponibles:
+        #     raise forms.ValidationError("Excede las horas que {} tiene disponibles ({})".format(self.asignatura, self.asignatura.horas_disponibles))
         return horas
 
     def __init__(self, *args, **kwargs):
         self.asignatura = kwargs.pop('asignatura', None)
         user = kwargs.pop('user', None)
         colegio = kwargs.pop('colegio', None)
+        periode = kwargs.pop('periodo', 2020)
         super(AsignacionForm, self).__init__(*args, **kwargs)
 
         if user:
@@ -39,7 +40,9 @@ class AsignacionForm(forms.ModelForm):
                     self.fields['profesor'].queryset = self.fields['profesor'].queryset.filter(colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")]).distinct()
             else:
                 if colegio:
-                    self.fields['profesor'].queryset = self.fields['profesor'].queryset.filter(colegio__pk__in=[colegio])
+                    self.fields['profesor'].queryset = self.fields['profesor'].queryset.filter(colegio__pk__in=[colegio]).distinct()
+                else:
+                    self.fields['profesor'].queryset = self.fields['profesor'].queryset.filter(colegio__pk__in=Colegio.objects.filter(periode=periode)).distinct()
         else:
             # del(self.fields['profesor'])
             self.fields['profesor'].disabled = True
@@ -93,6 +96,7 @@ class AsignacionFUAForm(forms.ModelForm):
         self.profesor = kwargs.pop('profesor', None)
         self.colegio = kwargs.pop('colegio', None)
         user = kwargs.pop('user', None)
+        periode = kwargs.pop('periodo', 2020)
         super(AsignacionFUAForm, self).__init__(*args, **kwargs)
 
         if user:
@@ -144,6 +148,7 @@ class AsignacionNoAulaFUAForm(forms.ModelForm):
         self.profesor = kwargs.pop('profesor', None)
         self.colegio = kwargs.pop('colegio', None)
         user = kwargs.pop('user', None)
+        periode = kwargs.pop('periodo', 2020)
         super(AsignacionNoAulaFUAForm, self).__init__(*args, **kwargs)
 
         if user:
@@ -208,6 +213,7 @@ class AsignacionExtraForm(forms.ModelForm):
         self.profesor = kwargs.pop('profesor', None)
         self.colegio = kwargs.pop('colegio', None)
         user = kwargs.pop('user', None)
+        periode = kwargs.pop('periodo', 2020)
         super(AsignacionExtraForm, self).__init__(*args, **kwargs)
 
         if user:
@@ -264,6 +270,7 @@ class AsignacionNoAulaForm(forms.ModelForm):
         self.profesor = kwargs.pop('profesor', None)
         self.colegio = kwargs.pop('colegio', None)
         user = kwargs.pop('user', None)
+        periode = kwargs.pop('periodo', 2020)
         super(AsignacionNoAulaForm, self).__init__(*args, **kwargs)
 
         if user:
