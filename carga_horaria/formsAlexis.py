@@ -12,6 +12,7 @@ from localflavor.cl.forms import CLRutField
 
 from carga_horaria import models
 
+
 class ProfesorForm(forms.ModelForm):
     """
         Formulario para crear y editar un profesor
@@ -20,8 +21,7 @@ class ProfesorForm(forms.ModelForm):
     rut = CLRutField(label="RUT")
     nombre = forms.CharField()
     adventista = forms.BooleanField(required=False)
-    fecha_nacimiento = forms.DateField(required=False)
-
+    fecha_nacimiento = forms.DateField(required=False, widget=forms.widgets.DateInput(attrs={'type': 'date'}))
 
     class Meta:
         model = models.Profesor
@@ -90,7 +90,7 @@ class AsistenteForm(forms.ModelForm):
     rut = CLRutField(label="RUT")
     nombre = forms.CharField()
     adventista = forms.BooleanField(required=False)
-    fecha_nacimiento = forms.DateField(required=False)
+    fecha_nacimiento = forms.DateField(required=False, widget=forms.widgets.DateInput(attrs={'type': 'date'}))
 
     class Meta:
         model = models.Asistente
