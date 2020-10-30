@@ -38,7 +38,7 @@
                 <tr{% if p.completion_percentage == 100 %} class="text-success" {% endif %}>
                     <td><a href="{% url 'carga-horaria:periodo' p.pk %}">{{ p }}</a></td>
                     <td align="center">{{ p.completion_percentage }}%</td>
-                    <td>{% if p.completion_percentage == 100 %}Completo{% else %}Incompleto{% endif %}</td>
+                    <td>{% if p.completion_percentage >= 100 %}Completo{% else %}Incompleto{% endif %}</td>
                     <td>
                         <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:periodo__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
                         <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_periodo_{{p.pk}}"><i class="fa fa-trash"></i></a>

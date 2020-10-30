@@ -603,6 +603,12 @@
                 </tbody>
             </table>
 
+            {% if object.observaciones %}
+            <h5>Observaciones</h5>
+
+            <p>{{ object.observaciones }}</p>
+            {% endif %}
+
         </div>
 		</div>
 

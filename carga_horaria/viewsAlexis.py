@@ -158,7 +158,8 @@ class ProfesorCreateView(LoginRequiredMixin, CreateView):
         profesor = form.save(commit=False)
         profesor.persona, _ = Persona.objects.update_or_create(rut=form.cleaned_data['rut'],
                                                                defaults={'nombre': form.cleaned_data['nombre'],
-                                                                         'adventista': form.cleaned_data['adventista']})
+                                                                         'adventista': form.cleaned_data['adventista'],
+                                                                         'fecha_nacimiento': form.cleaned_data['fecha_nacimiento']})
         profesor.save()
         return redirect(reverse('carga-horaria:profesores'))
 
@@ -168,11 +169,24 @@ class ProfesorUpdateView(LoginRequiredMixin, UpdateView):
     form_class = ProfesorForm
     template_name = 'carga_horaria/profesor/editar_profesor.html'
 
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(ProfesorUpdateView, self).get_form_kwargs(*args, **kwargs)
+        colegio_pk = self.request.session.get('colegio__pk', None)
+        if colegio_pk:
+            kwargs.update({'user': self.request.user,
+                           'colegio': colegio_pk,
+                           'fundacion': Colegio.objects.get(pk=self.request.session.get('colegio__pk', None)).fundacion.pk})
+        else:
+            kwargs.update({'user': self.request.user})
+
+        return kwargs
+
     def form_valid(self, form):
         profesor = form.save(commit=False)
         profesor.persona, _ = Persona.objects.update_or_create(rut=form.cleaned_data['rut'],
                                                                defaults={'nombre': form.cleaned_data['nombre'],
-                                                                         'adventista': form.cleaned_data['adventista']})
+                                                                         'adventista': form.cleaned_data['adventista'],
+                                                                         'fecha_nacimiento': form.cleaned_data['fecha_nacimiento']})
         profesor.save()
         return redirect(self.get_success_url())
 
@@ -289,7 +303,8 @@ class AsistenteCreateView(LoginRequiredMixin, CreateView):
         asistente = form.save(commit=False)
         asistente.persona, _ = Persona.objects.update_or_create(rut=form.cleaned_data['rut'],
                                                                 defaults={'nombre': form.cleaned_data['nombre'],
-                                                                          'adventista': form.cleaned_data['adventista']})
+                                                                          'adventista': form.cleaned_data['adventista'],
+                                                                          'fecha_nacimiento': form.cleaned_data['fecha_nacimiento']})
         asistente.save()
         return redirect(reverse('carga-horaria:asistentes'))
 
@@ -311,7 +326,8 @@ class AsistenteUpdateView(LoginRequiredMixin, UpdateView):
         asistente = form.save(commit=False)
         asistente.persona, _ = Persona.objects.update_or_create(rut=form.cleaned_data['rut'],
                                                                 defaults={'nombre': form.cleaned_data['nombre'],
-                                                                          'adventista': form.cleaned_data['adventista']})
+                                                                          'adventista': form.cleaned_data['adventista'],
+                                                                          'fecha_nacimiento': form.cleaned_data['fecha_nacimiento']})
         asistente.save()
         return redirect(self.get_success_url())
 

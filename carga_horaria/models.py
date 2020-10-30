@@ -209,7 +209,7 @@ class Periodo(models.Model):
     @property
     def completion_percentage(self):
         try:
-            return round(self.progress * 100 / self.ceiling)
+            return min(round(self.progress * 100 / self.ceiling), 100)
         except:
             return 0
 
@@ -307,13 +307,17 @@ class Profesor(models.Model):
     INSPECTOR = 5
     UTP = 6
     CAPELLAN = 7
+    FINANCIERO = 8
+    ORIENTADOR = 9
     CARGO_CHOICES = ((DOCENTE, 'Docente'),
                      (RECTOR, 'Rector'),
                      (DIRECTOR, 'Director'),
                      (SUBDIRECTOR, 'Subdirector'),
                      (INSPECTOR, 'Inspector General'),
                      (UTP, 'Jefe de UTP'),
-                     (CAPELLAN, 'Capellán'))
+                     (CAPELLAN, 'Capellán'),
+                     (CAPELLAN, 'Administrador Financiero'),
+                     (CAPELLAN, 'Orientador'))
 
     persona = models.ForeignKey('Persona')
     horas = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(44)])
@@ -322,6 +326,7 @@ class Profesor(models.Model):
     colegio = models.ForeignKey('Colegio', null=True)
     directivo = models.BooleanField(default=False)
     cargo = models.PositiveSmallIntegerField(default=DOCENTE, choices=CARGO_CHOICES)
+    observaciones = models.TextField(default='')
 
     @property
     def nombre(self):
@@ -467,6 +472,9 @@ class Profesor(models.Model):
     def __str__(self): 
         return self.nombre
 
+    class Meta:
+        ordering = ('persona__nombre',)
+
 
 class Asistente(models.Model):
     persona = models.ForeignKey('Persona')
@@ -600,11 +608,15 @@ class Especialidad(models.Model):
     def __str__(self):
         return self.nombre
 
+    class Meta:
+        ordering = ('nombre',)
+
 
 class Persona(models.Model):
     nombre = models.CharField(max_length=255)
     rut = models.CharField(max_length=13, blank=True, null=True, unique=True)
     adventista = models.BooleanField(default=False)
+    fecha_nacimiento = models.DateField('fecha de nacimiento', null=True)
 
     def __str__(self):
         return "{} ({})".format(self.nombre, self.rut)

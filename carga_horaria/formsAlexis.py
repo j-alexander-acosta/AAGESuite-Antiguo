@@ -20,16 +20,23 @@ class ProfesorForm(forms.ModelForm):
     rut = CLRutField(label="RUT")
     nombre = forms.CharField()
     adventista = forms.BooleanField(required=False)
+    fecha_nacimiento = forms.DateField(required=False)
+
 
     class Meta:
         model = models.Profesor
         fields = [
+            'rut',
+            'nombre',
+            'adventista',
+            'fecha_nacimiento',
             'horas',
             'especialidad',
             'fundacion',
             'colegio',
             'directivo',
-            'cargo'
+            'cargo',
+            'observaciones'
         ]
         labels = {
             'horas': u'Horas contratadas',
@@ -53,22 +60,23 @@ class ProfesorForm(forms.ModelForm):
         fundacion = kwargs.pop('fundacion', None)
         super(ProfesorForm, self).__init__(*args, **kwargs)
 
-        if user:
-            if not user.is_superuser:
-                self.fields['fundacion'].queryset = self.fields['fundacion'].queryset.filter(colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")]).distinct()
-        else:
-            del(self.fields['fundacion'])
-        
         if colegio:
             self.fields['fundacion'].initial = fundacion
             self.fields['fundacion'].disabled = True
             self.fields['colegio'].initial = colegio
             self.fields['colegio'].disabled = True
 
+        if user:
+            if not user.is_superuser:
+                self.fields['fundacion'].queryset = self.fields['fundacion'].queryset.filter(colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")]).distinct()
+        else:
+            del(self.fields['fundacion'])
+        
         if self.instance.pk:
             self.fields['nombre'].initial = self.instance.persona.nombre
             self.fields['rut'].initial = self.instance.persona.rut
             self.fields['adventista'].initial = self.instance.persona.adventista
+            self.fields['fecha_nacimiento'].initial = self.instance.persona.fecha_nacimiento
 
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -82,10 +90,15 @@ class AsistenteForm(forms.ModelForm):
     rut = CLRutField(label="RUT")
     nombre = forms.CharField()
     adventista = forms.BooleanField(required=False)
+    fecha_nacimiento = forms.DateField(required=False)
 
     class Meta:
         model = models.Asistente
         fields = [
+            'rut',
+            'nombre',
+            'adventista',
+            'fecha_nacimiento',
             'horas',
             'funcion',
             'fundacion',
@@ -118,6 +131,7 @@ class AsistenteForm(forms.ModelForm):
             self.fields['nombre'].initial = self.instance.persona.nombre
             self.fields['rut'].initial = self.instance.persona.rut
             self.fields['adventista'].initial = self.instance.persona.adventista
+            self.fields['fecha_nacimiento'].initial = self.instance.persona.fecha_nacimiento
 
 
         self.helper = FormHelper()
