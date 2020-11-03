@@ -11,6 +11,7 @@ from carga_horaria.models import Periodo, Colegio, Plan
 from carga_horaria.formsDani import PeriodoForm, ColegioForm, PlanForm
 from django.core.urlresolvers import reverse_lazy, reverse
 from guardian.shortcuts import get_objects_for_user
+from guardian.shortcuts import assign_perm
 from wkhtmltopdf.views import PDFTemplateResponse, PDFTemplateView
 from .models import Nivel
 from .models import Profesor
@@ -29,7 +30,26 @@ from .forms import AsignacionExtraForm
 from .forms import AsignacionExtraUpdateForm
 from .forms import AsignacionNoAulaForm
 from .forms import AsignacionNoAulaUpdateForm
+from .forms import AssignPermForm
 from .formsDani import PlantillaPlanForm
+
+
+@login_required
+def assign(request):
+    if not request.user.is_superuser:
+        raise Http404
+
+    year = request.session.get('periodo', 2020)
+    if request.method == 'POST':
+        form = AssignPermForm(request.POST, year=year)
+        if form.is_valid():
+            user = form.cleaned_data['usuario']
+            for c in form.cleaned_data['colegios']:
+                assign_perm('change_colegio', user, c)
+        
+    form = AssignPermForm(year=year)
+    return render(request, 'carga_horaria/assign.html', {'form': form})
+
 
 
 @login_required

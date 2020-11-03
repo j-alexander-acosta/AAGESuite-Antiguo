@@ -1,8 +1,23 @@
 from django import forms
+from django.contrib.auth import get_user_model
 from crispy_forms.helper import FormHelper
 from guardian.shortcuts import get_objects_for_user
 from .models import Asignacion, AsignacionExtra, AsignacionNoAula
 from .models import Profesor, Colegio
+
+
+class AssignPermForm(forms.Form):
+    usuario = forms.ModelChoiceField(queryset=get_user_model().objects.all())
+    colegios = forms.ModelMultipleChoiceField(queryset=Colegio.objects.all())
+
+    def __init__(self, *args, **kwargs):
+        self.year = kwargs.pop('year', 2020)
+        super(AssignPermForm, self).__init__(*args, **kwargs)
+        self.fields['colegios'].queryset = Colegio.objects.filter(periode=self.year)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+
+
 
 class AsignacionForm(forms.ModelForm):
     """

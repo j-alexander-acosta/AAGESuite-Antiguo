@@ -1,0 +1,20 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title_page %}
+    Inicio
+{% endblock %}
+
+{% block content %}
+<h2>Elija assign</h2>
+
+        <form class="form-horizontal" method="post">
+            {% csrf_token %}
+            {% crispy form %}
+            <div class="form-group">
+                <div class="col-sm-10 col-sm-offset-2">
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                </div>
+            </div>
+        </form>
+{% endblock content %}
