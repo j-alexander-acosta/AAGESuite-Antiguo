@@ -503,7 +503,12 @@ class AsignacionQuerySet(models.QuerySet):
     @property
     def sorted(self):
         ordering = {str(value): index for index, value in enumerate(Nivel)}
-        return sorted(self, key=lambda x: ordering["Nivel."+x.asignatura.periodos.first().plan.nivel])
+        def kei(x):
+            try:
+                return ordering["Nivel."+x.asignatura.periodos.first().plan.nivel]
+            except AttributeError:
+                return 14
+        return sorted(self, key=kei)
 
     @property
     def plan(self):
