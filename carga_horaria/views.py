@@ -580,7 +580,7 @@ class AsignacionExtraUpdateView(LoginRequiredMixin, UpdateView):
         asignacion = form.save(commit=False)
         if asignacion.horas == 0:
             asignacion_old = Asignacion.objects.get(pk=asignacion.pk)
-            asignacion.horas = asignacion.profesor.horas_no_lectivas_disponibles + asignacion_old.horas
+            asignacion.horas = asignacion.profesor.horas_no_lectivas_disponibles + float(asignacion_old.horas)
         asignacion.save()
         return redirect(self.get_success_url())
 
