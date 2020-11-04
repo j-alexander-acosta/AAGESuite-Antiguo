@@ -207,12 +207,11 @@ urlpatterns = [
         views.PeriodoUpdateView.as_view(),
         name='periodo__editar'
     ),
-    url(
-        r'^periodos/(?P<pk>\d+)/eliminar/$',
-        views.PeriodoDeleteView.as_view(),
-        name='periodo__eliminar'
-    ),
-
+    # url(
+    #     r'^periodos/(?P<pk>\d+)/eliminar/$',
+    #     views.PeriodoDeleteView.as_view(),
+    #     name='periodo__eliminar'
+    # ),
     url(
         r'^colegios/$',
         views.ColegioListView.as_view(),

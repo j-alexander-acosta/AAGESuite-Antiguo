@@ -24,9 +24,11 @@
                 <a href="{% url 'carga-horaria:periodo__editar' object.pk %}" type="button" class="btn btn-sm btn-primary">
                       <i class="fa fa-edit"></i>
                   </a>
+                {% comment %}
                   <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_periodo_{{object.pk}}">
                       <i class="fa fa-trash"></i>
                   </a>
+                {% endcomment %}
             </div>
         {% endblock %}
         </h4>
