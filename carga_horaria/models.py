@@ -540,7 +540,7 @@ class Asignacion(models.Model):
 
     profesor = models.ForeignKey('Profesor')
     asignatura = models.ForeignKey('Asignatura', null=True, blank=True)
-    curso = models.ForeignKey('Periodo', null=True, blank=True)
+    curso = models.ForeignKey('Periodo', null=True, blank=True)  # TODO: mark for deletion, this isn't used
     descripcion = models.CharField(max_length=255, null=True, blank=True)
     tipo = models.PositiveSmallIntegerField(default=PLAN)
     horas = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(0.5)])

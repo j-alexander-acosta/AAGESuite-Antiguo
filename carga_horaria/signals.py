@@ -1,4 +1,4 @@
-from django.db.models.signals import pre_save, post_save
+from django.db.models.signals import pre_save, post_save, pre_delete
 from django.dispatch import receiver
 from .models import Periodo
 from .models import Asignatura, AsignaturaBase
@@ -31,3 +31,15 @@ def horas_asignaturas_jec(sender, instance, **kwargs):
                     aa.horas = aa.base.horas_nec
                 aa.save()
         
+
+@receiver(pre_delete, sender=Periodo)
+def cleanup_after_periodo_delete(sender, instance, using, **kwargs):
+    instance.asignatura_set.all().delete()
+
+@receiver(pre_delete, sender=AsignaturaBase)
+def cleanup_after_asignaturabase_delete(sender, instance, using, **kwargs):
+    instance.asignatura_set.all().delete()
+
+@receiver(pre_delete, sender=Asignatura)
+def cleanup_after_asignatura_delete(sender, instance, using, **kwargs):
+    instance.asignacion_set.all().delete()
