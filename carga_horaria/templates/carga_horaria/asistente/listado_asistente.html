@@ -25,9 +25,11 @@
           <i class="fa fa-search"></i> <input name="q" placeholder="Buscar por nombre" value="{{ request.GET.q }}">{% if 'q' in request.GET %} <a href="{% url 'carga-horaria:asistentes' %}" class="text-muted">limpiar</a>{% endif %}
         </form>
       </div>
+        {% comment %}
       <div class="pull-right" style="padding-bottom: 10px;">
         <a class="btn btn-sm btn-default" href="{% url 'carga-horaria:asistentes-pdf' %}"><i class="fa fa-print"></i> Imprimir</a>
       </div>
+        {% endcomment %}
         <div class="table-responsive">
         <table class="table table-striped">
             <thead>
