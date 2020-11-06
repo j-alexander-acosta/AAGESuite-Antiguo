@@ -167,9 +167,14 @@ urlpatterns = [
         name='asignatura_dif__nuevo'
     ),
     url(
-        r'^periodos/(?P<pk>\d+)/nueva-asignatura-dif-merge/(?P<asignatura_pk>\d+)/$',
-        views.asignatura_dif_merge,
-        name='asignatura_dif_merge'
+        r'^periodos/(?P<pk>\d+)/nueva-asignatura-maybe/$',
+        views.asignatura_maybe,
+        name='asignatura_maybe'
+    ),
+    url(
+        r'^periodos/(?P<pk>\d+)/nueva-asignatura-merge/(?P<asignatura_pk>\d+)/$',
+        views.asignatura_merge,
+        name='asignatura_merge'
     ),
     url(
         r'^asignaturas/(?P<pk>\d+)/editar/(?P<periodo_pk>\d+)/$',

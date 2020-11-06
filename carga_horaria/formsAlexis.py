@@ -215,6 +215,7 @@ class AsignaturaCreateForm(forms.ModelForm):
         fields = [
             'nombre',
             'horas',
+            'combinable',
         ]
 
         labels = {

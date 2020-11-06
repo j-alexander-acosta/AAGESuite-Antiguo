@@ -6,9 +6,9 @@
 {% block content %}
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title">Combinar Asignatura Plan Diferenciado
+        <h4 class="card-title">Combinar Asignatura
         </h4>
-        <h5>Encontramos otra instancia de esta asignatura</h5>
+        <h5>Tal vez quiera combinar con asignatura de otro curso en lugar de crear una nueva</h5>
     </div>
     <div class="card-body">
       <p>Elija con qué instancia <strong>combinar</strong>:</p>
@@ -40,13 +40,7 @@
         {% endfor %}
             </table>
       <p>Si desea crear una <strong>nueva instancia</strong> en lugar de combinar con una existente:</p>
-        <form action="{% url 'carga-horaria:asignatura_dif__nuevo' object.pk %}" class="form-horizontal" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="can_confirm" value="jel llea">
-            <input type="hidden" name="asignatura" value="{{ candidatas.first.nombre }}">
-            <div class="form-group">
-                <div class="col-sm-10 col-sm-offset-2">
-                  <button type="submit" value="{{ aa.pk }}" class="btn btn-warning">Crear Nueva Asignatura</button>
+      <a class="btn btn-warning" href="{% url 'carga-horaria:asignatura__nuevo' object.pk %}">Crear Nueva Asignatura</a>
                     <a href="{{ request.META.HTTP_REFERER }}"
                     role="button" class="btn btn-default">
                         Volver

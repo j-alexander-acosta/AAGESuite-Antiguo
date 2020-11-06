@@ -245,6 +245,7 @@ class Asignatura(models.Model):
     periodos = models.ManyToManyField('Periodo')
     horas = models.DecimalField(max_digits=4, decimal_places=2)
     diferenciada = models.BooleanField(default=False)
+    combinable = models.BooleanField(default=False)
 
     objects = AsignaturaQuerySet.as_manager()
 

@@ -428,11 +428,21 @@ def asignatura_dif(request, pk):
 
 
 @login_required
-def asignatura_dif_merge(request, pk, asignatura_pk):
+def asignatura_merge(request, pk, asignatura_pk):
     pp = get_object_or_404(Periodo, pk=pk)
     aa = get_object_or_404(Asignatura, pk=asignatura_pk)
     aa.periodos.add(pp)
     return redirect('carga-horaria:periodo', pk)
+
+
+@login_required
+def asignatura_maybe(request, pk):
+    pp = get_object_or_404(Periodo, pk=pk)
+    candidatas = Asignatura.objects.filter(periodos__colegio=pp.colegio, combinable=True).exclude(periodos__pk__in=[pk])
+    if candidatas:
+        return render(request, 'carga_horaria/asignatura/asignatura_maybe.html', {'object': pp, 'candidatas': candidatas})
+    else:
+        return redirect('carga-horaria:asignatura__nuevo', pk)
 
 
 @login_required
