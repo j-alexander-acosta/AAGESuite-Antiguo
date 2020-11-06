@@ -415,7 +415,7 @@ def asignatura_dif(request, pk):
         colegio_pk = request.session.get('colegio__pk', None)
         can_confirm = request.POST.get('can_confirm', False)
         if colegio_pk and Asignatura.objects.filter(periodos__colegio=colegio_pk, nombre=nombre) and not can_confirm:
-            ax = Asignatura.objects.filter(periodos__colegio=colegio_pk, nombre=nombre)
+            ax = Asignatura.objects.filter(periodos__colegio=colegio_pk, nombre=nombre).distinct()
             return render(request, 'carga_horaria/asignatura/asignatura_dif_confirm.html', {'object': pp,
                                                                                             'candidatas': ax})
         else:
@@ -438,7 +438,7 @@ def asignatura_merge(request, pk, asignatura_pk):
 @login_required
 def asignatura_maybe(request, pk):
     pp = get_object_or_404(Periodo, pk=pk)
-    candidatas = Asignatura.objects.filter(periodos__colegio=pp.colegio, combinable=True).exclude(periodos__pk__in=[pk])
+    candidatas = Asignatura.objects.filter(periodos__colegio=pp.colegio, combinable=True).exclude(periodos__pk__in=[pk]).distinct()
     if candidatas:
         return render(request, 'carga_horaria/asignatura/asignatura_maybe.html', {'object': pp, 'candidatas': candidatas})
     else:
