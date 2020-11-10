@@ -12,6 +12,7 @@ from carga_horaria.formsDani import PeriodoForm, ColegioForm, PlanForm
 from django.core.urlresolvers import reverse_lazy, reverse
 from guardian.shortcuts import get_objects_for_user
 from guardian.shortcuts import assign_perm
+from guardian.shortcuts import remove_perm
 from wkhtmltopdf.views import PDFTemplateResponse, PDFTemplateView
 from .models import Nivel
 from .models import Profesor
@@ -44,6 +45,10 @@ def assign(request):
         form = AssignPermForm(request.POST, year=year)
         if form.is_valid():
             user = form.cleaned_data['usuario']
+
+            # clear perms first
+            remove_perm('carga_horaria.change_colegio', user, get_objects_for_user(user, 'carga_horaria.change_colegio'))
+
             for c in form.cleaned_data['colegios']:
                 assign_perm('change_colegio', user, c)
         
