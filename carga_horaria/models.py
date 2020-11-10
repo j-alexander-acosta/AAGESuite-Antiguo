@@ -1,9 +1,68 @@
 from enum import Enum
+from itertools import tee, islice, chain
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth import get_user_model
+from django.utils.translation import ugettext_lazy as _
 from decimal import Decimal, ROUND_HALF_DOWN, ROUND_HALF_UP, InvalidOperation
+from simple_history.models import HistoricalRecords
 from .fucklogic import Ley20903
+
+
+
+def previous_and_next(some_iterable):
+    prevs, items, nexts = tee(some_iterable, 3)
+    prevs = chain([None], prevs)
+    nexts = chain(islice(nexts, 1, None), [None])
+    return zip(prevs, items, nexts)
+
+
+class BaseModel(models.Model):
+    history = HistoricalRecords(inherit=True)
+    created_at = models.DateTimeField(_('created at'),
+                                      auto_now_add=True)
+
+    def action_log(self, just=[]):
+        fields = self.__class__._meta.fields
+        filtered_fields = list(filter(lambda f: f.get_attname() in just, fields) if just else fields)
+        field_names = [f.get_attname() for f in filtered_fields]
+        historic_field_names = (just or field_names) + ['history_user_id', 'history_date']
+        users = {None: 'sistema'}
+        users.update({u.pk: u.username for u in get_user_model().objects.filter(id__in=self.history.values_list('history_user_id', flat=True).distinct())})
+        rx = self.history.values(*historic_field_names)
+        changes = []
+
+        
+        for prev, record, nxt in previous_and_next(rx):
+            if nxt:
+                changed_fields = [f for f in filtered_fields if record[f.get_attname()] != nxt[f.get_attname()]]
+                verbose_changed_fields = [f.verbose_name for f in changed_fields]
+                if changed_fields:
+                    changes.append({'user': users[record['history_user_id']],
+                                    'action': "cambió", #_('changed'),
+                                    'changes': verbose_changed_fields,
+                                    'current_values': {field.attname: record[field.attname] for field in changed_fields},
+                                    'previous_values': {field.attname: nxt[field.attname] for field in changed_fields},
+                                    'dt': record['history_date']})
+            else:
+                if not just:
+                    changes.append({'user': users[record['history_user_id']],
+                                    'action': "creó", #_('created'),
+                                    'dt': record['history_date']})
+        return changes
+
+    @property
+    def agent(self):
+        return self.history.earliest().history_user
+    
+    @property
+    def last_edited_by(self):
+        return self.history.latest().history_user
+
+    class Meta:
+        abstract = True
+
 
 
 class Nivel(Enum):
@@ -113,7 +172,7 @@ class Colegio(models.Model):
         unique_together = ['rbd', 'periode']
 
 
-class Periodo(models.Model):
+class Periodo(BaseModel):
     plan = models.ForeignKey('Plan')
     nombre = models.CharField(max_length=255, blank=True, null=True)
     jec = models.BooleanField('JEC', default=True)

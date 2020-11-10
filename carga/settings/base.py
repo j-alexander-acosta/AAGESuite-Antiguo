@@ -36,6 +36,7 @@ PREREQ_APPS = [
     'widget_tweaks',
     'crispy_forms',
     'qr_code',
+    'simple_history',
     'easy_select2',
     'compressor',
     'guardian',
@@ -56,7 +57,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'carga_horaria.middleware.colegio_middleware'
+    'carga_horaria.middleware.colegio_middleware',
+    'simple_history.middleware.HistoryRequestMiddleware'
 ]
 
 ROOT_URLCONF = 'carga.urls'
