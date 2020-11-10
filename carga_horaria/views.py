@@ -47,7 +47,7 @@ def assign(request):
             user = form.cleaned_data['usuario']
 
             # clear perms first
-            remove_perm('carga_horaria.change_colegio', user, get_objects_for_user(user, 'carga_horaria.change_colegio'))
+            remove_perm('carga_horaria.change_colegio', user, get_objects_for_user(user, 'carga_horaria.change_colegio').filter(periode=year))
 
             for c in form.cleaned_data['colegios']:
                 assign_perm('change_colegio', user, c)
