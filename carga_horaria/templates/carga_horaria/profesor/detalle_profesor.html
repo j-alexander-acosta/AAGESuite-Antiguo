@@ -30,7 +30,9 @@
 	  </div>
 	</div>
 
-      <h6 class="card-subtitle mb-2">Título: <strong>{{ profesor.especialidad|default:"Ninguna" }}</strong> | Horas contratadas: <strong>{{ profesor.horas_contratadas|decimal_maybe }}</strong> | Horas propuestas: <strong>{{ profesor.horas_semanales_total|decimal_maybe }}</strong></h6>
+        <h6 class="card-subtitle mb-2">Título: <strong>{{ profesor.especialidad|default:"Ninguna" }}</strong> | Horas contratadas: <strong>{{ profesor.horas_contratadas|decimal_maybe }}</strong> | Horas propuestas: <strong>{{ profesor.horas_semanales_total|decimal_maybe }}</strong></h6>
+        <h6 class="card-subtitle mb-2">Horas indefinidas: <strong>{{ profesor.horas_indefinidas|decimal_maybe }}</strong> | Horas plazo fijo: <strong>{{ profesor.horas_plazo_fijo|decimal_maybe }}</strong></h6>
+        
       <br>
       <h6 class="card-subtitle mb-2">
         <table class="table table-sm">
