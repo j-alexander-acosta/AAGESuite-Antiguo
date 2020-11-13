@@ -381,6 +381,8 @@ class Profesor(models.Model):
 
     persona = models.ForeignKey('Persona')
     horas = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(44)])
+    horas_indefinidas = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(44)])
+    horas_plazo_fijo = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(44)])
     especialidad = models.ForeignKey('Especialidad', verbose_name='título', blank=True, null=True)
     fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
     colegio = models.ForeignKey('Colegio', null=True)
