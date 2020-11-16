@@ -298,7 +298,7 @@ class AsignaturaQuerySet(models.QuerySet):
         return self.filter(base__isnull=True)
 
 
-class Asignatura(models.Model):
+class Asignatura(BaseModel):
     base = models.ForeignKey('AsignaturaBase', null=True, blank=True)
     nombre = models.CharField(max_length=255, null=True, blank=True)
     periodos = models.ManyToManyField('Periodo')
@@ -359,7 +359,7 @@ class Asignatura(models.Model):
         ordering = ['base']
 
 
-class Profesor(models.Model):
+class Profesor(BaseModel):
     DOCENTE = 1
     RECTOR = 2
     DIRECTOR = 3
@@ -538,7 +538,7 @@ class Profesor(models.Model):
         ordering = ('persona__nombre',)
 
 
-class Asistente(models.Model):
+class Asistente(BaseModel):
     persona = models.ForeignKey('Persona')
     horas = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(1), MaxValueValidator(45)])
     funcion = models.CharField(max_length=255)
@@ -589,7 +589,7 @@ class AsignacionQuerySet(models.QuerySet):
         return self.filter(tipo=Asignacion.SOSTENEDOR)
 
 
-class Asignacion(models.Model):
+class Asignacion(BaseModel):
     PLAN = 1
     SEP = 2
     PIE = 3
@@ -624,7 +624,7 @@ class Asignacion(models.Model):
         return "{} - {} ({})".format(self.profesor, self.asignatura, self.horas)
 
 
-class AsignacionExtra(models.Model):
+class AsignacionExtra(BaseModel):
     profesor = models.ForeignKey('Profesor')
     curso = models.ForeignKey('Periodo', null=True, blank=True)
     descripcion = models.CharField(max_length=255)
@@ -648,7 +648,7 @@ class AsignacionNoAulaQuerySet(models.QuerySet):
         return self.filter(tipo=AsignacionNoAula.PIE)
 
 
-class AsignacionNoAula(models.Model):
+class AsignacionNoAula(BaseModel):
     ORDINARIA = 1
     SEP = 2
     PIE = 3
