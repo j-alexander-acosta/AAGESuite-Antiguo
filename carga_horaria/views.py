@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.http import Http404
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.generic.detail import DetailView
@@ -239,10 +239,13 @@ class PeriodoUpdateView(LoginRequiredMixin, UpdateView):
         )
 
 
-class PeriodoDeleteView(LoginRequiredMixin, DeleteView):
+class PeriodoDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Periodo
     success_url = reverse_lazy('carga-horaria:periodos')
     template_name = 'carga_horaria/periodo/eliminar_periodo.html'
+
+    def test_func(self):
+        return self.request.user.is_superuser
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)

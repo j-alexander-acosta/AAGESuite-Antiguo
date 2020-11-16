@@ -44,6 +44,7 @@
                         <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_periodo_{{p.pk}}"><i class="fa fa-trash"></i></a>
                     </td>
                 </tr>
+                {% if request.user.is_superuser %}
                 <div class="modal" tabindex="-1" role="dialog" id="eliminar_periodo_{{p.pk}}">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -64,6 +65,7 @@
                         </div>
                     </div>    
                 </div>
+                {% endif %}
             {% endfor %}
             </tbody>
         </table>
