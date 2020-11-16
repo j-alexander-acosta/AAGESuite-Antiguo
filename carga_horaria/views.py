@@ -107,7 +107,7 @@ def anexo(request, pk):
 
 @login_required
 def profesores_pdf(request):
-    profesores = get_for_user(request, Profesor.objects.all(), 'fundacion__colegio__pk', request.user)
+    profesores = get_for_user(request, Profesor.objects.all(), 'colegio__pk', request.user)
     response = PDFTemplateResponse(request=request,
                                    template='carga_horaria/profesor/listado_profesor_pdf.html',
                                    filename='listado_profesores.pdf',
