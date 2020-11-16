@@ -327,7 +327,10 @@ class Asignatura(BaseModel):
             else:
                 return "{:n} + {:n}".format(int(horas_base), int(horas_extra))
         else:
-            return int(self.horas)
+            if self.horas % 1 == 0:
+                return int(self.horas)
+            else:
+                return "{:.1f}".format(self.horas).replace('.', ',')
 
     @property
     def horas_asignadas(self):
