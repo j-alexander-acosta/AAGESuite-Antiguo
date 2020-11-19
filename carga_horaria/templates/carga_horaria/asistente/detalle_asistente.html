@@ -1,4 +1,5 @@
 {% extends 'base/base.html' %}
+{% load carga_filters %}
 {% load staticfiles %}
 
 {% block title_page %}
@@ -71,6 +72,67 @@
 						    
 		  </div>
         <div class="col-md-6">
+
+
+          <table class="table table-hover table-sm">
+            <thead>
+              <tr>
+                <th colspan="4" class="table-info">
+                  <span>
+                    <i class="fa fa-info-circle"></i>
+		    Asignaciones
+                  </span>
+
+		  <a class="btn btn-sm btn-primary float-right" href="{% url 'carga-horaria:asignar-asistente' object.pk %}" role="button">
+                    <i class="fa fa-plus"></i>
+		  </a>
+
+                </th>
+              </tr>
+	      <tr>
+		<th>Descripción</th>
+		<th>Curso</th>
+		<th>Horas</th>
+		<th>Acciones</th>
+	      </tr>
+            </thead>
+            <tbody>
+	      {% for ax in object.asignacionasistente_set.all %}
+              <tr>
+                <td> {{ ax.descripcion }} </td>
+                <td> {{ ax.curso|default:"Todos" }} </td>
+                <td> {{ ax.horas|hhmm }} </td>
+		<td>
+                  {% comment %}
+                  <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignacion-asistente__editar' profesor_pk=object.pk pk=ax.pk %}"><i class="fa fa-edit"></i></a>
+                  {% endcomment %}
+                  <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_asistente_{{ax.pk}}"><i class="fa fa-trash"></i></a>
+		  
+		</td>
+              </tr>
+	      <div class="modal" tabindex="-1" role="dialog" id="eliminar_asignacion_asistente_{{ax.pk}}">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar una asignación</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <p>¿Está seguro que desea eliminar esta asignación extra?.</p>
+                      <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta asignación.</p>
+                    </div>
+                    <div class="modal-footer">
+                      <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:asignacion-asistente__eliminar' ax.pk %}">Eliminar</a>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                  </div>
+                </div>    
+              </div>
+	      {% endfor %}
+            </tbody>
+          </table>
 	  
         </div>
 		</div>

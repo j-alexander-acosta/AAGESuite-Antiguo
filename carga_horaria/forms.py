@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from crispy_forms.helper import FormHelper
 from guardian.shortcuts import get_objects_for_user
-from .models import Asignacion, AsignacionExtra, AsignacionNoAula
+from .models import Asignacion, AsignacionExtra, AsignacionAsistente, AsignacionNoAula
 from .models import Profesor, Colegio
 
 
@@ -310,3 +310,51 @@ class AsignacionNoAulaUpdateForm(AsignacionNoAulaForm):
         if horas - self.instance.horas > profesor.horas_no_aula_disponibles:
             raise forms.ValidationError("Excede las horas que {} tiene disponibles ({})".format(profesor, profesor.horas_no_aula_disponibles))
         return horas
+
+
+class AsignacionAsistenteForm(forms.ModelForm):
+    """
+        Formulario para asignar una cosa extra a un asistente
+    """
+
+    class Meta:
+        model = AsignacionAsistente
+        fields = [
+            'curso',
+            'descripcion',
+            'horas',
+        ]
+        # help_texts = {
+        #     'horas': "Para asignar el resto de horas disponibles, deje este valor en 0."
+        # }
+
+    # def clean_horas(self):
+    #     horas = self.cleaned_data['horas']
+    #     profesor = self.profesor
+    #     if horas > profesor.horas_no_lectivas_disponibles:
+    #         raise forms.ValidationError("Excede las horas que {} tiene disponibles ({})".format(profesor, profesor.horas_no_lectivas_disponibles))
+    #     return horas
+
+    def __init__(self, *args, **kwargs):
+        self.asistente = kwargs.pop('asistente', None)
+        self.colegio = kwargs.pop('colegio', None)
+        user = kwargs.pop('user', None)
+        periode = kwargs.pop('periodo', 2020)
+        super(AsignacionAsistenteForm, self).__init__(*args, **kwargs)
+
+        if user:
+            if self.colegio:
+                self.fields['curso'].queryset = self.fields['curso'].queryset.filter(colegio__pk__in=[self.colegio])
+            else:
+                if not user.is_superuser:
+                    # cursos of owned colegios
+                    self.fields['curso'].queryset = self.fields['curso'].queryset.filter(colegio__pk__in=[c.pk for c in get_objects_for_user(user, "carga_horaria.change_colegio")])
+        else:
+            del(self.fields['curso'])
+
+        self.fields['horas'].initial = 0
+
+
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.fields['curso'].empty_label = "Todos"

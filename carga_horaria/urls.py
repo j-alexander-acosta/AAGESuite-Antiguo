@@ -328,6 +328,23 @@ urlpatterns = [
         views.AsignacionNoAulaDeleteView.as_view(),
         name='asignacion-no-aula__eliminar'
     ),
+    #################
+    url(
+        r'^asistentes/(?P<pk>\d+)/asignar/$',
+        views.asignar_asistente,
+        name='asignar-asistente'
+    ),
+    # url(
+    #     r'^asistentes/(?P<profesor_pk>\d+)/asignaciones/(?P<pk>\d+)/editar/$',
+    #     views.AsignacionExtraUpdateView.as_view(),
+    #     name='asignacion-extra__editar'
+    # ),
+    url(
+        r'^asignaciones-asistente/(?P<pk>\d+)/eliminar/$',
+        views.AsignacionAsistenteDeleteView.as_view(),
+        name='asignacion-asistente__eliminar'
+    ),
+    ####################
     url(
         r'^planes/plantila/$',
         views.crear_desde_plantilla,

@@ -16,6 +16,7 @@ from guardian.shortcuts import remove_perm
 from wkhtmltopdf.views import PDFTemplateResponse, PDFTemplateView
 from .models import Nivel
 from .models import Profesor
+from .models import Asistente
 from .models import Periodo
 from .models import Asignacion
 from .models import AsignacionExtra
@@ -31,6 +32,8 @@ from .forms import AsignacionExtraForm
 from .forms import AsignacionExtraUpdateForm
 from .forms import AsignacionNoAulaForm
 from .forms import AsignacionNoAulaUpdateForm
+from .forms import AsignacionAsistente
+from .forms import AsignacionAsistenteForm
 from .forms import AssignPermForm
 from .formsDani import PlantillaPlanForm
 
@@ -674,5 +677,39 @@ class AsignacionNoAulaDeleteView(LoginRequiredMixin, DeleteView):
             'carga-horaria:profesor',
             kwargs={
                 'pk': self.object.profesor.pk,
+            }
+        )
+
+
+@login_required
+def asignar_asistente(request, pk):
+    pp = get_object_or_404(Asistente, pk=pk)
+
+    if request.method == 'POST':
+        form = AsignacionAsistenteForm(request.POST, asistente=pp, user=request.user, colegio=request.session.get('colegio__pk', None), periodo=request.session.get('periodo', 2020))
+        if form.is_valid():
+            asignacion = form.save(commit=False)
+            asignacion.asistente = pp
+            # if asignacion.horas == 0:
+            #     asignacion.horas = pp.horas_no_lectivas_disponibles
+            asignacion.save()
+            return redirect('carga-horaria:asistente', pp.pk)
+    else:
+        form = AsignacionAsistenteForm(user=request.user, colegio=request.session.get('colegio__pk', None))
+    return render(request, 'carga_horaria/asignar_asistente.html', {'asistente': pp,
+                                                                'form': form})
+
+class AsignacionAsistenteDeleteView(LoginRequiredMixin, DeleteView):
+    model = AsignacionAsistente
+    template_name = 'carga_horaria/periodo/eliminar_periodo.html'
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse(
+            'carga-horaria:asistente',
+            kwargs={
+                'pk': self.object.asistente.pk,
             }
         )

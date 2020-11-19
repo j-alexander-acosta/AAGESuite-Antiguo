@@ -541,6 +541,16 @@ class Profesor(BaseModel):
         ordering = ('persona__nombre',)
 
 
+class AsignacionAsistente(BaseModel):
+    asistente = models.ForeignKey('Asistente')
+    curso = models.ForeignKey('Periodo', null=True, blank=True)
+    descripcion = models.CharField(max_length=255)
+    horas = models.DecimalField(max_digits=4, decimal_places=2)
+
+    def __str__(self): 
+        return "{} - {} ({})".format(self.asistente, self.descripcion, self.horas)
+
+
 class Asistente(BaseModel):
     persona = models.ForeignKey('Persona')
     horas = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(1), MaxValueValidator(45)])
