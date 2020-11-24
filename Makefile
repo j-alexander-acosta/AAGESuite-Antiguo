@@ -59,7 +59,7 @@ db_stop:
 			if [ `nix-channel --list | grep $(PROJECT_NAME)-nixpkgs | wc -l` -ne 1 ]; then nix-channel --add https://nixos.org/channels/$(TRACKED_NIX_CHANNEL) $(PROJECT_NAME)-nixpkgs && nix-channel --update $(PROJECT_NAME)-nixpkgs; fi; \
 			touch --date=@0 $@; \
 		else \
-			if [ ! -d ~/.nix-profile ]; then curl https://nixos.org/nix/install | sh; fi; \
+			if [ ! -d ~/.nix-profile ]; then curl -L https://nixos.org/nix/install | sh; fi; \
 			echo "$$(tput setaf 3)It seems Nix is already installed. Make sure all necessary\nenvironment variables are set, either log in again, or type\n\n$$(tput setaf 2)  . ~/.nix-profile/etc/profile.d/nix.sh\n$$(tput setaf 9)"; \
 			exit 1; \
 	fi
