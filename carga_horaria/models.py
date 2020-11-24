@@ -263,7 +263,7 @@ class Periodo(BaseModel):
 
     @property
     def progress(self):
-        return sum(Asignacion.objects.filter(asignatura__in=self.asignatura_set.all()).values_list('horas', flat=True))
+        return sum([aa.horas_asignadas for aa in self.asignatura_set.all()])
 
     @property
     def completion_percentage(self):
