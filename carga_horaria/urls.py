@@ -330,7 +330,7 @@ urlpatterns = [
     ),
     #################
     url(
-        r'^asistentes/(?P<pk>\d+)/asignar/$',
+        r'^asistentes/(?P<pk>\d+)/asignar/(?P<tipo>\d+)$',
         views.asignar_asistente,
         name='asignar-asistente'
     ),

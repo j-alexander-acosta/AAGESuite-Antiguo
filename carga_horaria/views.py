@@ -32,7 +32,7 @@ from .forms import AsignacionExtraForm
 from .forms import AsignacionExtraUpdateForm
 from .forms import AsignacionNoAulaForm
 from .forms import AsignacionNoAulaUpdateForm
-from .forms import AsignacionAsistente
+from .models import AsignacionAsistente
 from .forms import AsignacionAsistenteForm
 from .forms import AssignPermForm
 from .formsDani import PlantillaPlanForm
@@ -682,14 +682,16 @@ class AsignacionNoAulaDeleteView(LoginRequiredMixin, DeleteView):
 
 
 @login_required
-def asignar_asistente(request, pk):
+def asignar_asistente(request, pk, tipo):
     pp = get_object_or_404(Asistente, pk=pk)
+    tipo_display = dict(AsignacionAsistente.TIPO_CHOICES)[int(tipo)]
 
     if request.method == 'POST':
         form = AsignacionAsistenteForm(request.POST, asistente=pp, user=request.user, colegio=request.session.get('colegio__pk', None), periodo=request.session.get('periodo', 2020))
         if form.is_valid():
             asignacion = form.save(commit=False)
             asignacion.asistente = pp
+            asignacion.tipo = tipo
             # if asignacion.horas == 0:
             #     asignacion.horas = pp.horas_no_lectivas_disponibles
             asignacion.save()

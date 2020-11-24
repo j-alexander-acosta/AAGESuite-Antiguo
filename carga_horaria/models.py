@@ -541,11 +541,41 @@ class Profesor(BaseModel):
         ordering = ('persona__nombre',)
 
 
+class AsignacionAsistenteQuerySet(models.QuerySet):
+    @property
+    def normal(self):
+        return self.filter(tipo=AsignacionAsistente.NORMAL)
+
+    @property
+    def no_aula(self):
+        return self.filter(tipo=AsignacionAsistente.NO_AULA)
+
+    @property
+    def sep(self):
+        return self.filter(tipo=AsignacionAsistente.SEP)
+
+    @property
+    def pie(self):
+        return self.filter(tipo=AsignacionAsistente.PIE)
+
+
 class AsignacionAsistente(BaseModel):
+    NORMAL = 1
+    NO_AULA = 2
+    SEP = 3
+    PIE = 4
+
+    TIPO_CHOICES = ((NORMAL, 'normal'),
+                    (NO_AULA, 'no aula'),
+                    (SEP, 'SEP'),
+                    (PIE, 'PIE'))
     asistente = models.ForeignKey('Asistente')
     curso = models.ForeignKey('Periodo', null=True, blank=True)
     descripcion = models.CharField(max_length=255)
+    tipo = models.PositiveSmallIntegerField(default=NORMAL)
     horas = models.DecimalField(max_digits=4, decimal_places=2)
+
+    objects = AsignacionAsistenteQuerySet.as_manager()
 
     def __str__(self): 
         return "{} - {} ({})".format(self.asistente, self.descripcion, self.horas)
