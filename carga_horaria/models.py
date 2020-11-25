@@ -589,6 +589,14 @@ class Asistente(BaseModel):
     colegio = models.ForeignKey('Colegio', null=True)
 
     @property
+    def horas_semanales_total(self):
+        return sum(self.asignacionasistente_set.values_list('horas', flat=True))
+
+    @property
+    def horas_disponibles(self):
+        return (self.horas or 44) - self.horas_semanales_total
+
+    @property
     def nombre(self):
         return self.persona.nombre
 

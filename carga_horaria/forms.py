@@ -328,12 +328,12 @@ class AsignacionAsistenteForm(forms.ModelForm):
         #     'horas': "Para asignar el resto de horas disponibles, deje este valor en 0."
         # }
 
-    # def clean_horas(self):
-    #     horas = self.cleaned_data['horas']
-    #     profesor = self.profesor
-    #     if horas > profesor.horas_no_lectivas_disponibles:
-    #         raise forms.ValidationError("Excede las horas que {} tiene disponibles ({})".format(profesor, profesor.horas_no_lectivas_disponibles))
-    #     return horas
+    def clean_horas(self):
+        horas = self.cleaned_data['horas']
+        asistente = self.asistente
+        if horas > asistente.horas_disponibles:
+            raise forms.ValidationError("Excede las horas que {} tiene disponibles ({})".format(asistente, asistente.horas_disponibles))
+        return horas
 
     def __init__(self, *args, **kwargs):
         self.asistente = kwargs.pop('asistente', None)
