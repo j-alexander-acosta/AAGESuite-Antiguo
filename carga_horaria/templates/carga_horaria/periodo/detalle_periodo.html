@@ -85,9 +85,9 @@
                 <tbody>
 		  {% for a in object.asignatura_set.all.base %}
                   <tr{% if a.horas_disponibles == 0 %} class="table-success"{% else %} class="table-warning"{% endif %}>
-                  <td>  <a href="{% url 'carga-horaria:asignatura' a.pk object.pk %}">{{ a }} </a> </td>
+                  <td>  <a href="{% url 'carga-horaria:asignatura' a.pk object.pk %}">{{ a }}  {% if a.overflow %} <span class="badge badge-warning">co-docencia ({{ a.overflow|decimal_maybe }})</span>{% endif %} </a> </td>
                     <td>  {{ a.get_horas_display }}  </td>
-                    <td>  {{ a.horas_asignadas|decimal_maybe }}  </td>
+                  <td>  {{ a.horas_asignadas|decimal_maybe }}</td>
                     <td>  {{ a.horas_disponibles|decimal_maybe }}  </td>
                     <td>  {% for p in a.profesores %}<a href="{% url 'carga-horaria:profesor' p.pk %}">{{ p }} ({{ p.horas_disponibles|decimal_maybe }}) </a>{% endfor %}  </td>
                   <td>  <a href="{% url 'carga-horaria:asignar' a.pk object.pk %}">Asignar</a>{% if not a.base %} | {% endif %}

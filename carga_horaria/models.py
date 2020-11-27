@@ -309,6 +309,12 @@ class Asignatura(BaseModel):
     objects = AsignaturaQuerySet.as_manager()
 
     @property
+    def overflow(self):
+        asignadas = sum(self.asignacion_set.values_list('horas', flat=True))
+        if asignadas > self.horas:
+            return asignadas - self.horas
+
+    @property
     def is_vuln(self):
         return any([pp.is_vuln for pp in self.periodos.all()])
 
