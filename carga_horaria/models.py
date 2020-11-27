@@ -397,7 +397,7 @@ class Profesor(BaseModel):
     colegio = models.ForeignKey('Colegio', null=True)
     directivo = models.BooleanField(default=False)
     cargo = models.PositiveSmallIntegerField(default=DOCENTE, choices=CARGO_CHOICES)
-    observaciones = models.TextField(default='')
+    observaciones = models.TextField(default='', blank=True)
 
     @property
     def nombre(self):

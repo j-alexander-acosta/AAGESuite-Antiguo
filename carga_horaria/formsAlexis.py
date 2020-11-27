@@ -21,7 +21,7 @@ class ProfesorForm(forms.ModelForm):
     rut = CLRutField(label="RUT")
     nombre = forms.CharField()
     adventista = forms.BooleanField(required=False)
-    fecha_nacimiento = forms.DateField(required=False, widget=forms.widgets.DateInput(attrs={'type': 'date'}))
+    fecha_nacimiento = forms.DateField(required=False, widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
 
     class Meta:
         model = models.Profesor
@@ -92,7 +92,7 @@ class AsistenteForm(forms.ModelForm):
     rut = CLRutField(label="RUT")
     nombre = forms.CharField()
     adventista = forms.BooleanField(required=False)
-    fecha_nacimiento = forms.DateField(required=False, widget=forms.widgets.DateInput(attrs={'type': 'date'}))
+    fecha_nacimiento = forms.DateField(required=False, widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
 
     class Meta:
         model = models.Asistente
