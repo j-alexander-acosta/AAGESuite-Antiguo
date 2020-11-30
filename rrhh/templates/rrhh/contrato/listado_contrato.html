@@ -9,7 +9,7 @@
 {% block content %}
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title">Funcionarios
+        <h4 class="card-title">Personal
             <a class="btn btn-sm btn-primary pull-right" href="{% url 'rrhh:contrato__nuevo'%}" role="button">
         	    <span> Crear contrato <i class="fa fa-plus"></i></span>
             </a>
@@ -38,17 +38,47 @@
                 <tbody>
                 {% for c in object_list %}
                     <tr>
-                        <td><a href="{% url 'rrhh:contrato' c.pk %}"> {{ c.persona }} </a></td>
+                        <td><a href="{% url 'rrhh:contrato' c.pk %}"> {{ c.funcionario.persona }} </a></td>
                         <td> {{ c.colegio }} </td>
                         <td> {{ c.get_categoria_display }} </td>
-                        <td class="text-center"> <span class="badge badge-pill {% if c.vigente %}badge-success{% else %}badge-danger{% endif%}">{{ c.vigente|yesno }}</span></td>
+                        <td class="text-center">
+                            <span class="badge badge-pill
+                                {% if c.vigente %}
+                                    {% if c.dias_termino_contrato <= 120 and c.categoria == 2 %}
+                                        badge-warning
+                                    {% elif c.dias_termino_contrato <= 60 %}
+                                        badge-warning
+                                    {% else %}
+                                        badge-success
+                                    {% endif %}
+                                {% else %}
+                                    badge-danger
+                                {% endif%}">
+                                {% if c.vigente %}
+                                    {% if c.dias_termino_contrato <= 120 and c.categoria == 2 %}
+                                        Expira en {{ c.dias_termino_contrato }} días
+                                    {% elif c.dias_termino_contrato <= 60 %}
+                                        Expira en {{ c.dias_termino_contrato }} días
+                                    {% else %}
+                                        {{ c.vigente|yesno }}
+                                    {% endif %}
+                                {% else %}
+                                    {{ c.vigente|yesno }}
+                                {% endif %}
+
+                            </span>
+                        </td>
                         <td>
-                            <a class="btn btn-sm btn-primary" href="{% url 'rrhh:contrato__editar' c.pk %}" data-toggle="tooltip" data-placement="top" title="Editar contrato">
-                                <i class="fa fa-edit"></i></a>
-                            <a class="btn btn-sm btn-info" href="{% url 'rrhh:persona__editar' c.persona.pk %}" data-toggle="tooltip" data-placement="top" title="Editar persona">
-                                <i class="fa fa-edit"></i></a>
-                            <a class="btn btn-sm btn-danger" href="{% url 'rrhh:finiquito__nuevo' c.pk %}" data-toggle="tooltip" data-placement="top" title="Dar de baja">
-                                <i class="fa fa-user-times"></i></a>
+                            <div class="btn-group">
+                                <a class="btn btn-item-group btn-sm btn-primary" href="{% url 'rrhh:contrato__editar' c.pk %}" data-toggle="tooltip" data-placement="top" title="Editar contrato">
+                                    <i class="fa fa-edit"></i></a>
+                                <a class="btn btn-item-group btn-sm btn-info" href="{% url 'rrhh:persona__editar' c.funcionario.persona.pk %}" data-toggle="tooltip" data-placement="top" title="Editar persona">
+                                    <i class="fa fa-edit"></i></a>
+                                <a class="btn btn-item-group btn-sm btn-danger" href="{% url 'rrhh:finiquito__nuevo' c.pk %}" data-toggle="tooltip" data-placement="top" title="Dar de baja">
+                                    <i class="fa fa-user-times"></i></a>
+                                <a class="btn btn-item-group btn-sm btn-warning" href="{% url 'rrhh:funcionario__trasladar' c.pk %}" data-toggle="tooltip" data-placement="top" title="Trasladar">
+                                    <i class="fa fa-send"></i></a>
+                            </div>
                         </td>
                     </tr>
                 {% endfor %}

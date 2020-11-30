@@ -1,0 +1,257 @@
+{% extends 'base/base.html' %}
+{% load staticfiles humanize crispy_forms_tags %}
+
+{% block title_page %}
+    Solicitud de contratación - Detalle
+{% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">
+            <strong>Detalle de Solicitud <small><span class="badge badge-pill
+                {% if object.estado == 'Pendiente' or object.estado == 'En espera de candidatos' or object.estado == 'Pendiente de aprobación' %}
+                    badge-warning
+                {% elif object.estado == 'Aceptada' or object.estado == 'Aprobada'%}
+                    badge-success
+                {% else %}
+                    badge-danger
+                {% endif %}"> {{ object.estado }} </span></small>
+            </strong>
+            {% block buttons %}
+                <div class="btn-group pull-right">
+                    <a href="{% url 'rrhh:solicitudes' %}" type="button" class="btn btn-sm btn-dark">
+                        <i class="fa fa-arrow-left"></i>
+                    </a>
+                    <a href="{% url 'rrhh:solicitud__editar' object.pk %}" type="button" class="btn btn-sm btn-primary">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                    <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_solicitud_{{object.pk}}">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </div>
+            {% endblock %}
+        </h4>
+        <h6 class="card-subtitle mb-2 text-muted">{{ object }}</h6>
+
+    </div>
+    <div class="card-body">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="detalle-tab" data-toggle="tab" href="#detalle" role="tab" aria-controls="detalle" aria-selected="true">Detalle</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="historial-tab" data-toggle="tab" href="#historial" role="tab" aria-controls="historial" aria-selected="false">Historial</a>
+            </li>
+            {% if object.postulantes.all %}
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="candidatos-tab" data-toggle="tab" href="#candidatos" role="tab" aria-controls="candidatos" aria-selected="false">Candidatos</a>
+                </li>
+            {% endif %}
+            {% if object.estado == 'En espera de candidatos' %}
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" href="{% url 'rrhh:candidatos__seleccionar' object.id %}" role="tab">Seleccionar candidatos</a>
+                </li>
+            {% endif %}
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Cambiar estado</a>
+                <div class="dropdown-menu">
+                    {% if object.estado == 'Pendiente' %}<a class="dropdown-item text-success" id="ces" name="1" href="#"><i class="fa fa-check"></i> Aceptar</a> {% endif %}
+                    <a class="dropdown-item text-warning" id="ces" name="2" href="#"><i class="fa fa-refresh"></i> Pendiente</a>
+                    {% if not object.estado == 'Rechazada' %}<a class="dropdown-item text-danger" id="ces" name="3" href="#"><i class="fa fa-close"></i> Rechazar</a>{% endif %}
+                    <a class="dropdown-item text-warning" id="ces" name="4" href="#"><i class="fa fa-stop"></i> En espera de candidatos</a>
+                    {% if object.estado == 'Pendiente de aprobación' %}<a class="dropdown-item text-success" id="ces" name="6" href="#"><i class="fa fa-check"></i> Aprobar</a>{% endif %}
+                    {% comment %}data-toggle="modal" data-target="#estado_solicitud_{{object.pk}}{% endcomment %}
+                </div>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="detalle" role="tabpanel" aria-labelledby="home-tab">
+                <table class="table table-hover">
+                    <tbody>
+                        <tr>
+                            <th> Categoria </th>
+                            <td> {{ object.get_categoria_display }} </td>
+                        </tr>
+                        <tr>
+                            <th> Cargo </th>
+                            <td> {{ object.cargo }} </td>
+                        </tr>
+                        <tr>
+                            <th> Horas de contrato </th>
+                            <td> {{ object.horas }} horas </td>
+                        </tr>
+                        <tr>
+                            <th> Tipo de contrato </th>
+                            <td> {{ object.get_tipo_contrato_display }} </td>
+                        </tr>
+                        <tr>
+                            <th> Periodo de contratación </th>
+                            <td> {{ object.periodo_contratacion }}</td>
+                        </tr>
+                        <tr>
+                            <th> Justificación </th>
+                            <td> {{ object.justificacion }} </td>
+                        </tr>
+                        {% if object.estado == 'Aprobada' %}
+                            <th> Voto de autorización </th>
+                            <td> {{ object.voto }} </td>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+            {% if object.postulantes.all %}
+                <div class="tab-pane fade" id="candidatos" role="tabpanel" aria-labelledby="candidatos-tab">
+                    <table class="table table-hover">
+                        <thead>
+                            <th>RUN</th>
+                            <th>Nombre</th>
+                            <th>Historial de trabajo</th>
+                            <th>Curriculum</th>
+                            {% if object.estado == 'Aprobada' %}
+                                <th>Opciones</td>
+                            {% endif %}
+                        </thead>
+                        <tbody>
+                            {% for p in object.postulantes.all %}
+                                <tr>
+                                    <td><a href="{% url 'rrhh:persona' p.pk %}"> {{ p.rut }} </a></td>
+                                    <td> {{ p.get_full_name }} </td>
+                                    <td>
+                                        {% for cu in p.historial.union %}
+                                            <p> {{ cu.periodo_contrato }}, {{ cu.get_categoria_display }}, {{ cu.union.nombre }}{% if cu.vigente %} (Vigente) {% endif %}</p>
+                                        {% endfor %}
+                                        {% for cf in p.historial.fundacion %}
+                                            <p> {{ cf.periodo_contrato }}, {{ cf.get_categoria_display }}, {{ cf.fundacion.nombre }}{% if cf.vigente %} (Vigente) {% endif %}</p>
+                                        {% endfor %}
+                                        {% for cc in p.historial.colegio %}
+                                            <p> {{ cc.periodo_contrato }}, {{ cc.get_categoria_display }}, {{ cc.colegio.nombre }}{% if cc.vigente %} (Vigente) {% endif %}</p>
+                                        {% endfor %}
+                                    </td>
+                                    <td></td>
+                                    {% if object.estado == 'Aprobada' %}
+                                        {% if p.funcionario %}
+                                            <td><a role="button" class="btn btn-sm btn-info" href="{% url 'rrhh:contrato_colegio__crear' p.funcionario.id object.id %}">
+                                                <i class="fa fa-plus"></i> Contratar
+                                            </a></td>
+                                        {% else %}
+                                            <td><a type="button" class="btn btn-sm btn-info" href="{% url 'rrhh:funcionario__nuevo' p.id %}"><i class="fa fa-plus"></i> Crear Funcionario</a></td>
+                                        {% endif %}
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+            <div class="tab-pane fade" id="historial" role="tabpanel" aria-labelledby="profile-tab">
+                <table class="table table-hover">
+                    <thead>
+                        <th>Estado</th>
+                        <th>Ejecutor</th>
+                        <th>Fecha</th>
+                        <th>Observaciones</th>
+                    </thead>
+                    <tbody>
+                        {% for e in object.estadosolicitud_set.all|dictsortreversed:'id' %}
+                            <tr>
+                                <td><span class="badge badge-pill
+                                    {% if e.estado == 2 or e.estado == 4 or e.estado == 5 %}
+                                        badge-warning
+                                    {% elif e.estado == 1 or e.estado == 6 %}
+                                        badge-success
+                                    {% else %}
+                                        badge-danger
+                                    {% endif %}"> {{ e.get_estado_display }} </span>
+                                </td>
+                                <td> {{ e.autor }} </td>
+                                <td> {{ e.fecha }} </td>
+                                <td> {{ e.observaciones|safe|escape }} </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+ </div>
+
+<div class="modal" tabindex="-1" role="dialog" id="eliminar_solicitud_{{object.pk}}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar la Solicitud de contratación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Está seguro que desea eliminar la Solicitud de contratación "{{ object }}"?.</p>
+                <p class="text-muted">Recuerde que eliminará todos los registros asociados a la Solicitud de contratación.</p>
+            </div>
+            <div class="modal-footer">
+                <a role="button" class="btn btn-danger" href="{% url 'rrhh:solicitud__eliminar' object.pk %}">Eliminar</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="cambiar_estado_solicitud">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="form-horizontal" method="post" action="{% url 'rrhh:estado_solicitud__cambiar' %}">
+                <div class="modal-body">
+                    <input type="hidden" name="solicitud" value="{{ object.id }}">
+                    {% crispy form %}
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Guardar</a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block extra_js %}
+    <script>
+        $(function() {
+            $(document).on('click', '#ces', function(){
+                let opciones = [,
+                    'Aceptar solicitud',
+                    'Marcar solicitud como pendiente',
+                    'Rechazar solicitud',
+                    'Marcar solicitud como en espera de candidatos',
+                    'Marcar solicitud como pendiente de aprobación',
+                    'Aporbar solicitud'
+                ];
+                let modal = $(document).find('#cambiar_estado_solicitud');
+                let opcion = $(this).attr('name');
+                let titulo = opciones[opcion];
+                modal.find('#id_estado').val(opcion);
+                modal.find('.modal-title').html(titulo);
+                if (opcion !== 6) {
+                    modal.find('#div_id_voto').fadeOut();
+                }
+                if (opcion == 6) {
+                    setTimeout(function(){
+                        modal.find('#div_id_voto').fadeIn();
+                    }, 500);
+                }
+                modal.modal('show');
+            });
+
+        });
+    </script>
+{% endblock %}

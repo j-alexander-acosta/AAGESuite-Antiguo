@@ -3,23 +3,20 @@
 {% load bootstrap_pagination %}
 
 {% block title_page %}
-    AFPs
+    Uniones
 {% endblock %}
 
 {% block content %}
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title">AFPs
+        <h4 class="card-title">Uniones
             <div class="btn-group pull-right" role="group">
-                <a class="btn btn-sm btn-dark" href="{% url 'rrhh:contratos'%}" role="button" data-toggle="tooltip" data-placement="top" title="Volver a contratos">
-    	             <span><i class="fa fa-arrow-left"></i></span>
-                </a>
-                <a class="btn btn-sm btn-primary" href="{% url 'rrhh:afp__nuevo'%}" role="button">
-    	             <span> Crear AFP <i class="fa fa-plus"></i></span>
+                <a class="btn btn-sm btn-primary" href="{% url 'rrhh:union__nuevo'%}" role="button">
+    	             <span> Crear Unión <i class="fa fa-plus"></i></span>
                 </a>
             </div>
         </h4>
-        <h6 class="card-subtitle mb-2 text-muted">Tabla para configuración de AFP</h6>
+        <h6 class="card-subtitle mb-2 text-muted">Tabla para configuración de Unión</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -34,28 +31,28 @@
                 <tbody>
                 {% for f in object_list %}
                     <tr>
-                        <td><a href="{% url 'rrhh:afp' f.pk %}"> {{ f.nombre }} </a></td>
+                        <td><a href="{% url 'rrhh:union' f.pk %}"> {{ f.nombre }} </a></td>
                         <td> {% if f.descripcion %}{{ f.descripcion|truncatewords:"7" }}{% else %}No específicado{% endif %} </td>
                         <td>
-                            <a class="btn btn-sm btn-primary" href="{% url 'rrhh:afp__editar' f.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
-                            <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_afp_{{f.pk}}"><i class="fa fa-trash"></i></a>
+                            <a class="btn btn-sm btn-primary" href="{% url 'rrhh:union__editar' f.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
+                            <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_union_{{f.pk}}"><i class="fa fa-trash"></i></a>
                         </td>
                     </tr>
-                    <div class="modal" tabindex="-1" role="dialog" id="eliminar_afp_{{f.pk}}">
+                    <div class="modal" tabindex="-1" role="dialog" id="eliminar_union_{{f.pk}}">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar una AFP</h5>
+                                    <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar una Unión</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <p>Está seguro que desea eliminar la AFP "{{ f }}"?.</p>
-                                    <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta AFP.</p>
+                                    <p>Está seguro que desea eliminar la Unión "{{ f }}"?.</p>
+                                    <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta Unión.</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <a role="button" class="btn btn-danger" href="{% url 'rrhh:afp__eliminar' f.pk %}">Eliminar</a>
+                                    <a role="button" class="btn btn-danger" href="{% url 'rrhh:union__eliminar' f.pk %}">Eliminar</a>
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                                 </div>
                             </div>

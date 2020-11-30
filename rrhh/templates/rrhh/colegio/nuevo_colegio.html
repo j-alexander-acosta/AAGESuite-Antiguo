@@ -6,13 +6,13 @@
 {% block content %}
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title">Crear Archivo
+        <h4 class="card-title">Crear Colegio
         </h4>
-        <h6 class="card-subtitle mb-2 text-muted">Datos del archivo</h6>
+        <h6 class="card-subtitle mb-2 text-muted">Datos de Colegio</h6>
     </div>
     <div class="card-body">
 
-        <form class="form-horizontal" method="post" enctype="multipart/form-data">
+        <form class="form-horizontal" method="post">
             {% csrf_token %}
             {% crispy form %}
             <div class="form-group">

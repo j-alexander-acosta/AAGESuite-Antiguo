@@ -1,10 +1,49 @@
 from django import forms
+from django.db.models import Sum, Count
 from localflavor.cl.forms import CLRutField
 from django.core.urlresolvers import reverse
+from django.shortcuts import get_object_or_404
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Field, HTML
-from .models import Persona, Entrevista, Archivo, Vacacion, Contrato
-from .models import TipoLicencia, Licencia, Funcion, AFP, Isapre, Finiquito
+from rrhh.models.base import TipoLicencia, Funcion, AFP, Isapre
+from rrhh.models.persona import Persona, Funcionario, DocumentoFuncionario
+from rrhh.models.union import Union
+from rrhh.models.fundacion import Fundacion
+from rrhh.models.colegio import Colegio, Entrevista, VacacionFuncionarioColegio
+from rrhh.models.colegio import ContratoColegio, LicenciaFuncionarioColegio, FiniquitoColegio, SolicitudContratacion, EstadoSolicitud, SolicitudRenovacion
+
+
+class UnionForm(forms.ModelForm):
+    class Meta:
+        model = Union
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(UnionForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+
+
+class FundacionForm(forms.ModelForm):
+    class Meta:
+        model = Fundacion
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(FundacionForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+
+
+class ColegioForm(forms.ModelForm):
+    class Meta:
+        model = Colegio
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(ColegioForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
 
 
 class PersonaForm(forms.ModelForm):
@@ -12,15 +51,13 @@ class PersonaForm(forms.ModelForm):
         model = Persona
         fields = '__all__'
 
+        help_texts = {
+            'titulado': u"Marque si la persona tiene un título profesional"
+        }
     rut  = CLRutField()
 
     def __init__(self, *args, **kwargs):
         super(PersonaForm, self).__init__(*args, **kwargs)
-        self.fields['estado'].widget.attrs['class'] = 'chosen'
-        self.fields['tipo_misionero'].widget.attrs['class'] = 'chosen'
-        self.fields['fecha_titulacion'].widget.attrs['class'] = 'datepicker'
-        self.fields['fecha_ingreso_sea'].widget.attrs['class'] = 'datepicker'
-        self.fields['fecha_ingreso_docente'].widget.attrs['class'] = 'datepicker'
         self.fields['fecha_nacimiento'].widget.attrs['class'] = 'datepicker'
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -73,26 +110,65 @@ class PersonaForm(forms.ModelForm):
                     css_class="col-md-4"
                 ),
                 Div(
-                    Field('telefono'),
+                    Field('comuna'),
                     css_class="col-md-4"
                 ),
                 Div(
-                    Field('email'),
+                    Field('ciudad'),
                     css_class="col-md-4"
                 ),
                 css_class="row"
             ),
             Div(
                 Div(
-                    Field('estado'),
+                    Field('telefono'),
+                    css_class="col-md-6"
+                ),
+                Div(
+                    Field('email'),
+                    css_class="col-md-6"
+                ),
+                css_class="row"
+            ),
+            Div(
+                Div(
+                    Field('titulado'),
+                    css_class="col-md-6"
+                ),
+                Div(
+                    Field('profesion'),
+                    css_class="col-md-6"
+                ),
+                css_class="row"
+            ),
+        )
+
+
+class FuncionarioForm(forms.ModelForm):
+    class Meta:
+        model = Funcionario
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(FuncionarioForm, self).__init__(*args, **kwargs)
+        self.fields['persona'].widget.attrs['readonly'] = True
+        self.fields['fecha_ingreso_sea'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_ingreso_docente'].widget.attrs['class'] = 'datepicker'
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            'persona',
+            Div(
+                Div(
+                    Field('afp'),
                     css_class="col-md-4"
                 ),
                 Div(
-                    Field('tipo_misionero'),
+                    Field('salud'),
                     css_class="col-md-4"
                 ),
                 Div(
-                    Field('puntos'),
+                    Field('isapre'),
                     css_class="col-md-4"
                 ),
                 css_class="row"
@@ -110,15 +186,15 @@ class PersonaForm(forms.ModelForm):
             ),
             Div(
                 Div(
-                    Field('titulo'),
+                    Field('estado'),
                     css_class="col-md-4"
                 ),
                 Div(
-                    Field('casa_formadora'),
+                    Field('tipo_misionero'),
                     css_class="col-md-4"
                 ),
                 Div(
-                    Field('fecha_titulacion'),
+                    Field('puntos'),
                     css_class="col-md-4"
                 ),
                 css_class="row"
@@ -141,22 +217,25 @@ class EntrevistaForm(forms.ModelForm):
         self.helper.form_tag = False
 
 
-class ArchivoForm(forms.ModelForm):
+class DocumentoFuncionarioForm(forms.ModelForm):
     class Meta:
-        model = Archivo
-        fields = ('descripcion',
-                  'archivo',
-                  'contrato')
+        model = DocumentoFuncionario
+        fields = (
+            'funcionario',
+            'tipo_documento',
+            'descripcion',
+            'documento'
+        )
 
     def __init__(self, *args, **kwargs):
-        super(ArchivoForm, self).__init__(*args, **kwargs)
+        super(DocumentoFuncionarioForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
 
 
-class VacacionForm(forms.ModelForm):
+class VacacionFuncionarioColegioForm(forms.ModelForm):
     class Meta:
-        model = Vacacion
+        model = VacacionFuncionarioColegio
         fields = [
             'contrato',
             'total_dias',
@@ -172,7 +251,7 @@ class VacacionForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        super(VacacionForm, self).__init__(*args, **kwargs)
+        super(VacacionFuncionarioColegioForm, self).__init__(*args, **kwargs)
         self.fields['contrato'].widget.attrs['class'] = 'chosen'
         self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
         self.fields['fecha_termino'].widget.attrs['class'] = 'datepicker'
@@ -192,9 +271,9 @@ class TipoLicenciaForm(forms.ModelForm):
         self.helper.form_tag = False
 
 
-class LicenciaForm(forms.ModelForm):
+class LicenciaFuncionarioColegioForm(forms.ModelForm):
     class Meta:
-        model = Licencia
+        model = LicenciaFuncionarioColegio
         fields = [
             'contrato',
             'tipo_licencia',
@@ -209,7 +288,7 @@ class LicenciaForm(forms.ModelForm):
         ]
 
     def __init__(self, *args, **kwargs):
-        super(LicenciaForm, self).__init__(*args, **kwargs)
+        super(LicenciaFuncionarioColegioForm, self).__init__(*args, **kwargs)
         self.fields['contrato'].widget.attrs['class'] = 'chosen'
         self.fields['tipo_licencia'].widget.attrs['class'] = 'chosen'
         self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
@@ -219,9 +298,9 @@ class LicenciaForm(forms.ModelForm):
         self.helper.form_tag = False
 
 
-class LicenciaTipoFuncionarioForm(forms.ModelForm):
+class LicenciaTipoFuncionarioColegioForm(forms.ModelForm):
     class Meta:
-        model = Licencia
+        model = LicenciaFuncionarioColegio
         fields = [
             'contrato',
             'tipo_licencia',
@@ -242,7 +321,7 @@ class LicenciaTipoFuncionarioForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        super(LicenciaTipoFuncionarioForm, self).__init__(*args, **kwargs)
+        super(LicenciaTipoFuncionarioColegioForm, self).__init__(*args, **kwargs)
         self.fields['tipo_licencia'].widget.attrs['class'] = 'chosen'
         self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
         self.helper = FormHelper()
@@ -293,9 +372,9 @@ class LicenciaTipoFuncionarioForm(forms.ModelForm):
         )
 
 
-class VacacionFuncionarioForm(forms.ModelForm):
+class VacacionTipoFuncionarioColegioForm(forms.ModelForm):
     class Meta:
-        model = Vacacion
+        model = VacacionFuncionarioColegio
         fields = [
             'contrato',
             'total_dias',
@@ -311,7 +390,7 @@ class VacacionFuncionarioForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        super(VacacionFuncionarioForm, self).__init__(*args, **kwargs)
+        super(VacacionTipoFuncionarioColegioForm, self).__init__(*args, **kwargs)
         self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
         self.fields['fecha_termino'].widget.attrs['class'] = 'datepicker'
         self.fields['fecha_retorno'].widget.attrs['class'] = 'datepicker'
@@ -361,11 +440,11 @@ class VacacionFuncionarioForm(forms.ModelForm):
         )
 
 
-class ContratoForm(forms.ModelForm):
+class ContratoColegioForm(forms.ModelForm):
     class Meta:
-        model = Contrato
+        model = ContratoColegio
         fields = [
-            'persona',
+            'funcionario',
             'colegio',
             'categoria',
             'funcion_principal',
@@ -373,35 +452,21 @@ class ContratoForm(forms.ModelForm):
             'tipo_contrato',
             'fecha_inicio',
             'fecha_termino',
-            'horas',
-            'tipo_horas',
-            'reemplazando',
-            'salud',
-            'isapre',
-            'afp',
-            'jornada_trabajo',
-            'hora_inicio_jornada',
-            'hora_termino_jornada',
+            'reemplazando_licencia',
+            'horas_total'
         ]
 
     def __init__(self, *args, **kwargs):
-        super(ContratoForm, self).__init__(*args, **kwargs)
-        self.fields['persona'].widget.attrs['class'] = 'chosen'
+        super(ContratoColegioForm, self).__init__(*args, **kwargs)
+        self.fields['funcionario'].widget.attrs['class'] = 'chosen'
         self.fields['colegio'].widget.attrs['class'] = 'chosen'
         self.fields['categoria'].widget.attrs['class'] = 'chosen'
         self.fields['funcion_principal'].widget.attrs['class'] = 'chosen'
         self.fields['funcion_secundaria'].widget.attrs['class'] = 'chosen'
         self.fields['tipo_contrato'].widget.attrs['class'] = 'chosen'
-        self.fields['tipo_horas'].widget.attrs['class'] = 'chosen'
-        self.fields['reemplazando'].widget.attrs['class'] = 'chosen'
-        self.fields['salud'].widget.attrs['class'] = 'chosen'
-        self.fields['isapre'].widget.attrs['class'] = 'chosen'
-        self.fields['afp'].widget.attrs['class'] = 'chosen'
-        self.fields['jornada_trabajo'].widget.attrs['class'] = 'chosen'
+        self.fields['reemplazando_licencia'].widget.attrs['class'] = 'chosen'
         self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
         self.fields['fecha_termino'].widget.attrs['class'] = 'datepicker'
-        self.fields['hora_inicio_jornada'].widget.attrs['class'] = 'timepicker'
-        self.fields['hora_termino_jornada'].widget.attrs['class'] = 'timepicker'
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.layout = Layout(
@@ -413,7 +478,7 @@ class ContratoForm(forms.ModelForm):
                             "<a href='/rrhh/personas/nuevo'><i class='fa fa-plus'></i> Agregar Persona</a>" +
                             "</div>"
                         ),
-                        Field('persona'),
+                        Field('funcionario'),
                         css_class='col-md-6',
                     ),
                     Div(
@@ -454,52 +519,55 @@ class ContratoForm(forms.ModelForm):
                 ),
                 Div(
                     Div(
-                        Field('horas'),
-                        css_class='col-md-4'
+                        Field('horas_total'),
+                        css_class='col-md-6'
                     ),
                     Div(
-                        Field('tipo_horas'),
-                        css_class='col-md-4'
-                    ),
-                    Div(
-                        Field('reemplazando'),
-                        css_class='col-md-4'
-                    ),
-                    css_class='row'
-                ),
-
-                Div(
-                    Div(
-                        Field('jornada_trabajo'),
-                        css_class='col-md-4'
-                    ),
-                    Div(
-                        Field('hora_inicio_jornada'),
-                        css_class='col-md-4'
-                    ),
-                    Div(
-                        Field('hora_termino_jornada'),
-                        css_class='col-md-4'
-                    ),
-                    css_class='row'
-                ),
-                Div(
-                    Div(
-                        Field('afp'),
-                        css_class='col-md-4'
-                    ),
-                    Div(
-                        Field('salud'),
-                        css_class='col-md-4'
-                    ),
-                    Div(
-                        Field('isapre'),
-                        css_class='col-md-4'
+                        Field('reemplazando_licencia'),
+                        css_class='col-md-6'
                     ),
                     css_class='row'
                 ),
             )
         )
+
+    def clean(self):
+        cleaned_data = super(ContratoColegioForm, self).clean()
+        horas_total = self.cleaned_data.get('horas_total', 0)
+        tipo_contrato = self.cleaned_data.get('tipo_contrato', 0)
+        categoria = self.cleaned_data.get('categoria', 0)
+        colegio = self.cleaned_data.get('colegio', None)
+        funcionario = self.cleaned_data.get('funcionario', None)
+        colegios = Colegio.objects.filter(fundacion=colegio.fundacion)
+        contratos_funcionario = ContratoColegio.objects.filter(funcionario=funcionario, colegio__in=colegios, vigente=True)
+        cfh = contratos_funcionario.values('funcionario').annotate(
+            horas=Sum('horas_total')
+        )
+
+        if contratos_funcionario.exists():
+            horas_total += cfh[0]['horas']
+
+        horas_esperadas = 45
+        if categoria == 2:
+            horas_esperadas = 44
+
+        if horas_total > horas_esperadas:
+            msg = "Las horas contratadas para este Funcionario, supera el límite de {} horas, por {} horas".format(horas_esperadas, horas_total - horas_esperadas)
+            self.add_error('horas_total', msg)
+
+        if tipo_contrato == 2:
+            cfc = contratos_funcionario.values_list('tipo_contrato')
+            if cfc.count() >= 3:
+                cfc = list(cfc)[-3:]
+            cpf = 0
+            for tp in cfc:
+                if tp[0] == 2:
+                    cpf += 1
+            if cpf >= 3:
+                msg = "Ya existen 3 contratos a plazo fijo"
+                self.add_error('tipo_contrato', msg)
+
+        return cleaned_data
 
 
 class FuncionForm(forms.ModelForm):
@@ -545,9 +613,9 @@ class IsapreForm(forms.ModelForm):
         self.helper.form_tag = False
 
 
-class FiniquitoForm(forms.ModelForm):
+class FiniquitoColegioForm(forms.ModelForm):
     class Meta:
-        model = Finiquito
+        model = FiniquitoColegio
         fields = [
             'contrato',
             'razon_baja',
@@ -561,7 +629,152 @@ class FiniquitoForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         id_contrato = kwargs.pop('id_contrato', None)
-        super(FiniquitoForm, self).__init__(*args, **kwargs)
+        super(FiniquitoColegioForm, self).__init__(*args, **kwargs)
         self.fields['razon_baja'].widget.attrs['class'] = 'chosen'
         self.helper = FormHelper()
         self.helper.form_tag = False
+
+
+class SolicitudContratacionForm(forms.ModelForm):
+    class Meta:
+        model = SolicitudContratacion
+        fields = [
+            'colegio',
+            'categoria',
+            'cargo',
+            'horas',
+            'tipo_contrato',
+            'reemplazando_licencia',
+            'fecha_inicio',
+            'fecha_termino',
+            'justificacion'
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super(SolicitudContratacionForm, self).__init__(*args, **kwargs)
+        self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_termino'].widget.attrs['class'] = 'datepicker'
+        self.fields['colegio'].widget.attrs['class'] = 'chosen'
+        self.fields['categoria'].widget.attrs['class'] = 'chosen'
+        self.fields['tipo_contrato'].widget.attrs['class'] = 'chosen'
+        self.fields['reemplazando_licencia'].widget.attrs['class'] = 'chosen'
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            'colegio',
+            Div(
+                Div(
+                    Div(
+                        Field('categoria'),
+                        css_class='col-md-4'
+                    ),
+                    Div(
+                        Field('cargo'),
+                        css_class='col-md-4'
+                    ),
+                    Div(
+                        Field('horas'),
+                        css_class='col-md-4'
+                    ),
+                    css_class='row'
+                ),
+                Div(
+                    Div(
+                        Field('tipo_contrato'),
+                        css_class='col-md-4'
+                    ),
+                    Div(
+                        Field('fecha_inicio'),
+                        css_class='col-md-4'
+                    ),
+                    Div(
+                        Field('fecha_termino'),
+                        css_class='col-md-4'
+                    ),
+                    css_class='row'
+                )
+            ),
+            'reemplazando_licencia',
+            'justificacion'
+        )
+
+
+class EstadoSolicitudForm(forms.ModelForm):
+    class Meta:
+        model = EstadoSolicitud
+        fields = [
+            'estado',
+            'observaciones',
+            'voto',
+        ]
+
+        widgets = {
+            'estado': forms.HiddenInput
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(EstadoSolicitudForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            'estado',
+            'observaciones',
+            'voto'
+        )
+
+
+class SolicitudRenovacionForm(forms.ModelForm):
+    class Meta:
+        model = SolicitudRenovacion
+        fields = [
+            'contrato',
+            'tipo_contrato',
+            'horas',
+            'fecha_inicio',
+            'fecha_termino',
+            'estado',
+            'voto',
+            'observaciones'
+        ]
+        widgets = {
+            'contrato': forms.HiddenInput,
+            'estado': forms.HiddenInput
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(SolicitudRenovacionForm, self).__init__(*args, **kwargs)
+        self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_termino'].widget.attrs['class'] = 'datepicker'
+        self.fields['tipo_contrato'].widget.attrs['class'] = 'chosen'
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            'contrato',
+            'estado',
+            Div(
+                Div(
+                    Div(
+                        Field('tipo_contrato'),
+                        css_class='col-md-8'
+                    ),
+                    Div(
+                        Field('horas'),
+                        css_class='col-md-4'
+                    ),
+                    css_class='row'
+                ),
+                Div(
+                    Div(
+                        Field('fecha_inicio'),
+                        css_class='col-md-6'
+                    ),
+                    Div(
+                        Field('fecha_termino'),
+                        css_class='col-md-6'
+                    ),
+                    css_class='row'
+                ),
+            ),
+            'voto',
+            'observaciones'
+        )

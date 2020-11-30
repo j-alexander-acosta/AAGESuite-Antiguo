@@ -6,16 +6,13 @@
 {% block content %}
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title">Crear Contrato
+        <h4 class="card-title">Crear Solicitud de Contratación
         </h4>
-        <h6 class="card-subtitle mb-2 text-muted">Datos del contrato</h6>
+        <h6 class="card-subtitle mb-2 text-muted">Datos de Solicitud de contratación</h6>
     </div>
     <div class="card-body">
 
         <form class="form-horizontal" method="post">
-            <!-- <div class="checkbox pull-right">
-                <a href="{% url 'rrhh:persona__nuevo' %}"><i class="fa fa-plus"></i> Agregar persona</a>
-            </div> -->
             {% csrf_token %}
             {% crispy form %}
             <div class="form-group">
@@ -47,7 +44,7 @@
             if(tipo === 'A plazo'){
                 $(document).find('#div_id_fecha_termino').fadeIn();
                 $(document).find('#id_fecha_termino').prop('disabled', false);
-                $(document).find('#div_id_reemplazando_licencia').fadeOut();
+                $(document).find('#div_id__licencia').fadeOut();
                 $(document).find('#id_reemplazando_licencia').trigger('liszt:updated');
             }
             if(tipo === 'Reemplazo'){
@@ -57,31 +54,15 @@
                 // $(document).find('#id_reemplazando').prop('disabled', false);
             }
         }
-        function salud(){
-            let salud = $(document).find('#id_salud_chosen').find('a.chosen-single').find('span').html();
-            if(salud === 'Fonasa'){
-                $(document).find('#div_id_isapre').fadeOut();
-                // $(document).find('#id_isapre').attr('disabled', true);
-            }
-            if(salud === 'Isapre'){
-                $(document).find('#div_id_isapre').fadeIn();
-                // $(document).find('#id_isapre').prop('disabled', false);
-            }
-        }
         $(function(){
             tipo_contrato();
             $(document).find('#div_id_fecha_termino').fadeOut();
             $(document).find('#id_fecha_termino').attr('disabled', true);
             $(document).find('#div_id_reemplazando_licencia').fadeOut();
             // $(document).find('#id_reemplazando').attr('disabled', true);
-            $(document).find('#div_id_isapre').fadeOut();
-            // $(document).find('#id_isapre').attr('disabled', true);
 
             $(document).change('#id_tipo_contrato', function() {
                 tipo_contrato();
-            });
-            $(document).change('#id_salud', function() {
-                salud();
             });
         });
     </script>

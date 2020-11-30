@@ -26,6 +26,7 @@
                 <tr>
                     <th><i class="fa fa-user"></i> Nombre </th>
                     <th><i class="fa fa-clock-o"></i> RUT </th>
+                    <th><i class="fa fa-graduation-cap"></i> Clasificación</th>
                     <th><i class="fa fa-cogs"></i> Acciones </th>
                 </tr>
                 </thead>
@@ -34,6 +35,13 @@
                     <tr>
                         <td><a href="{% url 'rrhh:persona' p.pk %}"> {{ p.get_full_name }} </a></td>
                         <td> {{ p.rut }} </td>
+                        <td> <h5> <span class="badge badge-pill
+                            {% if p.clasificacion == 'Postulante' %} badge-warning
+                            {% elif p.clasificacion == 'Personal' %} badge-success
+                            {% else %} badge-info
+                            {% endif %}
+                            ">{{ p.clasificacion }} </span></h5>
+                        </td>
                         <td>
                             <a class="btn btn-sm btn-primary" href="{% url 'rrhh:persona__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
                             <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_persona_{{p.pk}}"><i class="fa fa-trash"></i></a>

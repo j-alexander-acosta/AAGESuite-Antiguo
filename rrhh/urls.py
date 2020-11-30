@@ -6,7 +6,82 @@ app_name = 'rrhh'
 urlpatterns = [
     url(r'^$', views.home, name='home_rrhh'),
     url(
-        r'^pesonas/$',
+        r'^uniones/$',
+        views.UnionListView.as_view(),
+        name='uniones'
+    ),
+    url(
+        r'^uniones/nuevo/$',
+        views.UnionCreateView.as_view(),
+        name='union__nuevo'
+    ),
+    url(
+        r'^uniones/(?P<pk>\d+)/$',
+        views.UnionDetailView.as_view(),
+        name='union'
+    ),
+    url(
+        r'^uniones/(?P<pk>\d+)/editar/$',
+        views.UnionUpdateView.as_view(),
+        name='union__editar'
+    ),
+    url(
+        r'^uniones/(?P<pk>\d+)/eliminar/$',
+        views.UnionDeleteView.as_view(),
+        name='union__eliminar'
+    ),
+    url(
+        r'^fundaciones/$',
+        views.FundacionListView.as_view(),
+        name='fundaciones'
+    ),
+    url(
+        r'^fundaciones/nuevo/$',
+        views.FundacionCreateView.as_view(),
+        name='fundacion__nuevo'
+    ),
+    url(
+        r'^fundaciones/(?P<pk>\d+)/$',
+        views.FundacionDetailView.as_view(),
+        name='fundacion'
+    ),
+    url(
+        r'^fundaciones/(?P<pk>\d+)/editar/$',
+        views.FundacionUpdateView.as_view(),
+        name='fundacion__editar'
+    ),
+    url(
+        r'^fundaciones/(?P<pk>\d+)/eliminar/$',
+        views.FundacionDeleteView.as_view(),
+        name='fundacion__eliminar'
+    ),
+    url(
+        r'^colegios/$',
+        views.ColegioListView.as_view(),
+        name='colegios'
+    ),
+    url(
+        r'^colegios/nuevo/$',
+        views.ColegioCreateView.as_view(),
+        name='colegio__nuevo'
+    ),
+    url(
+        r'^colegios/(?P<pk>\d+)/$',
+        views.ColegioDetailView.as_view(),
+        name='colegio'
+    ),
+    url(
+        r'^colegios/(?P<pk>\d+)/editar/$',
+        views.ColegioUpdateView.as_view(),
+        name='colegio__editar'
+    ),
+    url(
+        r'^colegios/(?P<pk>\d+)/eliminar/$',
+        views.ColegioDeleteView.as_view(),
+        name='colegio__eliminar'
+    ),
+    url(
+        r'^personas/$',
         views.PersonaListView.as_view(),
         name='personas'
     ),
@@ -29,6 +104,36 @@ urlpatterns = [
         r'^personas/(?P<pk>\d+)/eliminar/$',
         views.PersonaDeleteView.as_view(),
         name='persona__eliminar'
+    ),
+    # url(
+    #     r'^funcionarios/$',
+    #     views.FuncionarioListView.as_view(),
+    #     name='funcionarios'
+    # ),
+    url(
+        r'^funcionarios/(?P<id_persona>\d+)/nuevo/$',
+        views.crear_funcionario,
+        name='funcionario__nuevo'
+    ),
+    # url(
+    #     r'^funcionarios/(?P<pk>\d+)/$',
+    #     views.FuncionarioDetailView.as_view(),
+    #     name='funcionario'
+    # ),
+    url(
+        r'^funcionarios/(?P<pk>\d+)/editar/$',
+        views.FuncionarioUpdateView.as_view(),
+        name='funcionario__editar'
+    ),
+    # url(
+    #     r'^funcionarios/(?P<pk>\d+)/eliminar/$',
+    #     views.FuncionarioDeleteView.as_view(),
+    #     name='funcionario__eliminar'
+    # ),
+    url(
+        r'^postulantes/$',
+        views.postulantes,
+        name='postulantes'
     ),
     url(
         r'^entrevistas/$',
@@ -61,34 +166,34 @@ urlpatterns = [
         name='entrevista__eliminar'
     ),
     url(
-        r'^archivos/$',
-        views.ArchivoListView.as_view(),
-        name='archivos'
+        r'^documentos/$',
+        views.DocumentoFuncionarioListView.as_view(),
+        name='documentos'
     ),
     url(
-        r'^archivos/nuevo/$',
-        views.ArchivoCreateView.as_view(),
-        name='archivo__nuevo'
+        r'^documentos/nuevo/$',
+        views.DocumentoFuncionarioCreateView.as_view(),
+        name='documento__nuevo'
     ),
     url(
-        r'^archivos/(?P<pk>\d+)/$',
-        views.ArchivoDetailView.as_view(),
-        name='archivo'
+        r'^documentos/(?P<pk>\d+)/$',
+        views.DocumentoFuncionarioDetailView.as_view(),
+        name='documento'
     ),
     url(
-        r'^archivos/nuevo/$',
-        views.ArchivoCreateView.as_view(),
-        name='archivo__nuevo'
+        r'^documentos/nuevo/$',
+        views.DocumentoFuncionarioCreateView.as_view(),
+        name='documento__nuevo'
     ),
     url(
-        r'^archivos/(?P<pk>\d+)/editar/$',
-        views.ArchivoUpdateView.as_view(),
-        name='archivo__editar'
+        r'^documentos/(?P<pk>\d+)/editar/$',
+        views.DocumentoFuncionarioUpdateView.as_view(),
+        name='documento__editar'
     ),
     url(
-        r'^archivos/(?P<pk>\d+)/eliminar/$',
-        views.ArchivoDeleteView.as_view(),
-        name='archivo__eliminar'
+        r'^documentos/(?P<pk>\d+)/eliminar/$',
+        views.DocumentoFuncionarioDeleteView.as_view(),
+        name='documento__eliminar'
     ),
     url(
         r'^vacaciones/$',
@@ -174,6 +279,11 @@ urlpatterns = [
         r'^vacaciones_funcionario/nuevo/$',
         views.nuevo_vacacion_funcionario,
         name='vacacion_funcionario__nuevo'
+    ),
+    url(
+        r'^contratos/nuevo/(?P<id_funcionario>\d+)/(?P<id_solicitud>\d+)/',
+        views.crear_contrato_colegio,
+        name='contrato_colegio__crear'
     ),
     url(
         r'^contratos/$',
@@ -284,5 +394,60 @@ urlpatterns = [
         r'^finiquitos/(?P<pk>\d+)/eliminar/$',
         views.FiniquitoDeleteView.as_view(),
         name='finiquito__eliminar'
+    ),
+    url(
+        r'^solicitudes/$',
+        views.SolicitudContratacionListView.as_view(),
+        name='solicitudes'
+    ),
+    url(
+        r'^solicitudes/nuevo/$',
+        views.SolicitudContratacionCreateView.as_view(),
+        name='solicitud__nuevo'
+    ),
+    url(
+        r'^solicitudes/(?P<pk>\d+)/$',
+        views.SolicitudContratacionDetailView.as_view(),
+        name='solicitud'
+    ),
+    url(
+        r'^solicitudes/(?P<pk>\d+)/editar/$',
+        views.SolicitudContratacionUpdateView.as_view(),
+        name='solicitud__editar'
+    ),
+    url(
+        r'^solicitudes/(?P<pk>\d+)/eliminar/$',
+        views.SolicitudContratacionDeleteView.as_view(),
+        name='solicitud__eliminar'
+    ),
+    url(
+        r'^estado-solicitud/cambiar/$',
+        views.cambiar_estado_solicitud,
+        name='estado_solicitud__cambiar'
+    ),
+    url(
+        r'^solicitudes/(?P<id_solicitud>\d+)/seleccionar_cadidatos/$',
+        views.seleccionar_candidatos,
+        name='candidatos__seleccionar'
+    ),
+    url(
+        r'^solicitudes/guardar_candidato/$',
+        views.guardar_candidato,
+        name='candidatos__guardar'
+    ),
+    url(
+        r'^contratos/(?P<id_contrato>\d+)/renovar/$',
+        views.renovar_contrato,
+        name='contrato__renovar'
+    ),
+    url(
+        r'^funcionario/(?P<id_contrato>\d+)/trasladar/$',
+        views.trasladar_funcionario,
+        name='funcionario__trasladar'
+    ),
+    url(
+        r'^contratos/(?P<id_contrato>\d+)/renovacion/contratar/$',
+        views.renovar_contrato_colegio,
+        name='renovacion_contrato__contratar'
     ),
 ]

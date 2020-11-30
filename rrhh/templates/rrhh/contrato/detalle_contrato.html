@@ -8,16 +8,54 @@
 {% block content %}
 
 <div class="card">
-    <div class="card-header {% if not object.vigente %}alert-danger{% endif %}">
+    <div class="card-header
+        {% if object.vigente %}
+            {% if object.dias_termino_contrato <= 120 and object.categoria == 2 %}
+                alert-warning
+            {% elif object.dias_termino_contrato <= 60 %}
+                alert-warning
+            {% endif %}
+        {% else %}
+            alert-danger
+        {% endif%}">
+        <!-- {% if object.vigente and object.dias_termino_contrato < 50 %}
+            alert-warning
+        {% elif not object.vigente %}
+            alert-danger
+        {% endif %}"> -->
       <h4 class="card-title"><strong>Detalle del Trabajador</strong></h4>
         {% block buttons %}
             <div class="btn-group pull-right">
                 <a href="{% url 'rrhh:contratos' %}" type="button" class="btn btn-sm btn-dark">
-                    <i class="fa fa-arrow-left"> Volver</i>
+                    <i class="fa fa-arrow-left"></i> Volver
                 </a>
+                {% if not object.solicitudrenovacion %}
+                    {% if object.dias_termino_contrato <= 120 and object.categoria == 2 %}
+                        <a href="{% url 'rrhh:contrato__renovar' object.pk %}" type="button" class="btn btn-sm btn-success">
+                            <i class="fa fa-star"></i> Renovar Contrato
+                        </a>
+                    {% elif object.dias_termino_contrato <= 60 %}
+                        <a href="{% url 'rrhh:contrato__renovar' object.pk %}" type="button" class="btn btn-sm btn-success">
+                            <i class="fa fa-star"></i> Renovar Contrato
+                        </a>
+                    {% endif %}
+
+                {% endif %}
             </div>
         {% endblock %}
         <h6 class="card-subtitle mb-2 text-muted">{{ object }}</h6>
+        {% if object.vigente %}
+            <p class="text-danger">
+            {% if object.solicitudrenovacion.estado == 4 %}
+                El contrato continúa vigente aún cuando la renovación ya se ha realizado
+            {% elif object.dias_termino_contrato <= 120 and object.categoria == 2 %}
+                El contrato expirará en {{ object.dias_termino_contrato }} días
+            {% elif object.dias_termino_contrato <= 60 %}
+                El contrato expirará en {{ object.dias_termino_contrato }} días
+            {% endif %}
+            </p>
+        {% endif %}
+
     </div>
     <div class="card-body">
         <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
@@ -30,6 +68,11 @@
             <li class="nav-item" role="vacacion">
                 <a class="nav-link" id="vacacion-tab" data-toggle="tab" href="#vacacion" role="tab" aria-controls="vacacion" aria-selected="false">Vacaciones</a>
             </li>
+            {% if object.solicitudrenovacion %}
+                <li class="nav-item" role="renovacion">
+                    <a class="nav-link" id="renovacion-tab" data-toggle="tab" href="#renovacion" role="tab" aria-controls="renovacion" aria-selected="false">Renovación de Contrato</a>
+                </li>
+            {% endif %}
         </ul>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="contrato" role="tabpanel" aria-labelledby="contrato-tab">
@@ -38,10 +81,10 @@
                     <div class="pmbb-body">
                         <p>Información del contrato y finiquito, en caso de existencia, del trabajador.
                                 <button name="eliminar_contrato" type="button" class="btn btn-sm btn-danger pull-right" data-toggle="modal" data-target="#eliminar_contrato_{{object.pk}}" style="cursor: pointer">
-                                    <span><i class="fa fa-trash"></i> Eliminar</span>
+                                    <i class="fa fa-trash"></i> Eliminar
                                 </button>
                                 <a href="{% url 'rrhh:contrato__editar' object.pk %}" type="button" class="btn btn-sm btn-primary pull-right">
-                                    <i class="fa fa-edit"> Editar</i>
+                                    <i class="fa fa-edit"></i> Editar
                                 </a>
                         </p>
                         <div class="pmbb-view">
@@ -49,8 +92,8 @@
                                 <tbody>
                                 <tr>
                                     <th> Persona </th>
-                                    <td><a href="{% url 'rrhh:persona' object.persona.id %}" data-toggle="tooltip" data-placement="top" title="Ver información de la Persona">
-                                        {{ object.persona }}</a></td>
+                                    <td><a href="{% url 'rrhh:persona' object.funcionario.persona.pk %}" data-toggle="tooltip" data-placement="top" title="Ver información de la Persona">
+                                        {{ object.funcionario }}</a></td>
                                 </tr>
                                 <tr>
                                     <th> Establecimiento </th>
@@ -62,7 +105,7 @@
                                 </tr>
                                 <tr>
                                     <th> Horas contratadas </th>
-                                    <td>  {{ object.horas }}  </td>
+                                    <td>  {{ object.horas_total }}  </td>
                                 </tr>
                                 <tr>
                                     <th> Periodo de contrato </th>
@@ -74,10 +117,12 @@
                                         {% endif %}
                                     </td>
                                 </tr>
-                                <tr>
-                                    <th> En reemplazo de</th>
-                                    <td> {{ object.reemplazando }} </td>
-                                </tr>
+                                {% if object.tipo_contrato == 3 %}
+                                    <tr>
+                                        <th> En reemplazo de</th>
+                                        <td> {{ object.reemplazando }} </td>
+                                    </tr>
+                                {% endif %}
                                 <tr>
                                     <th>Estado Trabajador</th>
                                     <td> {% if object.vigente %}
@@ -109,20 +154,20 @@
                                 </tr>
                                 <tr>
                                     <th> Sistema de Salud </th>
-                                    <td>  {{ object.get_salud_display }}
+                                    <td>  {{ object.funcionario.get_salud_display }}
                                         {% if object.salud == 2 %}
-                                            , {{ object.isapre|beauty_none }}
+                                            , {{ object.funcionario.isapre|beauty_none }}
                                         {% endif %}
                                     </td>
                                 </tr>
                                 <tr>
                                     <th> AFP </th>
-                                    <td> {{ object.afp|beauty_none }} </td>
+                                    <td> {{ object.funcionario.afp|beauty_none }} </td>
                                 </tr>
                                 </tbody>
                             </table>
                             <br>
-                            {% if object.finiquito %}
+                            {% if object.finiquitocolegio %}
                                 <h5 class="card-title">Finiquito</h5>
                                 <table class="table table-responsive">
                                     <thead>
@@ -134,18 +179,20 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>{{ object.finiquito.get_razon_baja_display }}</td>
-                                            <td>{{ object.finiquito.descripcion }}</td>
+                                            <td>{{ object.finiquitocolegio.get_razon_baja_display }}</td>
+                                            <td>{{ object.finiquitocolegio.descripcion }}</td>
                                             <td>
-                                                <a class="btn btn-info" href="{{ MEDIA_URL }}{{ object.finiquito.archivo.url }}" target="_blank">
-                                                    <i class="fa fa-download"></i> Descargar</a>
-                                                <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#eliminar_finiquito_{{object.finiquito.pk}}">
+                                                {% if object.finiquitocolegio.archivo %}
+                                                    <a class="btn btn-info" href="{{ MEDIA_URL }}{{ object.finiquitocolegio.archivo.url }}" target="_blank">
+                                                        <i class="fa fa-download"></i> Descargar</a>
+                                                {% endif %}
+                                                <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#eliminar_finiquito_{{object.finiquitocolegio.pk}}">
                                                     <i class="fa fa-trash"></i> Eliminar</a>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div class="modal" tabindex="-1" role="dialog" id="eliminar_finiquito_{{object.finiquito.pk}}">
+                                <div class="modal" tabindex="-1" role="dialog" id="eliminar_finiquito_{{object.finiquitocolegio.pk}}">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -158,7 +205,7 @@
                                                 <p>Está seguro que desea eliminar el Finiquito de "{{ object }}"?.</p>
                                             </div>
                                             <div class="modal-footer">
-                                                <a role="button" class="btn btn-danger" href="{% url 'rrhh:finiquito__eliminar' object.finiquito.pk %}">Eliminar</a>
+                                                <a role="button" class="btn btn-danger" href="{% url 'rrhh:finiquito__eliminar' object.finiquitocolegio.pk %}">Eliminar</a>
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                                             </div>
                                         </div>
@@ -254,6 +301,82 @@
                     </div>
                 </div>
             </div>
+            <div class="tab-pane fade" id="renovacion" role="tabpanel" aria-labelledby="renovacion-tab">
+                <br>
+                <div class="pmb-block">
+                    <div class="pmbb-body">
+                        <div class="pmbb-view">
+                            <table class="table table-responsive">
+                                <tbody>
+                                    <tr>
+                                        <th>Tipo de contrato</th>
+                                        <td> {{ object.solicitudrenovacion.get_tipo_contrato_display }} </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total de horas</th>
+                                        <td> {{ object.solicitudrenovacion.horas }} horas</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Periodo de contrato</th>
+                                        <td> {{ object.solicitudrenovacion.periodo_contratacion }} </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Estado de solicitud</th>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-sm
+                                                        {% if object.solicitudrenovacion.estado == 1 %}
+                                                            btn-warning
+                                                        {% elif object.solicitudrenovacion.estado == 2 or 4 %}
+                                                            btn-success
+                                                        {% else %}
+                                                            btn-danger
+                                                        {% endif %}
+                                                    ">
+                                                    {{ object.solicitudrenovacion.get_estado_display }}
+                                                </button>
+                                                <button type="button" class="btn
+                                                    {% if object.solicitudrenovacion.estado == 1 %}
+                                                        btn-warning
+                                                    {% elif object.solicitudrenovacion.estado == 2 or 4 %}
+                                                        btn-success
+                                                    {% else %}
+                                                        btn-danger
+                                                    {% endif %}
+                                                    btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <span class="sr-only">Toggle Dropdown</span>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    {% if object.solicitudrenovacion.estado == 1 %}<a class="dropdown-item text-success" id="ces" name="2" href="#"><i class="fa fa-check"></i> Aceptar</a> {% endif %}
+                                                    {% if object.solicitudrenovacion.estado != 1 %}<a class="dropdown-item text-warning" id="ces" name="1" href="#"><i class="fa fa-refresh"></i> Pendiente</a>{% endif %}
+                                                    {% if object.solicitudrenovacion.estado != 3 %}<a class="dropdown-item text-danger" id="ces" name="3" href="#"><i class="fa fa-close"></i> Rechazar</a>{% endif %}
+                                                    {% if object.solicitudrenovacion.estado == 2 %}<a class="dropdown-item text-info" id="ces" name="4" href="#"><i class="fa fa-plus"></i> Contratar</a>{% endif %}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% if object.solicitudrenovacion.estado == 2 %}
+                                        <tr>
+                                            <th>Voto de autorización</th>
+                                            <td> {{ object.solicitudrenovacion.voto }} </td>
+                                        </tr>
+                                    {% endif %}
+                                    <tr>
+                                        <th>Observaciones</th>
+                                        <td> {{ object.solicitudrenovacion.observaciones|safe|escape }} </td>
+                                    </tr>
+                                    {% if object.solicitudrenovacion.autor %}
+                                        <tr>
+                                            <th>Último ejecutor</th>
+                                            <td> {{ object.solicitudrenovacion.autor }} </td>
+                                        </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -323,6 +446,38 @@
                 <div class="modal-body m-10">
                     {% csrf_token %}
                     {% crispy vf_form %}
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="cambiar_estado_renovacion" tabindex="-1" role="dialog" aria-labelledby="cambiar_estado_renovacionLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cambiar_estado_renovacionLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="cambiar_estado_renovacion_form" class="form-horizontal">
+                <div class="modal-body m-10">
+                    <input type="hidden" name="contrato" value="{{ object.id }}"></input>
+                    <input type="hidden" name="estado" value=""></input>
+                    <div id="div_id_observaciones">
+                        <label for="observaciones">Observaciones</label>
+                        <textarea class="form-control" id="observaciones" rows="4"></textarea>
+                    </div>
+                    <div id="div_id_voto">
+                        <label for="voto">Voto</label>
+                        <input type="number" min="1" class="form-control" id="voto">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Guardar</button>
@@ -562,6 +717,63 @@
                 }
             });
 
+            $(document).on('click', '#ces', function(){
+                let opciones = [,
+                    'Marcar la solicitud como pendiente',
+                    'Aceptar la solicitud de renovación',
+                    'Rechazar la solicitud de renovación',
+                    'Pasar a Contrato'
+                ];
+                let modal = $(document).find('#cambiar_estado_renovacion');
+                let opcion = $(this).attr('name');
+                let titulo = opciones[opcion];
+                modal.find('input[name="estado"]').val(opcion);
+                modal.find('.modal-title').html(titulo);
+                if (opcion !== 2) {
+                    modal.find('#div_id_voto').fadeOut();
+                }
+                if (opcion == 4) {
+                    console.log("AQUIII");
+                    modal.find("#cambiar_estado_renovacion_form").submit();
+                }else{
+                    setTimeout(function(){
+                        modal.find('#div_id_observaciones').fadeIn();
+                    }, 500);
+                }
+                if (opcion == 2) {
+                    setTimeout(function(){
+                        modal.find('#div_id_voto').fadeIn();
+                    }, 500);
+                }
+                if (opcion != 4) {
+                    modal.modal('show');
+                }
+            });
+
+            $(document).on('submit', '#cambiar_estado_renovacion_form', function (e) {
+                e.preventDefault();
+                let form = $(this);
+                let id_contrato = form.find('input[name="contrato"]').val();
+                let estado = form.find('input[name="estado"]').val();
+                let observaciones = form.find('#observaciones').val();
+                let voto = form.find('#voto').val();
+                let url = '/rrhh/contratos/id_contrato/renovar/'.replace('id_contrato', id_contrato);
+                console.log(estado);
+
+                $.get(url, {estado: estado, observaciones: observaciones, voto: voto}, function() {
+                    let success_url = '/rrhh/contratos/id_contrato/'.replace('id_contrato', id_contrato);
+                    if (estado == 4){
+                        success_url = '/rrhh/contratos/id_contrato/renovacion/contratar'.replace('id_contrato', id_contrato);
+                    }
+                    setTimeout(function(){
+                        document.location.replace(success_url);
+                    }, 500);
+                    console-log('OK');
+                }).fail(function(e){
+                    console.log(e);
+                });
+
+            });
         });
     </script>
 {% endblock %}
