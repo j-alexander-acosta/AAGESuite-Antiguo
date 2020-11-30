@@ -251,7 +251,39 @@
 		  <div class="col-md-6">
 		  </div>
         <div class="col-md-6">
-        </div>
+            <table class="table table-hover table-sm table-striped">
+                <thead>
+                <tr>
+                    <th colspan="2" class="table-success">
+                <span>
+                    <i class="fa fa-info-circle"></i>
+                     Resumen Horas
+                </span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th> Horas asignadas </th>
+                    <td> {{ object.horas_semanales_total|decimal_maybe }}  </td>
+                </tr>
+                <tr>
+                    <th> Horas disponibles </th>
+                    <td> {{ object.horas_disponibles|decimal_maybe }}  </td>
+                </tr>
+                <!--
+                <tr>
+                    <td colspan="2">
+                        <small class="text-muted">
+                            Creado: {{ object.creado_en }}
+                            <br>
+                            Modificado: {{ object.modificado_en }}
+                        </small>
+                    </td>
+                </tr>
+                -->
+                </tbody>
+            </table>        </div>
 	</div>
 
     </div>
