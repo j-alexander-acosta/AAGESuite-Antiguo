@@ -95,15 +95,12 @@ def home(request):
 @login_required
 def anexo(request, pk):
     p = get_object_or_404(Profesor, pk=pk)
-    ax = [{'descripcion': 'Planificación', 'curso': '', 'horas': p.horas_planificacion},
-          {'descripcion': 'Recreo', 'curso': '', 'horas': p.horas_recreo}] + list(p.asignacionextra_set.all())
-
+    colegio = Colegio.objects.get(pk=request.session['colegio__pk'])
     response = PDFTemplateResponse(request=request,
                                    template='carga_horaria/profesor/anexo_profesor.html',
                                    filename='anexo1.pdf',
-                                   context={'asignaciones': p.asignacion_set.all(),
-                                            'asignaciones_extra': ax,
-                                            'profesor': p},
+                                   context={'profesor': p,
+                                            'colegio': colegio},
                                    show_content_in_browser=settings.DEBUG)
     return response
 

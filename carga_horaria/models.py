@@ -462,7 +462,7 @@ class Profesor(BaseModel):
 
     @property
     def horas_sbvg(self):
-        return self.horas_asignadas_plan + self.horas_asignadas_sostenedor
+        return (float(45) / float(60)) * (float(self.horas_asignadas_plan) + float(self.horas_asignadas_sostenedor)) + float(sum(self.asignacionextra_set.values_list('horas', flat=True))) + float(sum(self.asignacionnoaula_set.all().ordinaria.values_list('horas', flat=True))) + self.horas_planificacion + self.horas_recreo_total
 
     @property
     def horas_disponibles(self):
@@ -470,11 +470,11 @@ class Profesor(BaseModel):
 
     @property
     def horas_no_lectivas_asignadas(self):
-        return float(sum(self.asignacionextra_set.values_list('horas', flat=True))) + self.horas_planificacion + self.horas_recreo
+        return float(sum(self.asignacionextra_set.values_list('horas', flat=True))) + self.horas_planificacion + self.horas_recreo_total
 
     @property
     def horas_no_lectivas_asignadas_anexo(self):
-        return float(sum(self.asignacionextra_set.values_list('horas', flat=True))) + float(sum(self.asignacionnoaula_set.values_list('horas', flat=True))) + self.horas_planificacion + self.horas_recreo
+        return float(sum(self.asignacionextra_set.values_list('horas', flat=True))) + float(sum(self.asignacionnoaula_set.values_list('horas', flat=True))) + self.horas_planificacion + self.horas_recreo_total
 
     @property
     def horas_no_lectivas_disponibles(self):
@@ -483,6 +483,14 @@ class Profesor(BaseModel):
     @property
     def horas_no_aula_asignadas(self):
         return sum(self.asignacionnoaula_set.values_list('horas', flat=True))
+
+    @property
+    def total_sep(self):
+        return float(sum(self.asignacionnoaula_set.all().sep.values_list('horas', flat=True))) + float(self.horas_asignadas_sep) * float(45) / float(60)
+
+    @property
+    def total_pie(self):
+        return float(sum(self.asignacionnoaula_set.all().pie.values_list('horas', flat=True))) + float(self.horas_asignadas_pie) * float(45) / float(60)
 
     @property
     def horas_no_aula_disponibles(self):
