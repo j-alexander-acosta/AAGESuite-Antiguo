@@ -449,20 +449,36 @@ class Profesor(BaseModel):
         return sum(self.asignacion_set.all().plan.values_list('horas', flat=True))
 
     @property
+    def horas_asignadas_pie(self):
+        return sum(self.asignacion_set.all().pie.values_list('horas', flat=True))
+
+    @property
+    def horas_asignadas_sep(self):
+        return sum(self.asignacion_set.all().sep.values_list('horas', flat=True))
+
+    @property
+    def horas_asignadas_sostenedor(self):
+        return sum(self.asignacion_set.all().sostenedor.values_list('horas', flat=True))
+
+    @property
+    def horas_sbvg(self):
+        return self.horas_asignadas_plan + self.horas_asignadas_sostenedor
+
+    @property
     def horas_disponibles(self):
         return (self.horas or 44) - self.horas_semanales_total
 
     @property
     def horas_no_lectivas_asignadas(self):
-        return float(sum(self.asignacionextra_set.values_list('horas', flat=True))) + self.horas_planificacion
-
-    @property
-    def horas_no_lectivas_asignadas_anexo(self):
         return float(sum(self.asignacionextra_set.values_list('horas', flat=True))) + self.horas_planificacion + self.horas_recreo
 
     @property
+    def horas_no_lectivas_asignadas_anexo(self):
+        return float(sum(self.asignacionextra_set.values_list('horas', flat=True))) + float(sum(self.asignacionnoaula_set.values_list('horas', flat=True))) + self.horas_planificacion + self.horas_recreo
+
+    @property
     def horas_no_lectivas_disponibles(self):
-        return self.horas_no_lectivas_total - self.horas_no_lectivas_asignadas
+        return self.horas_no_lectivas_total + self.horas_recreo - self.horas_no_lectivas_asignadas
 
     @property
     def horas_no_aula_asignadas(self):

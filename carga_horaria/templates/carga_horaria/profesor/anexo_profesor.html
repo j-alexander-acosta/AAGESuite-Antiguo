@@ -1,3 +1,4 @@
+{% load carga_filters %}
 {% load inline_static_tags %}
 <html>
   <head>
@@ -22,117 +23,187 @@
 
     <br>
     
-    <table class="table table-small">
+    <table class="table table-sm" style="font-size: 12px;">
       <thead>
       </thead>
       <tbody>
 	<tr>
-	  <td>Horas de contrato</td>
-	  <td>{{ profesor.horas }}</td>
+	  <th style="text-align: center; background-color: #ccc !important" colspan="3">Nombre</th>
+	  <td style="text-align: center; background-color: #ccc !important" border="0" colspan="2"></td>
+	  <td style="text-align: center; background-color: #ccc !important"></td>
 	</tr>
 	<tr>
-	  <td>Horas de docencia</td>
-	  <td>{{ profesor.horas_docentes }}</td>
+	  <td style="text-align: center" colspan="3">{{ profesor.nombre }}</td>
+	  <td style="text-align: center; background-color: #ccc !important" border="0" colspan="2"></td>
+	  <td style="text-align: center; background-color: #ccc !important"></td>
+        </tr>
+	<tr>
+	  <th style="text-align: center; background-color: #ccc !important" colspan="3">RUT</th>
+	  <th style="text-align: center; background-color: #ccc !important" border="0" colspan="2">Horas de Contrato (General)</td>
+	  <th style="text-align: center; background-color: #ccc !important">{{ profesor.horas|decimal_maybe }}</th>
 	</tr>
 	<tr>
-	  <td>Horas curriculares</td>
-	  <td>{{ profesor.horas_no_lectivas }}</td>
+	  <td style="text-align: center" colspan="3">{{ profesor.rut }}</td>
+	  <td style="text-align: center; background-color: #ccc !important" border="0" colspan="2"></td>
+	  <td style="text-align: center; background-color: #ccc !important"></td>
 	</tr>
 	<tr>
-	  <td>Recreo</td>
-	  <td>{{ profesor.horas_recreo }}</td>
+	  <th style="text-align: center; background-color: #ccc !important" colspan="3">Tipo de contrato</th>
+	  <td style="text-align: center; background-color: #ccc !important" border="0" colspan="2"></td>
+	  <td style="text-align: center; background-color: #ccc !important"></td>
 	</tr>
-      </tbody>
-    </table>
+	<tr>
+	  <td style="text-align: center" colspan="3"></td>
+	  <th style="text-align: center; background-color: #ccc !important" border="0" colspan="2">Total Horas SBVG</th>
+	  <th style="text-align: center; background-color: #ccc !important">{{ profesor.horas_sbvg|hhmm }}</th>
+        </tr>
+	<tr>
+	  <th style="text-align: center; background-color: #ccc !important" colspan="3">Función</th>
+	  <th style="text-align: center; background-color: #ccc !important" border="0" colspan="2">Total Horas SEP</th>
+	  <th style="text-align: center; background-color: #ccc !important">{{ profesor.horas_asignadas_sep|hhmm }}</th>
+	</tr>
+	<tr>
+	  <td style="text-align: center" colspan="3">{{ profesor.especialidad }}</td>
+	  <th style="text-align: center; background-color: #ccc !important" border="0" colspan="2">Total Horas PIE</th>
+	  <th style="text-align: center; background-color: #ccc !important">{{ profesor.horas_asignadas_pie|hhmm }}</th>
+        </tr>
 
-    <h3>Docencia de Aula 65%</h3>
-
-    <table class="table table-small">
-      <thead>
+        <!-- Docencia de Aula -->
+        <tr>
+          <td></td>
+        </tr>
 	<tr>
-	  <th>N°</th>
-	  <th>Asignatura</th>
-	  <th>Curso</th>
-	  <th style="width: 1cm;">Horas pedagógicas</th>
-	  <th style="width: 1cm;">Horas cronológicas</th>
+	  <th style="text-align: center; background-color: #ccc !important"></th>
+	  <th style="text-align: center; background-color: #ccc !important" colspan="3">Docencia de Aula 65% y/o 60%</th>
+	  <th style="text-align: center; background-color: #ccc !important" border="0">N° de Horas</th>
+	  <th style="text-align: center; background-color: #ccc !important">N° de Horas</th>
 	</tr>
-      </thead>
-      <tbody>
-	{% for a in asignaciones %}
 	<tr>
-	  <td>{{ forloop.counter }}</td>
-	  <td>{{ a.asignatura|default:"" }}{{ a.descripcion|default:"" }}</td>
-	  <td>{{ a.curso|default:"" }}</td>
-	  <td>{{ a.horas }}</td>
-	  <td>{{ a.horas_crono }}</td>
+	  <th style="text-align: center; background-color: #ccc !important">N°</th>
+	  <th style="text-align: center; background-color: #ccc !important">Subsector / Asignaturas</th>
+	  <th style="text-align: center; background-color: #ccc !important">Cursos</th>
+	  <th style="text-align: center; background-color: #ccc !important">Financiamiento</th>
+	  <th style="text-align: center; background-color: #ccc !important">Pedagógicas 45'</th>
+	  <th style="text-align: center; background-color: #ccc !important">Cronológicas 60'</th>
 	</tr>
+	{% for ax in profesor.asignacion_set.all.plan.sorted %}
+	<tr>
+	  <td style="text-align: center; background-color: #ccc !important">{{ forloop.counter }}</td>
+	  <td style="text-align: center; background-color: #ccc !important">{{ ax.asignatura }}</td>
+	  <td style="text-align: center; background-color: #ccc !important">{% for periodo in ax.asignatura.periodos.all %}{{ periodo }} {% endfor %}</td>
+	  <td style="text-align: center; background-color: #ccc !important">SBVG</td>
+	  <td style="text-align: center; background-color: #ccc !important">{{ ax.horas|decimal_maybe }}</td>
+	  <td style="text-align: center; background-color: #ccc !important">{{ ax.horas|to_chrono }}</td>
+	</tr>        
+        {% endfor %}
+	{% for ax in profesor.asignacion_set.all.sep.sorted %}
+	<tr>
+	  <td style="text-align: center; background-color: #ccc !important">{{ forloop.counter|add:profesor.asignacion_set.all.plan.count }}</td>
+	  <td style="text-align: center; background-color: #ccc !important">{{ ax.descripcion }}</td>
+	  <td style="text-align: center; background-color: #ccc !important">{{ ax.curso|default:"Todos"}}</td>
+	  <td style="text-align: center; background-color: #ccc !important">SEP</td>
+	  <td style="text-align: center; background-color: #ccc !important">{{ ax.horas|decimal_maybe }}</td>
+	  <td style="text-align: center; background-color: #ccc !important">{{ ax.horas|to_chrono }}</td>
+	</tr>        
+        {% endfor %}
+	{% for ax in profesor.asignacion_set.all.pie.sorted %}
+	<tr>
+	  <td style="text-align: center; background-color: #ccc !important">{{ forloop.counter|add:profesor.asignacion_set.all.plan.count|add:profesor.asignacion_set.all.sep.count }}</td>
+	  <td style="text-align: center; background-color: #ccc !important">{{ ax.descripcion }}</td>
+	  <td style="text-align: center; background-color: #ccc !important">{{ ax.curso|default:"Todos"}}</td>
+	  <td style="text-align: center; background-color: #ccc !important">PIE</td>
+	  <td style="text-align: center; background-color: #ccc !important">{{ ax.horas|decimal_maybe }}</td>
+	  <td style="text-align: center; background-color: #ccc !important">{{ ax.horas|to_chrono }}</td>
+	</tr>        
+        {% endfor %}
+	{% for ax in profesor.asignacion_set.all.sostenedor.sorted %}
+	<tr>
+	  <td style="text-align: center; background-color: #ccc !important">{{ forloop.counter|add:profesor.asignacion_set.all.plan.count|add:profesor.asignacion_set.all.sep.count|add:profesor.asignacion_set.all.pie.count }}</td>
+	  <td style="text-align: center; background-color: #ccc !important">{{ ax.descripcion }}</td>
+	  <td style="text-align: center; background-color: #ccc !important">{{ ax.curso|default:"Todos"}}</td>
+	  <td style="text-align: center; background-color: #ccc !important">SBVG</td>
+	  <td style="text-align: center; background-color: #ccc !important">{{ ax.horas|decimal_maybe }}</td>
+	  <td style="text-align: center; background-color: #ccc !important">{{ ax.horas|to_chrono }}</td>
+	</tr>        
         {% endfor %}
 	<tr>
-	  <td colspan="3" style="text-align: center;">
-	    Total de horas pedagógicas
-	  </td>
-	  <td>{{ profesor.horas_asignadas }}</td>
+	  <th style="text-align: center; background-color: #ccc !important" colspan="4">Total de horas pedagógicas asignadas</th>
+	  <th style="text-align: center; background-color: #ccc !important">{{ profesor.horas_asignadas|decimal_maybe }}</th>
+	  <th style="text-align: center; background-color: #ccc !important">{{ profesor.horas_asignadas|to_chrono }}</th>
 	</tr>
-	<tr>
-	  <td colspan="3" style="text-align: center;">
-	    Máximo de horas pedagógicas a realizar ley 20.203
-	  </td>
-	  <td>{{ profesor.horas_docentes }}</td>
-	</tr>
-	<tr>
-	  <td colspan="4" style="text-align: center;">
-	    <strong>Total de horas cronológicas, 70%</strong>
-	  </td>
-	  <td>{{ profesor.horas_asignadas_crono }}</td>
-	</tr>
-      </tbody>
-    </table>
 
-
-    <h3>Actividades curriculares no lectivas 35%</h3>
-
-    <table class="table table-small">
-      <thead>
-	<tr>
-	  <th>N°</th>
-	  <th>Asignatura</th>
-	  <th>Curso</th>
-	  <th style="width: 1cm;">Horas cronológicas</th>
+        <!-- actividades curriculares -->
+        <tr>
+          <td></td>
+        </tr>
+        <tr>
+	  <th style="text-align: center; background-color: #ccc !important"></th>
+	  <th style="text-align: center; background-color: #ccc !important" colspan="3">Actividades Curriculares</th>
+	  <th style="text-align: center; background-color: #ccc !important" border="0"></th>
+	  <th style="text-align: center; background-color: #ccc !important">N° de Horas</th>
 	</tr>
-      </thead>
-      <tbody>
-	{% for a in asignaciones_extra %}
 	<tr>
-	  <td>{{ forloop.counter }}</td>
-	  <td>{{ a.descripcion }}</td>
-	  <td>{{ a.curso|default:"" }}</td>
-	  <td>{{ a.horas }}</td>
+	  <th style="text-align: center; background-color: #ccc !important">N°</th>
+	  <th style="text-align: center; background-color: #ccc !important" colspan="3">No lectivas y otras funciones 35% y/o 40%</th>
+	  <th style="text-align: center; background-color: #ccc !important">Financiamiento</th>
+	  <th style="text-align: center; background-color: #ccc !important">Cronológicas 60'</th>
 	</tr>
+        <tr>
+          <td style="text-align: center; background-color: #ccc !important">1</td>
+          <td style="text-align: center; background-color: #ccc !important" colspan="3">Planificación</td>
+          <td style="text-align: center; background-color: #ccc !important">SUBVG</td>
+          <td style="text-align: center; background-color: #ccc !important">{{ profesor.horas_planificacion|hhmm }}</td>
+        </tr>
+        <tr>
+          <td style="text-align: center; background-color: #ccc !important">2</td>
+          <td style="text-align: center; background-color: #ccc !important" colspan="3">Recreo</td>
+          <td style="text-align: center; background-color: #ccc !important">SUBVG</td>
+          <td style="text-align: center; background-color: #ccc !important">{{ profesor.horas_recreo|hhmm }}</td>
+        </tr>
+	{% for ax in profesor.asignacionextra_set.all %}
+        <tr>
+	  <td style="text-align: center; background-color: #ccc !important">{{ forloop.counter|add:2 }}</td>
+          <td style="text-align: center; background-color: #ccc !important" colspan="3">{{ ax.descripcion }}</td>
+          <td style="text-align: center; background-color: #ccc !important">SUBVG</td>
+          <td style="text-align: center; background-color: #ccc !important">{{ ax.horas|hhmm }}</td>
+        </tr>
+        {% endfor %}
+	{% for ax in profesor.asignacionnoaula_set.all.ordinaria %}
+        <tr>
+	  <td style="text-align: center; background-color: #ccc !important">{{ forloop.counter|add:2|add:profesor.asignacionextra_set.all.count }}</td>
+          <td style="text-align: center; background-color: #ccc !important" colspan="3">{{ ax.descripcion }}</td>
+          <td style="text-align: center; background-color: #ccc !important">SUBVG</td>
+          <td style="text-align: center; background-color: #ccc !important">{{ ax.horas|hhmm }}</td>
+        </tr>
+        {% endfor %}
+	{% for ax in profesor.asignacionnoaula_set.all.sep %}
+        <tr>
+	  <td style="text-align: center; background-color: #ccc !important">{{ forloop.counter|add:2|add:profesor.asignacionextra_set.all.count|add:profesor.asignacionnoaula_set.all.ordinaria.count }}</td>
+          <td style="text-align: center; background-color: #ccc !important" colspan="3">{{ ax.descripcion }}</td>
+          <td style="text-align: center; background-color: #ccc !important">SEP</td>
+          <td style="text-align: center; background-color: #ccc !important">{{ ax.horas|hhmm }}</td>
+        </tr>
+        {% endfor %}
+	{% for ax in profesor.asignacionnoaula_set.all.pie %}
+        <tr>
+	  <td style="text-align: center; background-color: #ccc !important">{{ forloop.counter|add:2|add:profesor.asignacionextra_set.all.count|add:profesor.asignacionnoaula_set.all.ordinaria.count|add:profesor.asignacionnoaula_set.all.sep.count }}</td>
+          <td style="text-align: center; background-color: #ccc !important" colspan="3">{{ ax.descripcion }}</td>
+          <td style="text-align: center; background-color: #ccc !important">PIE</td>
+          <td style="text-align: center; background-color: #ccc !important">{{ ax.horas|hhmm }}</td>
+        </tr>
         {% endfor %}
 	<tr>
-	  <td colspan="3" style="text-align: center;">
-	    Horas no lectivas asignadas
-	  </td>
-	  <td>{{ profesor.horas_no_lectivas_asignadas_anexo }}</td>
+	  <th style="text-align: center; background-color: #ccc !important" colspan="5">Total de horas cronológicas 35% / 40% y otras funciones</th>
+	  <th style="text-align: center; background-color: #ccc !important">{{ profesor.horas_no_lectivas_asignadas_anexo|hhmm }}</th>
 	</tr>
+
+        <!-- total -->
+        <tr>
+          <td></td>
+        </tr>
 	<tr>
-	  <td colspan="3" style="text-align: center;">
-	    Total de horas no lectivas según ley 20.203
-	  </td>
-	  <td>{{ profesor.horas_no_lectivas_anexo }}</td>
-	</tr>
-	<tr>
-	  <td colspan="3" style="text-align: center;">
-	    <strong>Total de horas cronológicas, 30%</strong>
-	  </td>
-	  <td>{{ profesor.horas_no_lectivas_asignadas_anexo }}</td>
-	</tr>
-	<tr><td colspan="4"></td></tr>
-	<tr>
-	  <td colspan="3" style="text-align: center;">
-	    <strong>Total de horas cronológicas, 100%</strong>
-	  </td>
-	  <td><strong>{{ profesor.horas_semanales_total }}</strong></td>
+	  <th style="text-align: center; background-color: #ccc !important" colspan="5">Total de horas de contrato</th>
+	  <th style="text-align: center; background-color: #ccc !important">{{ profesor.horas_semanales_total|hhmm }}</th>
 	</tr>
       </tbody>
     </table>
