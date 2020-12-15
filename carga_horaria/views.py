@@ -1,5 +1,7 @@
+import io
+import zipfile
 from django.conf import settings
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -100,8 +102,21 @@ def anexo(request, pk):
                                    template='carga_horaria/profesor/anexo_profesor.html',
                                    filename='anexo1.pdf',
                                    context={'profesor': p,
-                                            'colegio': colegio},
+                                            'colegio': colegio,
+                                            'periodo': request.session.periodo},
                                    show_content_in_browser=settings.DEBUG)
+    return response
+
+@login_required
+def anexos(request):
+    profesores = get_for_user(request, Profesor.objects.all(), 'colegio__pk', request.user)
+    mem_zip = io.BytesIO()
+    with zipfile.ZipFile(mem_zip, mode="w", compression=zipfile.ZIP_DEFLATED) as zf:
+        for pp in profesores:
+            zf.writestr(*pp.generar_anexo_1())
+
+    response = HttpResponse(mem_zip.getvalue(), content_type='applicaton/zip')
+    response['Content-Disposition'] = 'attachment; filename="anexos1.zip"'
     return response
 
 

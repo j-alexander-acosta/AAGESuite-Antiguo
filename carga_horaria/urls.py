@@ -47,6 +47,11 @@ urlpatterns = [
         name='profesor__anexo'
     ),
     url(
+        r'^profesores/anexos/$',
+        views.anexos,
+        name='profesor__anexos'
+    ),
+    url(
         r'^profesores/nuevo/$',
         views.ProfesorCreateView.as_view(),
         name='profesor__nuevo'

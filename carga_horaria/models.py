@@ -399,6 +399,14 @@ class Profesor(BaseModel):
     cargo = models.PositiveSmallIntegerField(default=DOCENTE, choices=CARGO_CHOICES)
     observaciones = models.TextField(default='', blank=True)
 
+    def generar_anexo_1(self):
+        from wkhtmltopdf.utils import render_pdf_from_template
+        from django.template.loader import get_template
+        ctx = {'profesor': self,
+               'colegio': self.colegio,
+               'periodo': self.colegio.periode}
+        return (f"{self.persona.rut}_{self.colegio}_{self.colegio.periode}.pdf", render_pdf_from_template(get_template('carga_horaria/profesor/anexo_profesor.html'), None, None, ctx))
+
     @property
     def nombre(self):
         return self.persona.nombre
