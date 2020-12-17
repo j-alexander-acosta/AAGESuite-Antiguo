@@ -103,7 +103,7 @@ def anexo(request, pk):
                                    filename='anexo1.pdf',
                                    context={'profesor': p,
                                             'colegio': colegio,
-                                            'periodo': request.session.periodo},
+                                            'periodo': request.session.get('periodo', 2020)},
                                    show_content_in_browser=settings.DEBUG)
     return response
 
