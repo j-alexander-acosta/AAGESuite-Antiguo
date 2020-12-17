@@ -69,7 +69,6 @@
             }
         }
         $(function(){
-            tipo_contrato();
             $(document).find('#div_id_fecha_termino').fadeOut();
             $(document).find('#id_fecha_termino').attr('disabled', true);
             $(document).find('#div_id_reemplazando_licencia').fadeOut();
@@ -77,6 +76,9 @@
             $(document).find('#div_id_isapre').fadeOut();
             // $(document).find('#id_isapre').attr('disabled', true);
 
+            setTimeout(function(){
+                tipo_contrato();
+            }, 500);
             $(document).change('#id_tipo_contrato', function() {
                 tipo_contrato();
             });

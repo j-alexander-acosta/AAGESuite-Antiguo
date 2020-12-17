@@ -276,6 +276,36 @@ urlpatterns = [
         name='licencia_funcionario__nuevo'
     ),
     url(
+        r'^permisos/$',
+        views.PermisoListView.as_view(),
+        name='permisos'
+    ),
+    url(
+        r'^permisos/nuevo/$',
+        views.PermisoCreateView.as_view(),
+        name='permiso__nuevo'
+    ),
+    url(
+        r'^permisos/(?P<pk>\d+)/$',
+        views.PermisoDetailView.as_view(),
+        name='permiso'
+    ),
+    url(
+        r'^permisos/(?P<pk>\d+)/editar/$',
+        views.PermisoUpdateView.as_view(),
+        name='permiso__editar'
+    ),
+    url(
+        r'^permisos/(?P<pk>\d+)/eliminar/$',
+        views.PermisoDeleteView.as_view(),
+        name='permiso__eliminar'
+    ),
+    url(
+        r'^permisos_funcionario/nuevo/$',
+        views.nuevo_permiso_tipo_funcionario,
+        name='permiso_funcionario__nuevo'
+    ),
+    url(
         r'^vacaciones_funcionario/nuevo/$',
         views.nuevo_vacacion_funcionario,
         name='vacacion_funcionario__nuevo'
@@ -309,6 +339,11 @@ urlpatterns = [
         r'^contratos/(?P<pk>\d+)/eliminar/$',
         views.ContratoDeleteView.as_view(),
         name='contrato__eliminar'
+    ),
+    url(
+        r'^estado-contratacion/cambiar/$',
+        views.cambiar_estado_contratacion,
+        name='estado_contratacion__cambiar'
     ),
     url(
         r'^funciones/$',
@@ -397,27 +432,27 @@ urlpatterns = [
     ),
     url(
         r'^solicitudes/$',
-        views.SolicitudContratacionListView.as_view(),
+        views.SolicitudListView.as_view(),
         name='solicitudes'
     ),
     url(
         r'^solicitudes/nuevo/$',
-        views.SolicitudContratacionCreateView.as_view(),
+        views.SolicitudCreateView.as_view(),
         name='solicitud__nuevo'
     ),
     url(
         r'^solicitudes/(?P<pk>\d+)/$',
-        views.SolicitudContratacionDetailView.as_view(),
+        views.SolicitudDetailView.as_view(),
         name='solicitud'
     ),
     url(
         r'^solicitudes/(?P<pk>\d+)/editar/$',
-        views.SolicitudContratacionUpdateView.as_view(),
+        views.SolicitudUpdateView.as_view(),
         name='solicitud__editar'
     ),
     url(
         r'^solicitudes/(?P<pk>\d+)/eliminar/$',
-        views.SolicitudContratacionDeleteView.as_view(),
+        views.SolicitudDeleteView.as_view(),
         name='solicitud__eliminar'
     ),
     url(
@@ -444,10 +479,5 @@ urlpatterns = [
         r'^funcionario/(?P<id_contrato>\d+)/trasladar/$',
         views.trasladar_funcionario,
         name='funcionario__trasladar'
-    ),
-    url(
-        r'^contratos/(?P<id_contrato>\d+)/renovacion/contratar/$',
-        views.renovar_contrato_colegio,
-        name='renovacion_contrato__contratar'
     ),
 ]

@@ -9,7 +9,7 @@
 {% block content %}
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title">Solicitudes de contrataciones
+        <h4 class="card-title">Solicitudes
             <div class="btn-group pull-right" role="group">
                 <a class="btn btn-sm btn-primary" href="{% url 'rrhh:solicitud__nuevo'%}" role="button">
     	             <span> Crear Solicitud <i class="fa fa-plus"></i></span>
@@ -25,6 +25,7 @@
                 <tr>
                     <th><i class="fa fa-user"></i> Cargo </th>
                     <th><i class="fa fa-calendar"></i> Colegio </th>
+                    <th><i class="fa fa-calendar"></i> Tipo </th>
                     <th><i class="fa fa-calendar"></i> Estado </th>
                     <th><i class="fa fa-clock"></i> Opciones </th>
                 </tr>
@@ -34,10 +35,11 @@
                     <tr>
                         <td><a href="{% url 'rrhh:solicitud' i.pk %}"> {{ i.cargo }} </a></td>
                         <td> {{ i.colegio }} </td>
+                        <td> {{ i.get_tipo_display }} </td>
                         <td><h5><span class="badge badge-pill
-                            {% if i.estado == 'Pendiente' or i.estado == 'En espera de candidatos' or i.estado == 'Pendiente de aprobación' %}
+                            {% if i.estado_id == 2 or i.estado_id == 4 or i.estado_id == 5 or i.estado_id == 6 %}
                                 badge-warning
-                            {% elif i.estado == 'Aceptada' or i.estado == 'Aprobada'%}
+                            {% elif i.estado_id == 1 or i.estado_id == 7 %}
                                 badge-success
                             {% else %}
                                 badge-danger

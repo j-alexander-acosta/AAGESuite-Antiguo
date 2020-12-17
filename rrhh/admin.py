@@ -125,8 +125,8 @@ class EntrevistaAdmin(admin.ModelAdmin):
     search_fields = ['contrato__persona__rut']
 
 
-@admin.register(colegio.SolicitudContratacion)
-class SolicitudContratacionAdmin(admin.ModelAdmin):
+@admin.register(colegio.Solicitud)
+class SolicitudAdmin(admin.ModelAdmin):
     list_display = (
         'colegio',
         'cargo',
@@ -145,11 +145,11 @@ class EstadoSolicitudAdmin(admin.ModelAdmin):
     list_filter = ['solicitud__colegio']
 
 
-@admin.register(colegio.SolicitudRenovacion)
-class SolicitudRenovacionAdmin(admin.ModelAdmin):
+@admin.register(colegio.EstadoContratacion)
+class EstadoContratacionAdmin(admin.ModelAdmin):
     list_display = (
         'contrato',
         'estado',
     )
-    search_fields = ['contrato__funcionario__persona', 'contrato__colegio']
-    list_filter = ['contrato__colegio', 'tipo_contrato', 'estado']
+    search_fields = ['contrato', 'contrato__colegio', 'contrato__funcionario']
+    list_filter = ['contrato__colegio', 'estado']

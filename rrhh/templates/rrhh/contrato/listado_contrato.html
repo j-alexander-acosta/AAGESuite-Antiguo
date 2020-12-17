@@ -17,13 +17,13 @@
         <h6 class="card-subtitle mb-2 text-muted">Tabla para configuración de Contratos</h6>
     </div>
     <div class="card-body">
-        <div>
+        <!-- <div>
             <p>
                 <a class="btn btn-outline-dark" href="{% url 'rrhh:funciones' %}"><i class="fa fa-star-o"></i> Nueva Función de personal</a>
                 <a class="btn btn-outline-dark" href="{% url 'rrhh:isapres' %}"><i class="fa fa-star-o"></i> Nueva ISAPRE</a>
                 <a class="btn btn-outline-dark" href="{% url 'rrhh:afps' %}"><i class="fa fa-star-o"></i> Nueva AFP</a>
             </p>
-        </div>
+        </div> -->
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
@@ -69,16 +69,18 @@
                             </span>
                         </td>
                         <td>
-                            <div class="btn-group">
-                                <a class="btn btn-item-group btn-sm btn-primary" href="{% url 'rrhh:contrato__editar' c.pk %}" data-toggle="tooltip" data-placement="top" title="Editar contrato">
-                                    <i class="fa fa-edit"></i></a>
-                                <a class="btn btn-item-group btn-sm btn-info" href="{% url 'rrhh:persona__editar' c.funcionario.persona.pk %}" data-toggle="tooltip" data-placement="top" title="Editar persona">
-                                    <i class="fa fa-edit"></i></a>
-                                <a class="btn btn-item-group btn-sm btn-danger" href="{% url 'rrhh:finiquito__nuevo' c.pk %}" data-toggle="tooltip" data-placement="top" title="Dar de baja">
-                                    <i class="fa fa-user-times"></i></a>
-                                <a class="btn btn-item-group btn-sm btn-warning" href="{% url 'rrhh:funcionario__trasladar' c.pk %}" data-toggle="tooltip" data-placement="top" title="Trasladar">
-                                    <i class="fa fa-send"></i></a>
-                            </div>
+                            {% if c.vigente %}
+                                <div class="btn-group">
+                                    <a class="btn btn-item-group btn-sm btn-primary" href="{% url 'rrhh:contrato__editar' c.pk %}" data-toggle="tooltip" data-placement="top" title="Editar contrato">
+                                        <i class="fa fa-edit"></i></a>
+                                    <a class="btn btn-item-group btn-sm btn-info" href="{% url 'rrhh:persona__editar' c.funcionario.persona.pk %}" data-toggle="tooltip" data-placement="top" title="Editar persona">
+                                        <i class="fa fa-edit"></i></a>
+                                    <a class="btn btn-item-group btn-sm btn-danger" href="{% url 'rrhh:finiquito__nuevo' c.pk %}" data-toggle="tooltip" data-placement="top" title="Dar de baja">
+                                        <i class="fa fa-user-times"></i></a>
+                                    <a class="btn btn-item-group btn-sm btn-warning" href="{% url 'rrhh:funcionario__trasladar' c.pk %}" data-toggle="tooltip" data-placement="top" title="Trasladar">
+                                        <i class="fa fa-send"></i></a>
+                                </div>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}

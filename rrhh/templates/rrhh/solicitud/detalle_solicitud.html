@@ -2,7 +2,7 @@
 {% load staticfiles humanize crispy_forms_tags %}
 
 {% block title_page %}
-    Solicitud de contratación - Detalle
+    Solicitud - Detalle
 {% endblock %}
 
 {% block content %}
@@ -10,10 +10,10 @@
 <div class="card">
     <div class="card-header">
         <h4 class="card-title">
-            <strong>Detalle de Solicitud <small><span class="badge badge-pill
-                {% if object.estado == 'Pendiente' or object.estado == 'En espera de candidatos' or object.estado == 'Pendiente de aprobación' %}
+            <strong>Detalle de Solicitud de {{ object.get_tipo_display }}<small> <span class="badge badge-pill
+                {% if object.estado_id == 2 or object.estado_id == 4 or object.estado_id == 5 or object.estado_id == 6 %}
                     badge-warning
-                {% elif object.estado == 'Aceptada' or object.estado == 'Aprobada'%}
+                {% elif object.estado_id == 1 or object.estado_id == 7 %}
                     badge-success
                 {% else %}
                     badge-danger
@@ -49,7 +49,7 @@
                     <a class="nav-link" id="candidatos-tab" data-toggle="tab" href="#candidatos" role="tab" aria-controls="candidatos" aria-selected="false">Candidatos</a>
                 </li>
             {% endif %}
-            {% if object.estado == 'En espera de candidatos' %}
+            {% if object.estado_id == 4 %}
                 <li class="nav-item" role="presentation">
                     <a class="nav-link" href="{% url 'rrhh:candidatos__seleccionar' object.id %}" role="tab">Seleccionar candidatos</a>
                 </li>
@@ -58,19 +58,38 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Cambiar estado</a>
                 <div class="dropdown-menu">
-                    {% if object.estado == 'Pendiente' %}<a class="dropdown-item text-success" id="ces" name="1" href="#"><i class="fa fa-check"></i> Aceptar</a> {% endif %}
+                    {% if object.estado_id == 2 and object.tipo < 3 %}<a class="dropdown-item text-success" id="ces" name="1" href="#"><i class="fa fa-check"></i> Aceptar</a> {% endif %}
                     <a class="dropdown-item text-warning" id="ces" name="2" href="#"><i class="fa fa-refresh"></i> Pendiente</a>
-                    {% if not object.estado == 'Rechazada' %}<a class="dropdown-item text-danger" id="ces" name="3" href="#"><i class="fa fa-close"></i> Rechazar</a>{% endif %}
-                    <a class="dropdown-item text-warning" id="ces" name="4" href="#"><i class="fa fa-stop"></i> En espera de candidatos</a>
-                    {% if object.estado == 'Pendiente de aprobación' %}<a class="dropdown-item text-success" id="ces" name="6" href="#"><i class="fa fa-check"></i> Aprobar</a>{% endif %}
+                    {% if not object.estado_id == 3 %}<a class="dropdown-item text-danger" id="ces" name="3" href="#"><i class="fa fa-close"></i> Rechazar</a>{% endif %}
+                    {% if object.tipo < 3 %}<a class="dropdown-item text-warning" id="ces" name="4" href="#"><i class="fa fa-stop"></i> En espera de candidatos</a>{% endif %}
+                    {% if object.estado_id == 5 or object.tipo >= 3 %}<a class="dropdown-item text-warning" id="ces" name="6" href="#"><i class="fa fa-check"></i> Aprobar, lista para contratar</a>{% endif %}
                     {% comment %}data-toggle="modal" data-target="#estado_solicitud_{{object.pk}}{% endcomment %}
                 </div>
             </li>
+            {% if object.tipo >= 3 and object.estado_id == 6 %}
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link btn-primary" href="{% url 'rrhh:contrato_colegio__crear' object.contrato.funcionario.id object.id %}" role="tab">Contratar</a>
+                </li>
+            {% endif %}
         </ul>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="detalle" role="tabpanel" aria-labelledby="home-tab">
                 <table class="table table-hover">
                     <tbody>
+                        {% if object.tipo >= 3 %}
+                            <tr>
+                                <th> Funcionario </th>
+                                <td> {{ object.contrato.funcionario }} </td>
+                            </tr>
+                            <tr>
+                                <th> Colegio de origen </th>
+                                <td> {{ object.contrato.colegio }} </td>
+                            </tr>
+                            <tr>
+                                <th> Colegio de destino </th>
+                                <td> {{ object.colegio }} </td>
+                            </tr>
+                        {% endif %}
                         <tr>
                             <th> Categoria </th>
                             <td> {{ object.get_categoria_display }} </td>
@@ -95,7 +114,7 @@
                             <th> Justificación </th>
                             <td> {{ object.justificacion }} </td>
                         </tr>
-                        {% if object.estado == 'Aprobada' %}
+                        {% if object.estado_id == 6 or 7 %}
                             <th> Voto de autorización </th>
                             <td> {{ object.voto }} </td>
                         {% endif %}
@@ -110,7 +129,7 @@
                             <th>Nombre</th>
                             <th>Historial de trabajo</th>
                             <th>Curriculum</th>
-                            {% if object.estado == 'Aprobada' %}
+                            {% if object.estado_id == 6 %}
                                 <th>Opciones</td>
                             {% endif %}
                         </thead>
@@ -131,7 +150,7 @@
                                         {% endfor %}
                                     </td>
                                     <td></td>
-                                    {% if object.estado == 'Aprobada' %}
+                                    {% if object.estado_id == 6 %}
                                         {% if p.funcionario %}
                                             <td><a role="button" class="btn btn-sm btn-info" href="{% url 'rrhh:contrato_colegio__crear' p.funcionario.id object.id %}">
                                                 <i class="fa fa-plus"></i> Contratar
@@ -158,9 +177,9 @@
                         {% for e in object.estadosolicitud_set.all|dictsortreversed:'id' %}
                             <tr>
                                 <td><span class="badge badge-pill
-                                    {% if e.estado == 2 or e.estado == 4 or e.estado == 5 %}
+                                    {% if e.estado == 2 or e.estado == 4 or e.estado == 5 or e.estado == 6%}
                                         badge-warning
-                                    {% elif e.estado == 1 or e.estado == 6 %}
+                                    {% elif e.estado == 1 or e.estado == 7 %}
                                         badge-success
                                     {% else %}
                                         badge-danger
@@ -203,7 +222,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title"></h5>
+                <h4 class="modal-title"></h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -234,7 +253,7 @@
                     'Rechazar solicitud',
                     'Marcar solicitud como en espera de candidatos',
                     'Marcar solicitud como pendiente de aprobación',
-                    'Aporbar solicitud'
+                    'Aporbar solicitud y dejar lista para contratar'
                 ];
                 let modal = $(document).find('#cambiar_estado_solicitud');
                 let opcion = $(this).attr('name');

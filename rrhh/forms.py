@@ -9,8 +9,8 @@ from rrhh.models.base import TipoLicencia, Funcion, AFP, Isapre
 from rrhh.models.persona import Persona, Funcionario, DocumentoFuncionario
 from rrhh.models.union import Union
 from rrhh.models.fundacion import Fundacion
-from rrhh.models.colegio import Colegio, Entrevista, VacacionFuncionarioColegio
-from rrhh.models.colegio import ContratoColegio, LicenciaFuncionarioColegio, FiniquitoColegio, SolicitudContratacion, EstadoSolicitud, SolicitudRenovacion
+from rrhh.models.colegio import Colegio, Entrevista, VacacionFuncionarioColegio, EstadoContratacion
+from rrhh.models.colegio import ContratoColegio, LicenciaFuncionarioColegio, FiniquitoColegio, Solicitud, EstadoSolicitud
 
 
 class UnionForm(forms.ModelForm):
@@ -260,6 +260,74 @@ class VacacionFuncionarioColegioForm(forms.ModelForm):
         self.helper.form_tag = False
 
 
+class VacacionTipoFuncionarioColegioForm(forms.ModelForm):
+    class Meta:
+        model = VacacionFuncionarioColegio
+        fields = [
+            'contrato',
+            'total_dias',
+            'fecha_inicio',
+            'fecha_termino',
+            'fecha_retorno',
+            'total_feriados',
+            'dias_pendiente',
+            'es_pendiente',
+        ]
+        widgets = {
+            'contrato': forms.HiddenInput
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(VacacionTipoFuncionarioColegioForm, self).__init__(*args, **kwargs)
+        self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_termino'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_retorno'].widget.attrs['class'] = 'datepicker'
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            'contrato',
+            Div(
+                Div(
+                    Div(
+                        Field('total_dias'),
+                        css_class='col-md-4'
+                    ),
+                    Div(
+                        Field('es_pendiente'),
+                        css_class='col-md-4'
+                    ),
+                    Div(
+                        Field('dias_pendiente'),
+                        css_class='col-md-4'
+                    ),
+                    css_class='row'
+                ),
+                Div(
+                    Div(
+                        Field('fecha_inicio'),
+                        css_class='col-md-6'
+                    ),
+                    Div(
+                        Field('total_feriados'),
+                        css_class='col-md-6'
+                    ),
+                    css_class='row'
+                ),
+                Div(
+                    Div(
+                        Field('fecha_termino'),
+                        css_class='col-md-6'
+                    ),
+                    Div(
+                        Field('fecha_retorno'),
+                        css_class='col-md-6'
+                    ),
+                    css_class='row'
+                ),
+            )
+        )
+
+
 class TipoLicenciaForm(forms.ModelForm):
     class Meta:
         model = TipoLicencia
@@ -372,28 +440,43 @@ class LicenciaTipoFuncionarioColegioForm(forms.ModelForm):
         )
 
 
-class VacacionTipoFuncionarioColegioForm(forms.ModelForm):
+class PermisoFuncionarioColegioForm(forms.ModelForm):
     class Meta:
-        model = VacacionFuncionarioColegio
-        fields = [
-            'contrato',
-            'total_dias',
-            'fecha_inicio',
-            'fecha_termino',
-            'fecha_retorno',
-            'total_feriados',
-            'dias_pendiente',
-            'es_pendiente',
-        ]
+        model = PermisoFuncionarioColegio
+        fields = '__all__'
+        help_texts = {
+            'goce_sueldo': u'Marque si corresponde',
+            'documento': u'Cargue el permiso firmado por ambas partes'
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(PermisoFuncionarioColegioForm, self).__init__(*args, **kwargs)
+        self.fields['contrato'].widget.attrs['class'] = 'chosen'
+        self.fields['fecha_solicitud'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_termino'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_retorno'].widget.attrs['class'] = 'datepicker'
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+
+
+class PermisoTipoFuncionarioColegioForm(forms.ModelForm):
+    class Meta:
+        model = PermisoFuncionarioColegio
+        fields = '__all__'
+        help_texts = {
+            'dias_habiles': u'Información necesaria para el cálculo de fechas',
+            'goce_sueldo': u'Marque si corresponde',
+            'documento': u'Cargue el permiso firmado por ambas partes'
+        }
         widgets = {
             'contrato': forms.HiddenInput
         }
 
     def __init__(self, *args, **kwargs):
-        super(VacacionTipoFuncionarioColegioForm, self).__init__(*args, **kwargs)
+        super(PermisoTipoFuncionarioColegioForm, self).__init__(*args, **kwargs)
+        self.fields['fecha_solicitud'].widget.attrs['class'] = 'datepicker'
         self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
-        self.fields['fecha_termino'].widget.attrs['class'] = 'datepicker'
-        self.fields['fecha_retorno'].widget.attrs['class'] = 'datepicker'
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.layout = Layout(
@@ -401,15 +484,15 @@ class VacacionTipoFuncionarioColegioForm(forms.ModelForm):
             Div(
                 Div(
                     Div(
+                        Field('fecha_solicitud'),
+                        css_class='col-md-4'
+                    ),
+                    Div(
                         Field('total_dias'),
                         css_class='col-md-4'
                     ),
                     Div(
-                        Field('es_pendiente'),
-                        css_class='col-md-4'
-                    ),
-                    Div(
-                        Field('dias_pendiente'),
+                        Field('dias_habiles'),
                         css_class='col-md-4'
                     ),
                     css_class='row'
@@ -436,7 +519,19 @@ class VacacionTipoFuncionarioColegioForm(forms.ModelForm):
                     ),
                     css_class='row'
                 ),
-            )
+                Div(
+                    Div(
+                        Field('voto'),
+                        css_class='col-md-6'
+                    ),
+                    Div(
+                        Field('goce_sueldo'),
+                        css_class='col-md-6'
+                    ),
+                    css_class='row'
+                ),
+            ),
+            'documento'
         )
 
 
@@ -635,10 +730,12 @@ class FiniquitoColegioForm(forms.ModelForm):
         self.helper.form_tag = False
 
 
-class SolicitudContratacionForm(forms.ModelForm):
+class SolicitudForm(forms.ModelForm):
     class Meta:
-        model = SolicitudContratacion
+        model = Solicitud
         fields = [
+            'tipo',
+            'contrato',
             'colegio',
             'categoria',
             'cargo',
@@ -650,17 +747,25 @@ class SolicitudContratacionForm(forms.ModelForm):
             'justificacion'
         ]
 
+        widgets = {
+            'tipo': forms.HiddenInput,
+            'contrato': forms.HiddenInput
+        }
+
     def __init__(self, *args, **kwargs):
-        super(SolicitudContratacionForm, self).__init__(*args, **kwargs)
+        super(SolicitudForm, self).__init__(*args, **kwargs)
         self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
         self.fields['fecha_termino'].widget.attrs['class'] = 'datepicker'
         self.fields['colegio'].widget.attrs['class'] = 'chosen'
         self.fields['categoria'].widget.attrs['class'] = 'chosen'
         self.fields['tipo_contrato'].widget.attrs['class'] = 'chosen'
         self.fields['reemplazando_licencia'].widget.attrs['class'] = 'chosen'
+        self.fields['contrato'].queryset = ContratoColegio.objects.filter(vigente=True)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.layout = Layout(
+            'tipo',
+            'contrato',
             'colegio',
             Div(
                 Div(
@@ -723,58 +828,25 @@ class EstadoSolicitudForm(forms.ModelForm):
         )
 
 
-class SolicitudRenovacionForm(forms.ModelForm):
-    class Meta:
-        model = SolicitudRenovacion
-        fields = [
-            'contrato',
-            'tipo_contrato',
-            'horas',
-            'fecha_inicio',
-            'fecha_termino',
-            'estado',
-            'voto',
-            'observaciones'
-        ]
-        widgets = {
-            'contrato': forms.HiddenInput,
-            'estado': forms.HiddenInput
-        }
+class EstadoContratacionForm(forms.Form):
+    observaciones = forms.CharField(
+        required=False,
+        widget=forms.Textarea({'rows': 6})
+    )
+    documento = forms.FileField(
+        required=False
+    )
+    estado = forms.IntegerField(
+        required = True,
+        widget=forms.HiddenInput()
+    )
 
     def __init__(self, *args, **kwargs):
-        super(SolicitudRenovacionForm, self).__init__(*args, **kwargs)
-        self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
-        self.fields['fecha_termino'].widget.attrs['class'] = 'datepicker'
-        self.fields['tipo_contrato'].widget.attrs['class'] = 'chosen'
+        super(EstadoContratacionForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.layout = Layout(
-            'contrato',
             'estado',
-            Div(
-                Div(
-                    Div(
-                        Field('tipo_contrato'),
-                        css_class='col-md-8'
-                    ),
-                    Div(
-                        Field('horas'),
-                        css_class='col-md-4'
-                    ),
-                    css_class='row'
-                ),
-                Div(
-                    Div(
-                        Field('fecha_inicio'),
-                        css_class='col-md-6'
-                    ),
-                    Div(
-                        Field('fecha_termino'),
-                        css_class='col-md-6'
-                    ),
-                    css_class='row'
-                ),
-            ),
-            'voto',
-            'observaciones'
+            'observaciones',
+            'documento'
         )

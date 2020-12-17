@@ -15,6 +15,8 @@
             {% elif object.dias_termino_contrato <= 60 %}
                 alert-warning
             {% endif %}
+        {% elif object.estado_id != 4 %}
+            alert-warning
         {% else %}
             alert-danger
         {% endif%}">
@@ -23,13 +25,23 @@
         {% elif not object.vigente %}
             alert-danger
         {% endif %}"> -->
-      <h4 class="card-title"><strong>Detalle del Trabajador</strong></h4>
+      <h4 class="card-title">
+          <strong>Detalle del Trabajador
+              <small> <span class="badge badge-pill
+                  {% if object.estado_id <= 3 %}
+                      badge-warning
+                  {% else %}
+                      badge-success
+                  {% endif %}"> {{ object.estado }}
+              </span></small>
+          </strong>
+      </h4>
         {% block buttons %}
             <div class="btn-group pull-right">
                 <a href="{% url 'rrhh:contratos' %}" type="button" class="btn btn-sm btn-dark">
                     <i class="fa fa-arrow-left"></i> Volver
                 </a>
-                {% if not object.solicitudrenovacion %}
+                {% if not object.solicitud.set.all %}
                     {% if object.dias_termino_contrato <= 120 and object.categoria == 2 %}
                         <a href="{% url 'rrhh:contrato__renovar' object.pk %}" type="button" class="btn btn-sm btn-success">
                             <i class="fa fa-star"></i> Renovar Contrato
@@ -39,8 +51,8 @@
                             <i class="fa fa-star"></i> Renovar Contrato
                         </a>
                     {% endif %}
-
                 {% endif %}
+
             </div>
         {% endblock %}
         <h6 class="card-subtitle mb-2 text-muted">{{ object }}</h6>
@@ -62,15 +74,27 @@
             <li class="nav-item" role="contrato">
                 <a class="nav-link active" id="contrato-tab" data-toggle="tab" href="#contrato" role="tab" aria-controls="contrato" aria-selected="true">Contrato</a>
             </li>
+            <li class="nav-item" role="historial">
+                <a class="nav-link" id="historial-tab" data-toggle="tab" href="#historial" role="tab" aria-controls="historial" aria-selected="false">Historial de contratación</a>
+            </li>
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Cambiar estado"></a>
+                <div class="dropdown-menu">
+                    {% if object.estado_id == 2 %}<a class="dropdown-item text-warning" id="cec" name="3" href="#"><i class="fa fa-eye"></i> En revisión</a> {% endif %}
+                    {% if object.estado_id == 3 or object.estado_id == 1 %}<a class="dropdown-item text-warning" id="cec" name="2" href="#"><i class="fa fa-check-square-o"></i> Listo para firmar</a> {% endif %}
+                    {% if object.estado_id == 2 %}<a class="dropdown-item text-success" id="cec" name="4" href="#"><i class="fa fa-check"></i> Cargar contrato firmado</a> {% endif %}
+                </div>
+            <li class="nav-item" role="permiso">
+                <a class="nav-link" id="permiso-tab" data-toggle="tab" href="#permiso" role="tab" aria-controls="permiso" aria-selected="false">Permisos</a>
+            </li>
             <li class="nav-item" role="licencia">
                 <a class="nav-link" id="licencia-tab" data-toggle="tab" href="#licencia" role="tab" aria-controls="licencia" aria-selected="false">Licencias</a>
             </li>
             <li class="nav-item" role="vacacion">
                 <a class="nav-link" id="vacacion-tab" data-toggle="tab" href="#vacacion" role="tab" aria-controls="vacacion" aria-selected="false">Vacaciones</a>
             </li>
-            {% if object.solicitudrenovacion %}
-                <li class="nav-item" role="renovacion">
-                    <a class="nav-link" id="renovacion-tab" data-toggle="tab" href="#renovacion" role="tab" aria-controls="renovacion" aria-selected="false">Renovación de Contrato</a>
+            {% if object.solicitud_set.all %}
+                <li class="nav-item" role="solicitud">
+                    <a class="nav-link" id="solicitud-tab" data-toggle="tab" href="#solicitud" role="tab" aria-controls="solicitud" aria-selected="false">Solicitudes</a>
                 </li>
             {% endif %}
         </ul>
@@ -79,14 +103,20 @@
                 <br>
                 <div class="pmb-block">
                     <div class="pmbb-body">
-                        <p>Información del contrato y finiquito, en caso de existencia, del trabajador.
-                                <button name="eliminar_contrato" type="button" class="btn btn-sm btn-danger pull-right" data-toggle="modal" data-target="#eliminar_contrato_{{object.pk}}" style="cursor: pointer">
-                                    <i class="fa fa-trash"></i> Eliminar
-                                </button>
-                                <a href="{% url 'rrhh:contrato__editar' object.pk %}" type="button" class="btn btn-sm btn-primary pull-right">
-                                    <i class="fa fa-edit"></i> Editar
-                                </a>
-                        </p>
+                        Información del contrato y finiquito, en caso de existencia, del trabajador
+                        <div class="btn-group pull-right" role="group">
+                            <a href="{% url 'rrhh:contrato__editar' object.pk %}" type="button" class="btn btn-sm btn-primary">
+                                <i class="fa fa-edit"></i> Editar
+                            </a>
+                            {% if object.documento %}
+                                <a class="btn btn-info btn-sm" href="{{ object.documento.url }}"><i class="fa fa-download"></i> Descargar Contrato</a>
+                            {% endif %}
+                            <button name="eliminar_contrato" type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#eliminar_contrato_{{object.pk}}" style="cursor: pointer">
+                                <i class="fa fa-trash"></i> Eliminar
+                            </button>
+                        </div>
+                        </br>
+                        </br>
                         <div class="pmbb-view">
                             <table class="table table-hover table-sm">
                                 <tbody>
@@ -109,12 +139,7 @@
                                 </tr>
                                 <tr>
                                     <th> Periodo de contrato </th>
-                                    <td>  {{ object.fecha_inicio|naturalday }} -
-                                        {% if object.tipo_contrato == 1 %}
-                                            Indefinido
-                                        {% else %}
-                                            {{ object.fecha_termino|beauty_none|naturalday }}
-                                        {% endif %}
+                                    <td>  {{ object.periodo_contrato }}
                                     </td>
                                 </tr>
                                 {% if object.tipo_contrato == 3 %}
@@ -127,8 +152,10 @@
                                     <th>Estado Trabajador</th>
                                     <td> {% if object.vigente %}
                                             <i class="text-success">Contratado</i>
-                                        {% else %}
+                                        {% elif estado_id == 4 %}
                                             <i class="text-danger">Desvinculado</i>
+                                        {% else %}
+                                            <i class="text-warning">En proceso de contratación</i>
                                         {% endif %}
                                     </td>
                                 </tr>
@@ -216,6 +243,32 @@
                     </div>
                 </div>
             </div>
+            <div class="tab-pane fade" id="historial" role="tabpanel" aria-labelledby="historial-tab">
+                <table class="table table-hover">
+                    <thead>
+                        <th>Estado</th>
+                        <th>Ejecutor</th>
+                        <th>Fecha</th>
+                        <th>Observaciones</th>
+                    </thead>
+                    <tbody>
+                        {% for e in object.estadocontratacion_set.all|dictsortreversed:'id' %}
+                            <tr>
+                                <td><span class="badge badge-pill
+                                    {% if e.estado <= 3 %}
+                                        badge-warning
+                                    {% else %}
+                                        badge-success
+                                    {% endif %}"> {{ e.get_estado_display }} </span>
+                                </td>
+                                <td> {{ e.autor }} </td>
+                                <td> {{ e.fecha }} </td>
+                                <td> {{ e.observaciones|safe|escape }} </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
             <div class="tab-pane fade" id="vacacion" role="tabpanel" aria-labelledby="vacacion-tab">
                 <br>
                 <div class="pmb-block">
@@ -239,11 +292,55 @@
                                 <tbody>
                                     {% for v in object.vacacion_set.all %}
                                         <tr>
-                                            <td>{{ v.fecha_inicio|naturalday }} - {{ v.fecha_termino|naturalday }}</td>
+                                            <td>{{ v.periodo }}</td>
                                             <td>{{ v.fecha_retorno|naturalday }}</td>
                                             <td>{{ v.total_dias }}</td>
                                             <td>{{ v.total_feriados }}</td>
                                             <td>{{ v.es_pendiente|yesno }}</td>
+                                        </tr>
+                                    {% empty %}
+                                        <tr>
+                                            <td>No existen registros de licencias</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="permiso" role="tabpanel" aria-labelledby="permiso-tab">
+                <br>
+                <div class="pmb-block">
+                    <div class="pmbb-body">
+                        <p>Listado de los Permisos del funcionario, ordenado del mas reciente al mas antiguo.
+                            <button name="agregar_permiso" type="button" class="btn btn-sm btn-primary pull-right" data-toggle="modal" data-target="#crear_permiso">
+                                <i class="fa fa-plus"></i> Agregar Permiso
+                            </button>
+                        </p>
+                        <div class="pmbb-view">
+                            <table id="permisos" class="table table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>Observaciones</th>
+                                        <th>Periodo</th>
+                                        <th>Total de días</th>
+                                        <th>Fecha de retorno</th>
+                                        <th>Total feriados</th>
+                                        <th>Son días hábiles</th>
+                                        <th>Goce d esueldo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for l in object.permisofuncionariocolegio_set.all|dictsortreversed:"id" %}
+                                        <tr>
+                                            <td>{{ l.observaciones }}</td>
+                                            <td>{{ l.periodo }}</td>
+                                            <td>{{ l.total_dias }}</td>
+                                            <td>{{ l.fecha_retorno|naturalday }}</td>
+                                            <td>{{ l.total_feriados }}</td>
+                                            <td>{{ l.dias_habiles|yesno }}</td>
+                                            <td>{{ l.goce_sueldo|yesno }}</td>
                                         </tr>
                                     {% empty %}
                                         <tr>
@@ -284,7 +381,7 @@
                                             <td>{% if l.tipo_licencia %} {{ l.tipo_licencia }} {% else %} {{ l.tipo_licencia_descripcion }} {% endif %}</td>
 
                                             <td>{{ l.folio_licencia|beauty_none }}</td>
-                                            <td>{{ l.fecha_inicio|naturalday }} - {{ l.fecha_termino|naturalday }}</td>
+                                            <td>{{ l.periodo }}</td>
                                             <td>{{ l.fecha_retorno|naturalday }}</td>
                                             <td>{{ l.total_dias }}</td>
                                             <td>{{ l.total_feriados }}</td>
@@ -301,76 +398,31 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane fade" id="renovacion" role="tabpanel" aria-labelledby="renovacion-tab">
+            <div class="tab-pane fade" id="solicitud" role="tabpanel" aria-labelledby="solicitud-tab">
                 <br>
                 <div class="pmb-block">
                     <div class="pmbb-body">
                         <div class="pmbb-view">
                             <table class="table table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>Tipo</th>
+                                        <th>Cargo</th>
+                                        <th>Horas</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
                                 <tbody>
-                                    <tr>
-                                        <th>Tipo de contrato</th>
-                                        <td> {{ object.solicitudrenovacion.get_tipo_contrato_display }} </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Total de horas</th>
-                                        <td> {{ object.solicitudrenovacion.horas }} horas</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Periodo de contrato</th>
-                                        <td> {{ object.solicitudrenovacion.periodo_contratacion }} </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Estado de solicitud</th>
-                                        <td>
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-sm
-                                                        {% if object.solicitudrenovacion.estado == 1 %}
-                                                            btn-warning
-                                                        {% elif object.solicitudrenovacion.estado == 2 or 4 %}
-                                                            btn-success
-                                                        {% else %}
-                                                            btn-danger
-                                                        {% endif %}
-                                                    ">
-                                                    {{ object.solicitudrenovacion.get_estado_display }}
-                                                </button>
-                                                <button type="button" class="btn
-                                                    {% if object.solicitudrenovacion.estado == 1 %}
-                                                        btn-warning
-                                                    {% elif object.solicitudrenovacion.estado == 2 or 4 %}
-                                                        btn-success
-                                                    {% else %}
-                                                        btn-danger
-                                                    {% endif %}
-                                                    btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <span class="sr-only">Toggle Dropdown</span>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                    {% if object.solicitudrenovacion.estado == 1 %}<a class="dropdown-item text-success" id="ces" name="2" href="#"><i class="fa fa-check"></i> Aceptar</a> {% endif %}
-                                                    {% if object.solicitudrenovacion.estado != 1 %}<a class="dropdown-item text-warning" id="ces" name="1" href="#"><i class="fa fa-refresh"></i> Pendiente</a>{% endif %}
-                                                    {% if object.solicitudrenovacion.estado != 3 %}<a class="dropdown-item text-danger" id="ces" name="3" href="#"><i class="fa fa-close"></i> Rechazar</a>{% endif %}
-                                                    {% if object.solicitudrenovacion.estado == 2 %}<a class="dropdown-item text-info" id="ces" name="4" href="#"><i class="fa fa-plus"></i> Contratar</a>{% endif %}
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    {% if object.solicitudrenovacion.estado == 2 %}
+                                    {% for solicitud in object.solicitud_set.all %}
+
                                         <tr>
-                                            <th>Voto de autorización</th>
-                                            <td> {{ object.solicitudrenovacion.voto }} </td>
+                                            <td><a href="{% url 'rrhh:solicitud' solicitud.id %}">{{ solicitud.get_tipo_display }}</a></td>
+                                            <td>{{ solicitud.cargo }}</td>
+                                            <td>{{ solicitud.horas }}</td>
+                                            <td>{{ solicitud.estado }}</td>
                                         </tr>
-                                    {% endif %}
-                                    <tr>
-                                        <th>Observaciones</th>
-                                        <td> {{ object.solicitudrenovacion.observaciones|safe|escape }} </td>
-                                    </tr>
-                                    {% if object.solicitudrenovacion.autor %}
-                                        <tr>
-                                            <th>Último ejecutor</th>
-                                            <td> {{ object.solicitudrenovacion.autor }} </td>
-                                        </tr>
-                                    {% endif %}
+
+                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div>
@@ -398,6 +450,30 @@
                 <a role="button" class="btn btn-danger" href="{% url 'rrhh:contrato__eliminar' object.pk %}">Eliminar</a>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="crear_permiso" tabindex="-1" role="dialog" aria-labelledby="crear_permisoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar permiso a {{ object }} </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="permisoForm" class="form-horizontal" action="{% url 'rrhh:permiso_funcionario__nuevo' %}" method="post" enctype="multipart/form-data">
+                <div class="modal-body m-10">
+                    {% csrf_token %}
+                    {% crispy lf_form %}
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -481,6 +557,29 @@
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="cambiar_estado_contratacion">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="form-horizontal" method="post" action="{% url 'rrhh:estado_contratacion__cambiar' %}" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <input type="hidden" name="contrato" value="{{ object.pk }}">
+                    {% crispy ec_form %}
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Guardar</a>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
             </form>
@@ -671,6 +770,53 @@
                 }
             });
 
+            //--------------------PERMISOS--------------------------
+
+            $(document).on('submit', '#permisoForm', function (e) {
+                e.preventDefault();
+                let form = $(this);
+                if(revision_campos_obligatorios(form)) {
+                    $.ajax({
+                        type: form.attr('method'),
+                        url: form.attr('action'),
+                        data: form.serialize(),
+                        dataType: 'json',
+                        success: function(data) {
+                            if (!(data['success'])) {
+                                if(data['form_html'] !== null){
+                                    // console.log(data['form_html']);
+                                    form.find('.modal-body').html(data['form_html']);
+                                    // ocultar_inicial();
+                                    // alertify.warning(data['message']);
+                                }
+                            } else {
+                                let tbody = $(document).find("table[id='permisos']").find('tbody');
+                                let nuevo_permiso = `<tr>
+                                    <td>${data.observaciones}</td>
+                                    <td><i>${data.periodo}</i></td>
+                                    <td>${data.total_dias}</td>
+                                    <td>${data.fecha_retorno}</td>
+                                    <td>${data.total_feriados}</td>
+                                    <td>${data.dias_habiles}</td>
+                                    <td>${data.goce_sueldo}}</td>
+                                    </tr>`;
+                                tbody.html(nuevo_permiso + tbody.html());
+                                // alertify.success(data['message']);
+                                $(document).find("div[class='modal fade show']").modal('hide');
+                                limpiar_form(form);
+                            }
+                        },
+                        error: function (err) {
+                            console.log(err);
+                            // alertify.warning("Ocurrio un error inesperado..");
+                        }
+                    });
+                }else{
+                    console.log('Se deben completar todos los campos requeridos');
+                    // alertify.warning("Se deben completar todos los campos requeridos..");
+                }
+            });
+
             //--------------------VACACIONES--------------------------
 
             $(document).on('submit', '#vacacionForm', function (e) {
@@ -774,6 +920,33 @@
                 });
 
             });
+
+            // TODO: Modificar segun tipo de estado, contratacion
+            $(document).on('click', '#cec', function(){
+                let opciones = [,,
+                    'Listo para ser firmado',
+                    'Devolver para revisión',
+                    'Cargar contrato firmado'
+                ];
+                let modal = $(document).find('#cambiar_estado_contratacion');
+                let opcion = $(this).attr('name');
+                let titulo = opciones[opcion];
+                modal.find('#id_estado').val(opcion);
+                modal.find('.modal-title').html(titulo);
+                modal.modal('show');
+                if (opcion == '4') {
+                    setTimeout(function(){
+                        modal.find('#div_id_documento').fadeIn();
+                        modal.find('#id_documento').attr('required', true);
+                    }, 500);
+                }else{
+                    setTimeout(function(){
+                        modal.find('#div_id_documento').fadeOut();
+                        modal.find('#id_documento').attr('required', false);
+                    }, 500);
+                }
+            });
+
         });
     </script>
 {% endblock %}

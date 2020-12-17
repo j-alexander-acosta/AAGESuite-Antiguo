@@ -50,13 +50,20 @@ ESTADO_SOLICITUD = (
     (3, 'Rechazada'),
     (4, 'En espera de candidatos'),
     (5, 'Pendiente de aprobación'),
-    (6, 'Aprobada'),
+    (6, 'Aprobada, lista para contratar'),
+    (7, 'Aprobada y contratado')
 )
-ESTADO_SOLICITUD_RENOVACION = (
-    (1, 'Pendiente'),
-    (2, 'Aceptada'),
-    (3, 'Rechazada'),
-    (4, 'Aceptada y contratado'),
+TIPOS_SOLICITUD = (
+    (1, 'Contratación'),
+    (2, 'Contratación de reemplazo'),
+    (3, 'Renovación de contrato'),
+    (4, 'Traslado'),
+)
+ESTADO_CONTRATACION = (
+    (1, 'Iniciado'),
+    (2, 'Listo para firmar'),
+    (3, 'En revisión'),
+    (4, 'Firmado'),
 )
 
 

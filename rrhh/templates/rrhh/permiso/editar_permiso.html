@@ -6,13 +6,13 @@
 {% block content %}
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title">Crear Solicitud de Renovación de Contrato
+        <h4 class="card-title">Editar Permiso
         </h4>
-        <h6 class="card-subtitle mb-2 text-muted">Datos de Solicitud de renovación de contrato</h6>
+        <h6 class="card-subtitle mb-2 text-muted">Datos de permiso</h6>
     </div>
     <div class="card-body">
 
-        <form class="form-horizontal" method="post">
+        <form class="form-horizontal" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {% crispy form %}
             <div class="form-group">
@@ -27,15 +27,4 @@
         </form>
     </div>
 </div>
-{% endblock %}
-
-{% block extra_js %}
-    <script>
-        $(function() {
-            let estado = $(document).find('#id_estado');
-            if (estado.val() == 1) {
-                $(document).find('#div_id_voto').fadeOut();
-            }
-        });
-    </script>
 {% endblock %}
