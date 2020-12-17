@@ -220,7 +220,7 @@ class LicenciaFuncionarioColegio(models.Model):
 
 
 class PermisoFuncionarioColegio(models.Model):
-    contrato = models.ForeignKey('ContratoColegio', on_delete=models.CASCADE
+    contrato = models.ForeignKey('ContratoColegio', on_delete=models.CASCADE)
     total_dias = models.IntegerField(verbose_name='Total de días de licencia')
     observaciones = models.TextField(max_length=2500, verbose_name='Motivos u observaciones')
     fecha_solicitud = models.DateField(verbose_name='Fecha de solicitud')

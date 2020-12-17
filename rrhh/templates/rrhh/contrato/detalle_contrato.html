@@ -70,7 +70,7 @@
 
     </div>
     <div class="card-body">
-        <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="contrato">
                 <a class="nav-link active" id="contrato-tab" data-toggle="tab" href="#contrato" role="tab" aria-controls="contrato" aria-selected="true">Contrato</a>
             </li>
@@ -344,7 +344,7 @@
                                         </tr>
                                     {% empty %}
                                         <tr>
-                                            <td>No existen registros de licencias</td>
+                                            <td>No existen registros de permisos</td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
@@ -467,7 +467,7 @@
             <form id="permisoForm" class="form-horizontal" action="{% url 'rrhh:permiso_funcionario__nuevo' %}" method="post" enctype="multipart/form-data">
                 <div class="modal-body m-10">
                     {% csrf_token %}
-                    {% crispy lf_form %}
+                    {% crispy pf_form %}
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Guardar</button>
@@ -492,7 +492,7 @@
                 <div class="modal-body m-10">
                     <div class="checkbox pull-right">
                         <label for="id_licencia_tipo">
-                            <input type="checkbox" name="licencia_tipo" class="checkboxinput" id="id_licencia_tipo" checked>
+                            <input type="checkbox" name="licencia_tipo" class="checkboxinput" id="id_licencia_tipo">
                             Utilizar licencias tipo
                         </label>
                     </div>
@@ -600,7 +600,8 @@
             $(document).find('#div_id_tipo_licencia').fadeOut();
             $(document).find('#id_tipo_licencia').attr('disabled', true);
             $(document).find('#id_total_dias').attr('readonly', false);
-            $(document).find('#id_dias_habiles').attr('checked', false);
+            $(document).find('#id_dias_habiles').prop('checked', false);
+            $(document).find('#id_licencia_tipo').prop('checked', false);
         }
         function cambio_tipo_licencia(){
             $(document).find('#div_id_tipo_licencia_descripcion').fadeOut();
@@ -687,7 +688,13 @@
         $(function() {
             let total_dias = 0, dias_habiles = 0
 
-            cambio_tipo_licencia();
+            cambio_licencia_descripcion();
+
+            $('.modal').on('hidden.bs.modal', function () {
+                console.log("SE CIERRA EL MODAL");
+                limpiar_form($(this).find('form'));
+                cambio_licencia_descripcion();
+            });
 
             $(document).find('#id_licencia_tipo').on('change', function() {
                 let checkbox = $(this);

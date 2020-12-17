@@ -14,10 +14,10 @@ from rrhh.models.base import Funcion, TipoLicencia, AFP, Isapre
 from rrhh.models.persona import Persona, Funcionario, DocumentoFuncionario
 from rrhh.models.union import Union
 from rrhh.models.fundacion import Fundacion
-from rrhh.models.colegio import Colegio, Entrevista, VacacionFuncionarioColegio, FiniquitoColegio, LicenciaFuncionarioColegio, ContratoColegio, EstadoContratacion, Solicitud, EstadoSolicitud
+from rrhh.models.colegio import Colegio, Entrevista, VacacionFuncionarioColegio, FiniquitoColegio, LicenciaFuncionarioColegio, PermisoFuncionarioColegio, ContratoColegio, EstadoContratacion, Solicitud, EstadoSolicitud
 from rrhh.forms import UnionForm, FundacionForm, ColegioForm, PersonaForm, FuncionarioForm, EntrevistaForm, DocumentoFuncionarioForm, VacacionFuncionarioColegioForm, FiniquitoColegioForm
-from rrhh.forms import TipoLicenciaForm, LicenciaFuncionarioColegioForm, VacacionTipoFuncionarioColegioForm, IsapreForm, SolicitudForm, EstadoSolicitudForm
-from rrhh.forms import LicenciaTipoFuncionarioColegioForm, ContratoColegioForm, FuncionForm, AFPForm, EstadoContratacionForm
+from rrhh.forms import TipoLicenciaForm, LicenciaFuncionarioColegioForm, PermisoFuncionarioColegioForm, VacacionTipoFuncionarioColegioForm, IsapreForm, SolicitudForm, EstadoSolicitudForm
+from rrhh.forms import LicenciaTipoFuncionarioColegioForm, PermisoTipoFuncionarioColegioForm, ContratoColegioForm, FuncionForm, AFPForm, EstadoContratacionForm
 
 
 @login_required
@@ -770,6 +770,7 @@ class ContratoDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['ec_form'] = EstadoContratacionForm(initial={'contrato':self})
+        context['pf_form'] = PermisoTipoFuncionarioColegioForm(initial={'contrato':self})
         context['lf_form'] = LicenciaTipoFuncionarioColegioForm(initial={'contrato':self})
         context['vf_form'] = VacacionTipoFuncionarioColegioForm(initial={'contrato':self})
         return context

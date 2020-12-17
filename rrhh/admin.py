@@ -58,6 +58,20 @@ class LicenciaFuncionarioColegioAdmin(admin.ModelAdmin):
     list_filter = ['tipo_licencia']
 
 
+@admin.register(colegio.PermisoFuncionarioColegio)
+class PermisoFuncionarioColegioAdmin(admin.ModelAdmin):
+    list_display = (
+        'contrato',
+        'observaciones',
+        'total_dias'
+    )
+    search_fields = [
+        'contrato__persona__rut',
+        'contrato__persona__get_full_name',
+    ]
+    list_filter = ['goce_sueldo']
+
+
 @admin.register(colegio.ContratoColegio)
 class ContratoColegioAdmin(admin.ModelAdmin):
     list_display = (

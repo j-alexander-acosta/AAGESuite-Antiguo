@@ -10,7 +10,7 @@ from rrhh.models.persona import Persona, Funcionario, DocumentoFuncionario
 from rrhh.models.union import Union
 from rrhh.models.fundacion import Fundacion
 from rrhh.models.colegio import Colegio, Entrevista, VacacionFuncionarioColegio, EstadoContratacion
-from rrhh.models.colegio import ContratoColegio, LicenciaFuncionarioColegio, FiniquitoColegio, Solicitud, EstadoSolicitud
+from rrhh.models.colegio import ContratoColegio, LicenciaFuncionarioColegio, PermisoFuncionarioColegio, FiniquitoColegio, Solicitud, EstadoSolicitud
 
 
 class UnionForm(forms.ModelForm):
