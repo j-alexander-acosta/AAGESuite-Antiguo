@@ -30,6 +30,7 @@ class ProfesorForm(forms.ModelForm):
             'nombre',
             'adventista',
             'fecha_nacimiento',
+            'tipo',
             'horas',
             'horas_indefinidas',
             'horas_plazo_fijo',

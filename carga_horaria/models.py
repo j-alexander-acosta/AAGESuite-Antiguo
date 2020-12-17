@@ -388,7 +388,15 @@ class Profesor(BaseModel):
                      (CAPELLAN, 'Administrador Financiero'),
                      (CAPELLAN, 'Orientador'))
 
+    INDEFINIDO = 1
+    FIJO = 2
+    REEMPLAZO = 3
+    TIPO_CHOICES = ((INDEFINIDO, 'Indefinido'),
+                    (FIJO, 'Plazo fijo'),
+                    (REEMPLAZO, 'Reemplazo'))
+
     persona = models.ForeignKey('Persona')
+    tipo = models.PositiveSmallIntegerField('Tipo de contrato', default=INDEFINIDO, choices=TIPO_CHOICES)
     horas = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(44)])
     horas_indefinidas = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(44)])
     horas_plazo_fijo = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(44)])
