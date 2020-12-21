@@ -1,3 +1,4 @@
+import xlsxwriter
 import io
 import zipfile
 from django.conf import settings
@@ -727,3 +728,70 @@ class AsignacionAsistenteDeleteView(LoginRequiredMixin, DeleteView):
                 'pk': self.object.asistente.pk,
             }
         )
+
+
+def profesores_info(request):
+    output = io.BytesIO()
+
+    # Create a workbook and add a worksheet.
+    workbook = xlsxwriter.Workbook(output)
+    worksheet = workbook.add_worksheet('Profe')
+    
+    # Some data we want to write to the worksheet.
+    qs = Profesor.objects.all()
+
+    # Start from the first cell. Rows and columns are zero indexed.
+    row = 0
+    col = 0
+
+    # Iterate over the data and write it out row by row.
+    worksheet.write(0, 0,'RUT')
+    worksheet.write(0, 1,'Nombre')
+    worksheet.write(0, 2,'Especialidad')
+    worksheet.write(0, 3,'adventista')
+    worksheet.write(0, 4,'horas contratadas')
+    worksheet.write(0, 5,'horas semanales total')
+    worksheet.write(0, 6,'completion percentage')
+    worksheet.write(0, 7,'especialidad')
+    worksheet.write(0, 8,'observaciones')
+    worksheet.write(0, 8,request.user.is_superuser)
+    
+    row = 1
+    col = 0
+    for pp in qs:
+        worksheet.write(row, col,     pp.rut)
+        worksheet.write(row, col + 1, pp.nombre)
+        worksheet.write(row, col + 2, 0)
+        if pp.adventista == 1:
+            worksheet.write(row, col + 3, 'Si')
+        else:
+            worksheet.write(row, col + 3, 'No')
+        worksheet.write(row, col + 4, pp.horas_contratadas)
+        worksheet.write(row, col + 5, pp.horas_semanales_total)
+        worksheet.write(row, col + 6, str(pp.completion_percentage) + '%')
+        worksheet.write(row, col + 7, '-')
+        worksheet.write(row, col + 8, pp.observaciones)
+        row += 1
+
+    workbook.add_worksheet('Asignatura')
+    qs = Asignatura.objects.all()
+    row = 0
+    col = 0
+    worksheet.write(0, 0,'curso')
+    worksheet.write(0, 1,'periodos')
+    worksheet.write(0, 2,'horas')
+    row = 1
+   
+
+    workbook.close()
+    output.seek(0)
+
+    # Set up the Http response.
+    filename = 'profesores-info.xlsx'
+    response = HttpResponse(
+        output,
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+
+    return response
