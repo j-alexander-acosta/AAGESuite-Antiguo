@@ -170,7 +170,27 @@
           </tbody>
         </table>
 {% endif %}
-
+      {% if request.user.is_superuser %}
+      <a href="#tbhis" onclick="document.getElementById('tbhis').style.display = 'block'">
+          <strong>historial</strong>
+      </a>
+      <table id="tbhis" class="table table-striped table-bordered" style="display: none;">
+          <thead>
+              <tr>
+              <th>Actividad</th>
+              <th>Fecha</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for activity in object.action_log %}
+              <tr>    
+                  <td><span class="text-primary">{{ activity.user }}</span> {{ activity.action }} {% if activity.changes %}<strong>{{activity.changes|join:", "}}</strong>.{% else %} este curso.{% endif %}</td>
+                  <td title="{{ activity.dt }}">{{ activity.dt | naturaltime }}</td>
+              </tr> 
+              {% endfor %}
+            </tbody>
+      </table>
+      {% endif %}
             
         </div>
     </div>
