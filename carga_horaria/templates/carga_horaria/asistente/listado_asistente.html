@@ -26,6 +26,7 @@
         </form>
       </div>
       <div class="pull-right" style="padding-bottom: 10px;">
+        <a class="btn btn-sm btn-default" href="{% url 'carga-horaria:asistente__anexos' %}"><i class="fa fa-handshake-o"></i> Generar Anexo 1 Masivo</a>
         <a class="btn btn-sm btn-default" href="{% url 'carga-horaria:asistentes-pdf' %}"><i class="fa fa-print"></i> Imprimir</a>
       </div>
         <div class="table-responsive">
@@ -45,6 +46,7 @@
                     <td> {{ p.funcion }} </td>
                     <td> {{ p.horas }} </td>
                     <td>
+                      <a class="btn btn-sm btn-success" href="{% url 'carga-horaria:asistente__anexo' p.pk %}" data-toggle="tooltip" data-placement="top" title="Generar Anexo 1"><i class="fa fa-handshake-o"></i></a>
                         <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asistente__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
                         <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asistente_{{p.pk}}"><i class="fa fa-trash"></i></a>
                     </td>

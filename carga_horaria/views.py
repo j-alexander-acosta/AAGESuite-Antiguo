@@ -121,6 +121,32 @@ def anexos(request):
 
 
 @login_required
+def anexo_asistente(request, pk):
+    p = get_object_or_404(Asistente, pk=pk)
+    colegio = Colegio.objects.get(pk=request.session['colegio__pk'])
+    response = PDFTemplateResponse(request=request,
+                                   template='carga_horaria/asistente/anexo_asistente.html',
+                                   filename='anexo1.pdf',
+                                   context={'profesor': p,
+                                            'colegio': colegio,
+                                            'periodo': request.session.get('periodo', 2020)},
+                                   show_content_in_browser=settings.DEBUG)
+    return response
+
+@login_required
+def anexos_asistentes(request):
+    profesores = get_for_user(request, Asistente.objects.all(), 'colegio__pk', request.user)
+    mem_zip = io.BytesIO()
+    with zipfile.ZipFile(mem_zip, mode="w", compression=zipfile.ZIP_DEFLATED) as zf:
+        for pp in profesores:
+            zf.writestr(*pp.generar_anexo_1())
+
+    response = HttpResponse(mem_zip.getvalue(), content_type='applicaton/zip')
+    response['Content-Disposition'] = 'attachment; filename="anexos1.zip"'
+    return response
+
+
+@login_required
 def profesores_pdf(request):
     profesores = get_for_user(request, Profesor.objects.all(), 'colegio__pk', request.user)
     response = PDFTemplateResponse(request=request,

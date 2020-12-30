@@ -628,11 +628,39 @@ class AsignacionAsistente(BaseModel):
 
 
 class Asistente(BaseModel):
+    INDEFINIDO = 1
+    FIJO = 2
+    REEMPLAZO = 3
+    TIPO_CHOICES = ((INDEFINIDO, 'Indefinido'),
+                    (FIJO, 'Plazo fijo'),
+                    (REEMPLAZO, 'Reemplazo'))
+
     persona = models.ForeignKey('Persona')
     horas = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(1), MaxValueValidator(45)])
     funcion = models.CharField(max_length=255)
+    tipo = models.PositiveSmallIntegerField('Tipo de contrato', default=INDEFINIDO, choices=TIPO_CHOICES)
     fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
     colegio = models.ForeignKey('Colegio', null=True)
+
+    def generar_anexo_1(self):
+        from wkhtmltopdf.utils import render_pdf_from_template
+        from django.template.loader import get_template
+        ctx = {'profesor': self,
+               'colegio': self.colegio,
+               'periodo': self.colegio.periode}
+        return (f"{self.persona.rut}_{self.colegio}_{self.colegio.periode}.pdf", render_pdf_from_template(get_template('carga_horaria/asistente/anexo_asistente.html'), None, None, ctx))
+
+    @property
+    def horas_sep(self):
+        return sum(self.asignacionasistente_set.filter(tipo=AsignacionAsistente.SEP).values_list('horas', flat=True))
+
+    @property
+    def horas_pie(self):
+        return sum(self.asignacionasistente_set.filter(tipo=AsignacionAsistente.PIE).values_list('horas', flat=True))
+
+    @property
+    def horas_sbvg(self):
+        return self.horas_semanales_total - self.horas_sep - self.horas_pie
 
     @property
     def horas_semanales_total(self):

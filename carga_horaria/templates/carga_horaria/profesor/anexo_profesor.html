@@ -85,7 +85,7 @@
 	  <th style="text-align: center; background-color: #ccc !important">{{ profesor.total_sep|hhmm }}</th>
 	</tr>
 	<tr>
-	  <td style="text-align: center" colspan="3">{{ profesor.especialidad }}</td>
+	  <td style="text-align: center" colspan="3">{{ profesor.get_cargo_display }}</td>
 	  <th style="text-align: center; background-color: #ccc !important" border="0" colspan="2">Total Horas PIE</th>
 	  <th style="text-align: center; background-color: #ccc !important">{{ profesor.total_pie|hhmm }}</th>
         </tr>

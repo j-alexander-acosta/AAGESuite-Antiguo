@@ -122,6 +122,16 @@ urlpatterns = [
         name='asistente__eliminar'
     ),
     url(
+        r'^asistentes/(?P<pk>\d+)/anexo/$',
+        views.anexo_asistente,
+        name='asistente__anexo'
+    ),
+    url(
+        r'^asistentes/anexos/$',
+        views.anexos_asistentes,
+        name='asistente__anexos'
+    ),
+    url(
         r'^asignaturasbase/$',
         views.AsignaturaBaseListView.as_view(),
         name='asignaturasbase'
