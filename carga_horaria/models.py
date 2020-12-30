@@ -232,7 +232,11 @@ class Periodo(BaseModel):
 
     @property
     def can_dif(self):
-        return self.plan.nivel in ['M3', 'M4']
+        return self.plan.nivel in ['M3', 'M4'] and self.used_dif < self.horas_dif
+
+    @property
+    def used_dif(self):
+        return sum(self.asignatura_set.all().dif.values_list('horas', flat=True))
 
     @property
     def floor(self):
@@ -296,6 +300,10 @@ class AsignaturaQuerySet(models.QuerySet):
     @property
     def custom(self):
         return self.filter(base__isnull=True)
+
+    @property
+    def dif(self):
+        return self.filter(diferenciada=True)
 
 
 class Asignatura(BaseModel):
