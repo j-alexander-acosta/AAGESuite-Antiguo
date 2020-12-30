@@ -309,6 +309,10 @@ class Asignatura(BaseModel):
     objects = AsignaturaQuerySet.as_manager()
 
     @property
+    def co_docencia(self):
+        return len(set(self.asignacion_set.values_list('profesor', flat=True))) or self.overflow
+
+    @property
     def overflow(self):
         asignadas = sum(self.asignacion_set.values_list('horas', flat=True))
         if asignadas > self.horas:
