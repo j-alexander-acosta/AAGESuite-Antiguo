@@ -318,7 +318,7 @@ class Asignatura(BaseModel):
 
     @property
     def co_docencia(self):
-        return len(set(self.asignacion_set.values_list('profesor', flat=True))) > 1 or self.overflow
+        return (len(set(self.asignacion_set.values_list('profesor', flat=True))) > 1) or self.overflow
 
     @property
     def overflow(self):
