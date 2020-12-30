@@ -22,7 +22,7 @@
     <div class="card-body">
       <div class="pull-left">
         <form action="." method="GET">
-          <i class="fa fa-search"></i> <input name="q" placeholder="Buscar por nombre" value="{{ request.GET.q }}">{% if 'q' in request.GET %} <a href="{% url 'carga-horaria:profesores' %}" class="text-muted">limpiar</a>{% endif %}
+          <i class="fa fa-search"></i> <input name="q" placeholder="Buscar" value="{{ request.GET.q }}">{% if 'q' in request.GET %} <a href="{% url 'carga-horaria:profesores' %}" class="text-muted">limpiar</a>{% endif %}
         </form>
       </div>
       <div class="pull-right" style="padding-bottom: 10px;">
