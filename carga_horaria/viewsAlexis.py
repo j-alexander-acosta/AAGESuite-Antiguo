@@ -42,7 +42,10 @@ class SearchMixin(object):
         qs = super(SearchMixin, self).get_queryset()
         q = self.request.GET.get('q', None)
         if q:
-            qs = qs.filter(Q(persona__nombre__unaccent__icontains=q) | Q(asignacionextra__descripcion__unaccent__icontains=q) | Q(asignacionnoaula__descripcion__unaccent__icontains=q))
+            if qs.model == Profesor:
+                qs = qs.filter(Q(persona__nombre__unaccent__icontains=q) | Q(asignacionextra__descripcion__unaccent__icontains=q) | Q(asignacionnoaula__descripcion__unaccent__icontains=q))
+            else:
+                qs = qs.filter(persona__nombre__unaccent__icontains=q)
         return qs
 
 
