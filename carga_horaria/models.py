@@ -403,7 +403,6 @@ class Profesor(BaseModel):
     especialidad = models.ForeignKey('Especialidad', verbose_name='título', blank=True, null=True)
     fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
     colegio = models.ForeignKey('Colegio', null=True)
-    directivo = models.BooleanField(default=False)
     cargo = models.PositiveSmallIntegerField(default=DOCENTE, choices=CARGO_CHOICES)
     observaciones = models.TextField(default='', blank=True)
 

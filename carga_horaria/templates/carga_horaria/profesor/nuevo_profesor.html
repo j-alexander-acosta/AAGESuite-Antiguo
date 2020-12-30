@@ -32,23 +32,3 @@
     </div>
 </div>
 {% endblock %}
-
-{% block extra_js %}
-<script>
-  if ($('#id_directivo').is(':checked')) {
-      $('#div_id_cargo').show();
-  } else {
-        $('#div_id_cargo').hide();
-  };
-
-  $('#id_directivo').change(function(){
-    if(this.checked) {
-        $('#div_id_cargo').show();
-    } else {
-        $('#div_id_cargo').hide();
-    };
-  });
-
-
-</script>
-{% endblock %}
