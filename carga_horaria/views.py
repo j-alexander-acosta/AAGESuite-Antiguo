@@ -1,4 +1,5 @@
 import io
+import xlsxwriter
 import zipfile
 from django.conf import settings
 from django.http import Http404, HttpResponse
@@ -753,3 +754,75 @@ class AsignacionAsistenteDeleteView(LoginRequiredMixin, DeleteView):
                 'pk': self.object.asistente.pk,
             }
         )
+
+@login_required
+def profesores_info(request):
+    output = io.BytesIO()
+
+    # Create a workbook and add a worksheet.
+    workbook = xlsxwriter.Workbook(output)
+    worksheet = workbook.add_worksheet('Profesores')
+    
+    # Some data we want to write to the worksheet.
+    qs = get_for_user(request, Profesor.objects.all(), 'colegio__pk', request.user)
+
+    # Start from the first cell. Rows and columns are zero indexed.
+    row = 0
+    col = 0
+
+    # Iterate over the data and write it out row by row.
+    worksheet.write(0, 0, 'RUT')
+    worksheet.write(0, 1, 'Nombre Docente')
+    worksheet.write(0, 2, 'Cargo')
+    worksheet.write(0, 3, 'Horas Indefinidas Actual')
+    worksheet.write(0, 4, 'Horas Plazo Fijo Actual')
+    worksheet.write(0, 5, 'Horas Contrato Propuestas')
+    worksheet.write(0, 6, 'Horas Jornada Semanal')
+    worksheet.write(0, 7, 'Asignaciones Aula Plan')
+    worksheet.write(0, 8, 'Horas Aula PIE')
+    worksheet.write(0, 9, 'Horas Aula SEP')
+    worksheet.write(0, 10, 'Horas Aula Sostenedor')
+    worksheet.write(0, 11, 'Horas disponibles')
+    worksheet.write(0, 12, 'Asignación No Lectiva')
+    worksheet.write(0, 13, 'Horas no lectivas disponibles')
+    worksheet.write(0, 14, 'Asignación No Aula Normal')
+    worksheet.write(0, 15, 'Asignación No Aula PIE')
+    worksheet.write(0, 16, 'Asignación No Aula SEP')
+    worksheet.write(0, 17, 'Especialidad')
+
+
+    
+    row = 1
+    for pp in qs:
+        worksheet.write(row, 0, pp.rut)
+        worksheet.write(row, 1, pp.nombre)
+        worksheet.write(row, 2, pp.get_cargo_display())
+        worksheet.write(row, 3, pp.horas_indefinidas)
+        worksheet.write(row, 4, pp.horas_plazo_fijo)
+        worksheet.write(row, 5, pp.horas_semanales_total)
+        worksheet.write(row, 6, pp.horas_semanales)
+        worksheet.write(row, 7, pp.horas_asignadas_plan)
+        worksheet.write(row, 8, pp.horas_asignadas_pie)
+        worksheet.write(row, 9, pp.horas_asignadas_sep)
+        worksheet.write(row, 10, pp.horas_asignadas_sostenedor)
+        worksheet.write(row, 11, pp.horas_disponibles)
+        worksheet.write(row, 12, pp.horas_no_lectivas_asignadas_anexo)
+        worksheet.write(row, 12, pp.horas_no_lectivas_disponibles)
+        worksheet.write(row, 14, pp.horas_no_aula_asignadas_ordinaria)
+        worksheet.write(row, 15, pp.horas_no_aula_asignadas_pie)
+        worksheet.write(row, 16, pp.horas_no_aula_asignadas_sep)
+        worksheet.write(row, 17, str(pp.especialidad))
+        row += 1
+
+    workbook.close()
+    output.seek(0)
+
+    # Set up the Http response.
+    filename = 'profesores-info.xlsx'
+    response = HttpResponse(
+        output,
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+
+    return response

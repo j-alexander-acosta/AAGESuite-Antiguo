@@ -512,6 +512,18 @@ class Profesor(BaseModel):
         return sum(self.asignacionnoaula_set.values_list('horas', flat=True))
 
     @property
+    def horas_no_aula_asignadas_pie(self):
+        return sum(self.asignacionnoaula_set.all().pie.values_list('horas', flat=True))
+
+    @property
+    def horas_no_aula_asignadas_sep(self):
+        return sum(self.asignacionnoaula_set.all().sep.values_list('horas', flat=True))
+
+    @property
+    def horas_no_aula_asignadas_ordinaria(self):
+        return sum(self.asignacionnoaula_set.all().ordinaria.values_list('horas', flat=True))
+
+    @property
     def total_sep(self):
         return float(sum(self.asignacionnoaula_set.all().sep.values_list('horas', flat=True))) + float(self.horas_asignadas_sep) * float(45) / float(60)
 
