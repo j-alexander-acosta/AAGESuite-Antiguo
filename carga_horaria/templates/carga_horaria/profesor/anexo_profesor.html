@@ -180,7 +180,7 @@
           <td style="text-align: center; background-color: #ccc !important">2</td>
           <td style="text-align: left; background-color: #ccc !important" colspan="3">Recreo</td>
           <td style="text-align: center; background-color: #ccc !important">SBVG</td>
-          <td style="text-align: center; background-color: #ccc !important">{{ profesor.horas_recreo|hhmm }}</td>
+          <td style="text-align: center; background-color: #ccc !important">{{ profesor.horas_recreo_total|hhmm }}</td>
         </tr>
 	{% for ax in profesor.asignacionextra_set.all %}
         <tr>
