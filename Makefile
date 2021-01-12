@@ -1,6 +1,12 @@
 include .env
 export
 
+#BACKUP_DATE ?= $(shell dialog --stdout --date-format %Y%m%d --calendar "Elija la fecha del respaldo a restaurar" 4 40)
+BACKUP_DATE ?= `dialog --stdout --date-format %Y%m%d --calendar "Elija la fecha del respaldo a restaurar" 4 40`
+BACKUP_DATE := ${BACKUP_DATE}
+DUMP_FILENAME ?= "carga-${BACKUP_DATE}.dump"
+DUMP_FILENAME := ${DUMP_FILENAME}
+
 serve: .make.nix-exists
 	nix-shell --run 'python3 manage.py runserver 0.0.0.0:8080'
 .PHONY: serve
@@ -25,6 +31,14 @@ dropdb: .make.nix-exists
 	rm .make.postgres-init; \
 	rm -rf $(PGHOST)
 .PHONY: dropdb
+
+
+restore: .make.nix-exists
+	scp -P 22222 ch.unach.cl:/home/carga/backups/${DUMP_FILENAME} /tmp; \
+	nix-shell --run 'dropdb $(DBNAME); createdb -O $(DBUSER) $(DBNAME)'; \
+	nix-shell --run "pg_restore -Fc -d carga /tmp/${DUMP_FILENAME} --no-privileges --no-owner"; \
+	rm /tmp/${DUMP_FILENAME}
+.PHONY: restore
 
 .make.postgres-init:
 	if [ ! -d $(PGDATA) ]; then mkdir -p $(PGDATA) && initdb --auth-local=trust; fi
