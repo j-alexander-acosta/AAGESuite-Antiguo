@@ -180,7 +180,7 @@ class Periodo(BaseModel):
     horas_dif = models.DecimalField(max_digits=4, decimal_places=2, default=0, validators=[MinValueValidator(0)])
     horas_adicionales = models.DecimalField(max_digits=4, decimal_places=2, default=0)
     colegio = models.ForeignKey('Colegio')
-    profesor_jefe = models.ForeignKey('Profesor', blank=True, null=True)
+    profesor_jefe = models.ForeignKey('Profesor', blank=True, null=True, on_delete=models.SET_NULL)
 
     @property
     def is_vuln(self):
