@@ -42,6 +42,9 @@
                         <td> {{ c.colegio }} </td>
                         <td> {{ c.get_categoria_display }} </td>
                         <td class="text-center">
+                            {% if c.estado_id != 4 %}
+                                <span class="badge badge-pill badge-earning">{{ c.estado }}</span> 
+                            {% endif %}
                             <span class="badge badge-pill
                                 {% if c.vigente %}
                                     {% if c.dias_termino_contrato <= 120 and c.categoria == 2 %}
@@ -65,7 +68,6 @@
                                 {% else %}
                                     {{ c.vigente|yesno }}
                                 {% endif %}
-
                             </span>
                         </td>
                         <td>

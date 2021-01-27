@@ -5,8 +5,10 @@
 {% endblock %}
 
 {% block content %}
+{% if contratos_contratar or contratos_expirar or solicitudes_pendientes or contrataos_finiquitar %}
     <div class="row">
         <div class="col-md-8">
+{% endif %}
             <div class="row">
                 <div class="col-md-6">
                     <div class="card text-white card-inverse bgm-gray">
@@ -91,13 +93,15 @@
                             </div>
                         </div>
                     </a>
+            {% if contratos_contratar or contratos_expirar or solicitudes_pendientes or contrataos_finiquitar %}
                 </div>
             </div>
+            {% endif %}
             <br>
         </div>
-        <div class="col-md-4">
-            <div class="card" style="cursor: pointer">
-                {% if contratos_contratar or contratos_expirar or solicitudes_pendientes or contrataos_finiquitar %}
+        {% if contratos_contratar or contratos_expirar or solicitudes_pendientes or contrataos_finiquitar %}
+            <div class="col-md-4">
+                <div class="card" style="cursor: pointer">
                     {% if contratos_contratar %}
                         <div class="card bg-danger">
                             <a class="text-white text-left" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -186,13 +190,9 @@
                             </div>
                         </div>
                     {% endif %}
-                {% else %}
-                    <div class="card-header">
-                        No existen pendientes
-                    </div>
-                {% endif %}
+                </div>
             </div>
-        </div>
+        {% endif %}
     </div>
 
 {% endblock content %}

@@ -9,7 +9,7 @@ from rrhh.models.base import TipoLicencia, Funcion, AFP, Isapre
 from rrhh.models.persona import Persona, Funcionario, DocumentoFuncionario
 from rrhh.models.union import Union
 from rrhh.models.fundacion import Fundacion
-from rrhh.models.colegio import Colegio, Entrevista, VacacionFuncionarioColegio, EstadoContratacion
+from rrhh.models.colegio import Colegio, Entrevista, VacacionFuncionarioColegio, EstadoContratacion, DocumentoPersonal
 from rrhh.models.colegio import ContratoColegio, LicenciaFuncionarioColegio, PermisoFuncionarioColegio, FiniquitoColegio, Solicitud, EstadoSolicitud
 
 
@@ -392,6 +392,8 @@ class LicenciaTipoFuncionarioColegioForm(forms.ModelForm):
         super(LicenciaTipoFuncionarioColegioForm, self).__init__(*args, **kwargs)
         self.fields['tipo_licencia'].widget.attrs['class'] = 'chosen'
         self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_termino'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_retorno'].widget.attrs['class'] = 'datepicker'
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.layout = Layout(
@@ -477,10 +479,13 @@ class PermisoTipoFuncionarioColegioForm(forms.ModelForm):
         super(PermisoTipoFuncionarioColegioForm, self).__init__(*args, **kwargs)
         self.fields['fecha_solicitud'].widget.attrs['class'] = 'datepicker'
         self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_termino'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_retorno'].widget.attrs['class'] = 'datepicker'
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.layout = Layout(
             'contrato',
+            'observaciones',
             Div(
                 Div(
                     Div(
@@ -634,7 +639,13 @@ class ContratoColegioForm(forms.ModelForm):
         colegio = self.cleaned_data.get('colegio', None)
         funcionario = self.cleaned_data.get('funcionario', None)
         colegios = Colegio.objects.filter(fundacion=colegio.fundacion)
-        contratos_funcionario = ContratoColegio.objects.filter(funcionario=funcionario, colegio__in=colegios, vigente=True)
+        contratos_funcionario = ContratoColegio.objects.filter(
+            funcionario=funcionario,
+            colegio__in=colegios,
+            vigente=True,
+            reemplazando_permiso=None,
+            reemplazando_licencia=None
+        )
         cfh = contratos_funcionario.values('funcionario').annotate(
             horas=Sum('horas_total')
         )
@@ -850,3 +861,20 @@ class EstadoContratacionForm(forms.Form):
             'observaciones',
             'documento'
         )
+
+
+class DocumentoPersonalForm(forms.ModelForm):
+    class Meta:
+        model = DocumentoPersonal
+        fields = [
+            'contrato',
+            'documento'
+        ]
+        widgets = {
+            'contrato': forms.HiddenInput()
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(DocumentoPersonalForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False

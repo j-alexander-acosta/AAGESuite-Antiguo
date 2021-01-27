@@ -167,3 +167,13 @@ class EstadoContratacionAdmin(admin.ModelAdmin):
     )
     search_fields = ['contrato', 'contrato__colegio', 'contrato__funcionario']
     list_filter = ['contrato__colegio', 'estado']
+
+
+@admin.register(colegio.DocumentoPersonal)
+class DocumentoPersonalAdmin(admin.ModelAdmin):
+    list_display = (
+        'contrato',
+        'tipo_documento',
+    )
+    search_fields = ['contrato', 'contrato__colegio', 'contrato__funcionario']
+    list_filter = ['contrato__colegio', 'tipo_documento']

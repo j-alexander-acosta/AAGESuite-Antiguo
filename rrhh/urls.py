@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.conf.urls import url
 from . import views
 
@@ -480,4 +481,15 @@ urlpatterns = [
         views.trasladar_funcionario,
         name='funcionario__trasladar'
     ),
+    url(
+        r'^funcionario/cargar_documento/$',
+        views.cargar_documento_personal,
+        name='personal__cargar_documento'
+    ),
+
 ]
+
+# add static
+if settings.DEBUG:
+    from django.conf.urls.static import static
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

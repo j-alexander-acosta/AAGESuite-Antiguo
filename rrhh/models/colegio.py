@@ -118,6 +118,23 @@ class EstadoContratacion(models.Model):
         verbose_name_plural = u'Estados de contrataciones'
 
 
+class DocumentoPersonal(models.Model):
+    contrato = models.ForeignKey('ContratoColegio', on_delete=models.CASCADE)
+    tipo_documento = models.PositiveSmallIntegerField(choices=DOCUMENTO)
+    fecha_carga = models.DateTimeField(auto_now=True)
+    documento = models.FileField(upload_to="rrhh/DocumentoDePersonal", verbose_name='Documento')
+
+    def __str__(self):
+        return '{}, {}'.format(
+            self.contrato,
+            self.documento
+        )
+
+    class Meta:
+        verbose_name = u'Docmuento del personal'
+        verbose_name_plural = u'Documentos del personal'
+
+
 class DistribucionHoras(models.Model):
     contrato = models.ForeignKey('ContratoColegio', on_delete=models.CASCADE)
     horas = models.PositiveIntegerField(verbose_name='Horas')
@@ -221,11 +238,11 @@ class LicenciaFuncionarioColegio(models.Model):
 
 class PermisoFuncionarioColegio(models.Model):
     contrato = models.ForeignKey('ContratoColegio', on_delete=models.CASCADE)
-    total_dias = models.IntegerField(verbose_name='Total de días de licencia')
+    total_dias = models.IntegerField(verbose_name='Total de días de permiso')
     observaciones = models.TextField(max_length=2500, verbose_name='Motivos u observaciones')
     fecha_solicitud = models.DateField(verbose_name='Fecha de solicitud')
     fecha_inicio = models.DateField(verbose_name='Fecha de inicio')
-    total_feriados = models.IntegerField(default=0, verbose_name='Total de feriados en el periodo de la licencia')
+    total_feriados = models.IntegerField(default=0, verbose_name='Total de feriados en el periodo del permiso')
     fecha_termino = models.DateField(null=True, blank=True, verbose_name='Fecha de término')
     fecha_retorno = models.DateField(null=True, blank=True, verbose_name='Fecha de retorno')
     goce_sueldo = models.BooleanField(default=False, verbose_name="Con goce de sueldo")

@@ -8,16 +8,17 @@ from jsonview.decorators import json_view, json
 from crispy_forms.utils import render_crispy_form
 from django.template.context_processors import csrf
 from django.template.defaultfilters import yesno
+from django.utils import formats
 from django.contrib.humanize.templatetags.humanize import naturalday
 from rrhh.templatetags.rrhh_utils import *
-from rrhh.models.base import Funcion, TipoLicencia, AFP, Isapre
+from rrhh.models.base import Funcion, TipoLicencia, AFP, Isapre, DOCUMENTO
 from rrhh.models.persona import Persona, Funcionario, DocumentoFuncionario
 from rrhh.models.union import Union
 from rrhh.models.fundacion import Fundacion
-from rrhh.models.colegio import Colegio, Entrevista, VacacionFuncionarioColegio, FiniquitoColegio, LicenciaFuncionarioColegio, PermisoFuncionarioColegio, ContratoColegio, EstadoContratacion, Solicitud, EstadoSolicitud
+from rrhh.models.colegio import Colegio, Entrevista, VacacionFuncionarioColegio, FiniquitoColegio, LicenciaFuncionarioColegio, PermisoFuncionarioColegio, ContratoColegio, EstadoContratacion, Solicitud, EstadoSolicitud, DocumentoPersonal
 from rrhh.forms import UnionForm, FundacionForm, ColegioForm, PersonaForm, FuncionarioForm, EntrevistaForm, DocumentoFuncionarioForm, VacacionFuncionarioColegioForm, FiniquitoColegioForm
 from rrhh.forms import TipoLicenciaForm, LicenciaFuncionarioColegioForm, PermisoFuncionarioColegioForm, VacacionTipoFuncionarioColegioForm, IsapreForm, SolicitudForm, EstadoSolicitudForm
-from rrhh.forms import LicenciaTipoFuncionarioColegioForm, PermisoTipoFuncionarioColegioForm, ContratoColegioForm, FuncionForm, AFPForm, EstadoContratacionForm
+from rrhh.forms import LicenciaTipoFuncionarioColegioForm, PermisoTipoFuncionarioColegioForm, ContratoColegioForm, FuncionForm, AFPForm, EstadoContratacionForm, DocumentoPersonalForm
 
 
 @login_required
@@ -359,7 +360,7 @@ def postulantes(request):
 
     return render(
         request,
-        'rrhh/solicitud_contratacion/postulantes.html',
+        'rrhh/solicitud/postulantes.html',
         context
     )
 
@@ -504,35 +505,39 @@ def nuevo_vacacion_funcionario(request):
         'form_html': None
     }
 
-    if request.is_ajax():
-        if request.method == 'POST':
-            form = VacacionTipoFuncionarioColegioForm(request.POST)
-            if form.is_valid():
-                vacacion = form.save()
-                data['success'] = True
-                data['message'] = u"la licencia fue agregada exitosamente"
+    if request.method == 'GET':
+        contrato = get_object_or_404(
+            ContratoColegio,
+            id=request.GET.get('contrato', None)
+        )
+        total_dias = request.GET.get('total_dias', None)
+        fecha_inicio = request.GET.get('fecha_inicio', None)
+        fecha_termino = request.GET.get('fecha_termino', None)
+        fecha_retorno = request.GET.get('fecha_retorno', None)
+        total_feriados = request.GET.get('total_feriados', None)
+        dias_pendiente = request.GET.get('dias_pendiente', None)
+        es_pendiente = request.GET.get('es_pendiente', None)
 
-                data['periodo'] = '{} - {}'.format(
-                    naturalday(vacacion.fecha_inicio),
-                    naturalday(vacacion.fecha_termino)
-                )
-                data['total_dias'] = vacacion.total_dias
-                data['dias_pendiente'] = vacacion.dias_pendiente
-                data['fecha_retorno'] = naturalday(vacacion.fecha_retorno)
-                data['total_feriados'] = vacacion.total_feriados
-                data['es_pendiente'] = yesno(vacacion.es_pendiente)
-            else:
-                form_html = render_crispy_form(
-                    form,
-                    context=csrf(request)
-                )
-                # Formulario con errores
-                data['message'] = u"Complete la información requerida"
-                data['form_html'] = form_html
-        else:
-            data['message'] = u"La solicitud debe ser POST"
+        vacacion = VacacionFuncionarioColegio.objects.create(
+            contrato=contrato,
+            total_dias=total_dias,
+            fecha_inicio=fecha_inicio,
+            fecha_termino=fecha_termino,
+            fecha_retorno=fecha_retorno,
+            total_feriados=total_feriados,
+            dias_pendiente=dias_pendiente,
+            es_pendiente=es_pendiente
+        )
+        data['success'] = True
+        data['message'] = u"la licencia fue agregada exitosamente"
+        data['periodo'] = vacacion.periodo
+        data['total_dias'] = vacacion.total_dias
+        data['dias_pendiente'] = vacacion.dias_pendiente
+        data['fecha_retorno'] = naturalday(vacacion.fecha_retorno)
+        data['total_feriados'] = vacacion.total_feriados
+        data['es_pendiente'] = yesno(vacacion.es_pendiente)
     else:
-        data['message'] = u"La solicitud debe ser ajax"
+        data['message'] = u"La solicitud debe ser GET"
 
     return data
 
@@ -635,35 +640,55 @@ def nuevo_licencia_tipo_funcionario(request):
         'form_html': None
     }
 
-    if request.is_ajax():
-        if request.method == 'POST':
-            form = LicenciaTipoFuncionarioColegioForm(request.POST)
-            if form.is_valid():
-                licencia = form.save()
-                data['success'] = True
-                data['message'] = u"la licencia fue agregada exitosamente"
-                data['tipo_licencia'] = licencia.tipo_licencia.nombre if licencia.tipo_licencia else licencia.tipo_licencia_descripcion
-                data['folio'] = beauty_none(licencia.folio_licencia)
-                data['periodo'] = '{} - {}'.format(
-                    naturalday(licencia.fecha_inicio),
-                    naturalday(licencia.fecha_termino)
-                )
-                data['total_dias'] = licencia.total_dias
-                data['fecha_retorno'] = naturalday(licencia.fecha_retorno)
-                data['total_feriados'] = licencia.total_feriados
-                data['dias_habiles'] = yesno(licencia.dias_habiles)
-            else:
-                form_html = render_crispy_form(
-                    form,
-                    context=csrf(request)
-                )
-                # Formulario con errores
-                data['message'] = u"Complete la información requerida"
-                data['form_html'] = form_html
-        else:
-            data['message'] = u"La solicitud debe ser POST"
+    if request.method == 'GET':
+
+        contrato = get_object_or_404(
+            ContratoColegio,
+            id=request.GET.get('contrato', None)
+        )
+        tipo_licencia_id = request.GET.get('tipo_licencia', None)
+        descripcion = request.GET.get('descripcion', None)
+        folio_licencia = request.GET.get('folio_licencia', None)
+        total_dias = request.GET.get('total_dias', None)
+        fecha_inicio = request.GET.get('fecha_inicio', None)
+        fecha_termino = request.GET.get('fecha_termino', None)
+        fecha_retorno = request.GET.get('fecha_retorno', None)
+        total_feriados = request.GET.get('total_feriados', None)
+        dias_habiles = request.GET.get('dias_habiles', None)
+
+        tipo_licencia = get_object_or_404(
+            TipoLicencia,
+            id=tipo_licencia_id
+        ) if tipo_licencia_id else None
+
+        licencia = LicenciaFuncionarioColegio.objects.create(
+            contrato=contrato,
+            tipo_licencia=tipo_licencia,
+            tipo_licencia_descripcion=descripcion,
+            folio_licencia=folio_licencia,
+            total_dias=total_dias,
+            fecha_inicio=fecha_inicio,
+            fecha_termino=fecha_termino,
+            fecha_retorno=fecha_retorno,
+            total_feriados=total_feriados,
+            dias_habiles=dias_habiles
+        )
+
+        data['success'] = True
+        data['message'] = u"la licencia fue agregada exitosamente"
+        data['tipo_licencia'] = licencia.tipo_licencia.nombre if licencia.tipo_licencia else licencia.tipo_licencia_descripcion
+        data['folio'] = beauty_none(licencia.folio_licencia)
+        data['periodo'] = '{} - {}'.format(
+            naturalday(licencia.fecha_inicio),
+            naturalday(licencia.fecha_termino)
+        )
+        data['total_dias'] = licencia.total_dias
+        data['fecha_retorno'] = naturalday(licencia.fecha_retorno)
+        data['total_feriados'] = licencia.total_feriados
+        data['dias_habiles'] = yesno(licencia.dias_habiles)
+
     else:
-        data['message'] = u"La solicitud debe ser ajax"
+        data['message'] = u"La solicitud debe ser GET"
 
     return data
 
@@ -725,32 +750,50 @@ def nuevo_permiso_tipo_funcionario(request):
         'form_html': None
     }
 
-    if request.is_ajax():
-        if request.method == 'POST':
-            form = PermisoTipoFuncionarioColegioForm(request.POST, request.FILES)
-            if form.is_valid():
-                permiso = form.save()
-                data['success'] = True
-                data['message'] = u"El permiso fue agregada exitosamente"
-                data['observaciones'] = beauty_none(permiso.observaciones)
-                data['periodo'] = permiso.periodo
-                data['total_dias'] = permiso.total_dias
-                data['fecha_retorno'] = naturalday(permiso.fecha_retorno)
-                data['total_feriados'] = permiso.total_feriados
-                data['dias_habiles'] = yesno(permiso.dias_habiles)
-                data['goce_sueldo'] = yesno(permiso.goce_sueldo)
-            else:
-                form_html = render_crispy_form(
-                    form,
-                    context=csrf(request)
-                )
-                # Formulario con errores
-                data['message'] = u"Complete la información requerida"
-                data['form_html'] = form_html
-        else:
-            data['message'] = u"La solicitud debe ser POST"
+    if request.method == 'GET':
+
+        contrato = get_object_or_404(
+            ContratoColegio,
+            id=request.GET.get('contrato', None)
+        )
+
+        total_dias = request.GET.get('total_dias', None)
+        observaciones = request.GET.get('observaciones', None)
+        fecha_solicitud = request.GET.get('fecha_solicitud', None)
+        fecha_inicio = request.GET.get('fecha_inicio', None)
+        fecha_termino = request.GET.get('fecha_termino', None)
+        fecha_retorno = request.GET.get('fecha_retorno', None)
+        total_feriados = request.GET.get('total_feriados', None)
+        goce_sueldo = request.GET.get('goce_sueldo', None)
+        dias_habiles = request.GET.get('dias_habiles', None)
+        voto = request.GET.get('voto', None)
+        documento = request.GET.get('documento', None)
+
+        permiso = PermisoFuncionarioColegio.objects.create(
+            contrato=contrato,
+            total_dias=total_dias,
+            observaciones=observaciones,
+            fecha_solicitud=fecha_solicitud,
+            fecha_inicio=fecha_inicio,
+            fecha_termino=fecha_termino,
+            fecha_retorno=fecha_retorno,
+            total_feriados=total_feriados,
+            goce_sueldo=goce_sueldo,
+            dias_habiles=dias_habiles,
+            voto=voto,
+            documento=documento
+        )
+        data['success'] = True
+        data['message'] = u"El permiso fue agregada exitosamente"
+        data['observaciones'] = beauty_none(permiso.observaciones)
+        data['periodo'] = permiso.periodo
+        data['total_dias'] = permiso.total_dias
+        data['fecha_retorno'] = naturalday(permiso.fecha_retorno)
+        data['total_feriados'] = permiso.total_feriados
+        data['dias_habiles'] = yesno(permiso.dias_habiles)
+        data['goce_sueldo'] = yesno(permiso.goce_sueldo)
     else:
-        data['message'] = u"La solicitud debe ser ajax"
+        data['message'] = u"La solicitud debe ser GET"
 
     return data
 
@@ -769,10 +812,12 @@ class ContratoDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['ec_form'] = EstadoContratacionForm(initial={'contrato':self})
-        context['pf_form'] = PermisoTipoFuncionarioColegioForm(initial={'contrato':self})
-        context['lf_form'] = LicenciaTipoFuncionarioColegioForm(initial={'contrato':self})
-        context['vf_form'] = VacacionTipoFuncionarioColegioForm(initial={'contrato':self})
+        context['documentos'] = DOCUMENTO
+        context['doc_form'] = DocumentoPersonalForm(initial={'contrato':self.object.id})
+        context['ec_form'] = EstadoContratacionForm(initial={'contrato':self.object.id})
+        context['pf_form'] = PermisoTipoFuncionarioColegioForm(initial={'contrato':self.object.id })
+        context['lf_form'] = LicenciaTipoFuncionarioColegioForm(initial={'contrato':self.object.id})
+        context['vf_form'] = VacacionTipoFuncionarioColegioForm(initial={'contrato':self.object.id})
         return context
 
 
@@ -1148,7 +1193,7 @@ def seleccionar_candidatos(request, id_solicitud):
 
     return render(
         request,
-        'rrhh/solicitud_contratacion/seleccionar_candidatos.html',
+        'rrhh/solicitud/seleccionar_candidatos.html',
         context
     )
 
@@ -1443,3 +1488,27 @@ def cambiar_estado_contratacion(request):
     else:
         print("Todo Mal")
         print(form.errors)
+
+
+@login_required
+def cargar_documento_personal(request):
+    if request.method == 'POST':
+        form = DocumentoPersonalForm(request.POST, request.FILES)
+        if form.is_valid():
+            contrato = form.cleaned_data['contrato']
+            documento = form.cleaned_data['documento']
+            if 'cargar_1' in request.POST:
+                tipo_documento = 1
+            elif 'cargar_2' in request.POST:
+                tipo_documento = 2
+            elif 'cargar_3' in request.POST:
+                tipo_documento = 3
+            else:
+                tipo_documento = None
+
+            dp = DocumentoPersonal.objects.create(
+                contrato=contrato,
+                tipo_documento=tipo_documento,
+                documento=documento
+            )
+            return redirect('rrhh:contrato', dp.contrato.pk)

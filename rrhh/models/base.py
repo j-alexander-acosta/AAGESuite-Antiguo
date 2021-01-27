@@ -65,6 +65,11 @@ ESTADO_CONTRATACION = (
     (3, 'En revisión'),
     (4, 'Firmado'),
 )
+DOCUMENTO = (
+    (1, 'Toma de conocimiento del Reglamento Interno'),
+    (2, 'Autorización de descuento de diezmo'),
+    (3, 'Autorización de uso de imagen'),
+)
 
 
 class Funcion(models.Model):
