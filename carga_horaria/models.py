@@ -663,6 +663,7 @@ class Asistente(BaseModel):
     horas = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(1), MaxValueValidator(45)])
     funcion = models.CharField(max_length=255)
     tipo = models.PositiveSmallIntegerField('Tipo de contrato', default=INDEFINIDO, choices=TIPO_CHOICES)
+    fecha_inicio = models.DateField('fecha inicio contrato', null=True)
     fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
     colegio = models.ForeignKey('Colegio', null=True)
 

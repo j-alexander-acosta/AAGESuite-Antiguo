@@ -98,12 +98,13 @@ class AsistenteForm(forms.ModelForm):
     direccion = forms.CharField()
     adventista = forms.BooleanField(required=False)
     fecha_nacimiento = forms.DateField(required=False, widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
-
+    fecha_inicio = forms.DateField(required=False, widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
     class Meta:
         model = models.Asistente
         fields = [
             'rut',
             'nombre',
+            'fecha_inicio',
             'direccion',
             'adventista',
             'fecha_nacimiento',
