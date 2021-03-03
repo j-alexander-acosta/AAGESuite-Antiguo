@@ -20,17 +20,21 @@ class ProfesorForm(forms.ModelForm):
     """
     rut = CLRutField(label="RUT")
     nombre = forms.CharField()
+    direccion = forms.CharField()
     adventista = forms.BooleanField(required=False)
     fecha_nacimiento = forms.DateField(required=False, widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
+    fecha_inicio = forms.DateField(required=False, widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
 
     class Meta:
         model = models.Profesor
         fields = [
             'rut',
             'nombre',
+            'direccion',
             'adventista',
             'fecha_nacimiento',
             'tipo',
+            'fecha_inicio',
             'horas',
             'horas_indefinidas',
             'horas_plazo_fijo',
@@ -75,6 +79,7 @@ class ProfesorForm(forms.ModelForm):
         
         if self.instance.pk:
             self.fields['nombre'].initial = self.instance.persona.nombre
+            self.fields['direccion'].initial = self.instance.persona.direccion
             self.fields['rut'].initial = self.instance.persona.rut
             self.fields['adventista'].initial = self.instance.persona.adventista
             self.fields['fecha_nacimiento'].initial = self.instance.persona.fecha_nacimiento
@@ -90,6 +95,7 @@ class AsistenteForm(forms.ModelForm):
     """
     rut = CLRutField(label="RUT")
     nombre = forms.CharField()
+    direccion = forms.CharField()
     adventista = forms.BooleanField(required=False)
     fecha_nacimiento = forms.DateField(required=False, widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
 
@@ -98,6 +104,7 @@ class AsistenteForm(forms.ModelForm):
         fields = [
             'rut',
             'nombre',
+            'direccion',
             'adventista',
             'fecha_nacimiento',
             'horas',
@@ -130,6 +137,7 @@ class AsistenteForm(forms.ModelForm):
         
         if self.instance.pk:
             self.fields['nombre'].initial = self.instance.persona.nombre
+            self.fields['direccion'].initial = self.instance.persona.direccion
             self.fields['rut'].initial = self.instance.persona.rut
             self.fields['adventista'].initial = self.instance.persona.adventista
             self.fields['fecha_nacimiento'].initial = self.instance.persona.fecha_nacimiento

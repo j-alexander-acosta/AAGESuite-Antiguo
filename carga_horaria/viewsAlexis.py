@@ -162,6 +162,7 @@ class ProfesorCreateView(LoginRequiredMixin, CreateView):
         profesor = form.save(commit=False)
         profesor.persona, _ = Persona.objects.update_or_create(rut=form.cleaned_data['rut'],
                                                                defaults={'nombre': form.cleaned_data['nombre'],
+                                                                         'direccion': form.cleaned_data['direccion'],
                                                                          'adventista': form.cleaned_data['adventista'],
                                                                          'fecha_nacimiento': form.cleaned_data['fecha_nacimiento']})
         profesor.save()
@@ -189,6 +190,7 @@ class ProfesorUpdateView(LoginRequiredMixin, UpdateView):
         profesor = form.save(commit=False)
         profesor.persona, _ = Persona.objects.update_or_create(rut=form.cleaned_data['rut'],
                                                                defaults={'nombre': form.cleaned_data['nombre'],
+                                                                         'direccion': form.cleaned_data['direccion'],
                                                                          'adventista': form.cleaned_data['adventista'],
                                                                          'fecha_nacimiento': form.cleaned_data['fecha_nacimiento']})
         profesor.save()
@@ -307,6 +309,7 @@ class AsistenteCreateView(LoginRequiredMixin, CreateView):
         asistente = form.save(commit=False)
         asistente.persona, _ = Persona.objects.update_or_create(rut=form.cleaned_data['rut'],
                                                                 defaults={'nombre': form.cleaned_data['nombre'],
+                                                                          'direccion': form.cleaned_data['direccion'],
                                                                           'adventista': form.cleaned_data['adventista'],
                                                                           'fecha_nacimiento': form.cleaned_data['fecha_nacimiento']})
         asistente.save()
@@ -330,6 +333,7 @@ class AsistenteUpdateView(LoginRequiredMixin, UpdateView):
         asistente = form.save(commit=False)
         asistente.persona, _ = Persona.objects.update_or_create(rut=form.cleaned_data['rut'],
                                                                 defaults={'nombre': form.cleaned_data['nombre'],
+                                                                          'direccion': form.cleaned_data['direccion'],
                                                                           'adventista': form.cleaned_data['adventista'],
                                                                           'fecha_nacimiento': form.cleaned_data['fecha_nacimiento']})
         asistente.save()

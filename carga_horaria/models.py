@@ -409,6 +409,7 @@ class Profesor(BaseModel):
 
     persona = models.ForeignKey('Persona')
     tipo = models.PositiveSmallIntegerField('Tipo de contrato', default=INDEFINIDO, choices=TIPO_CHOICES)
+    fecha_inicio = models.DateField('fecha inicio contrato', null=True)
     horas = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(44)])
     horas_indefinidas = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(44)])
     horas_plazo_fijo = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(44)])
@@ -829,6 +830,7 @@ class Especialidad(models.Model):
 
 class Persona(models.Model):
     nombre = models.CharField(max_length=255)
+    direccion = models.CharField('dirección', max_length=255)
     rut = models.CharField(max_length=13, blank=True, null=True, unique=True)
     adventista = models.BooleanField(default=False)
     fecha_nacimiento = models.DateField('fecha de nacimiento', null=True)
