@@ -799,7 +799,7 @@ def profesores_info(request):
         worksheet.write(row, 0, pp.rut)
         worksheet.write(row, 1, pp.nombre)
         worksheet.write(row, 2, pp.direccion)
-        worksheet.write(row, 3, pp.Profesor.fecha_inicio)
+        worksheet.write(row, 3, pp.fecha_inicio)
         worksheet.write(row, 4, pp.get_cargo_display())
         worksheet.write(row, 5, pp.horas_indefinidas)
         worksheet.write(row, 6, pp.horas_plazo_fijo)

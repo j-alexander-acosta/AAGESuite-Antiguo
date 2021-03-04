@@ -432,6 +432,10 @@ class Profesor(BaseModel):
         return self.persona.nombre
 
     @property
+    def direccion(self):
+        return self.persona.direccion
+
+    @property
     def rut(self):
         return self.persona.rut
 
@@ -698,6 +702,10 @@ class Asistente(BaseModel):
     @property
     def nombre(self):
         return self.persona.nombre
+
+    @property
+    def direccion(self):
+        return self.persona.direccion
 
     @property
     def rut(self):
