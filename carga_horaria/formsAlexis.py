@@ -21,6 +21,14 @@ class ProfesorForm(forms.ModelForm):
     rut = CLRutField(label="RUT")
     nombre = forms.CharField()
     direccion = forms.CharField()
+    comuna = forms.CharField()
+    nacionalidad = forms.CharField()
+    telefono = forms.CharField(label='Teléfono')
+    email_personal = forms.EmailField()
+    email_institucional = forms.EmailField()
+    estado_civil = forms.ChoiceField(choices=models.Persona.ESTADO_CIVIL_CHOICES)
+    discapacidad = forms.BooleanField()
+    recibe_pension = forms.BooleanField()
     adventista = forms.BooleanField(required=False)
     fecha_nacimiento = forms.DateField(required=False, widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
     fecha_inicio = forms.DateField(required=False, widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
@@ -31,6 +39,14 @@ class ProfesorForm(forms.ModelForm):
             'rut',
             'nombre',
             'direccion',
+            'comuna',
+            'nacionalidad',
+            'telefono',
+            'email_personal',
+            'email_institucional',
+            'estado_civil',
+            'discapacidad',
+            'recibe_pension',
             'adventista',
             'fecha_nacimiento',
             'tipo',
@@ -80,6 +96,14 @@ class ProfesorForm(forms.ModelForm):
         if self.instance.pk:
             self.fields['nombre'].initial = self.instance.persona.nombre
             self.fields['direccion'].initial = self.instance.persona.direccion
+            self.fields['comuna'].initial = self.instance.persona.comuna
+            self.fields['nacionalidad'].initial = self.instance.persona.nacionalidad
+            self.fields['telefono'].initial = self.instance.persona.telefono
+            self.fields['email_personal'].initial = self.instance.persona.email_personal
+            self.fields['email_institucional'].initial = self.instance.persona.email_institucional
+            self.fields['estado_civil'].initial = self.instance.persona.estado_civil
+            self.fields['discapacidad'].initial = self.instance.persona.discapacidad
+            self.fields['recibe_pension'].initial = self.instance.persona.recibe_pension
             self.fields['rut'].initial = self.instance.persona.rut
             self.fields['adventista'].initial = self.instance.persona.adventista
             self.fields['fecha_nacimiento'].initial = self.instance.persona.fecha_nacimiento
@@ -96,6 +120,14 @@ class AsistenteForm(forms.ModelForm):
     rut = CLRutField(label="RUT")
     nombre = forms.CharField()
     direccion = forms.CharField()
+    comuna = forms.CharField()
+    nacionalidad = forms.CharField()
+    telefono = forms.CharField(label='Teléfono')
+    email_personal = forms.EmailField()
+    email_institucional = forms.EmailField()
+    estado_civil = forms.ChoiceField(choices=models.Persona.ESTADO_CIVIL_CHOICES)
+    discapacidad = forms.BooleanField()
+    recibe_pension = forms.BooleanField()
     adventista = forms.BooleanField(required=False)
     fecha_nacimiento = forms.DateField(required=False, widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
     fecha_inicio = forms.DateField(required=False, widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
@@ -139,6 +171,14 @@ class AsistenteForm(forms.ModelForm):
         if self.instance.pk:
             self.fields['nombre'].initial = self.instance.persona.nombre
             self.fields['direccion'].initial = self.instance.persona.direccion
+            self.fields['comuna'].initial = self.instance.persona.comuna
+            self.fields['nacionalidad'].initial = self.instance.persona.nacionalidad
+            self.fields['telefono'].initial = self.instance.persona.telefono
+            self.fields['email_personal'].initial = self.instance.persona.email_personal
+            self.fields['email_institucional'].initial = self.instance.persona.email_institucional
+            self.fields['estado_civil'].initial = self.instance.persona.estado_civil
+            self.fields['discapacidad'].initial = self.instance.persona.discapacidad
+            self.fields['recibe_pension'].initial = self.instance.persona.recibe_pension
             self.fields['rut'].initial = self.instance.persona.rut
             self.fields['adventista'].initial = self.instance.persona.adventista
             self.fields['fecha_nacimiento'].initial = self.instance.persona.fecha_nacimiento

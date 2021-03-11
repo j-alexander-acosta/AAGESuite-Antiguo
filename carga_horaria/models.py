@@ -838,8 +838,28 @@ class Especialidad(models.Model):
 
 
 class Persona(models.Model):
+    SOLTERO = 1
+    CASADO = 2
+    SEPARADO = 3
+    DIVORCIADO = 4
+    VIUDO = 5
+
+    ESTADO_CIVIL_CHOICES = ((SOLTERO, 'soltero(a)'),
+                            (CASADO, 'casado(a)'),
+                            (SEPARADO, 'separado(a)'),
+                            (DIVORCIADO, 'divorciado(a)'),
+                            (VIUDO, 'viudo(a)'))
+
     nombre = models.CharField(max_length=255)
     direccion = models.CharField('dirección', max_length=255)
+    comuna = models.CharField('comuna', max_length=255)
+    nacionalidad = models.CharField('nacionalidad', max_length=255)
+    telefono = models.CharField('telefono', max_length=255)
+    email_personal = models.EmailField('email personal')
+    email_institucional = models.EmailField('email institucional')
+    estado_civil = models.PositiveSmallIntegerField(default=SOLTERO, choices=ESTADO_CIVIL_CHOICES)
+    discapacidad = models.BooleanField('discapacidad', default=False)
+    recibe_pension = models.BooleanField('recibe pensión', default=False)
     rut = models.CharField(max_length=13, blank=True, null=True, unique=True)
     adventista = models.BooleanField(default=False)
     fecha_nacimiento = models.DateField('fecha de nacimiento', null=True)
