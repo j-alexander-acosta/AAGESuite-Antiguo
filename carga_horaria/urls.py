@@ -42,6 +42,11 @@ urlpatterns = [
         name='profesores-info'
     ),
     url(
+        r'^asistentes/excel/$',
+        views.asistentes_info,
+        name='asistentes-info'
+    ),
+    url(
         r'^profesores/(?P<pk>\d+)/$',
         views.ProfesorDetailView.as_view(),
         name='profesor'
