@@ -166,51 +166,45 @@
 	</tr>
 	<tr>
 	  <th style="text-align: center; background-color: #ccc !important">N°</th>
-	  <th style="text-align: center; background-color: #ccc !important" colspan="3">No lectivas y otras funciones 35% y/o 40%</th>
-	  <th style="text-align: center; background-color: #ccc !important">Financiamiento</th>
+	  <th style="text-align: center; background-color: #ccc !important" colspan="4">No lectivas y otras funciones 35% y/o 40%</th>
+
 	  <th style="text-align: center; background-color: #ccc !important">Cronológicas 60'</th>
 	</tr>
         <tr>
           <td style="text-align: center; background-color: #ccc !important">1</td>
-          <td style="text-align: left; background-color: #ccc !important" colspan="3">Planificación</td>
-          <td style="text-align: center; background-color: #ccc !important">SBVG</td>
+          <td style="text-align: left; background-color: #ccc !important" colspan="4">Planificación</td>
           <td style="text-align: center; background-color: #ccc !important">{{ profesor.horas_planificacion|hhmm }}</td>
         </tr>
         <tr>
           <td style="text-align: center; background-color: #ccc !important">2</td>
-          <td style="text-align: left; background-color: #ccc !important" colspan="3">Recreo</td>
-          <td style="text-align: center; background-color: #ccc !important">SBVG</td>
+          <td style="text-align: left; background-color: #ccc !important" colspan="4">Recreo</td>
           <td style="text-align: center; background-color: #ccc !important">{{ profesor.horas_recreo_total|hhmm }}</td>
         </tr>
 	{% for ax in profesor.asignacionextra_set.all %}
         <tr>
 	  <td style="text-align: center; background-color: #ccc !important">{{ forloop.counter|add:2 }}</td>
-          <td style="text-align: left; background-color: #ccc !important" colspan="3">{{ ax.descripcion }}</td>
-          <td style="text-align: center; background-color: #ccc !important">SBVG</td>
+          <td style="text-align: left; background-color: #ccc !important" colspan="4">{{ ax.descripcion }}</td>
           <td style="text-align: center; background-color: #ccc !important">{{ ax.horas|hhmm }}</td>
         </tr>
         {% endfor %}
 	{% for ax in profesor.asignacionnoaula_set.all.ordinaria %}
         <tr>
 	  <td style="text-align: center; background-color: #ccc !important">{{ forloop.counter|add:2|add:profesor.asignacionextra_set.all.count }}</td>
-          <td style="text-align: left; background-color: #ccc !important" colspan="3">{{ ax.descripcion }}</td>
-          <td style="text-align: center; background-color: #ccc !important">SBVG</td>
+          <td style="text-align: left; background-color: #ccc !important" colspan="4">{{ ax.descripcion }}</td>
           <td style="text-align: center; background-color: #ccc !important">{{ ax.horas|hhmm }}</td>
         </tr>
         {% endfor %}
 	{% for ax in profesor.asignacionnoaula_set.all.sep %}
         <tr>
 	  <td style="text-align: center; background-color: #ccc !important">{{ forloop.counter|add:2|add:profesor.asignacionextra_set.all.count|add:profesor.asignacionnoaula_set.all.ordinaria.count }}</td>
-          <td style="text-align: left; background-color: #ccc !important" colspan="3">{{ ax.descripcion }}</td>
-          <td style="text-align: center; background-color: #ccc !important">SEP</td>
+          <td style="text-align: left; background-color: #ccc !important" colspan="4">{{ ax.descripcion }}</td>
           <td style="text-align: center; background-color: #ccc !important">{{ ax.horas|hhmm }}</td>
         </tr>
         {% endfor %}
 	{% for ax in profesor.asignacionnoaula_set.all.pie %}
         <tr>
 	  <td style="text-align: center; background-color: #ccc !important">{{ forloop.counter|add:2|add:profesor.asignacionextra_set.all.count|add:profesor.asignacionnoaula_set.all.ordinaria.count|add:profesor.asignacionnoaula_set.all.sep.count }}</td>
-          <td style="text-align: left; background-color: #ccc !important" colspan="3">{{ ax.descripcion }}</td>
-          <td style="text-align: center; background-color: #ccc !important">PIE</td>
+          <td style="text-align: left; background-color: #ccc !important" colspan="4">{{ ax.descripcion }}</td>
           <td style="text-align: center; background-color: #ccc !important">{{ ax.horas|hhmm }}</td>
         </tr>
         {% endfor %}
