@@ -494,7 +494,8 @@ class Profesor(BaseModel):
 
     @property
     def horas_sbvg(self):
-        return (float(45) / float(60)) * (float(self.horas_asignadas_plan) + float(self.horas_asignadas_sostenedor)) + float(sum(self.asignacionextra_set.values_list('horas', flat=True))) + float(sum(self.asignacionnoaula_set.all().ordinaria.values_list('horas', flat=True))) + self.horas_planificacion + self.horas_recreo_total
+        # hack para conseguir equivalencia de horas plan (aula) a cronológicas, no se debe usar así pero así es
+        return Ley20903(self.horas_asignadas_plan).horas_semanales + self.horas_no_aula_asignadas_ordinaria + Ley20903(self.horas_asignadas_sostenedor).horas_semanales
 
     @property
     def horas_disponibles(self):
@@ -530,11 +531,11 @@ class Profesor(BaseModel):
 
     @property
     def total_sep(self):
-        return float(sum(self.asignacionnoaula_set.all().sep.values_list('horas', flat=True))) + float(self.horas_asignadas_sep) * float(45) / float(60)
+        return Ley20903(self.horas_asignadas_sep).horas_semanales + self.horas_no_aula_asignadas_sep
 
     @property
     def total_pie(self):
-        return float(sum(self.asignacionnoaula_set.all().pie.values_list('horas', flat=True))) + float(self.horas_asignadas_pie) * float(45) / float(60)
+        return Ley20903(self.horas_asignadas_pie).horas_semanales + self.horas_no_aula_asignadas_pie
 
     @property
     def horas_no_aula_disponibles(self):
