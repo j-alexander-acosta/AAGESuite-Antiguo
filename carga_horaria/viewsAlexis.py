@@ -326,6 +326,14 @@ class AsistenteCreateView(LoginRequiredMixin, CreateView):
         asistente.persona, _ = Persona.objects.update_or_create(rut=form.cleaned_data['rut'],
                                                                 defaults={'nombre': form.cleaned_data['nombre'],
                                                                           'direccion': form.cleaned_data['direccion'],
+                                                                          'comuna': form.cleaned_data['comuna'],
+                                                                          'nacionalidad': form.cleaned_data['nacionalidad'],
+                                                                          'telefono': form.cleaned_data['telefono'],
+                                                                          'email_personal': form.cleaned_data['email_personal'],
+                                                                          'email_institucional': form.cleaned_data['email_institucional'],
+                                                                          'estado_civil': form.cleaned_data['estado_civil'],
+                                                                          'discapacidad': form.cleaned_data['discapacidad'],
+                                                                          'recibe_pension': form.cleaned_data['recibe_pension'],
                                                                           'adventista': form.cleaned_data['adventista'],
                                                                           'fecha_nacimiento': form.cleaned_data['fecha_nacimiento']})
         asistente.save()
@@ -350,6 +358,14 @@ class AsistenteUpdateView(LoginRequiredMixin, UpdateView):
         asistente.persona, _ = Persona.objects.update_or_create(rut=form.cleaned_data['rut'],
                                                                 defaults={'nombre': form.cleaned_data['nombre'],
                                                                           'direccion': form.cleaned_data['direccion'],
+                                                                          'comuna': form.cleaned_data['comuna'],
+                                                                          'nacionalidad': form.cleaned_data['nacionalidad'],
+                                                                          'telefono': form.cleaned_data['telefono'],
+                                                                          'email_personal': form.cleaned_data['email_personal'],
+                                                                          'email_institucional': form.cleaned_data['email_institucional'],
+                                                                          'estado_civil': form.cleaned_data['estado_civil'],
+                                                                          'discapacidad': form.cleaned_data['discapacidad'],
+                                                                          'recibe_pension': form.cleaned_data['recibe_pension'],
                                                                           'adventista': form.cleaned_data['adventista'],
                                                                           'fecha_nacimiento': form.cleaned_data['fecha_nacimiento']})
         asistente.save()
