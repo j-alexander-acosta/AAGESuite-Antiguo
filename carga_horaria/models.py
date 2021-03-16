@@ -851,6 +851,7 @@ class Persona(models.Model):
                             (DIVORCIADO, 'divorciado(a)'),
                             (VIUDO, 'viudo(a)'))
 
+    rut = models.CharField(max_length=13, blank=True, null=True, unique=True)
     nombre = models.CharField(max_length=255)
     direccion = models.CharField('dirección', max_length=255)
     comuna = models.CharField('comuna', max_length=255)
@@ -861,7 +862,6 @@ class Persona(models.Model):
     estado_civil = models.PositiveSmallIntegerField(default=SOLTERO, choices=ESTADO_CIVIL_CHOICES)
     discapacidad = models.BooleanField('discapacidad', default=False)
     recibe_pension = models.BooleanField('recibe pensión', default=False)
-    rut = models.CharField(max_length=13, blank=True, null=True, unique=True)
     adventista = models.BooleanField(default=False)
     fecha_nacimiento = models.DateField('fecha de nacimiento', null=True)
 
