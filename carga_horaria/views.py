@@ -805,6 +805,7 @@ def profesores_info(request):
     worksheet.write(0, 31, 'Asignación No Aula PIE')
     worksheet.write(0, 32, 'Asignación No Aula SEP')
     worksheet.write(0, 33, 'Especialidad')
+    worksheet.write(0, 34, 'Profesor Jefe')
   
 
 
@@ -822,9 +823,9 @@ def profesores_info(request):
         worksheet.write(row, 8, pp.persona.get_estado_civil_display())
         worksheet.write(row, 9, 'Sí' if pp.persona.discapacidad else 'No')
         worksheet.write(row, 10, 'Sí' if pp.persona.recibe_pension else 'No')
-        worksheet.write(row, 11, pp.persona.adventista)
+        worksheet.write(row, 11, 'Sí' if pp.persona.adventista else 'No')
         worksheet.write(row, 12, pp.persona.fecha_nacimiento)
-        worksheet.write(row, 13, pp.tipo)
+        worksheet.write(row, 13, pp.get_tipo_display())
         worksheet.write(row, 14, pp.get_cargo_display())
         worksheet.write(row, 15, pp.fecha_inicio)
         worksheet.write(row, 16, pp.horas_semanales_total)
@@ -845,6 +846,7 @@ def profesores_info(request):
         worksheet.write(row, 31, pp.horas_no_aula_asignadas_pie)
         worksheet.write(row, 32, pp.horas_no_aula_asignadas_sep)
         worksheet.write(row, 33, str(pp.especialidad))
+        worksheet.write(row, 34, 'Sí' if pp.es_profesor_jefe else 'No')
         row += 1
 
     workbook.close()
