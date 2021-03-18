@@ -494,8 +494,12 @@ class Profesor(BaseModel):
 
     @property
     def horas_sbvg(self):
-        # hack para conseguir equivalencia de horas plan (aula) a cronológicas, no se debe usar así pero así es
-        return Ley20903(self.horas_asignadas_plan).horas_semanales + self.horas_no_aula_asignadas_ordinaria + Ley20903(self.horas_asignadas_sostenedor).horas_semanales
+        return self.horas_semanales + self.horas_semanales_vulnerables + self.horas_no_aula_asignadas_ordinaria
+
+    # @property
+    # def horas_sbvg(self):
+    #     # hack para conseguir equivalencia de horas plan (aula) a cronológicas, no se debe usar así pero así es
+    #     return Ley20903(self.horas_asignadas_plan).horas_semanales + self.horas_no_aula_asignadas_ordinaria + Ley20903(self.horas_asignadas_sostenedor).horas_semanales
 
     @property
     def horas_disponibles(self):
