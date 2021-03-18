@@ -428,6 +428,10 @@ class Profesor(BaseModel):
         return (f"{self.persona.rut}_{self.colegio}_{self.colegio.periode}.pdf", render_pdf_from_template(get_template('carga_horaria/profesor/anexo_profesor.html'), None, None, ctx))
 
     @property
+    def es_profesor_jefe(self):
+        return bool(self.periodo_set.count())
+
+    @property
     def nombre(self):
         return self.persona.nombre
 
