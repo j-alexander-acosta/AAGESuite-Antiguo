@@ -574,7 +574,7 @@ class Profesor(BaseModel):
 
     @property
     def horas_sbvg_total(self):
-        return self.horas_semanales_sbvg + self.horas_semanales_sbvg_vulnerables
+        return self.horas_semanales_sbvg + self.horas_semanales_sbvg_vulnerables + self.horas_no_aula_asignadas_ordinaria
 
     @property
     def horas_docentes_total(self):
