@@ -482,7 +482,11 @@ class Profesor(BaseModel):
 
     @property
     def horas_asignadas_plan(self):
-        return sum(self.asignacion_set.all().plan.values_list('horas', flat=True))
+        return sum([aa.horas for aa in filter(lambda aa: not aa.is_vuln, self.asignacion_set.all().plan)])
+
+    @property
+    def horas_asignadas_plan_vulnerables(self):
+         return sum([aa.horas for aa in filter(lambda aa: aa.is_vuln, self.asignacion_set.all().plan)])
 
     @property
     def horas_asignadas_pie(self):
@@ -495,15 +499,6 @@ class Profesor(BaseModel):
     @property
     def horas_asignadas_sostenedor(self):
         return sum(self.asignacion_set.all().sostenedor.values_list('horas', flat=True))
-
-    @property
-    def horas_sbvg(self):
-        return self.horas_semanales + self.horas_semanales_vulnerables + self.horas_no_aula_asignadas_ordinaria - self.total_sep - self.total_pie
-
-    # @property
-    # def horas_sbvg(self):
-    #     # hack para conseguir equivalencia de horas plan (aula) a cronológicas, no se debe usar así pero así es
-    #     return Ley20903(self.horas_asignadas_plan).horas_semanales + self.horas_no_aula_asignadas_ordinaria + Ley20903(self.horas_asignadas_sostenedor).horas_semanales
 
     @property
     def horas_disponibles(self):
@@ -560,6 +555,26 @@ class Profesor(BaseModel):
     @property
     def horas_semanales_vulnerables(self):
         return Ley20903(self.horas_docentes_vulnerables).horas_semanales_vulnerables
+
+    @property
+    def horas_sbvg(self):
+        return self.horas_asignadas_plan
+
+    @property
+    def horas_sbvg_vulnerables(self):
+        return self.horas_asignadas_plan_vulnerables
+
+    @property
+    def horas_semanales_sbvg(self):
+        return Ley20903(self.horas_sbvg+self.horas_asignadas_sostenedor).horas_semanales
+
+    @property
+    def horas_semanales_sbvg_vulnerables(self):
+        return Ley20903(self.horas_sbvg_vulnerables).horas_semanales_vulnerables
+
+    @property
+    def horas_sbvg_total(self):
+        return self.horas_semanales_sbvg + self.horas_semanales_sbvg_vulnerables
 
     @property
     def horas_docentes_total(self):

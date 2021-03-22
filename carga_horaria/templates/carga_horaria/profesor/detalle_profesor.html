@@ -130,7 +130,7 @@
 		    {% endfor %}
                     <tr>
                       <td colspan="2" align="right"><strong>Total</strong></td>
-                      <td colspan="2" align="left"><strong>{{ object.horas_asignadas_plan|decimal_maybe }}</strong></td>
+                      <td colspan="2" align="left"><strong>{{ object.horas_asignadas_plan|add:object.horas_asignadas_plan_vulnerables|decimal_maybe }}</strong></td>
                     </tr>
 
 
