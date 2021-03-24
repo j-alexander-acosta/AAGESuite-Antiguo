@@ -694,6 +694,7 @@ class Asistente(BaseModel):
     fecha_inicio = models.DateField('fecha inicio contrato', null=True)
     fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
     colegio = models.ForeignKey('Colegio', null=True)
+    observaciones = models.TextField(default='', blank=True)
 
     def generar_anexo_1(self):
         from wkhtmltopdf.utils import render_pdf_from_template

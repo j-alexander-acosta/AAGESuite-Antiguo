@@ -144,6 +144,7 @@ class AsistenteForm(forms.ModelForm):
             'funcion',
             'fundacion',
             'colegio',
+            'observaciones'
         ]
         labels = {
             'horas': u'Horas de contrato',
