@@ -831,7 +831,7 @@ def profesores_info(request):
         worksheet.write(row, 14, pp.get_cargo_display())
         worksheet.write(row, 15, pp.fecha_inicio)
         worksheet.write(row, 16, pp.horas_semanales_total)
-        worksheet.write(row, 17, pp.horas_sbvg)
+        worksheet.write(row, 17, pp.horas_sbvg_total)
         worksheet.write(row, 18, pp.total_sep)
         worksheet.write(row, 19, pp.total_pie)
         worksheet.write(row, 20, pp.horas_indefinidas)
