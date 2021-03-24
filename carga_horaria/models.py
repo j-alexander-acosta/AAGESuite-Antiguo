@@ -718,7 +718,7 @@ class Asistente(BaseModel):
 
     @property
     def horas_sostenedor(self):
-        return sum(self.asignacionasistente_set.filter(tipo=AsignacionAsistente.SOSTENEDOR).values_list('horas', flat=True))
+        return sum(self.asignacionasistente_set.filter(tipo=AsignacionAsistente.NO_AULA).values_list('horas', flat=True))
 
     @property
     def horas_sbvg(self):
