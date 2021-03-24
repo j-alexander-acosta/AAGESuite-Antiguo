@@ -428,6 +428,10 @@ class Profesor(BaseModel):
         return (f"{self.persona.rut}_{self.colegio}_{self.colegio.periode}.pdf", render_pdf_from_template(get_template('carga_horaria/profesor/anexo_profesor.html'), None, None, ctx))
 
     @property
+    def jefatura(self):
+        return str(self.periodo_set.first())
+
+    @property
     def es_profesor_jefe(self):
         return bool(self.periodo_set.count())
 
@@ -711,6 +715,10 @@ class Asistente(BaseModel):
     @property
     def horas_pie(self):
         return sum(self.asignacionasistente_set.filter(tipo=AsignacionAsistente.PIE).values_list('horas', flat=True))
+
+    @property
+    def horas_sostenedor(self):
+        return sum(self.asignacionasistente_set.filter(tipo=AsignacionAsistente.SOSTENEDOR).values_list('horas', flat=True))
 
     @property
     def horas_sbvg(self):
