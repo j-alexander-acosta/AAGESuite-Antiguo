@@ -283,7 +283,15 @@
                 </tr>
                 -->
                 </tbody>
-            </table>        </div>
+            </table>
+            {% if object.observaciones %}
+            <h5>Observaciones</h5>
+
+            <p>{{ object.observaciones }}</p>
+            {% endif %}
+
+
+</div>
 	</div>
 
     </div>
