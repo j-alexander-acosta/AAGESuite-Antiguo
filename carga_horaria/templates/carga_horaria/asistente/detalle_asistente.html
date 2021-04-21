@@ -16,6 +16,9 @@
                   <a href="{% url 'carga-horaria:asistentes' %}" type="button" class="btn btn-sm btn-dark">
                       <i class="fa fa-arrow-left"></i>
                   </a>
+                  <a href="{% url 'carga-horaria:asistente__anexo' object.pk %}" type="button" class="btn btn-sm btn-success">
+                      <i class="fa fa-handshake-o"></i>
+                  </a>
                   <a href="{% url 'carga-horaria:asistente__editar' object.pk %}" type="button" class="btn btn-sm btn-primary">
                       <i class="fa fa-edit"></i>
                   </a>
