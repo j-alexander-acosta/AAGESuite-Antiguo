@@ -12,6 +12,8 @@ def to_chrono(value):
 
 @register.filter
 def hhmm(value):
+    if value < 0:
+        return "0:00"
     hours = value
     minutes = 60 * (hours % 1)
     return "%d:%02d" % (hours, minutes)
