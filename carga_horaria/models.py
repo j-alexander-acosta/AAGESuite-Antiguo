@@ -1,12 +1,14 @@
 from enum import Enum
 from itertools import tee, islice, chain
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
 from decimal import Decimal, ROUND_HALF_DOWN, ROUND_HALF_UP, InvalidOperation
 from simple_history.models import HistoricalRecords
+from .templatetags.carga_filters import decimal_maybe, hhmm
 from .fucklogic import Ley20903
 
 
@@ -54,11 +56,17 @@ class BaseModel(models.Model):
 
     @property
     def agent(self):
-        return self.history.earliest().history_user
+        try:
+            return self.history.earliest().history_user
+        except:
+            return None
     
     @property
     def last_edited_by(self):
-        return self.history.latest().history_user
+        try:
+            return self.history.latest().history_user
+        except:
+            return None
 
     class Meta:
         abstract = True
@@ -333,6 +341,9 @@ class Asignatura(BaseModel):
     @property
     def profesores(self):
         return self.asignacion_set.values('profesor', flat=True)
+
+    def get_cursos_display(self):
+        return ', '.join(map(str, self.periodos.all()))
 
     def get_horas_display(self):
         if self.base and self.base.get_horas(self.periodos.first().jec) != self.horas:
@@ -661,6 +672,15 @@ class AsignacionAsistenteQuerySet(models.QuerySet):
         return self.filter(tipo=AsignacionAsistente.PIE)
 
 
+class AsignacionAsistenteLog(BaseModel):
+    asistente = models.ForeignKey('Asistente')
+    mensaje = models.TextField()
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+
+    class Meta:
+        ordering = ('-created_at',)
+
+
 class AsignacionAsistente(BaseModel):
     NORMAL = 1
     NO_AULA = 2
@@ -780,6 +800,15 @@ class AsignacionQuerySet(models.QuerySet):
         return self.filter(tipo=Asignacion.SOSTENEDOR)
 
 
+class AsignacionLog(BaseModel):
+    profesor = models.ForeignKey('Profesor')
+    mensaje = models.TextField()
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+
+    class Meta:
+        ordering = ('-created_at',)
+
+
 class Asignacion(BaseModel):
     PLAN = 1
     SEP = 2
@@ -811,8 +840,12 @@ class Asignacion(BaseModel):
     def horas_crono(self):
         return self.horas * 45 / 60
 
+    @property
+    def desc(self):
+        return self.descripcion or f"{self.asignatura} - {self.asignatura.get_cursos_display()}"
+
     def __str__(self): 
-        return "{} - {} ({})".format(self.profesor, self.asignatura, self.horas)
+        return "horas lectivas ({} - {})".format(decimal_maybe(self.horas), self.desc)
 
 
 class AsignacionExtra(BaseModel):
@@ -822,7 +855,7 @@ class AsignacionExtra(BaseModel):
     horas = models.DecimalField(max_digits=4, decimal_places=2)
 
     def __str__(self): 
-        return "{} - {} ({})".format(self.profesor, self.descripcion, self.horas)
+        return "horas no lectivas ({} - {}))".format(hhmm(self.horas), self.descripcion)
 
 
 class AsignacionNoAulaQuerySet(models.QuerySet):
@@ -857,7 +890,7 @@ class AsignacionNoAula(BaseModel):
     objects = AsignacionNoAulaQuerySet.as_manager()
 
     def __str__(self): 
-        return "{} - {} ({})".format(self.profesor, self.descripcion, self.horas)
+        return "horas no lectivas ({} - {}))".format(hhmm(self.horas), self.descripcion)
 
 
 class Especialidad(models.Model):
