@@ -1,9 +1,9 @@
 from .base import *  # noqa
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'TLvsQkkZQZE6pyiva5pmDcOzHvnLVr6CRClpwByCj2g='
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
-DEBUG = True
+DEBUG = os.environ.get('DEBUG')
 
 DEVELOPMENT_APPS = []
 
@@ -16,9 +16,12 @@ ALLOWED_HOSTS = ['*']
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'carga',
-        'USER': 'carga',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_DB'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': os.environ.get('POSTGRES_PORT'),
     }
 }
 
