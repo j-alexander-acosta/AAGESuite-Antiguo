@@ -73,3 +73,6 @@ media/
 .make*
 .vagrant*
 
+# Estilos 
+
+/.static
