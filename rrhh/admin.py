@@ -1,20 +1,29 @@
 from django.contrib import admin
-from .models import Persona, Vacacion, TipoLicencia, Licencia
-from .models import Contrato, Funcion, AFP, Isapre, Finiquito
+from rrhh.models import *
 
 
-@admin.register(Persona)
+@admin.register(persona.Persona)
 class PersonaAdmin(admin.ModelAdmin):
     list_display = (
         'rut',
         'get_full_name',
     )
     search_fields = ['rut', 'get_full_name']
-    list_filter = ['religion', 'titulo', 'casa_formadora', 'nacionalidad']
+    list_filter = ['religion', 'titulado', 'profesion', 'nacionalidad']
 
 
-@admin.register(Vacacion)
-class VacacionAdmin(admin.ModelAdmin):
+@admin.register(persona.Funcionario)
+class FuncionarioAdmin(admin.ModelAdmin):
+    list_display = (
+        'persona',
+        'estado',
+    )
+    search_fields = ['persona__rut', 'persona__get_full_name']
+    list_filter = ['afp', 'salud', 'isapre', 'estado', 'tipo_misionero']
+
+
+@admin.register(colegio.VacacionFuncionarioColegio)
+class VacacionFuncionarioColegioAdmin(admin.ModelAdmin):
     list_display = (
         'contrato',
         'total_dias',
@@ -23,7 +32,7 @@ class VacacionAdmin(admin.ModelAdmin):
     search_fields = ['contrato__persona__rut', 'contrato__persona__get_full_name']
 
 
-@admin.register(TipoLicencia)
+@admin.register(base.TipoLicencia)
 class TipoLicenciaAdmin(admin.ModelAdmin):
     list_display = (
         'nombre',
@@ -32,8 +41,8 @@ class TipoLicenciaAdmin(admin.ModelAdmin):
     search_fields = ['nombre']
 
 
-@admin.register(Licencia)
-class LicenciaAdmin(admin.ModelAdmin):
+@admin.register(colegio.LicenciaFuncionarioColegio)
+class LicenciaFuncionarioColegioAdmin(admin.ModelAdmin):
     list_display = (
         'contrato',
         'tipo_licencia',
@@ -49,28 +58,41 @@ class LicenciaAdmin(admin.ModelAdmin):
     list_filter = ['tipo_licencia']
 
 
-@admin.register(Contrato)
-class ContratoAdmin(admin.ModelAdmin):
+@admin.register(colegio.PermisoFuncionarioColegio)
+class PermisoFuncionarioColegioAdmin(admin.ModelAdmin):
     list_display = (
-        'persona',
+        'contrato',
+        'observaciones',
+        'total_dias'
+    )
+    search_fields = [
+        'contrato__persona__rut',
+        'contrato__persona__get_full_name',
+    ]
+    list_filter = ['goce_sueldo']
+
+
+@admin.register(colegio.ContratoColegio)
+class ContratoColegioAdmin(admin.ModelAdmin):
+    list_display = (
+        'funcionario',
         'colegio',
         'categoria',
         #'vigente'
     )
     search_fields = [
-        'persona__rut',
-        'persona__get_full_name',
+        'funcionario__persona__rut',
+        'funcionario__persona__get_full_name',
         'colegio__nombre'
     ]
     list_filter = [
         'colegio',
         'categoria',
-        'tipo_contrato',
-        'salud'
+        'tipo_contrato'
     ]
 
 
-@admin.register(Funcion)
+@admin.register(base.Funcion)
 class FuncionAdmin(admin.ModelAdmin):
     list_display = (
         'nombre',
@@ -81,7 +103,7 @@ class FuncionAdmin(admin.ModelAdmin):
     list_filter = ['tipo']
 
 
-@admin.register(AFP)
+@admin.register(base.AFP)
 class AFPAdmin(admin.ModelAdmin):
     list_display = (
         'nombre',
@@ -90,7 +112,7 @@ class AFPAdmin(admin.ModelAdmin):
     search_fields = ['nombre']
 
 
-@admin.register(Isapre)
+@admin.register(base.Isapre)
 class IsapreAdmin(admin.ModelAdmin):
     list_display = (
         'nombre',
@@ -99,10 +121,59 @@ class IsapreAdmin(admin.ModelAdmin):
     search_fields = ['nombre']
 
 
-@admin.register(Finiquito)
-class FiniquitoAdmin(admin.ModelAdmin):
+@admin.register(colegio.FiniquitoColegio)
+class FiniquitoColegioAdmin(admin.ModelAdmin):
     list_display = (
         'contrato',
         'razon_baja',
     )
     search_fields = ['contrato__persona__rut']
+
+
+@admin.register(colegio.Entrevista)
+class EntrevistaAdmin(admin.ModelAdmin):
+    list_display = (
+        'contrato',
+        'tipo',
+    )
+    search_fields = ['contrato__persona__rut']
+
+
+@admin.register(colegio.Solicitud)
+class SolicitudAdmin(admin.ModelAdmin):
+    list_display = (
+        'colegio',
+        'cargo',
+    )
+    search_fields = ['colegio', 'cargo']
+    list_filter = ['colegio']
+
+
+@admin.register(colegio.EstadoSolicitud)
+class EstadoSolicitudAdmin(admin.ModelAdmin):
+    list_display = (
+        'solicitud',
+        'estado',
+    )
+    search_fields = ['solicitud__colegio']
+    list_filter = ['solicitud__colegio']
+
+
+@admin.register(colegio.EstadoContratacion)
+class EstadoContratacionAdmin(admin.ModelAdmin):
+    list_display = (
+        'contrato',
+        'estado',
+    )
+    search_fields = ['contrato', 'contrato__colegio', 'contrato__funcionario']
+    list_filter = ['contrato__colegio', 'estado']
+
+
+@admin.register(colegio.DocumentoPersonal)
+class DocumentoPersonalAdmin(admin.ModelAdmin):
+    list_display = (
+        'contrato',
+        'tipo_documento',
+    )
+    search_fields = ['contrato', 'contrato__colegio', 'contrato__funcionario']
+    list_filter = ['contrato__colegio', 'tipo_documento']

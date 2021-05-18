@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block title_page %}
-    Archivo - Detalle
+    Documento - Detalle
 {% endblock %}
 
 {% block content %}
@@ -12,19 +12,19 @@
       <h4 class="card-title"><strong> {{ object.descripcion }}</strong>
           {% block buttons %}
               <div class="btn-group pull-right">
-                  <a href="{% url 'rrhh:archivos' %}" type="button" class="btn btn-sm btn-dark">
+                  <a href="{% url 'rrhh:documentos' %}" type="button" class="btn btn-sm btn-dark">
                       <i class="fa fa-arrow-left"></i>
                   </a>
-                  <a href="{% url 'rrhh:archivo__editar' object.pk %}" type="button" class="btn btn-sm btn-primary">
+                  <a href="{% url 'rrhh:documento__editar' object.pk %}" type="button" class="btn btn-sm btn-primary">
                       <i class="fa fa-edit"></i>
                   </a>
-                  <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_archivo_{{object.pk}}">
+                  <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_documento_{{object.pk}}">
                       <i class="fa fa-trash"></i>
                   </a>
               </div>
           {% endblock %}
         </h4>
-        <h6 class="card-subtitle mb-2 text-muted">Detalle del archivo</h6>
+        <h6 class="card-subtitle mb-2 text-muted">Detalle del documento</h6>
 
     </div>
     <div class="card-body">
@@ -48,8 +48,8 @@
                     <td>  {{ object.descripcion }}  </td>
                 </tr>
                 <tr>
-                    <th> Archivo </th>
-                    <td><a href="{{ object.archivo.url }}">  {{ object.archivo }}  </a></td>
+                    <th> Documento </th>
+                    <td><a href="{{ object.documento.url }}">  {{ object.documento }}  </a></td>
                 </tr>
                 <tr>
                     <th> Funcionario </th>
@@ -80,21 +80,21 @@
   </div>
 </div>
 
-<div class="modal" tabindex="-1" role="dialog" id="eliminar_archivo_{{object.pk}}">
+<div class="modal" tabindex="-1" role="dialog" id="eliminar_documento_{{object.pk}}">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar un Archivo</h5>
+                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar un Documento</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Está seguro que desea eliminar el archivo "{{ object.nombre }}"?.</p>
-                <p class="text-muted">Recuerde que eliminará todos los registros asociados a este archivo.</p>
+                <p>Está seguro que desea eliminar el documento "{{ object.nombre }}"?.</p>
+                <p class="text-muted">Recuerde que eliminará todos los registros asociados a este documento.</p>
             </div>
             <div class="modal-footer">
-                <a role="button" class="btn btn-danger" href="{% url 'rrhh:archivo__eliminar' object.pk %}">Eliminar</a>
+                <a role="button" class="btn btn-danger" href="{% url 'rrhh:documento__eliminar' object.pk %}">Eliminar</a>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             </div>
         </div>

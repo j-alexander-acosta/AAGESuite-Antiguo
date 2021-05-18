@@ -3,21 +3,21 @@
 {% load bootstrap_pagination %}
 
 {% block title_page %}
-    Archivos
+    Documentos
 {% endblock %}
 
 {% block content %}
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title">Archivos
-          <a class="btn btn-sm btn-primary pull-right" href="{% url 'rrhh:archivo__nuevo'%}" role="button">
+        <h4 class="card-title">Documentos
+          <a class="btn btn-sm btn-primary pull-right" href="{% url 'rrhh:documento__nuevo'%}" role="button">
 	    <span>
-	      Crear Archivo
+	      Crear Documento
               <i class="fa fa-plus"></i>
 	    </span>
             </a>
         </h4>
-        <h6 class="card-subtitle mb-2 text-muted">Tabla para configuración de archivos</h6>
+        <h6 class="card-subtitle mb-2 text-muted">Tabla para configuración de documentos</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -26,36 +26,36 @@
             <tr>
                 <th><i class="fa fa-user"></i> Descripción </th>
                 <th><i class="fa fa-clock-o"></i> Funcionario </th>
-                <th><i class="fa fa-clock-o"></i> Archivo </th>
+                <th><i class="fa fa-clock-o"></i> Documento </th>
                 <th><i class="fa fa-cogs"></i> Acciones </th>
             </tr>
             </thead>
             <tbody>
             {% for p in object_list %}
                 <tr>
-                    <td><a href="{% url 'rrhh:archivo' p.pk %}"> {{ p.descripcion }} </a></td>
+                    <td><a href="{% url 'rrhh:documento' p.pk %}"> {{ p.descripcion }} </a></td>
                     <td> {{ p.funcionario }} </td>
-                    <td> {{ p.archivo }} </td>
+                    <td> {{ p.documento }} </td>
                     <td>
-                        <a class="btn btn-sm btn-primary" href="{% url 'rrhh:archivo__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
-                        <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_archivo_{{p.pk}}"><i class="fa fa-trash"></i></a>
+                        <a class="btn btn-sm btn-primary" href="{% url 'rrhh:documento__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
+                        <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_documento_{{p.pk}}"><i class="fa fa-trash"></i></a>
                     </td>
                 </tr>
-                <div class="modal" tabindex="-1" role="dialog" id="eliminar_archivo_{{p.pk}}">
+                <div class="modal" tabindex="-1" role="dialog" id="eliminar_documento_{{p.pk}}">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar un Archivo</h5>
+                                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar un Documento</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <p>Está seguro que desea eliminar el archivo "{{ p.nombre }}"?.</p>
-                                <p class="text-muted">Recuerde que eliminará todos los registros asociados a este archivo.</p>
+                                <p>Está seguro que desea eliminar el documento "{{ p.nombre }}"?.</p>
+                                <p class="text-muted">Recuerde que eliminará todos los registros asociados a este documento.</p>
                             </div>
                             <div class="modal-footer">
-                                <a role="button" class="btn btn-danger" href="{% url 'rrhh:archivo__eliminar' p.pk %}">Eliminar</a>
+                                <a role="button" class="btn btn-danger" href="{% url 'rrhh:documento__eliminar' p.pk %}">Eliminar</a>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                             </div>
                         </div>

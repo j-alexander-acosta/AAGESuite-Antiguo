@@ -1,0 +1,75 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+{% load bootstrap_pagination %}
+
+{% block title_page %}
+    Colegios
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Colegios
+            <div class="btn-group pull-right" role="group">
+                <a class="btn btn-sm btn-primary" href="{% url 'rrhh:colegio__nuevo'%}" role="button">
+    	             <span> Crear Colegio <i class="fa fa-plus"></i></span>
+                </a>
+            </div>
+        </h4>
+        <h6 class="card-subtitle mb-2 text-muted">Tabla para configuración de Colegio</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th><i class="fa fa-user"></i> Nombre </th>
+                    <th><i class="fa fa-calendar"></i> Descripción </th>
+                    <th><i class="fa fa-clock"></i> Opciones </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for f in object_list %}
+                    <tr>
+                        <td><a href="{% url 'rrhh:colegio' f.pk %}"> {{ f.nombre }} </a></td>
+                        <td> {% if f.descripcion %}{{ f.descripcion|truncatewords:"7" }}{% else %}No específicado{% endif %} </td>
+                        <td>
+                            <a class="btn btn-sm btn-primary" href="{% url 'rrhh:colegio__editar' f.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
+                            <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_colegio_{{f.pk}}"><i class="fa fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    <div class="modal" tabindex="-1" role="dialog" id="eliminar_colegio_{{f.pk}}">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar un Colegio</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Está seguro que desea eliminar el Colegio "{{ f }}"?.</p>
+                                    <p class="text-muted">Recuerde que eliminará todos los registros asociados a este Colegio.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <a role="button" class="btn btn-danger" href="{% url 'rrhh:colegio__eliminar' f.pk %}">Eliminar</a>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card-footer">
+        <div align="center">
+            {% bootstrap_paginate page_obj range=5 %}
+        </div>
+    </div>
+
+</div>
+
+{% endblock content  %}
