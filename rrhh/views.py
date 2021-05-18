@@ -61,6 +61,11 @@ def home(request):
     return render(request, 'rrhh/home.html', context)
 
 
+@login_required
+def hyper_index(request):
+    return render(request, 'rrhh/hyper_index.html')
+
+
 class UnionListView(LoginRequiredMixin, ListView):
     model = Union
     template_name = 'rrhh/union/listado_union.html'

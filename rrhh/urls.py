@@ -6,6 +6,7 @@ app_name = 'rrhh'
 
 urlpatterns = [
     url(r'^$', views.home, name='home_rrhh'),
+    url(r'^hyper_index/$', views.hyper_index, name='hyper_index'),
     url(
         r'^uniones/$',
         views.UnionListView.as_view(),
