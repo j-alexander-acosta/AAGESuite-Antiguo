@@ -34,7 +34,7 @@
                 <tbody>
                 {% for f in object_list %}
                     <tr>
-                        <td><a href="{% url 'rrhh:funcion' f.pk %}"> {{ f.nombre }} </a></td>
+                        <td><a href="{% url 'rrhh:afp' f.pk %}"> {{ f.nombre }} </a></td>
                         <td> {% if f.descripcion %}{{ f.descripcion|truncatewords:"7" }}{% else %}No específicado{% endif %} </td>
                         <td>
                             <a class="btn btn-sm btn-primary" href="{% url 'rrhh:afp__editar' f.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>

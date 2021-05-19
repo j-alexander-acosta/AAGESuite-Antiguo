@@ -5,72 +5,194 @@
 {% endblock %}
 
 {% block content %}
-    <div class="">
-        <a href="{% url 'rrhh:contratos' %}" style="color: #fff;">
-            <div class="card text-white card-inverse bgm-lightblue text-center">
-                <div class="card-header">
-                    <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                    <h6>Funcionarios</h6>
+{% if contratos_contratar or contratos_expirar or solicitudes_pendientes or contrataos_finiquitar %}
+    <div class="row">
+        <div class="col-md-8">
+{% endif %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card text-white card-inverse bgm-gray">
+                        <div class="card-header">
+                            <h2 class="text-center"><i class="fa fa-institution"></i> Administración </h2>
+                            <p>
+                                <ul>
+                                    <a href="{% url 'rrhh:uniones' %}" style="color: #fff;"><li>Uniones</li></a>
+                                    <a href="{% url 'rrhh:fundaciones' %}" style="color: #fff;"><li>Fundaciones</li></a>
+                                    <a href="{% url 'rrhh:colegios' %}" style="color: #fff;"><li>Colegios</li></a>
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card text-white card-inverse bgm-lightblue">
+                        <div class="card-header">
+                            <h2 class="text-center"><i class="fa fa-institution"></i> Funcionarios </h2>
+                            <p>
+                                <ul>
+                                    <a href="{% url 'rrhh:personas' %}" style="color: #fff;"><li>Personas</li></a>
+                                    <a href="{% url 'rrhh:contratos' %}" style="color: #fff;"><li>Personal</li></a>
+                                    <a href="{% url 'rrhh:postulantes' %}" style="color: #fff;"><li>Postulantes</li></a>
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </a>
+            <br>
+            <div class="row">
+                <div class="col-md-4">
+                    <a href="{% url 'rrhh:solicitudes' %}" style="color: #fff;">
+                        <div class="card text-white card-inverse bgm-red text-center">
+                            <div class="card-header">
+                                <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
+                                <h6>Solicitudes</h6>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="{% url 'rrhh:vacaciones' %}" style="color: #fff;">
+                        <div class="card text-white card-inverse bgm-indigo text-center">
+                            <div class="card-header">
+                                <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
+                                <h6>Vacaciones</h6>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="{% url 'rrhh:licencias' %}" style="color: #fff;">
+                        <div class="card text-white card-inverse bgm-purple text-center">
+                            <div class="card-header">
+                                <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
+                                <h6>Licencias</h6>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-4">
+                    <a href="{% url 'rrhh:documentos' %}" style="color: #fff;">
+                        <div class="card text-white card-inverse bgm-teal text-center">
+                            <div class="card-header">
+                                <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
+                                <h6>Documentación Funcionarios</h6>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="{% url 'rrhh:entrevistas' %}" style="color: #fff;">
+                        <div class="card text-white card-inverse bgm-lightgreen text-center">
+                            <div class="card-header">
+                                <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
+                                <h6>Entrevistas</h6>
+                            </div>
+                        </div>
+                    </a>
+            {% if contratos_contratar or contratos_expirar or solicitudes_pendientes or contrataos_finiquitar %}
+                </div>
+            </div>
+            {% endif %}
+            <br>
+        </div>
+        {% if contratos_contratar or contratos_expirar or solicitudes_pendientes or contrataos_finiquitar %}
+            <div class="col-md-4">
+                <div class="card" style="cursor: pointer">
+                    {% if contratos_contratar %}
+                        <div class="card bg-danger">
+                            <a class="text-white text-left" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <div class="card-header" id="headingOne">
+                                    En proceso de contratación
+                                    <span class="badge badge-warning pull-right">{{ contratos_contratar|length }}</span>
+                                </div>
+                            </a>
+                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne">
+                                <ul class="list-group list-group-flush">
+                                    {% for c in contratos_contratar %}
+                                        <a href="{% url 'rrhh:contrato' c.pk %}">
+                                            <li class="list-group-item list-group-item-warning">
+                                                {{ c }}
+                                                <span class="badge badge-danger badge-sm pull-right"> {{ c.estado }}</span>
+                                            </li>
+                                        </a>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if contratos_expirar %}
+                        <div class="card bg-danger">
+                            <a class="text-white text-left" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <div class="card-header" id="headingOne">
+                                    Contratos apunto de expirar
+                                    <span class="badge badge-warning pull-right">{{ contratos_expirar|length }}</span>
+                                </div>
+                            </a>
+                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne">
+                                <ul class="list-group list-group-flush">
+                                    {% for c in contratos_expirar|dictsort:'dias_termino_contrato' %}
+                                        <a href="{% url 'rrhh:contrato' c.pk %}">
+                                            <li class="list-group-item list-group-item-warning">
+                                                {{ c }}
+                                                <span class="badge badge-danger badge-sm pull-right"> {{ c.dias_termino_contrato }} dias</span>
+                                            </li>
+                                        </a>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if contratos_finiquitar %}
+                        <div class="card bg-danger">
+                            <a class="text-white text-left collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                <div class="card-header" id="headingTwo">
+                                    Contratos que se deben finiquitar
+                                    <span class="badge badge-warning pull-right">{{ contratos_finiquitar|length }}</span>
+                                </div>
+                            </a>
+                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo">
+                                <ul class="list-group list-group-flush">
+                                    {% for c in contratos_finiquitar|dictsort:'dias_termino_contrato' %}
+                                        <a href="{% url 'rrhh:contrato' c.pk %}">
+                                            <li class="list-group-item list-group-item-warning">
+                                                {{ c }}
+                                                <span class="badge badge-danger badge-sm pull-right"> {{ c.solicitud_set.all.0.get_tipo_display }} en {{ c.dias_termino_contrato }} dias</span>
+                                            </li>
+                                        </a>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if solicitudes_pendientes %}
+                        <div class="card bg-danger">
+                            <a class="text-white text-left collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                <div class="card-header" id="headingThree">
+                                    Solicitudes que requieren atención
+                                    <span class="badge badge-warning pull-right">{{ solicitudes_pendientes|length }}</span>
+                                </div>
+                            </a>
+                            <div id="collapseThree" class="collapse" aria-labelledby="headingThree">
+                                <ul class="list-group list-group-flush">
+                                    {% for s in solicitudes_pendientes %}
+                                        <a href="{% url 'rrhh:solicitud' s.pk %}">
+                                            <li class="list-group-item list-group-item-warning">
+                                                {{ s }}
+                                                <span class="badge badge-danger badge-sm pull-right"> {{ s.estado }}</span>
+                                            </li>
+                                        </a>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
     </div>
-    <br>
-    <div class="row">
-        <div class="col-md-4">
-            <a href="{% url 'rrhh:personas' %}" style="color: #fff;">
-                <div class="card text-white card-inverse bgm-red text-center">
-                    <div class="card-header">
-                        <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                        <h6>Personas</h6>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-4">
-            <a href="{% url 'rrhh:vacaciones' %}" style="color: #fff;">
-                <div class="card text-white card-inverse bgm-indigo text-center">
-                    <div class="card-header">
-                        <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                        <h6>Vacaciones</h6>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-4">
-            <a href="{% url 'rrhh:licencias' %}" style="color: #fff;">
-                <div class="card text-white card-inverse bgm-purple text-center">
-                    <div class="card-header">
-                        <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                        <h6>Licencias</h6>
-                    </div>
-                </div>
-            </a>
-        </div>
-    </div>
-    <br>
-    <div class="row">
-        <div class="col-md-4">
-            <a href="{% url 'rrhh:archivos' %}" style="color: #fff;">
-                <div class="card text-white card-inverse bgm-teal text-center">
-                    <div class="card-header">
-                        <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                        <h6>Archivos</h6>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-4">
-            <a href="{% url 'rrhh:entrevistas' %}" style="color: #fff;">
-                <div class="card text-white card-inverse bgm-lightgreen text-center">
-                    <div class="card-header">
-                        <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                        <h6>Entrevistas</h6>
-                    </div>
-                </div>
-            </a>
-        </div>
-    </div>
-    <br>
 
 {% endblock content %}

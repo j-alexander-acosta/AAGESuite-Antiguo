@@ -1,0 +1,86 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Crear Solicitud de {% if tipo %}{{ tipo }} {%else%}Contratación{%endif%}
+        </h4>
+        <h6 class="card-subtitle mb-2 text-muted">Datos de Solicitud de {% if tipo %}{{ tipo }} {{ funcionario }}{%else%}contratación{%endif%}</h6>
+    </div>
+    <div class="card-body">
+
+        <form class="form-horizontal" method="post">
+            {% csrf_token %}
+            {% crispy form %}
+            <div class="form-group">
+                <div class="col-sm-10 col-sm-offset-2">
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <a href="{{ request.META.HTTP_REFERER }}"
+                    role="button" class="btn btn-default">
+                        Volver
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script type="text/javascript">
+        function tipo_contrato(){
+            let tipo = $(document).find('#id_tipo_contrato_chosen').find('a.chosen-single').find('span').html();
+            let tipo_solicitud = $(document).find('input[name="tipo"]');
+            if(tipo === 'Indefinido'){
+                $(document).find('#div_id_fecha_termino').fadeOut();
+                $(document).find('#id_fecha_termino').val('');
+                $(document).find('#id_fecha_termino').attr('disabled', true);
+                $(document).find('#div_id_reemplazando_licencia').fadeOut();
+                // $(document).find('#id_reemplazando').val('');
+                // $(document).find('#id_reemplazando').attr('disabled', true);
+                if (tipo_solicitud.val() == 2 ) {
+                    tipo_solicitud.val(1);
+                    $(document).find('h4.card-title').html("Crear Solicitud de Conotratación");
+                    $(document).find('h6.card-subtitle').html("Datos de solicitud de contratación");
+                }
+            }
+            if(tipo === 'A plazo'){
+                $(document).find('#div_id_fecha_termino').fadeIn();
+                $(document).find('#id_fecha_termino').prop('disabled', false);
+                $(document).find('#div_id_reemplazando_licencia').fadeOut();
+                $(document).find('#id_reemplazando_licencia').trigger('liszt:updated');
+                console.log(tipo_solicitud.val());
+                if (tipo_solicitud.val() == 2 ) {
+                    tipo_solicitud.val(1);
+                    $(document).find('h4.card-title').html("Crear Solicitud de Conotratación");
+                    $(document).find('h6.card-subtitle').html("Datos de solicitud de contratación");
+                }
+            }
+            if(tipo === 'Reemplazo'){
+                $(document).find('#div_id_fecha_termino').fadeIn();
+                $(document).find('#id_fecha_termino').prop('disabled', false);
+                $(document).find('#div_id_reemplazando_licencia').fadeIn();
+                // $(document).find('#id_reemplazando').prop('disabled', false);
+                tipo_solicitud.val(2);
+                $(document).find('h4.card-title').html("Crear Solicitud de Reemplazo");
+                $(document).find('h6.card-subtitle').html("Datos de solicitud de reemplazo");
+            }
+        }
+        $(function(){
+            $(document).find('#div_id_fecha_termino').fadeOut();
+            $(document).find('#id_fecha_termino').attr('disabled', true);
+            $(document).find('#div_id_reemplazando_licencia').fadeOut();
+            // $(document).find('#id_reemplazando').attr('disabled', true);
+            setTimeout(function(){
+                tipo_contrato();
+            }, 100);
+
+            $(document).change('#id_tipo_contrato', function() {
+                tipo_contrato();
+            });
+        });
+    </script>
+{% endblock %}
