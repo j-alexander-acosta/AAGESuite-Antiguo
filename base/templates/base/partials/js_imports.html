@@ -2,7 +2,8 @@
 
 {% compress js %}
 
-    <!-- bootstrap -->
+    <!-- bootstrap 
+    {% comment %}
     <script src="{% static 'base/js/jquery-3.2.1.min.js' %}"></script>
     <script src="{% static 'base/js/jquery-ui.js' %}"></script>
     <script src="{% static 'base/js/popper.min.js' %}"></script>
@@ -23,17 +24,20 @@
     <script src="{% static 'base/js/frappe-gantt.js' %}"></script>
     <script src="{% static 'base/js/saveSvgAsPng.js' %}"></script>
     <script src="{% static 'base/js/list.min.js' %}"></script>
-
+    {% endcomment %}
+    -->
 
     <!-- HYPER TEMPLATE -->
     <!-- bundle -->
-    <script src="{% static 'assets/js/vendor.min.js' %}"></script>
-    <script src="{% static 'assets/js/app.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor.js' %}"></script>
+    <script src="{% static 'assets/js/app.js' %}"></script>
 
     <!-- third party js -->
     <script src="{% static 'assets/js/vendor/apexcharts.min.js' %}"></script>
     <script src="{% static 'assets/js/vendor/jquery-jvectormap-1.2.2.min.js' %}"></script>
     <script src="{% static 'assets/js/vendor/jquery-jvectormap-world-mill-en.js' %}"></script>
+
+
     <!-- third party js ends -->
 
     <!-- demo app -->

@@ -1,3 +1,4 @@
+{ % load static %}
 {% extends 'base/base.html' %}
 
 {% block title_page %}
@@ -9,30 +10,30 @@
     <div class="row">
         <div class="col-md-8">
 {% endif %}
-            <div class="row">
+            <div class="row" style="margin-top: 60px;">
                 <div class="col-md-6">
-                    <div class="card text-white card-inverse bgm-gray">
+                    <div class="card card-inverse bgm-gray">
                         <div class="card-header">
-                            <h2 class="text-center"><i class="fa fa-institution"></i> Administración </h2>
+                            <h2 class="text-center page-title"><i class="fa fa-institution"></i> Administración </h2>
                             <p>
                                 <ul>
-                                    <a href="{% url 'rrhh:uniones' %}" style="color: #fff;"><li>Uniones</li></a>
-                                    <a href="{% url 'rrhh:fundaciones' %}" style="color: #fff;"><li>Fundaciones</li></a>
-                                    <a href="{% url 'rrhh:colegios' %}" style="color: #fff;"><li>Colegios</li></a>
+                                    <a class="text-muted font-weight-normal" href="{% url 'rrhh:uniones' %}"><li>Uniones</li></a>
+                                    <a class="text-muted font-weight-normal" href="{% url 'rrhh:fundaciones' %}"><li>Fundaciones</li></a>
+                                    <a class="text-muted font-weight-normal" href="{% url 'rrhh:colegios' %}"><li>Colegios</li></a>
                                 </ul>
                             </p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="card text-white card-inverse bgm-lightblue">
+                    <div class="card card-inverse bgm-lightblue">
                         <div class="card-header">
-                            <h2 class="text-center"><i class="fa fa-institution"></i> Funcionarios </h2>
+                            <h2 class="text-center page-title"><i class="fa fa-institution"></i> Funcionarios </h2>
                             <p>
                                 <ul>
-                                    <a href="{% url 'rrhh:personas' %}" style="color: #fff;"><li>Personas</li></a>
-                                    <a href="{% url 'rrhh:contratos' %}" style="color: #fff;"><li>Personal</li></a>
-                                    <a href="{% url 'rrhh:postulantes' %}" style="color: #fff;"><li>Postulantes</li></a>
+                                    <a href="{% url 'rrhh:personas' %}" class="text-muted font-weight-normal"><li>Personas</li></a>
+                                    <a href="{% url 'rrhh:contratos' %}" class="text-muted font-weight-normal"><li>Personal</li></a>
+                                    <a href="{% url 'rrhh:postulantes' %}" class="text-muted font-weight-normal"><li>Postulantes</li></a>
                                 </ul>
                             </p>
                         </div>
@@ -42,31 +43,31 @@
             <br>
             <div class="row">
                 <div class="col-md-4">
-                    <a href="{% url 'rrhh:solicitudes' %}" style="color: #fff;">
-                        <div class="card text-white card-inverse bgm-red text-center">
+                    <a href="{% url 'rrhh:solicitudes' %}">
+                        <div class="card text-muted font-weight-normal card-inverse bgm-red text-center">
                             <div class="card-header">
                                 <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                                <h6>Solicitudes</h6>
+                                <h5>Solicitudes</h5>
                             </div>
                         </div>
                     </a>
                 </div>
                 <div class="col-md-4">
-                    <a href="{% url 'rrhh:vacaciones' %}" style="color: #fff;">
-                        <div class="card text-white card-inverse bgm-indigo text-center">
+                    <a href="{% url 'rrhh:vacaciones' %}">
+                        <div class="card text-muted font-weight-normal card-inverse bgm-indigo text-center">
                             <div class="card-header">
                                 <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                                <h6>Vacaciones</h6>
+                                <h5>Vacaciones</h5>
                             </div>
                         </div>
                     </a>
                 </div>
                 <div class="col-md-4">
-                    <a href="{% url 'rrhh:licencias' %}" style="color: #fff;">
-                        <div class="card text-white card-inverse bgm-purple text-center">
+                    <a href="{% url 'rrhh:licencias' %}">
+                        <div class="card text-muted font-weight-normal card-inverse bgm-purple text-center">
                             <div class="card-header">
                                 <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                                <h6>Licencias</h6>
+                                <h5>Licencias</h5>
                             </div>
                         </div>
                     </a>
@@ -75,21 +76,21 @@
             <br>
             <div class="row">
                 <div class="col-md-4">
-                    <a href="{% url 'rrhh:documentos' %}" style="color: #fff;">
-                        <div class="card text-white card-inverse bgm-teal text-center">
+                    <a href="{% url 'rrhh:documentos' %}">
+                        <div class="card text-muted font-weight-normal card-inverse bgm-teal text-center">
                             <div class="card-header">
                                 <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                                <h6>Documentación Funcionarios</h6>
+                                <h5>Documentación Funcionarios</h5>
                             </div>
                         </div>
                     </a>
                 </div>
                 <div class="col-md-4">
-                    <a href="{% url 'rrhh:entrevistas' %}" style="color: #fff;">
-                        <div class="card text-white card-inverse bgm-lightgreen text-center">
+                    <a href="{% url 'rrhh:entrevistas' %}">
+                        <div class="card text-muted font-weight-normal card-inverse bgm-lightgreen text-center">
                             <div class="card-header">
                                 <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                                <h6>Entrevistas</h6>
+                                <h5>Entrevistas</h5>
                             </div>
                         </div>
                     </a>
