@@ -11,28 +11,28 @@
 {% endif %}
             <div class="row" style="margin-top: 80px;">
                 <div class="col-md-6">
-                    <div class="card border-primary border">
+                    <div class="card bg-secondary text-white">
                         <div class="card-body">
-                            <h2 class="card-title text-primary text-center"></i> Administración </h2>
+                            <h2 class="card-title text-center"></i> Administración </h2>
                             <p>
                                 <ul>
-                                    <a href="{% url 'rrhh:uniones' %}" class="text-muted font-weight-normal"><li>Uniones</li></a>
-                                    <a href="{% url 'rrhh:fundaciones' %}" class="text-muted font-weight-normal"><li>Fundaciones</li></a>
-                                    <a href="{% url 'rrhh:colegios' %}" class="text-muted font-weight-normal"><li>Colegios</li></a>
+                                    <a href="{% url 'rrhh:uniones' %}" class="card-title text-white"><li>Uniones</li></a>
+                                    <a href="{% url 'rrhh:fundaciones' %}" class="card-title text-white"><li>Fundaciones</li></a>
+                                    <a href="{% url 'rrhh:colegios' %}" class="card-title text-white"><li>Colegios</li></a>
                                 </ul>
                             </p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="card border-primary border">
+                    <div class="card text-white bg-primary">
                         <div class="card-body">
-                            <h2 class="card-title text-primary text-center"></i> Funcionarios </h2>
+                            <h2 class="card-title text-center"></i> Funcionarios </h2>
                             <p>
                                 <ul>
-                                    <a href="{% url 'rrhh:personas' %}" class="text-muted font-weight-normal"><li>Personas</li></a>
-                                    <a href="{% url 'rrhh:contratos' %}" class="text-muted font-weight-normal"><li>Personal</li></a>
-                                    <a href="{% url 'rrhh:postulantes' %}" class="text-muted font-weight-normal"><li>Postulantes</li></a>
+                                    <a href="{% url 'rrhh:personas' %}" class="card-title text-white"><li>Personas</li></a>
+                                    <a href="{% url 'rrhh:contratos' %}" class="card-title text-white"><li>Personal</li></a>
+                                    <a href="{% url 'rrhh:postulantes' %}" class="card-title text-white"><li>Postulantes</li></a>
                                 </ul>
                             </p>
                         </div>
@@ -43,30 +43,30 @@
             <div class="row">
                 <div class="col-md-4">
                     <a href="{% url 'rrhh:solicitudes' %}">
-                        <div class="card border-primary border">
+                        <div class="card text-white bg-info text-center">
                             <div class="card-body">
-                                <h2><i class="text-muted font-weight-normal text-center"></i> {{ total_unidades_directivas }} </h2>
-                                <h6>Solicitudes</h6>
+                                <h2><i class="text-title text-white"></i> {{ total_unidades_directivas }} </h2>
+                                <h4>Solicitudes</h4>
                             </div>
                         </div>
                     </a>
                 </div>
                 <div class="col-md-4">
                     <a href="{% url 'rrhh:vacaciones' %}">
-                        <div class="card border-primary border">
+                        <div class="card text-white bg-warning text-center">
                             <div class="card-body">
-                                <h2><i class="text-muted font-weight-normal"></i> {{ total_unidades_directivas }} </h2>
-                                <h6>Vacaciones</h6>
+                                <h2><i class="text-title text-white"></i> {{ total_unidades_directivas }} </h2>
+                                <h4>Vacaciones</h4>
                             </div>
                         </div>
                     </a>
                 </div>
                 <div class="col-md-4">
                     <a href="{% url 'rrhh:licencias' %}">
-                        <div class="card border-primary border">
+                        <div class="card text-white bg-success text-center">
                             <div class="card-body">
-                                <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                                <h6>Licencias</h6>
+                                <h2><i class="text-title text-white"></i> {{ total_unidades_directivas }} </h2>
+                                <h4>Licencias</h4>
                             </div>
                         </div>
                     </a>
@@ -76,20 +76,20 @@
             <div class="row">
                 <div class="col-md-4">
                     <a href="{% url 'rrhh:documentos' %}">
-                        <div class="card border-primary border">
+                        <div class="card text-white bg-danger text-center">
                             <div class="card-body">
-                                <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                                <h6>Documentación Funcionarios</h6>
+                                <h2><i class="text-title text-white"></i> {{ total_unidades_directivas }} </h2>
+                                <h4>Documentación Funcionarios</h4>
                             </div>
                         </div>
                     </a>
                 </div>
                 <div class="col-md-4">
                     <a href="{% url 'rrhh:entrevistas' %}">
-                        <div class="card border-primary border">
+                        <div class="card text-white bg-info text-center">
                             <div class="card-body">
                                 <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                                <h6>Entrevistas</h6>
+                                <h4>Entrevistas</h4>
                             </div>
                         </div>
                     </a>
