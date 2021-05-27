@@ -11,28 +11,28 @@
 {% endif %}
             <div class="row" style="margin-top: 80px;">
                 <div class="col-md-6">
-                    <div class="card bg-secondary text-white">
+                    <div class="card border-primary border">
                         <div class="card-body">
-                            <h2 class="card-title text-center"><i class="fa fa-institution"></i> Administración </h2>
+                            <h2 class="card-title text-primary text-center"></i> Administración </h2>
                             <p>
                                 <ul>
-                                    <a href="{% url 'rrhh:uniones' %}" style="color: #fff;"><li>Uniones</li></a>
-                                    <a href="{% url 'rrhh:fundaciones' %}" style="color: #fff;"><li>Fundaciones</li></a>
-                                    <a href="{% url 'rrhh:colegios' %}" style="color: #fff;"><li>Colegios</li></a>
+                                    <a href="{% url 'rrhh:uniones' %}" class="text-muted font-weight-normal"><li>Uniones</li></a>
+                                    <a href="{% url 'rrhh:fundaciones' %}" class="text-muted font-weight-normal"><li>Fundaciones</li></a>
+                                    <a href="{% url 'rrhh:colegios' %}" class="text-muted font-weight-normal"><li>Colegios</li></a>
                                 </ul>
                             </p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="card text-white bg-primary">
+                    <div class="card border-primary border">
                         <div class="card-body">
-                            <h2 class="card-title text-center"><i class="fa fa-institution"></i> Funcionarios </h2>
+                            <h2 class="card-title text-primary text-center"></i> Funcionarios </h2>
                             <p>
                                 <ul>
-                                    <a href="{% url 'rrhh:personas' %}" style="color: #fff;"><li>Personas</li></a>
-                                    <a href="{% url 'rrhh:contratos' %}" style="color: #fff;"><li>Personal</li></a>
-                                    <a href="{% url 'rrhh:postulantes' %}" style="color: #fff;"><li>Postulantes</li></a>
+                                    <a href="{% url 'rrhh:personas' %}" class="text-muted font-weight-normal"><li>Personas</li></a>
+                                    <a href="{% url 'rrhh:contratos' %}" class="text-muted font-weight-normal"><li>Personal</li></a>
+                                    <a href="{% url 'rrhh:postulantes' %}" class="text-muted font-weight-normal"><li>Postulantes</li></a>
                                 </ul>
                             </p>
                         </div>
@@ -42,28 +42,28 @@
             <br>
             <div class="row">
                 <div class="col-md-4">
-                    <a href="{% url 'rrhh:solicitudes' %}" style="color: #fff;">
-                        <div class="card title bg-success text-center">
+                    <a href="{% url 'rrhh:solicitudes' %}">
+                        <div class="card border-primary border">
                             <div class="card-body">
-                                <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
+                                <h2><i class="text-muted font-weight-normal text-center"></i> {{ total_unidades_directivas }} </h2>
                                 <h6>Solicitudes</h6>
                             </div>
                         </div>
                     </a>
                 </div>
                 <div class="col-md-4">
-                    <a href="{% url 'rrhh:vacaciones' %}" style="color: #fff;">
-                        <div class="card text-white bg-info text-center">
+                    <a href="{% url 'rrhh:vacaciones' %}">
+                        <div class="card border-primary border">
                             <div class="card-body">
-                                <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
+                                <h2><i class="text-muted font-weight-normal"></i> {{ total_unidades_directivas }} </h2>
                                 <h6>Vacaciones</h6>
                             </div>
                         </div>
                     </a>
                 </div>
                 <div class="col-md-4">
-                    <a href="{% url 'rrhh:licencias' %}" style="color: #fff;">
-                        <div class="card title bg-success text-center">
+                    <a href="{% url 'rrhh:licencias' %}">
+                        <div class="card border-primary border">
                             <div class="card-body">
                                 <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
                                 <h6>Licencias</h6>
@@ -75,8 +75,8 @@
             <br>
             <div class="row">
                 <div class="col-md-4">
-                    <a href="{% url 'rrhh:documentos' %}" style="color: #fff;">
-                        <div class="card text-white bg-warning text-center">
+                    <a href="{% url 'rrhh:documentos' %}">
+                        <div class="card border-primary border">
                             <div class="card-body">
                                 <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
                                 <h6>Documentación Funcionarios</h6>
@@ -85,8 +85,8 @@
                     </a>
                 </div>
                 <div class="col-md-4">
-                    <a href="{% url 'rrhh:entrevistas' %}" style="color: #fff;">
-                        <div class="card text-white bg-danger text-center">
+                    <a href="{% url 'rrhh:entrevistas' %}">
+                        <div class="card border-primary border">
                             <div class="card-body">
                                 <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
                                 <h6>Entrevistas</h6>
@@ -170,7 +170,7 @@
                     {% endif %}
                     {% if solicitudes_pendientes %}
                         <div class="card bg-danger">
-                            <a class="text-white text-left collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                              <a class="text-white text-left collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                                 <div class="card-header" id="headingThree">
                                     Solicitudes que requieren atención
                                     <span class="badge badge-warning pull-right">{{ solicitudes_pendientes|length }}</span>
