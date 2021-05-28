@@ -4,8 +4,8 @@
 
 
 {% block content %}
-<div class="card">
-    <div class="card-header">
+<div class="card" style="margin-top: 80px;">
+    <div class="card-header page-title">
         <h4 class="card-title">Editar Solicitud de {{ tipo }}
         </h4>
         <h6 class="card-subtitle mb-2 text-muted">Datos de Solicitud de {{ tipo }} {{ funcionario }}</h6>
@@ -17,9 +17,9 @@
             {% crispy form %}
             <div class="form-group">
                 <div class="col-sm-10 col-sm-offset-2">
-                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <button type="submit" class="btn btn-outline-success">Guardar</button>
                     <a href="{{ request.META.HTTP_REFERER }}"
-                    role="button" class="btn btn-default">
+                    role="button" class="btn btn-outline-info">
                         Volver
                     </a>
                 </div>

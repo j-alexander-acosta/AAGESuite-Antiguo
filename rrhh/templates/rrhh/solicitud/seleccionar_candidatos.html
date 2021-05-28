@@ -7,10 +7,10 @@
 
 {% block content %}
 
-<div class="card">
+<div class="card" style="margin-top: 80px;">
     <div class="card-header">
         <input type="hidden" id="id_solicitud" value="{{ id_solicitud }}"></input>
-        <h4 class="card-title"><strong>Postulantes</strong></h4>
+        <h4 class="card-title page-title"><strong>Postulantes</strong></h4>
         <h6 class="card-subtitle mb-2 text-muted">Seleccione los candidatos para la solicitud</h6>
     </div>
     <div class="card-body">
@@ -41,8 +41,8 @@
         {% endfor %}
     </div>
     <div class="card-footer">
-        <button class="btn btn-success" type="button" id="guardar_candidatos" name="guardar_candidatos">Enviar Candidatos</button>
-        <a href="{{ request.META.HTTP_REFERER }}" role="button" class="btn btn-default">Volver</a>
+        <button class="btn btn-outline-success" type="button" id="guardar_candidatos" name="guardar_candidatos">Enviar Candidatos</button>
+        <a href="{{ request.META.HTTP_REFERER }}" role="button" class="btn btn-outline-info">Volver</a>
     </div>
  </div>
 

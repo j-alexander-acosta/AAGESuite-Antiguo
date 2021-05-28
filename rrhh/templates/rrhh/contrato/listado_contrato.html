@@ -7,11 +7,11 @@
 {% endblock %}
 
 {% block content %}
-<div class="card">
+<div class="card" style="margin-top: 80px;">
     <div class="card-header">
-        <h4 class="card-title">Personal
-            <a class="btn btn-sm btn-primary pull-right" href="{% url 'rrhh:contrato__nuevo'%}" role="button">
-        	    <span> Crear contrato <i class="fa fa-plus"></i></span>
+        <h4 class="card-title page-title">Personal
+            <a class="btn btn-outline-primary pull-right" href="{% url 'rrhh:contrato__nuevo'%}" role="button">
+        	    <span> Crear contrato <i class="uil-plus"></i></span>
             </a>
         </h4>
         <h6 class="card-subtitle mb-2 text-muted">Tabla para configuración de Contratos</h6>
@@ -28,11 +28,11 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th><i class="fa fa-user"></i> Persona </th>
-                    <th><i class="fa fa-building"></i> Colegio </th>
-                    <th><i class="fa fa-list"></i> Categoria </th>
-                    <th><i class="fa fa-check"></i> Vigente </th>
-                    <th><i class="fa fa-clock"></i> Opciones </th>
+                    <th><i class="uil-user"></i> Persona </th>
+                    <th><i class="uil-building "></i> Colegio </th>
+                    <th><i class="uil-list-ul"></i> Categoria </th>
+                    <th><i class="uil-check"></i> Vigente </th>
+                    <th><i class="uil-clock"></i> Opciones </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -73,14 +73,14 @@
                         <td>
                             {% if c.vigente %}
                                 <div class="btn-group">
-                                    <a class="btn btn-item-group btn-sm btn-primary" href="{% url 'rrhh:contrato__editar' c.pk %}" data-toggle="tooltip" data-placement="top" title="Editar contrato">
-                                        <i class="fa fa-edit"></i></a>
-                                    <a class="btn btn-item-group btn-sm btn-info" href="{% url 'rrhh:persona__editar' c.funcionario.persona.pk %}" data-toggle="tooltip" data-placement="top" title="Editar persona">
-                                        <i class="fa fa-edit"></i></a>
-                                    <a class="btn btn-item-group btn-sm btn-danger" href="{% url 'rrhh:finiquito__nuevo' c.pk %}" data-toggle="tooltip" data-placement="top" title="Dar de baja">
-                                        <i class="fa fa-user-times"></i></a>
-                                    <a class="btn btn-item-group btn-sm btn-warning" href="{% url 'rrhh:funcionario__trasladar' c.pk %}" data-toggle="tooltip" data-placement="top" title="Trasladar">
-                                        <i class="fa fa-send"></i></a>
+                                    <a class="btn btn-item-group btn-outline-primary" href="{% url 'rrhh:contrato__editar' c.pk %}" data-toggle="tooltip" data-placement="top" title="Editar contrato">
+                                        <i class="uil-edit"></i></a>
+                                    <a class="btn btn-item-group btn-outline-info" href="{% url 'rrhh:persona__editar' c.funcionario.persona.pk %}" data-toggle="tooltip" data-placement="top" title="Editar persona">
+                                        <i class="uil-edit"></i></a>
+                                    <a class="btn btn-item-group btn-outline-danger" href="{% url 'rrhh:finiquito__nuevo' c.pk %}" data-toggle="tooltip" data-placement="top" title="Dar de baja">
+                                        <i class="uil-user-times"></i></a>
+                                    <a class="btn btn-item-group btn-outline-warning" href="{% url 'rrhh:funcionario__trasladar' c.pk %}" data-toggle="tooltip" data-placement="top" title="Trasladar">
+                                        <i class="mdi-send"></i></a>
                                 </div>
                             {% endif %}
                         </td>

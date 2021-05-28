@@ -7,8 +7,8 @@
 
 {% block content %}
 
-<div class="card">
-    <div class="card-header">
+<div class="card" style="margin-top: 80px;">
+    <div class="card-header page-title">
         <h4 class="card-title">
             <strong>Detalle de Solicitud de {{ object.get_tipo_display }}<small> <span class="badge badge-pill
                 {% if object.estado_id == 2 or object.estado_id == 4 or object.estado_id == 5 or object.estado_id == 6 %}
@@ -21,14 +21,14 @@
             </strong>
             {% block buttons %}
                 <div class="btn-group pull-right">
-                    <a href="{% url 'rrhh:solicitudes' %}" type="button" class="btn btn-sm btn-dark">
-                        <i class="fa fa-arrow-left"></i>
+                    <a href="{% url 'rrhh:solicitudes' %}" type="button" class="btn btn-outline-dark">
+                        <i class="uil-arrow-left"></i>
                     </a>
-                    <a href="{% url 'rrhh:solicitud__editar' object.pk %}" type="button" class="btn btn-sm btn-primary">
-                        <i class="fa fa-edit"></i>
+                    <a href="{% url 'rrhh:solicitud__editar' object.pk %}" type="button" class="btn btn-outline-primary">
+                        <i class="uil-edit"></i>
                     </a>
-                    <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_solicitud_{{object.pk}}">
-                        <i class="fa fa-trash"></i>
+                    <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_solicitud_{{object.pk}}">
+                        <i class="uil-trash-alt"></i>
                     </a>
                 </div>
             {% endblock %}
@@ -58,17 +58,17 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Cambiar estado</a>
                 <div class="dropdown-menu">
-                    {% if object.estado_id == 2 and object.tipo < 3 %}<a class="dropdown-item text-success" id="ces" name="1" href="#"><i class="fa fa-check"></i> Aceptar</a> {% endif %}
+                    {% if object.estado_id == 2 and object.tipo < 3 %}<a class="dropdown-item text-success" id="ces" name="1" href="#"><i class="uil-check"></i> Aceptar</a> {% endif %}
                     <a class="dropdown-item text-warning" id="ces" name="2" href="#"><i class="fa fa-refresh"></i> Pendiente</a>
-                    {% if not object.estado_id == 3 %}<a class="dropdown-item text-danger" id="ces" name="3" href="#"><i class="fa fa-close"></i> Rechazar</a>{% endif %}
-                    {% if object.tipo < 3 %}<a class="dropdown-item text-warning" id="ces" name="4" href="#"><i class="fa fa-stop"></i> En espera de candidatos</a>{% endif %}
-                    {% if object.estado_id == 5 or object.tipo >= 3 %}<a class="dropdown-item text-warning" id="ces" name="6" href="#"><i class="fa fa-check"></i> Aprobar, lista para contratar</a>{% endif %}
+                    {% if not object.estado_id == 3 %}<a class="dropdown-item text-danger" id="ces" name="3" href="#"><i class="uil-times-circle"></i> Rechazar</a>{% endif %}
+                    {% if object.tipo < 3 %}<a class="dropdown-item text-warning" id="ces" name="4" href="#"><i class="mdi-stop"></i> En espera de candidatos</a>{% endif %}
+                    {% if object.estado_id == 5 or object.tipo >= 3 %}<a class="dropdown-item text-warning" id="ces" name="6" href="#"><i class="uil-check"></i> Aprobar, lista para contratar</a>{% endif %}
                     {% comment %}data-toggle="modal" data-target="#estado_solicitud_{{object.pk}}{% endcomment %}
                 </div>
             </li>
             {% if object.tipo >= 3 and object.estado_id == 6 %}
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link btn-primary" href="{% url 'rrhh:contrato_colegio__crear' object.contrato.funcionario.id object.id %}" role="tab">Contratar</a>
+                    <a class="nav-link btn btn-outline-primary" href="{% url 'rrhh:contrato_colegio__crear' object.contrato.funcionario.id object.id %}" role="tab">Contratar</a>
                 </li>
             {% endif %}
         </ul>
@@ -152,11 +152,11 @@
                                     <td></td>
                                     {% if object.estado_id == 6 %}
                                         {% if p.funcionario %}
-                                            <td><a role="button" class="btn btn-sm btn-info" href="{% url 'rrhh:contrato_colegio__crear' p.funcionario.id object.id %}">
-                                                <i class="fa fa-plus"></i> Contratar
+                                            <td><a role="button" class="btn btn-outline-info" href="{% url 'rrhh:contrato_colegio__crear' p.funcionario.id object.id %}">
+                                                <i class="uil-plus"></i> Contratar
                                             </a></td>
                                         {% else %}
-                                            <td><a type="button" class="btn btn-sm btn-info" href="{% url 'rrhh:funcionario__nuevo' p.id %}"><i class="fa fa-plus"></i> Crear Funcionario</a></td>
+                                            <td><a type="button" class="btn btn-outline-info" href="{% url 'rrhh:funcionario__nuevo' p.id %}"><i class="uil-plus"></i> Crear Funcionario</a></td>
                                         {% endif %}
                                     {% endif %}
                                 </tr>
@@ -201,8 +201,8 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar la Solicitud de contratación</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title alert alert-danger" role="alert"><strong>¡Alerta!</strong> Está a punto de eliminar la Solicitud de contratación</h5>
+                <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -211,8 +211,8 @@
                 <p class="text-muted">Recuerde que eliminará todos los registros asociados a la Solicitud de contratación.</p>
             </div>
             <div class="modal-footer">
-                <a role="button" class="btn btn-danger" href="{% url 'rrhh:solicitud__eliminar' object.pk %}">Eliminar</a>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <a role="button" class="btn btn-outline-danger" href="{% url 'rrhh:solicitud__eliminar' object.pk %}">Eliminar</a>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
@@ -223,7 +223,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title"></h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -233,8 +233,8 @@
                     {% crispy form %}
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Guardar</a>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-outline-success">Guardar</a>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
             </form>
         </div>

@@ -7,7 +7,7 @@
 
 {% block content %}
 
-<div class="card">
+<div class="card" style="margin-top: 80px;">
     <div class="card-header
         {% if object.vigente %}
             {% if object.dias_termino_contrato <= 120 and object.categoria == 2 %}
@@ -38,17 +38,17 @@
       </h4>
         {% block buttons %}
             <div class="btn-group pull-right">
-                <a href="{% url 'rrhh:contratos' %}" type="button" class="btn btn-sm btn-dark">
-                    <i class="fa fa-arrow-left"></i> Volver
+                <a href="{% url 'rrhh:contratos' %}" type="button" class="btn btn-outline-dark">
+                    <i class="uil-arrow-left"></i> Volver
                 </a>
                 {% if not object.solicitud.set.all %}
                     {% if object.dias_termino_contrato <= 120 and object.categoria == 2 %}
-                        <a href="{% url 'rrhh:contrato__renovar' object.pk %}" type="button" class="btn btn-sm btn-success">
-                            <i class="fa fa-star"></i> Renovar Contrato
+                        <a href="{% url 'rrhh:contrato__renovar' object.pk %}" type="button" class="btn btn-outline-success">
+                            <i class="mdi-star"></i> Renovar Contrato
                         </a>
                     {% elif object.dias_termino_contrato <= 60 %}
-                        <a href="{% url 'rrhh:contrato__renovar' object.pk %}" type="button" class="btn btn-sm btn-success">
-                            <i class="fa fa-star"></i> Renovar Contrato
+                        <a href="{% url 'rrhh:contrato__renovar' object.pk %}" type="button" class="btn btn-outline-success">
+                            <i class="mdi-star"></i> Renovar Contrato
                         </a>
                     {% endif %}
                 {% endif %}
@@ -80,9 +80,9 @@
             {% if object.estado_id != 4 %}
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Cambiar estado"></a>
                 <div class="dropdown-menu">
-                    {% if object.estado_id == 2 %}<a class="dropdown-item text-warning" id="cec" name="3" href="#"><i class="fa fa-eye"></i> En revisión</a> {% endif %}
-                    {% if object.estado_id == 3 or object.estado_id == 1 %}<a class="dropdown-item text-warning" id="cec" name="2" href="#"><i class="fa fa-check-square-o"></i> Listo para firmar</a> {% endif %}
-                    {% if object.estado_id == 2 %}<a class="dropdown-item text-success" id="cec" name="4" href="#"><i class="fa fa-check"></i> Cargar contrato firmado</a> {% endif %}
+                    {% if object.estado_id == 2 %}<a class="dropdown-item text-warning" id="cec" name="3" href="#"><i class="uil-eye"></i> En revisión</a> {% endif %}
+                    {% if object.estado_id == 3 or object.estado_id == 1 %}<a class="dropdown-item text-warning" id="cec" name="2" href="#"><i class="uil-check-square"></i> Listo para firmar</a> {% endif %}
+                    {% if object.estado_id == 2 %}<a class="dropdown-item text-success" id="cec" name="4" href="#"><i class="uil-check"></i> Cargar contrato firmado</a> {% endif %}
                 </div>
             {% endif %}
             <li class="nav-item" role="documento">
@@ -110,11 +110,11 @@
                     <div class="pmbb-body">
                         Información del contrato y finiquito, en caso de existencia, del trabajador
                         <div class="btn-group pull-right" role="group">
-                            <a href="{% url 'rrhh:contrato__editar' object.pk %}" type="button" class="btn btn-sm btn-primary">
-                                <i class="fa fa-edit"></i> Editar
+                            <a href="{% url 'rrhh:contrato__editar' object.pk %}" type="button" class="btn btn-outline-primary">
+                                <i class="uil-edit"></i> Editar
                             </a>
-                            <button name="eliminar_contrato" type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#eliminar_contrato_{{object.pk}}" style="cursor: pointer">
-                                <i class="fa fa-trash"></i> Eliminar
+                            <button name="eliminar_contrato" type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#eliminar_contrato_{{object.pk}}" style="cursor: pointer">
+                                <i class="uil-trash-alt"></i> Eliminar
                             </button>
                         </div>
                         </br>
@@ -212,11 +212,11 @@
                                             <td>{{ object.finiquitocolegio.descripcion }}</td>
                                             <td>
                                                 {% if object.finiquitocolegio.archivo %}
-                                                    <a class="btn btn-info" href="{{ MEDIA_URL }}{{ object.finiquitocolegio.archivo.url }}" target="_blank">
-                                                        <i class="fa fa-download"></i> Descargar</a>
+                                                    <a class="btn btn-outline-info" href="{{ MEDIA_URL }}{{ object.finiquitocolegio.archivo.url }}" target="_blank">
+                                                        <i class="uil-download-alt"></i> Descargar</a>
                                                 {% endif %}
                                                 <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#eliminar_finiquito_{{object.finiquitocolegio.pk}}">
-                                                    <i class="fa fa-trash"></i> Eliminar</a>
+                                                    <i class="uil-trash-alt"></i> Eliminar</a>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -225,8 +225,8 @@
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar El Finiquito de {{ object }}</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <h5 class="modal-title alert alert-warning bg-white text-warning" role="alert"><strong>¡Alerta!</strong> Está a punto de eliminar El Finiquito de {{ object }}</h5>
+                                                <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
@@ -235,7 +235,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <a role="button" class="btn btn-danger" href="{% url 'rrhh:finiquito__eliminar' object.finiquitocolegio.pk %}">Eliminar</a>
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                                             </div>
                                         </div>
                                     </div>
@@ -276,8 +276,8 @@
                 <div class="pmb-block">
                     <div class="pmbb-body">
                         <p>Listado de Vacaciones del funcionario, ordenado del mas reciente al mas antiguo.
-                            <button name="agregar_vacacion" type="button" class="btn btn-sm btn-primary pull-right" data-toggle="modal" data-target="#crear_vacacion">
-                                <span><i class="fa fa-plus"></i> Agregar vacación</span>
+                            <button name="agregar_vacacion" type="button" class="btn btn-outline-primary pull-right" data-toggle="modal" data-target="#crear_vacacion">
+                                <span><i class="uil-plus"></i> Agregar vacación</span>
                             </button>
                         </p>
                         <div class="pmbb-view">
@@ -328,10 +328,10 @@
                                         <td>{{ object.documento }}</td>
                                         <td>
                                             <div class="btn-group">
-                                                <button type="button" class="btn btn-info btn-sm" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="fa fa-file-pdf-o"></i></button>
-                                                {% if object.estado_id == 4 %}<button type="button" id="cec" class="btn btn-success btn-sm" name="4" title="Actualizar documento" data-toggle="tooltip" data-placement="top"><i class="fa fa-upload"></i></button> {% endif %}
+                                                <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi-file-pdf"></i></button>
+                                                {% if object.estado_id == 4 %}<button type="button" id="cec" class="btn btn-outline-success" name="4" title="Actualizar documento" data-toggle="tooltip" data-placement="top"><i class="uil-upload-alt"></i></button> {% endif %}
                                                 {% if object.documento %}
-                                                    <a role="button" class="btn btn-primary btn-sm" href="{{ media_url }}{{ object.documento }}" name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="right" download><i class="fa fa-download"></i></a>
+                                                    <a role="button" class="btn btn-outline-primary" href="{{ media_url }}{{ object.documento }}" name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="right" download><i class="uil-download-alt"></i></a>
                                                 {% endif %}
                                             </div>
                                         </td>
@@ -344,9 +344,9 @@
                                                     <td>{{ dp.documento }}</td>
                                                     <td>
                                                         <div class="btn-group">
-                                                            <button type="button" class="btn btn-info btn-sm" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="fa fa-file-pdf-o"></i></button>
-                                                            <button type="button" class="btn btn-success btn-sm" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="fa fa-upload"></i></button>
-                                                            <a role="button" class="btn btn-primary btn-sm" href="{{ media_url }}{{ dp.documento }}" download name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="right"><i class="fa fa-download"></i></a>
+                                                            <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi-file-pdf"></i></button>
+                                                            <button type="button" class="btn btn-outline-success" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>
+                                                            <a role="button" class="btn btn-outline-primary" href="{{ media_url }}{{ dp.documento }}" download name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="right"><i class="mdi-file-pdf"></i></a>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -356,9 +356,9 @@
                                                     <td>No cargado</td>
                                                     <td>
                                                         <div class="btn-group">
-                                                            <button type="button" class="btn btn-info btn-sm" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="fa fa-file-pdf-o"></i></button>
-                                                            <button type="button" class="btn btn-success btn-sm" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="fa fa-upload"></i></button>
-                                                            <button type="button" class="btn btn-primary btn-sm disabled" name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="down"><i class="fa fa-download"></i></button>
+                                                            <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi-file-pdf"></i></button>
+                                                            <button type="button" class="btn btn-outline-success" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>
+                                                            <button type="button" class="btn btn-outline-primary disabled" name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="down"><i class="mdi-file-pdf"></i></button>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -369,9 +369,9 @@
                                                 <td>No cargado</td>
                                                 <td>
                                                     <div class="btn-group">
-                                                        <button type="button" class="btn btn-info btn-sm" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="fa fa-file-pdf-o"></i></button>
-                                                        <button type="button" class="btn btn-success btn-sm" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="fa fa-upload"></i></button>
-                                                        <button type="button" class="btn btn-primary btn-sm disabled" name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="down"><i class="fa fa-download"></i></button>
+                                                        <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi-file-pdf"></i></button>
+                                                        <button type="button" class="btn btn-outline-success" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>
+                                                        <button type="button" class="btn btn-outline-primary disabled" name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="down"><i class="mdi-file-pdf"></i></button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -388,8 +388,8 @@
                 <div class="pmb-block">
                     <div class="pmbb-body">
                         <p>Listado de los Permisos del funcionario, ordenado del mas reciente al mas antiguo.
-                            <button name="agregar_permiso" type="button" class="btn btn-sm btn-primary pull-right" data-toggle="modal" data-target="#crear_permiso">
-                                <i class="fa fa-plus"></i> Agregar Permiso
+                            <button name="agregar_permiso" type="button" class="btn btn-outline-primary pull-right" data-toggle="modal" data-target="#crear_permiso">
+                                <i class="uil-plus"></i> Agregar Permiso
                             </button>
                         </p>
                         <div class="pmbb-view">
@@ -432,8 +432,8 @@
                 <div class="pmb-block">
                     <div class="pmbb-body">
                         <p>Listado de Licencias del funcionario, ordenado del mas reciente al mas antiguo.
-                            <button name="agregar_licencia" type="button" class="btn btn-sm btn-primary pull-right" data-toggle="modal" data-target="#crear_licencia">
-                                <span><i class="fa fa-plus"></i> Agregar licencia</span>
+                            <button name="agregar_licencia" type="button" class="btn btn-outline-primary pull-right" data-toggle="modal" data-target="#crear_licencia">
+                                <span><i class="uil-plus"></i> Agregar licencia</span>
                             </button>
                         </p>
                         <div class="pmbb-view">
@@ -512,7 +512,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar el registro de Contraton</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -521,8 +521,8 @@
                 <p class="text-muted">Recuerde que eliminará todos los registros asociados a este contrato.</p>
             </div>
             <div class="modal-footer">
-                <a role="button" class="btn btn-danger" href="{% url 'rrhh:contrato__eliminar' object.pk %}">Eliminar</a>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <a role="button" class="btn btn-outline-danger" href="{% url 'rrhh:contrato__eliminar' object.pk %}">Eliminar</a>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
@@ -544,8 +544,8 @@
                     {% crispy pf_form %}
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Guardar</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-outline-primary">Guardar</button>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
             </form>
         </div>
@@ -574,8 +574,8 @@
                     {% crispy lf_form %}
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Guardar</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-outline-primary">Guardar</button>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
             </form>
         </div>
@@ -588,7 +588,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="crear_vacacionLabel">Agregar vacación a {{ object }} </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -598,8 +598,8 @@
                     {% crispy vf_form %}
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Guardar</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-outline-primary">Guardar</button>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
             </form>
         </div>
@@ -630,8 +630,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Guardar</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-outline-primary">Guardar</button>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
             </form>
         </div>
@@ -653,8 +653,8 @@
                     {% crispy ec_form %}
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Guardar</a>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-outline-success">Guardar</a>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
             </form>
         </div>
@@ -665,8 +665,8 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Cargar documento de funcionario</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h4 class="modal-title page-title">Cargar documento de funcionario</h4>
+                <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -681,8 +681,8 @@
                     </div> -->
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Guardar</a>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-outline-success">Guardar</a>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
             </form>
         </div>

@@ -7,19 +7,19 @@
 
 {% block content %}
 
-<div class="card">
+<div class="card" style="margin-top: 80px;">
     <div class="card-header">
-      <h4 class="card-title"><strong>Detalle de Colegio</strong>
+      <h4 class="card-title page-title"><strong>Detalle de Colegio</strong>
           {% block buttons %}
               <div class="btn-group pull-right">
-                  <a href="{% url 'rrhh:colegios' %}" type="button" class="btn btn-sm btn-dark">
-                      <i class="fa fa-arrow-left"></i>
+                  <a href="{% url 'rrhh:colegios' %}" type="button" class="btn btn-outline-dark">
+                      <i class="uil-arrow-left"></i>
                   </a>
-                  <a href="{% url 'rrhh:colegio__editar' object.pk %}" type="button" class="btn btn-sm btn-primary">
-                      <i class="fa fa-edit"></i>
+                  <a href="{% url 'rrhh:colegio__editar' object.pk %}" type="button" class="btn btn-outline-primary">
+                      <i class="uil-edit"></i>
                   </a>
-                  <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_colegio_{{object.pk}}">
-                      <i class="fa fa-trash"></i>
+                  <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_colegio_{{object.pk}}">
+                      <i class="uil-trash-alt"></i>
                   </a>
               </div>
           {% endblock %}
@@ -47,8 +47,8 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar la Colegio</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title alert alert-danger" role="alert"><strong>¡Alerta!</strong> Está a punto de eliminar la Colegio</h5>
+                <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -57,8 +57,8 @@
                 <p class="text-muted">Recuerde que eliminará todos los registros asociados a la Colegio.</p>
             </div>
             <div class="modal-footer">
-                <a role="button" class="btn btn-danger" href="{% url 'rrhh:colegio__eliminar' object.pk %}">Eliminar</a>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <a role="button" class="btn btn-outline-danger" href="{% url 'rrhh:colegio__eliminar' object.pk %}">Eliminar</a>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
