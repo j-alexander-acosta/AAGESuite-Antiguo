@@ -11,7 +11,7 @@
 {% endif %}
             <div class="row" style="margin-top: 80px;">
                 <div class="col-md-6">
-                    <div class="card bg-secondary text-white">
+                    <div class="ccard bg-secondary text-white">
                         <div class="card-body">
                             <h2 class="card-title text-center"></i> Administración </h2>
                             <p>
@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="card text-white bg-primary">
+                    <div class="card bg-secondary text-white">
                         <div class="card-body">
                             <h2 class="card-title text-center"></i> Funcionarios </h2>
                             <p>
@@ -53,7 +53,7 @@
                 </div>
                 <div class="col-md-4">
                     <a href="{% url 'rrhh:vacaciones' %}">
-                        <div class="card text-white bg-warning text-center">
+                        <div class="card text-white bg-info text-center">
                             <div class="card-body">
                                 <h2><i class="text-title text-white"></i> {{ total_unidades_directivas }} </h2>
                                 <h4>Vacaciones</h4>
@@ -63,7 +63,7 @@
                 </div>
                 <div class="col-md-4">
                     <a href="{% url 'rrhh:licencias' %}">
-                        <div class="card text-white bg-success text-center">
+                        <div class="card text-white bg-info text-center">
                             <div class="card-body">
                                 <h2><i class="text-title text-white"></i> {{ total_unidades_directivas }} </h2>
                                 <h4>Licencias</h4>
@@ -76,7 +76,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <a href="{% url 'rrhh:documentos' %}">
-                        <div class="card text-white bg-danger text-center">
+                        <div class="card text-white bg-info text-center">
                             <div class="card-body">
                                 <h2><i class="text-title text-white"></i> {{ total_unidades_directivas }} </h2>
                                 <h4>Documentación Funcionarios</h4>
