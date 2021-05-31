@@ -7,13 +7,13 @@
 {% endblock %}
 
 {% block content %}
-<div class="card">
+<div class="card" style="margin-top: 80px;">
     <div class="card-header">
         <h4 class="card-title">Personas
-          <a class="btn btn-sm btn-primary pull-right" href="{% url 'rrhh:persona__nuevo'%}" role="button">
+          <a class="btn btn-outline-primary pull-right" href="{% url 'rrhh:persona__nuevo'%}" role="button">
 	    <span>
 	      Crear Persona
-              <i class="fa fa-plus"></i>
+              <i class="uil-plus"></i>
 	    </span>
             </a>
         </h4>
@@ -24,10 +24,10 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th><i class="fa fa-user"></i> Nombre </th>
-                    <th><i class="fa fa-clock-o"></i> RUT </th>
-                    <th><i class="fa fa-graduation-cap"></i> Clasificación</th>
-                    <th><i class="fa fa-cogs"></i> Acciones </th>
+                    <th><i class="uil-user"></i> Nombre </th>
+                    <th><i class="uil-clock"></i> RUT </th>
+                    <th><i class="uil-graduation-hat"></i> Clasificación</th>
+                    <th><i class="mdi mdi-cogs"></i> Acciones </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -43,8 +43,8 @@
                             ">{{ p.clasificacion }} </span></h5>
                         </td>
                         <td>
-                            <a class="btn btn-sm btn-primary" href="{% url 'rrhh:persona__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
-                            <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_persona_{{p.pk}}"><i class="fa fa-trash"></i></a>
+                            <a class="btn btn-outline-primary" href="{% url 'rrhh:persona__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
+                            <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_persona_{{p.pk}}"><i class="uil-trash"></i></a>
                         </td>
                     </tr>
                     <div class="modal" tabindex="-1" role="dialog" id="eliminar_persona_{{p.pk}}">
@@ -61,8 +61,8 @@
                                     <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta persona.</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <a role="button" class="btn btn-danger" href="{% url 'rrhh:persona__eliminar' p.pk %}">Eliminar</a>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                    <a role="button" class="btn btn-outline-danger" href="{% url 'rrhh:persona__eliminar' p.pk %}">Eliminar</a>
+                                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                                 </div>
                             </div>
                         </div>

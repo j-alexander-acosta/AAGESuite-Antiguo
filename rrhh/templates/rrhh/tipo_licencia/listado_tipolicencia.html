@@ -11,12 +11,12 @@
     <div class="card-header">
         <h4 class="card-title">Tipos de Licencia
             <div class="btn-group pull-right" role="group">
-                <a class="btn btn-sm btn-secondary" href="{% url 'rrhh:licencias' %}" role="button"
+                <a class="btn btn-outline-secondary" href="{% url 'rrhh:licencias' %}" role="button"
                     data-target='tooltip' title='Volver a Licencias'>
-                     <span><i class="fa fa-arrow-left"></i></span>
+                     <span><i class="uil-arrow-left"></i></span>
                 </a>
-                <a class="btn btn-sm btn-primary" href="{% url 'rrhh:tipolicencia__nuevo'%}" role="button">
-                     <span> Crear Tipo de Licencia <i class="fa fa-plus"></i></span>
+                <a class="btn btn-outline-primary" href="{% url 'rrhh:tipolicencia__nuevo'%}" role="button">
+                     <span> Crear Tipo de Licencia <i class="uil-plus"></i></span>
                 </a>
             </div>
         </h4>
@@ -27,10 +27,10 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th><i class="fa fa-user"></i> Nombre </th>
-                <th><i class="fa fa-calendar"></i> Total de días </th>
-                <th><i class="fa fa-calendar"></i> Corresponde a días hábiles </th>
-                <th><i class="fa fa-clock"></i> Opciones </th>
+                <th><i class="uil-user"></i> Nombre </th>
+                <th><i class="uil-calendar"></i> Total de días </th>
+                <th><i class="uil-calender"></i> Corresponde a días hábiles </th>
+                <th><i class="uil-clock"></i> Opciones </th>
             </tr>
             </thead>
             <tbody>
@@ -40,8 +40,8 @@
                     <td> {{ tl.total_dias }} </td>
                     <td> {{ tl.dias_habiles|yesno }} </td>
                     <td>
-                        <a class="btn btn-sm btn-primary" href="{% url 'rrhh:tipolicencia__editar' tl.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
-                        <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_tipolicencia_{{tl.pk}}"><i class="fa fa-trash"></i></a>
+                        <a class="btn btn-outline-primary" href="{% url 'rrhh:tipolicencia__editar' tl.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
+                        <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_tipolicencia_{{tl.pk}}"><i class="uil-trash"></i></a>
                     </td>
                 </tr>
                 <div class="modal" tabindex="-1" role="dialog" id="eliminar_tipolicencia_{{tl.pk}}">
@@ -58,8 +58,8 @@
                                 <p class="text-muted">Recuerde que eliminará todos los registros asociados a este tipo licencia.</p>
                             </div>
                             <div class="modal-footer">
-                                <a role="button" class="btn btn-danger" href="{% url 'rrhh:tipolicencia__eliminar' tl.pk %}">Eliminar</a>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                <a role="button" class="btn btn-outline-danger" href="{% url 'rrhh:tipolicencia__eliminar' tl.pk %}">Eliminar</a>
+                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
                     </div>

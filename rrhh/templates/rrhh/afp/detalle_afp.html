@@ -7,20 +7,20 @@
 
 {% block content %}
 
-<div class="card">
+<div class="card" style="margin-top: 80px;">
     <div class="card-header">
       <h4 class="card-title"><strong>Detalle de AFP</strong>
           {% block buttons %}
               <div class="btn-group pull-right">
                   <a href="{% url 'rrhh:afps' %}" type="button" class="btn btn-sm btn-dark">
-                      <i class="fa fa-arrow-left"></i>
+                      <i class="uil-arrow-left"></i>
                   </a>
                   <a href="{% url 'rrhh:afp__editar' object.pk %}" type="button" class="btn btn-sm btn-primary">
-                      <i class="fa fa-edit"></i>
+                      <i class="uil-edit"></i>
                   </a>
                   <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_afp_{{object.pk}}">
-                      <i class="fa fa-trash"></i>
-                  </a>
+                      <i class="uil-trash-alt"></i>
+                  </a>tn btn-sm btn-dark
               </div>
           {% endblock %}
         </h4>

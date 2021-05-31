@@ -7,11 +7,11 @@
 {% endblock %}
 
 {% block content %}
-<div class="card">
+<div class="card" style="margin-top: 80px;">
     <div class="card-header">
         <h4 class="card-title">Vacaciones
             <a class="btn btn-sm btn-primary pull-right" href="{% url 'rrhh:vacacion__nuevo'%}" role="button">
-        	    <span>Crear Vacación <i class="fa fa-plus"></i></span>
+        	    <span>Crear Vacación <i class="uil-plus"></i></span>
             </a>
         </h4>
         <h6 class="card-subtitle mb-2 text-muted">Tabla para configuración de vacaciones</h6>
@@ -21,11 +21,11 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th><i class="fa fa-user"></i> Funcionario </th>
-                <th><i class="fa fa-calendar"></i> Fecha de inicio </th>
-                <th><i class="fa fa-calendar"></i> Fecha de termino </th>
-                <th><i class="fa fa-clock"></i> Días </th>
-                <th><i class="fa fa-clock"></i> Opciones </th>
+                <th><i class="uil-user"></i> Funcionario </th>
+                <th><i class="uil-calender"></i> Fecha de inicio </th>
+                <th><i class="uil-calender"></i> Fecha de termino </th>
+                <th><i class="uil-clock"></i> Días </th>
+                <th><i class="uil-clock"></i> Opciones </th>
             </tr>
             </thead>
             <tbody>
@@ -36,8 +36,8 @@
                     <td> {{ v.fecha_termino }} </td>
                     <td> {{ v.total_dias }} </td>
                     <td>
-                        <a class="btn btn-sm btn-primary" href="{% url 'rrhh:vacacion__editar' v.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
-                        <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_vacacion_{{v.pk}}"><i class="fa fa-trash"></i></a>
+                        <a class="btn btn-outline-primary" href="{% url 'rrhh:vacacion__editar' v.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
+                        <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_vacacion_{{v.pk}}"><i class="uil-trash"></i></a>
                     </td>
                 </tr>
                 <div class="modal" tabindex="-1" role="dialog" id="eliminar_vacacion_{{v.pk}}">
@@ -54,8 +54,8 @@
                                 <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta vacación.</p>
                             </div>
                             <div class="modal-footer">
-                                <a role="button" class="btn btn-danger" href="{% url 'rrhh:vacacion__eliminar' v.pk %}">Eliminar</a>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                <a role="button" class="btn btn-outline-danger" href="{% url 'rrhh:vacacion__eliminar' v.pk %}">Eliminar</a>
+                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
                     </div>
