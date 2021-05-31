@@ -10,18 +10,6 @@
     <div class="row">
         <div class="col-md-8">
 {% endif %}
-<<<<<<< HEAD
-            <div class="row" style="margin-top: 80px;">
-                <div class="col-md-6">
-                    <div class="ccard bg-secondary text-white">
-                        <div class="card-body">
-                            <h2 class="card-title text-center"></i> Administración </h2>
-                            <p>
-                                <ul>
-                                    <a href="{% url 'rrhh:uniones' %}" class="card-title text-white"><li>Uniones</li></a>
-                                    <a href="{% url 'rrhh:fundaciones' %}" class="card-title text-white"><li>Fundaciones</li></a>
-                                    <a href="{% url 'rrhh:colegios' %}" class="card-title text-white"><li>Colegios</li></a>
-=======
             <div class="row" style="margin-top: 60px;">
                 <div class="col-md-6">
                     <div class="card card-inverse bgm-gray">
@@ -32,23 +20,12 @@
                                     <a class="text-muted font-weight-normal" href="{% url 'rrhh:uniones' %}"><li>Uniones</li></a>
                                     <a class="text-muted font-weight-normal" href="{% url 'rrhh:fundaciones' %}"><li>Fundaciones</li></a>
                                     <a class="text-muted font-weight-normal" href="{% url 'rrhh:colegios' %}"><li>Colegios</li></a>
->>>>>>> feature/dockerizacion-jorge
                                 </ul>
                             </p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
-<<<<<<< HEAD
-                    <div class="card bg-secondary text-white">
-                        <div class="card-body">
-                            <h2 class="card-title text-center"></i> Funcionarios </h2>
-                            <p>
-                                <ul>
-                                    <a href="{% url 'rrhh:personas' %}" class="card-title text-white"><li>Personas</li></a>
-                                    <a href="{% url 'rrhh:contratos' %}" class="card-title text-white"><li>Personal</li></a>
-                                    <a href="{% url 'rrhh:postulantes' %}" class="card-title text-white"><li>Postulantes</li></a>
-=======
                     <div class="card card-inverse bgm-lightblue">
                         <div class="card-header">
                             <h2 class="text-center page-title"><i class="fa fa-institution"></i> Funcionarios </h2>
@@ -57,7 +34,6 @@
                                     <a href="{% url 'rrhh:personas' %}" class="text-muted font-weight-normal"><li>Personas</li></a>
                                     <a href="{% url 'rrhh:contratos' %}" class="text-muted font-weight-normal"><li>Personal</li></a>
                                     <a href="{% url 'rrhh:postulantes' %}" class="text-muted font-weight-normal"><li>Postulantes</li></a>
->>>>>>> feature/dockerizacion-jorge
                                 </ul>
                             </p>
                         </div>
@@ -68,51 +44,30 @@
             <div class="row">
                 <div class="col-md-4">
                     <a href="{% url 'rrhh:solicitudes' %}">
-<<<<<<< HEAD
-                        <div class="card text-white bg-info text-center">
-                            <div class="card-body">
-                                <h2><i class="text-title text-white"></i> {{ total_unidades_directivas }} </h2>
-                                <h4>Solicitudes</h4>
-=======
                         <div class="card text-muted font-weight-normal card-inverse bgm-red text-center">
                             <div class="card-header">
                                 <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
                                 <h5>Solicitudes</h5>
->>>>>>> feature/dockerizacion-jorge
                             </div>
                         </div>
                     </a>
                 </div>
                 <div class="col-md-4">
                     <a href="{% url 'rrhh:vacaciones' %}">
-<<<<<<< HEAD
-                        <div class="card text-white bg-info text-center">
-                            <div class="card-body">
-                                <h2><i class="text-title text-white"></i> {{ total_unidades_directivas }} </h2>
-                                <h4>Vacaciones</h4>
-=======
                         <div class="card text-muted font-weight-normal card-inverse bgm-indigo text-center">
                             <div class="card-header">
                                 <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
                                 <h5>Vacaciones</h5>
->>>>>>> feature/dockerizacion-jorge
                             </div>
                         </div>
                     </a>
                 </div>
                 <div class="col-md-4">
                     <a href="{% url 'rrhh:licencias' %}">
-<<<<<<< HEAD
-                        <div class="card text-white bg-info text-center">
-                            <div class="card-body">
-                                <h2><i class="text-title text-white"></i> {{ total_unidades_directivas }} </h2>
-                                <h4>Licencias</h4>
-=======
                         <div class="card text-muted font-weight-normal card-inverse bgm-purple text-center">
                             <div class="card-header">
                                 <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
                                 <h5>Licencias</h5>
->>>>>>> feature/dockerizacion-jorge
                             </div>
                         </div>
                     </a>
@@ -122,34 +77,20 @@
             <div class="row">
                 <div class="col-md-4">
                     <a href="{% url 'rrhh:documentos' %}">
-<<<<<<< HEAD
-                        <div class="card text-white bg-info text-center">
-                            <div class="card-body">
-                                <h2><i class="text-title text-white"></i> {{ total_unidades_directivas }} </h2>
-                                <h4>Documentación Funcionarios</h4>
-=======
                         <div class="card text-muted font-weight-normal card-inverse bgm-teal text-center">
                             <div class="card-header">
                                 <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
                                 <h5>Documentación Funcionarios</h5>
->>>>>>> feature/dockerizacion-jorge
                             </div>
                         </div>
                     </a>
                 </div>
                 <div class="col-md-4">
                     <a href="{% url 'rrhh:entrevistas' %}">
-<<<<<<< HEAD
-                        <div class="card text-white bg-info text-center">
-                            <div class="card-body">
-                                <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                                <h4>Entrevistas</h4>
-=======
                         <div class="card text-muted font-weight-normal card-inverse bgm-lightgreen text-center">
                             <div class="card-header">
                                 <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
                                 <h5>Entrevistas</h5>
->>>>>>> feature/dockerizacion-jorge
                             </div>
                         </div>
                     </a>
