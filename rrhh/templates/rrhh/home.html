@@ -101,11 +101,11 @@
             <br>
         </div>
         {% if contratos_contratar or contratos_expirar or solicitudes_pendientes or contrataos_finiquitar %}
-            <div class="col-md-4">
+            <div class="col-md-4" style="margin-top: 60px;">
                 <div class="card" style="cursor: pointer">
                     {% if contratos_contratar %}
                         <div class="card bg-danger">
-                            <a class="text-white text-left" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <a class="text-muted font-weight-normal text-left" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                 <div class="card-header" id="headingOne">
                                     En proceso de contratación
                                     <span class="badge badge-warning pull-right">{{ contratos_contratar|length }}</span>
@@ -127,7 +127,7 @@
                     {% endif %}
                     {% if contratos_expirar %}
                         <div class="card bg-danger">
-                            <a class="text-white text-left" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <a class="text-muted font-weight-normal text-left" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                 <div class="card-header" id="headingOne">
                                     Contratos apunto de expirar
                                     <span class="badge badge-warning pull-right">{{ contratos_expirar|length }}</span>
@@ -149,7 +149,7 @@
                     {% endif %}
                     {% if contratos_finiquitar %}
                         <div class="card bg-danger">
-                            <a class="text-white text-left collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <a class="text-muted font-weight-normal text-left collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                 <div class="card-header" id="headingTwo">
                                     Contratos que se deben finiquitar
                                     <span class="badge badge-warning pull-right">{{ contratos_finiquitar|length }}</span>
@@ -171,7 +171,7 @@
                     {% endif %}
                     {% if solicitudes_pendientes %}
                         <div class="card bg-danger">
-                              <a class="text-white text-left collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                              <a class="text-muted font-weight-normal text-left collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                                 <div class="card-header" id="headingThree">
                                     Solicitudes que requieren atención
                                     <span class="badge badge-warning pull-right">{{ solicitudes_pendientes|length }}</span>
