@@ -34,7 +34,7 @@
                         <td><a href="{% url 'rrhh:colegio' f.pk %}"> {{ f.nombre }} </a></td>
                         <td> {% if f.descripcion %}{{ f.descripcion|truncatewords:"7" }}{% else %}No específicado{% endif %} </td>
                         <td>
-                            <a class="btn btn-outline-primary" href="{% url 'rrhh:colegio__editar' f.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
+                            <a class="btn btn-outline-primary" href="{% url 'rrhh:colegio__editar' f.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
                             <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_colegio_{{f.pk}}"><i class="uil-trash-alt"></i></a>
                         </td>
                     </tr>
