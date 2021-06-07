@@ -1,6 +1,6 @@
 {% load bootstrap_pagination %}
 <nav>
-    <ul class="pagination justify-content-center{% if size == "small" %} pagination-sm{% endif %}{% if size == "large" %} pagination-lg{% endif %}{% block extra_classes %}{% endblock %}">
+    <ul class="pagination pagination-rounded justify-content-center{% if size == "small" %} pagination-sm{% endif %}{% if size == "large" %} pagination-lg{% endif %}{% block extra_classes %}{% endblock %}">
         {% if show_first_last %}
             {% if not page.has_previous %}
                 <li class="disabled page-item">

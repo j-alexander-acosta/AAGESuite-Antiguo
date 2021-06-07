@@ -64,7 +64,7 @@ def assign(request):
 
 
 @login_required
-def switch_periodo(request, year=2020):
+def switch_periodo(request, year=2021):
     request.session['periodo'] = year
     try:
         del request.session['colegio__pk']
