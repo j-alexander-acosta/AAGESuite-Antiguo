@@ -40,7 +40,7 @@
                     <td> {% if l.tipo_licencia %} {{ l.tipo_licencia }} {% else %} {{ l.tipo_licencia_descripcion }} {% endif %}</td>
                     <td> {{ l.total_dias }} </td>
                     <td>
-                        <a class="btn btn-outline-primary" href="{% url 'rrhh:licencia__editar' l.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
+                        <a class="btn btn-outline-primary" href="{% url 'rrhh:licencia__editar' l.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
                         <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_licencia_{{l.pk}}"><i class="uil-trash-alt"></i></a>
                     </td>
                 </tr>

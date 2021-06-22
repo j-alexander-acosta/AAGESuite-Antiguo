@@ -38,17 +38,17 @@
       </h4>
         {% block buttons %}
             <div class="btn-group pull-right">
-                <a href="{% url 'rrhh:contratos' %}" type="button" class="btn btn-outline-dark">
+                <a href="{% url 'rrhh:contratos' %}" type="button" class="btn btn-outline-info">
                     <i class="uil-arrow-left"></i> Volver
                 </a>
                 {% if not object.solicitud.set.all %}
                     {% if object.dias_termino_contrato <= 120 and object.categoria == 2 %}
                         <a href="{% url 'rrhh:contrato__renovar' object.pk %}" type="button" class="btn btn-outline-success">
-                            <i class="mdi-star"></i> Renovar Contrato
+                            <i class="mdi mdi-star"></i> Renovar Contrato
                         </a>
                     {% elif object.dias_termino_contrato <= 60 %}
                         <a href="{% url 'rrhh:contrato__renovar' object.pk %}" type="button" class="btn btn-outline-success">
-                            <i class="mdi-star"></i> Renovar Contrato
+                            <i class="mdi mdi-star"></i> Renovar Contrato
                         </a>
                     {% endif %}
                 {% endif %}
@@ -328,7 +328,7 @@
                                         <td>{{ object.documento }}</td>
                                         <td>
                                             <div class="btn-group">
-                                                <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi-file-pdf"></i></button>
+                                                <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi mdi-file-pdf"></i></button>
                                                 {% if object.estado_id == 4 %}<button type="button" id="cec" class="btn btn-outline-success" name="4" title="Actualizar documento" data-toggle="tooltip" data-placement="top"><i class="uil-upload-alt"></i></button> {% endif %}
                                                 {% if object.documento %}
                                                     <a role="button" class="btn btn-outline-primary" href="{{ media_url }}{{ object.documento }}" name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="right" download><i class="uil-download-alt"></i></a>
@@ -344,9 +344,9 @@
                                                     <td>{{ dp.documento }}</td>
                                                     <td>
                                                         <div class="btn-group">
-                                                            <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi-file-pdf"></i></button>
+                                                            <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi mdi-file-pdf"></i></button>
                                                             <button type="button" class="btn btn-outline-success" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>
-                                                            <a role="button" class="btn btn-outline-primary" href="{{ media_url }}{{ dp.documento }}" download name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="right"><i class="mdi-file-pdf"></i></a>
+                                                            <a role="button" class="btn btn-outline-primary" href="{{ media_url }}{{ dp.documento }}" download name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="right"><i class="mdi mdi-file-pdf"></i></a>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -356,9 +356,9 @@
                                                     <td>No cargado</td>
                                                     <td>
                                                         <div class="btn-group">
-                                                            <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi-file-pdf"></i></button>
+                                                            <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi mdi-file-pdf"></i></button>
                                                             <button type="button" class="btn btn-outline-success" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>
-                                                            <button type="button" class="btn btn-outline-primary disabled" name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="down"><i class="mdi-file-pdf"></i></button>
+                                                            <button type="button" class="btn btn-outline-primary disabled" name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="down"><i class="mdi mdi-file-pdf"></i></button>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -369,9 +369,9 @@
                                                 <td>No cargado</td>
                                                 <td>
                                                     <div class="btn-group">
-                                                        <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi-file-pdf"></i></button>
+                                                        <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi mdi-file-pdf"></i></button>
                                                         <button type="button" class="btn btn-outline-success" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>
-                                                        <button type="button" class="btn btn-outline-primary disabled" name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="down"><i class="mdi-file-pdf"></i></button>
+                                                        <button type="button" class="btn btn-outline-primary disabled" name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="down"><i class="mdi mdi-file-pdf"></i></button>
                                                     </div>
                                                 </td>
                                             </tr>

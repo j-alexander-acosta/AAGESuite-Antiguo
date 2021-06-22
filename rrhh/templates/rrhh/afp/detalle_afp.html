@@ -12,15 +12,15 @@
       <h4 class="card-title"><strong>Detalle de AFP</strong>
           {% block buttons %}
               <div class="btn-group pull-right">
-                  <a href="{% url 'rrhh:afps' %}" type="button" class="btn btn-sm btn-dark">
+                  <a href="{% url 'rrhh:afps' %}" type="button" class="btn btn-outline-info">
                       <i class="uil-arrow-left"></i>
                   </a>
-                  <a href="{% url 'rrhh:afp__editar' object.pk %}" type="button" class="btn btn-sm btn-primary">
+                  <a href="{% url 'rrhh:afp__editar' object.pk %}" type="button" class="btn btn-outline-primary">
                       <i class="uil-edit"></i>
                   </a>
-                  <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_afp_{{object.pk}}">
+                  <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_afp_{{object.pk}}">
                       <i class="uil-trash-alt"></i>
-                  </a>tn btn-sm btn-dark
+                  </a>
               </div>
           {% endblock %}
         </h4>

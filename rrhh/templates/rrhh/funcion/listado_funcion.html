@@ -11,7 +11,7 @@
     <div class="card-header">
         <h4 class="card-title">Funciones
             <div class="btn-group pull-right" role="group">
-                <a class="btn btn-outline-dark" href="{% url 'rrhh:contratos'%}" role="button" data-toggle="tooltip" data-placement="top" title="Volver a contratos">
+                <a class="btn btn-outline-info" href="{% url 'rrhh:contratos'%}" role="button" data-toggle="tooltip" data-placement="top" title="Volver a contratos">
     	             <span><i class="uil-arrow-left"></i></span>
                 </a>
                 <a class="btn btn-outline-primary" href="{% url 'rrhh:funcion__nuevo'%}" role="button">
@@ -39,8 +39,8 @@
                         <td> {{ f.get_tipo_display }} </td>
                         <td> {% if f.descripcion %}{{ f.descripcion|truncatewords:"7" }}{% else %}No específicado{% endif %} </td>
                         <td>
-                            <a class="btn btn-outline-primary" href="{% url 'rrhh:funcion__editar' f.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
-                            <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_funcion_{{f.pk}}"><i class="fa fa-trash"></i></a>
+                            <a class="btn btn-outline-primary" href="{% url 'rrhh:funcion__editar' f.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
+                            <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_funcion_{{f.pk}}"><i class="uil-trash-alt"></i></a>
                         </td>
                     </tr>
                     <div class="modal" tabindex="-1" role="dialog" id="eliminar_funcion_{{f.pk}}">

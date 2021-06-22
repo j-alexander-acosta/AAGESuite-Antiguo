@@ -22,10 +22,10 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th><i class="fa fa-user text-muted font-weight-normal"></i> Entrevistado </th>
-                <th><i class="fa fa-clock-o text-muted font-weight-normal"></i> Entrevistador </th>
-                <th><i class="fa fa-clock-o text-muted font-weight-normal"></i> Tipo </th>
-                <th><i class="fa fa-cogs text-muted font-weight-normal"></i> Acciones </th>
+                <th><i class="uil-user text-muted font-weight-normal"></i> Entrevistado </th>
+                <th><i class="uil-clock text-muted font-weight-normal"></i> Entrevistador </th>
+                <th><i class="uil-clock text-muted font-weight-normal"></i> Tipo </th>
+                <th><i class="mdi mdi-cogs text-muted font-weight-normal"></i> Acciones </th>
             </tr>
             </thead>
             <tbody>
@@ -35,7 +35,7 @@
                     <td> {{ p.entrevistador }} </td>
                     <td> {{ p.get_tipo_display }} </td>
                     <td>
-                        <a class="btn btn-outline-primary" href="{% url 'rrhh:entrevista__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
+                        <a class="btn btn-outline-primary" href="{% url 'rrhh:entrevista__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
                         <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_entrevista_{{p.pk}}"><i class="uil-trash-alt"></i></a>
                     </td>
                 </tr>

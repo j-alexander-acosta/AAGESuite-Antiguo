@@ -63,9 +63,9 @@
                         <a class="dropdown-item" href="#">
                             <i class="uil-list-ul"></i> Insumos</a>
                         <a class="dropdown-item" href="#">
-                            <i class="mdi-hand-pointing-right"></i> Indicadores</a>
+                            <i class="mdi mdi-hand-pointing-right"></i> Indicadores</a>
                         <a class="dropdown-item" href="#">
-                            <i class="mdi-puzzle-piece"></i> Estrategias</a>
+                            <i class="mdi mdi-puzzle-piece"></i> Estrategias</a>
                         <div class="dropdown-divider"></div>
                         <h6 class="dropdown-header">Departamentos</h6>
                         <a class="dropdown-item" href="#">
@@ -83,7 +83,7 @@
                         <a class="dropdown-item" href="#">
                             <i class="uil-money-bill"></i> Cuentas</a>
                         <a class="dropdown-item" href="#">
-                            <i class="mdi-calendar-check"></i> Periodos</a>
+                            <i class="mdi mdi-calendar-check"></i> Periodos</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -116,12 +116,12 @@
                     <a class="nav-link dropdown-toggle" href="#"
                        id="dropdownUsuario" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
-                        <i class="mdi-bank"></i> {{ request.session.colegio__nombre }}</a>
+                        <i class="mdi mdi-bank"></i> {{ request.session.colegio__nombre }}</a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownUsuario">
                         <a class="dropdown-item" href="{% url 'carga-horaria:switch' %}">
                             <i class="uil-refresh"></i> Cambiar </a>
                         <a class="dropdown-item" href="{% url 'carga-horaria:clear' %}">
-                            <i class="mdi-window-close"></i> Limpiar </a>
+                            <i class="mdi mdi-window-close"></i> Limpiar </a>
                     </div>
                 </li>
             {% else %}

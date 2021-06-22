@@ -15,10 +15,10 @@
                   <a href="{% url 'rrhh:permisos' %}" type="button" class="btn btn-outline-dark">
                       <i class="uil-arrow-left"></i>
                   </a>
-                  <a href="{% url 'rrhh:permiso__editar' object.pk %}" type="button" class="btn btn-sm btn-primary">
+                  <a href="{% url 'rrhh:permiso__editar' object.pk %}" type="button" class="btn btn-outline-primary">
                       <i class="uil-edit"></i>
                   </a>
-                  <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_permiso_{{object.pk}}">
+                  <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_permiso_{{object.pk}}">
                       <i class="uil-trash"></i>
                   </a>
               </div>

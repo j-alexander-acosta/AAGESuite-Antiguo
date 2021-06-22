@@ -15,7 +15,7 @@
                             {% if object.foto %}
                                 <img class="img-responsive" src="{{ object.foto}}" alt="{{ object.username }}">
                             {% else %}
-                                <img class="img-responsive" src="{% static "base/img/user.png" %}" alt="{{ object.username }}">
+                                <img class="img-responsive" src="{% static 'base/img/user.png' %}" alt="{{ object.username }}">
                             {% endif %}
                         </a>
                     </div>
@@ -57,7 +57,7 @@
                     {% else %}
                         <li class="nav-item" role="link">
                             <a class="nav-link" href="{% url 'rrhh:funcionario__nuevo' object.id %}" role="tab">
-                                <i class="fa fa-plus"></i> Crear Funcionario
+                                <i class="uil-plus"></i> Crear Funcionario
                             </a>
                         </li>
                     {% endif %}
@@ -158,7 +158,7 @@
                                                 {% endif %}
                                             </body>
                                         </table>
-                                        <a role="button" class="btn btn-sm btn-info text-right" href="{% url 'rrhh:funcionario__editar' object.funcionario.pk %}"><i class="uil-edit"></i> Editar</a>
+                                        <a role="button" class="btn btn-outline-info text-right" href="{% url 'rrhh:funcionario__editar' object.funcionario.pk %}"><i class="uil-edit"></i> Editar</a>
                                     </div>
                                 </div>
                             </div>

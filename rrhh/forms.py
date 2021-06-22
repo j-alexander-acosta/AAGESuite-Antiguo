@@ -58,6 +58,7 @@ class PersonaForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(PersonaForm, self).__init__(*args, **kwargs)
+        self.fields['fecha_nacimiento'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_nacimiento'].widget.attrs['class'] = 'datepicker'
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -152,7 +153,9 @@ class FuncionarioForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(FuncionarioForm, self).__init__(*args, **kwargs)
         self.fields['persona'].widget.attrs['readonly'] = True
+        self.fields['fecha_ingreso_sea'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_ingreso_sea'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_ingreso_docente'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_ingreso_docente'].widget.attrs['class'] = 'datepicker'
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -253,8 +256,11 @@ class VacacionFuncionarioColegioForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(VacacionFuncionarioColegioForm, self).__init__(*args, **kwargs)
         self.fields['contrato'].widget.attrs['class'] = 'chosen'
+        self.fields['fecha_inicio'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_termino'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_termino'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_retorno'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_retorno'].widget.attrs['class'] = 'datepicker'
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -279,8 +285,11 @@ class VacacionTipoFuncionarioColegioForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(VacacionTipoFuncionarioColegioForm, self).__init__(*args, **kwargs)
+        self.fields['fecha_inicio'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_termino'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_termino'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_retorno'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_retorno'].widget.attrs['class'] = 'datepicker'
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -359,8 +368,11 @@ class LicenciaFuncionarioColegioForm(forms.ModelForm):
         super(LicenciaFuncionarioColegioForm, self).__init__(*args, **kwargs)
         self.fields['contrato'].widget.attrs['class'] = 'chosen'
         self.fields['tipo_licencia'].widget.attrs['class'] = 'chosen'
+        self.fields['fecha_inicio'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_termino'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_termino'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_retorno'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_retorno'].widget.attrs['class'] = 'datepicker'
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -391,8 +403,11 @@ class LicenciaTipoFuncionarioColegioForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(LicenciaTipoFuncionarioColegioForm, self).__init__(*args, **kwargs)
         self.fields['tipo_licencia'].widget.attrs['class'] = 'chosen'
+        self.fields['fecha_inicio'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_termino'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_termino'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_retorno'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_retorno'].widget.attrs['class'] = 'datepicker'
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -454,9 +469,13 @@ class PermisoFuncionarioColegioForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(PermisoFuncionarioColegioForm, self).__init__(*args, **kwargs)
         self.fields['contrato'].widget.attrs['class'] = 'chosen'
+        self.fields['fecha_solicitud'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_solicitud'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_inicio'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_termino'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_termino'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_retorno'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_retorno'].widget.attrs['class'] = 'datepicker'
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -477,9 +496,13 @@ class PermisoTipoFuncionarioColegioForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(PermisoTipoFuncionarioColegioForm, self).__init__(*args, **kwargs)
+        self.fields['fecha_solicitud'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_solicitud'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_inicio'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_termino'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_termino'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_retorno'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_retorno'].widget.attrs['class'] = 'datepicker'
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -565,7 +588,9 @@ class ContratoColegioForm(forms.ModelForm):
         self.fields['funcion_secundaria'].widget.attrs['class'] = 'chosen'
         self.fields['tipo_contrato'].widget.attrs['class'] = 'chosen'
         self.fields['reemplazando_licencia'].widget.attrs['class'] = 'chosen'
+        self.fields['fecha_inicio'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_termino'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_termino'].widget.attrs['class'] = 'datepicker'
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -575,13 +600,18 @@ class ContratoColegioForm(forms.ModelForm):
                     Div(
                         HTML(
                             "<div class='checkbox pull-right'>" +
-                            "<a href='/rrhh/personas/nuevo'><i class='fa fa-plus'></i> Agregar Persona</a>" +
+                            "<a href='/rrhh/personas/nuevo'><i class='uil-plus'></i> Agregar Persona</a>" +
                             "</div>"
                         ),
                         Field('funcionario'),
                         css_class='col-md-6',
                     ),
                     Div(
+                        HTML(
+                            "<div class='text-white'>" +
+                            "<a><i class='text-white'></i>Colegio</a>" +
+                            "</div>"
+                        ),
                         Field('colegio'),
                         css_class='col-md-6'
                     ),
@@ -765,7 +795,9 @@ class SolicitudForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(SolicitudForm, self).__init__(*args, **kwargs)
+        self.fields['fecha_inicio'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
+        self.fields['fecha_termino'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_termino'].widget.attrs['class'] = 'datepicker'
         self.fields['colegio'].widget.attrs['class'] = 'chosen'
         self.fields['categoria'].widget.attrs['class'] = 'chosen'

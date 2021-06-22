@@ -59,9 +59,9 @@
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Cambiar estado</a>
                 <div class="dropdown-menu">
                     {% if object.estado_id == 2 and object.tipo < 3 %}<a class="dropdown-item text-success" id="ces" name="1" href="#"><i class="uil-check"></i> Aceptar</a> {% endif %}
-                    <a class="dropdown-item text-warning" id="ces" name="2" href="#"><i class="fa fa-refresh"></i> Pendiente</a>
+                    <a class="dropdown-item text-warning" id="ces" name="2" href="#"><i class="uil-refresh"></i> Pendiente</a>
                     {% if not object.estado_id == 3 %}<a class="dropdown-item text-danger" id="ces" name="3" href="#"><i class="uil-times-circle"></i> Rechazar</a>{% endif %}
-                    {% if object.tipo < 3 %}<a class="dropdown-item text-warning" id="ces" name="4" href="#"><i class="mdi-stop"></i> En espera de candidatos</a>{% endif %}
+                    {% if object.tipo < 3 %}<a class="dropdown-item text-warning" id="ces" name="4" href="#"><i class="mdi mdi-stop"></i> En espera de candidatos</a>{% endif %}
                     {% if object.estado_id == 5 or object.tipo >= 3 %}<a class="dropdown-item text-warning" id="ces" name="6" href="#"><i class="uil-check"></i> Aprobar, lista para contratar</a>{% endif %}
                     {% comment %}data-toggle="modal" data-target="#estado_solicitud_{{object.pk}}{% endcomment %}
                 </div>

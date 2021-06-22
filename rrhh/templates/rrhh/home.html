@@ -11,15 +11,16 @@
         <div class="col-md-8">
 {% endif %}
             <div class="row" style="margin-top: 60px;">
+                <!--
                 <div class="col-md-6">
-                    <div class="card card-inverse bgm-gray">
-                        <div class="card-header">
-                            <h2 class="text-center page-title"><i class="mdi-bank"></i> Administración </h2>
+                    <div class="card card-inverse bg-secondary">
+                        <div class="card-header bg-secondary">
+                            <h2 class="text-center page-title text-white"><i class="mdi mdi-bank"></i> Administración </h2>
                             <p>
                                 <ul>
-                                    <a class="text-muted font-weight-normal" href="{% url 'rrhh:uniones' %}"><li>Uniones</li></a>
-                                    <a class="text-muted font-weight-normal" href="{% url 'rrhh:fundaciones' %}"><li>Fundaciones</li></a>
-                                    <a class="text-muted font-weight-normal" href="{% url 'rrhh:colegios' %}"><li>Colegios</li></a>
+                                    <a class="text-white font-weight-normal" href="{% url 'rrhh:uniones' %}"><li>Uniones</li></a>
+                                    <a class="text-white font-weight-normal" href="{% url 'rrhh:fundaciones' %}"><li>Fundaciones</li></a>
+                                    <a class="text-white font-weight-normal" href="{% url 'rrhh:colegios' %}"><li>Colegios</li></a>
                                 </ul>
                             </p>
                         </div>
@@ -27,73 +28,95 @@
                 </div>
                 <div class="col-md-6">
                     <div class="card card-inverse bgm-lightblue">
-                        <div class="card-header">
-                            <h2 class="text-center page-title"><i class="mdi-bank"></i> Funcionarios </h2>
+                        <div class="card-header bg-secondary">
+                            <h2 class="text-center page-title text-white"><i class="mdi mdi-bank"></i> Funcionarios </h2>
                             <p>
                                 <ul>
-                                    <a href="{% url 'rrhh:personas' %}" class="text-muted font-weight-normal"><li>Personas</li></a>
-                                    <a href="{% url 'rrhh:contratos' %}" class="text-muted font-weight-normal"><li>Personal</li></a>
-                                    <a href="{% url 'rrhh:postulantes' %}" class="text-muted font-weight-normal"><li>Postulantes</li></a>
+                                    <a href="{% url 'rrhh:personas' %}" class="text-white font-weight-normal"><li>Personas</li></a>
+                                    <a href="{% url 'rrhh:contratos' %}" class="text-white font-weight-normal"><li>Personal</li></a>
+                                    <a href="{% url 'rrhh:postulantes' %}" class="text-white font-weight-normal"><li>Postulantes</li></a>
                                 </ul>
                             </p>
                         </div>
                     </div>
                 </div>
+                -->
+                
+                <div class="tab-content col-md-12">
+                    <div class="tab-pane show active" id="justified-tabs-preview">
+                        <ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
+                            <li class="nav-item">
+                                <a href="#adminstracion" data-toggle="tab" aria-expanded="false" class="nav-link rounded-0 active">
+                                    <i class="mdi mdi-home-variant d-md-none d-block"></i>
+                                    <span class="d-none d-md-block">Administración</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#funcionarios" data-toggle="tab" aria-expanded="true" class="nav-link rounded-0">
+                                    <i class="mdi mdi-account-circle d-md-none d-block"></i>
+                                    <span class="d-none d-md-block">Funcionarios</span>
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="adminstracion">
+                                <p>
+                                    <ul>
+                                        <a class="text-muted font-weight-normal" href="{% url 'rrhh:uniones' %}"><li>Uniones</li></a>
+                                        <a class="text-muted font-weight-normal" href="{% url 'rrhh:fundaciones' %}"><li>Fundaciones</li></a>
+                                        <a class="text-muted font-weight-normal" href="{% url 'rrhh:colegios' %}"><li>Colegios</li></a>
+                                    </ul>
+                                </p>
+                            </div>
+                            <div class="tab-pane show" id="funcionarios">
+                                <p>
+                                    <ul>
+                                        <a class="text-muted font-weight-normal" href="{% url 'rrhh:personas' %}"><li>Personas</li></a>
+                                        <a class="text-muted font-weight-normal" href="{% url 'rrhh:contratos' %}"><li>Personal</li></a>
+                                        <a class="text-muted font-weight-normal" href="{% url 'rrhh:postulantes' %}"><li>Postulantes</li></a>
+                                    </ul>
+                                </p>
+                            </div>
+                        </div>                                           
+                    </div>
+                </div>                       
+                
             </div>
             <br>
             <div class="row">
-                <div class="col-md-4">
-                    <a href="{% url 'rrhh:solicitudes' %}">
-                        <div class="card bg-primary text-white font-weight-normal card-inverse bgm-red text-center">
-                            <div class="card-body">
-                                <h2><i class="mdi-bank"></i> {{ total_unidades_directivas }} </h2>
-                                <h5>Solicitudes</h5>
-                            </div>
-                        </div>
+                <div class="col-md-4 text-center">
+                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:solicitudes' %}" style="background-color: red">
+                        <h2><i class="mdi mdi-pencil"></i> {{ total_unidades_directivas }} </h2>
                     </a>
+                    <h5 class="font-weight-normal text-center">Solicitudes</h5>
                 </div>
-                <div class="col-md-4">
-                    <a href="{% url 'rrhh:vacaciones' %}">
-                        <div class="card bg-primary text-white font-weight-normal card-inverse bgm-indigo text-center">
-                            <div class="card-body">
-                                <h2><i class="mdi-bank"></i> {{ total_unidades_directivas }} </h2>
-                                <h5>Vacaciones</h5>
-                            </div>
-                        </div>
+                <div class="col-md-4 text-center">
+                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:vacaciones' %}" style="background-color: indigo">
+                        <h2><i class="dripicons-photo-group"></i> {{ total_unidades_directivas }} </h2>
                     </a>
+                    <h5 class="font-weight-normal text-center">Vacaciones</h5>
                 </div>
-                <div class="col-md-4">
-                    <a href="{% url 'rrhh:licencias' %}">
-                        <div class="card bg-primary text-white font-weight-normal card-inverse bgm-purple text-center">
-                            <div class="card-body">
-                                <h2><i class="mdi-bank"></i> {{ total_unidades_directivas }} </h2>
-                                <h5>Licencias</h5>
-                            </div>
-                        </div>
+                <div class="col-md-4 text-center">
+                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:licencias' %}" style="background-color: purple">
+                        <h2><i class="mdi mdi-license"></i> {{ total_unidades_directivas }} </h2>
                     </a>
+                    <h5 class="font-weight-normal text-center">Licencias</h5>
                 </div>
             </div>
             <br>
             <div class="row">
-                <div class="col-md-4">
-                    <a href="{% url 'rrhh:documentos' %}">
-                        <div class="card bg-primary text-white font-weight-normal card-inverse bgm-teal text-center">
-                            <div class="card-body">
-                                <h2><i class="mdi-bank"></i> {{ total_unidades_directivas }} </h2>
-                                <h5>Documentación Funcionarios</h5>
-                            </div>
-                        </div>
+                <div class="col-md-4 text-center">
+                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:documentos' %}" style="background-color: teal">
+                        <h2><i class="mdi mdi-file-document"></i> {{ total_unidades_directivas }} </h2>
                     </a>
+                    <h5 class="font-weight-normal text-center">Documentación Funcionarios</h5>
                 </div>
-                <div class="col-md-4">
-                    <a href="{% url 'rrhh:entrevistas' %}">
-                        <div class="card bg-primary text-white font-weight-normal card-inverse bgm-lightgreen text-center">
-                            <div class="card-body">
-                                <h2><i class="mdi-bank"></i> {{ total_unidades_directivas }} </h2>
-                                <h5>Entrevistas</h5>
-                            </div>
-                        </div>
+                <div class="col-md-4 text-center">
+                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:entrevistas' %}" style="background-color: lightgreen">
+                        <h2><i class="mdi mdi-account-group-outline"></i> {{ total_unidades_directivas }} </h2>
                     </a>
+                    <h5 class="font-weight-normal text-center">Entrevistas</h5> 
             {% if contratos_contratar or contratos_expirar or solicitudes_pendientes or contrataos_finiquitar %}
                 </div>
             </div>
