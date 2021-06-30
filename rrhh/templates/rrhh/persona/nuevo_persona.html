@@ -19,9 +19,8 @@
             <div class="form-group">
                 <div class="col-sm-10 col-sm-offset-2">
                     <input type="submit" class="btn btn-outline-success" value="Guardar"/>
-                    <input type="submit" class="btn btn-outline-info" value="Guardar y crear funcionario" name="funcionario"/>
-                    <a href="{% url 'rrhh:personas' %}"
-                    role="button" class="btn btn-outline-info">
+                    <input type="submit" href="{% url 'rrhh:contrato__nuevo'%}"  class="btn btn-outline-info" value="Guardar y crear funcionario" name="funcionario"/>
+                    <a href="{% url 'rrhh:personas' %}" role="button" class="btn btn-outline-info">
                         Volver
                     </a>
                 </div>

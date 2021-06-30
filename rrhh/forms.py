@@ -212,10 +212,13 @@ class EntrevistaForm(forms.ModelForm):
                   'entrevistador',
                   'tipo',
                   'contenido',
-                  'acuerdos')
+                  'acuerdos',
+                  'fecha')
 
     def __init__(self, *args, **kwargs):
         super(EntrevistaForm, self).__init__(*args, **kwargs)
+        self.fields['fecha'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
+        self.fields['fecha'].widget.attrs['class'] = 'datepicker'
         self.helper = FormHelper()
         self.helper.form_tag = False
 

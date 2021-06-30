@@ -177,3 +177,12 @@ class DocumentoPersonalAdmin(admin.ModelAdmin):
     )
     search_fields = ['contrato', 'contrato__colegio', 'contrato__funcionario']
     list_filter = ['contrato__colegio', 'tipo_documento']
+
+
+@admin.register(colegio.TipoDocumento)
+class TipoDocumentoAdmin(admin.ModelAdmin):
+    list_display = (
+        'nombre',
+        'indicaciones',
+    )
+    search_fields = ['nombre']
