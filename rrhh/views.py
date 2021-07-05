@@ -3,22 +3,205 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse
 from jsonview.decorators import json_view, json
 from crispy_forms.utils import render_crispy_form
 from django.template.context_processors import csrf
 from django.template.defaultfilters import yesno
+from django.utils import formats
 from django.contrib.humanize.templatetags.humanize import naturalday
 from rrhh.templatetags.rrhh_utils import *
-from .models import Persona, Entrevista, Archivo, Vacacion, Finiquito
-from .models import TipoLicencia, Licencia, Contrato, Funcion, AFP, Isapre
-from .forms import PersonaForm, EntrevistaForm, ArchivoForm, VacacionForm, FiniquitoForm
-from .forms import TipoLicenciaForm, LicenciaForm, VacacionFuncionarioForm, IsapreForm
-from .forms import LicenciaTipoFuncionarioForm, ContratoForm, FuncionForm, AFPForm
+from rrhh.models.base import Funcion, TipoLicencia, AFP, Isapre, DOCUMENTO
+from rrhh.models.persona import Persona, Funcionario, DocumentoFuncionario
+from rrhh.models.union import Union
+from rrhh.models.fundacion import Fundacion
+from rrhh.models.colegio import Colegio, Entrevista, VacacionFuncionarioColegio, FiniquitoColegio, LicenciaFuncionarioColegio, PermisoFuncionarioColegio, ContratoColegio, EstadoContratacion, Solicitud, EstadoSolicitud, DocumentoPersonal
+from rrhh.forms import UnionForm, FundacionForm, ColegioForm, PersonaForm, FuncionarioForm, EntrevistaForm, DocumentoFuncionarioForm, VacacionFuncionarioColegioForm, FiniquitoColegioForm
+from rrhh.forms import TipoLicenciaForm, LicenciaFuncionarioColegioForm, PermisoFuncionarioColegioForm, VacacionTipoFuncionarioColegioForm, IsapreForm, SolicitudForm, EstadoSolicitudForm
+from rrhh.forms import LicenciaTipoFuncionarioColegioForm, PermisoTipoFuncionarioColegioForm, ContratoColegioForm, FuncionForm, AFPForm, EstadoContratacionForm, DocumentoPersonalForm
 
 
 @login_required
 def home(request):
-    return render(request, 'rrhh/home.html')
+    ### Contratos
+    contratos = ContratoColegio.objects.all()
+    contratos_expirar = []
+    contratos_finiquitar = []
+    contratos_contratar = []
+    for c in contratos:
+        if c.vigente:
+            if c.categoria == 2 and c.dias_termino_contrato <= 120:
+                if c.solicitud_set.all():
+                    contratos_finiquitar.append(c)
+                else:
+                    contratos_expirar.append(c)
+            elif c.dias_termino_contrato <= 60:
+                if c.solicitud_set.all():
+                    contratos_finiquitar.append(c)
+                else:
+                    contratos_expirar.append(c)
+        elif c.estado_id != 4:
+            contratos_contratar.append(c)
+
+    ### Solicitudes
+    solicitudes = Solicitud.objects.filter()
+    solicitudes_pendientes = []
+    estados_pendientes = [2, 4, 5, 6]
+    for s in solicitudes:
+        if s.estado_id in estados_pendientes:
+            solicitudes_pendientes.append(s)
+
+    context = {
+        'contratos_contratar': contratos_contratar,
+        'contratos_expirar': contratos_expirar,
+        'contratos_finiquitar': contratos_finiquitar,
+        'solicitudes_pendientes': solicitudes_pendientes,
+    }
+
+    return render(request, 'rrhh/home.html', context)
+
+
+@login_required
+def hyper_index(request):
+    return render(request, 'rrhh/hyper_index.html')
+
+
+class UnionListView(LoginRequiredMixin, ListView):
+    model = Union
+    template_name = 'rrhh/union/listado_union.html'
+    paginate_by = 10
+
+
+class UnionCreateView(LoginRequiredMixin, CreateView):
+    model = Union
+    form_class = UnionForm
+    template_name = 'rrhh/union/nuevo_union.html'
+
+    def get_success_url(self):
+        return reverse(
+            'rrhh:union',
+            kwargs={
+                'pk': self.object.pk,
+            }
+        )
+
+
+class UnionDetailView(LoginRequiredMixin, DetailView):
+    model = Union
+    template_name = 'rrhh/union/detalle_union.html'
+
+
+class UnionUpdateView(LoginRequiredMixin, UpdateView):
+    model = Union
+    form_class = UnionForm
+    template_name = 'rrhh/union/editar_union.html'
+
+    def get_success_url(self):
+        return reverse(
+            'rrhh:union',
+            kwargs={
+                'pk': self.object.pk,
+            }
+        )
+
+class UnionDeleteView(LoginRequiredMixin, DeleteView):
+    model = Union
+    success_url = reverse_lazy('rrhh:uniones')
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+
+class FundacionListView(LoginRequiredMixin, ListView):
+    model = Fundacion
+    template_name = 'rrhh/fundacion/listado_fundacion.html'
+    paginate_by = 10
+
+
+class FundacionCreateView(LoginRequiredMixin, CreateView):
+    model = Fundacion
+    form_class = FundacionForm
+    template_name = 'rrhh/fundacion/nuevo_fundacion.html'
+
+    def get_success_url(self):
+        return reverse(
+            'rrhh:fundacion',
+            kwargs={
+                'pk': self.object.pk,
+            }
+        )
+
+
+class FundacionDetailView(LoginRequiredMixin, DetailView):
+    model = Fundacion
+    template_name = 'rrhh/fundacion/detalle_fundacion.html'
+
+
+class FundacionUpdateView(LoginRequiredMixin, UpdateView):
+    model = Fundacion
+    form_class = FundacionForm
+    template_name = 'rrhh/fundacion/editar_fundacion.html'
+
+    def get_success_url(self):
+        return reverse(
+            'rrhh:fundacion',
+            kwargs={
+                'pk': self.object.pk,
+            }
+        )
+
+class FundacionDeleteView(LoginRequiredMixin, DeleteView):
+    model = Fundacion
+    success_url = reverse_lazy('rrhh:fundaciones')
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+
+class ColegioListView(LoginRequiredMixin, ListView):
+    model = Colegio
+    template_name = 'rrhh/colegio/listado_colegio.html'
+    paginate_by = 10
+
+
+class ColegioCreateView(LoginRequiredMixin, CreateView):
+    model = Colegio
+    form_class = ColegioForm
+    template_name = 'rrhh/colegio/nuevo_colegio.html'
+
+    def get_success_url(self):
+        return reverse(
+            'rrhh:colegio',
+            kwargs={
+                'pk': self.object.pk,
+            }
+        )
+
+
+class ColegioDetailView(LoginRequiredMixin, DetailView):
+    model = Colegio
+    template_name = 'rrhh/colegio/detalle_colegio.html'
+
+
+class ColegioUpdateView(LoginRequiredMixin, UpdateView):
+    model = Colegio
+    form_class = ColegioForm
+    template_name = 'rrhh/colegio/editar_colegio.html'
+
+    def get_success_url(self):
+        return reverse(
+            'rrhh:colegio',
+            kwargs={
+                'pk': self.object.pk,
+            }
+        )
+
+class ColegioDeleteView(LoginRequiredMixin, DeleteView):
+    model = Colegio
+    success_url = reverse_lazy('rrhh:colegios')
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
 
 
 class PersonaListView(LoginRequiredMixin, ListView):
@@ -36,8 +219,8 @@ class PersonaCreateView(LoginRequiredMixin, CreateView):
     template_name = 'rrhh/persona/nuevo_persona.html'
 
     def get_success_url(self):
-        if self.request.POST.get('contrato'):
-            return reverse_lazy('rrhh:contrato__nuevo')
+        if self.request.POST.get('funcionario'):
+            return reverse_lazy('rrhh:funcionario__nuevo')
         else:
             return reverse_lazy('rrhh:personas')
 
@@ -91,6 +274,102 @@ class PersonaDeleteView(LoginRequiredMixin, DeleteView):
         return self.post(request, *args, **kwargs)
 
 
+# class FuncionarioListView(LoginRequiredMixin, ListView):
+#     model = Funcionario
+#     template_name = 'rrhh/funcionario/listado_funcionario.html'
+#     paginate_by = 10
+#
+#
+class FuncionarioCreateView(LoginRequiredMixin, CreateView):
+    model = Funcionario
+    form_class = FuncionarioForm
+    template_name = 'rrhh/funcionario/nuevo_funcionario.html'
+
+    def get_success_url(self):
+        return reverse(
+            'rrhh:persona',
+            kwargs={
+                'pk': self.object.persona.pk,
+            }
+        )
+
+
+@login_required
+def crear_funcionario(request, id_persona):
+    persona = get_object_or_404(
+        Persona,
+        id=id_persona
+    )
+    context = {}
+
+    if request.method == 'POST':
+        form = FuncionarioForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+            return redirect('rrhh:persona', persona.id)
+        else:
+            # Formulario con errores
+            context['message'] = u"Complete la información requerida"
+            context['form'] = form
+
+    else:
+        form = FuncionarioForm(
+            initial={
+                'persona': persona
+            },
+        )
+        context['form'] = form
+
+    return render(
+        request,
+        'rrhh/funcionario/nuevo_funcionario.html',
+        context
+    )
+
+
+
+
+# class FuncionarioDetailView(LoginRequiredMixin, DetailView):
+#     model = Funcionario
+#     template_name = 'rrhh/funcionario/detalle_funcionario.html'
+#
+#
+class FuncionarioUpdateView(LoginRequiredMixin, UpdateView):
+    model = Funcionario
+    form_class = FuncionarioForm
+    template_name = 'rrhh/funcionario/editar_funcionario.html'
+
+    def get_success_url(self):
+        return reverse(
+            'rrhh:persona',
+            kwargs={
+                'pk': self.object.persona.pk,
+            }
+        )
+#
+# class FuncionarioDeleteView(LoginRequiredMixin, DeleteView):
+#     model = Funcionario
+#     success_url = reverse_lazy('rrhh:funcionarios')
+#
+#     def get(self, request, *args, **kwargs):
+#        return self.post(request, *args, **kwargs)
+
+
+@login_required
+def postulantes(request):
+    context = {}
+    postulantes = { p for p in Persona.objects.all() if 'Postulante' in p.clasificacion }
+
+    context['postulantes'] = postulantes
+
+    return render(
+        request,
+        'rrhh/solicitud/postulantes.html',
+        context
+    )
+
+
 class EntrevistaListView(LoginRequiredMixin, ListView):
     """
         Listado de periodos
@@ -133,70 +412,70 @@ class EntrevistaDeleteView(LoginRequiredMixin, DeleteView):
         return self.post(request, *args, **kwargs)
 
 
-class ArchivoListView(LoginRequiredMixin, ListView):
+class DocumentoFuncionarioListView(LoginRequiredMixin, ListView):
     """
         Listado de periodos
     """
-    model = Archivo
-    template_name = 'rrhh/archivo/listado_archivo.html'
+    model = DocumentoFuncionario
+    template_name = 'rrhh/documento_funcionario/listado_documento_funcionario.html'
     paginate_by = 10
 
 
-class ArchivoCreateView(LoginRequiredMixin, CreateView):
-    model = Archivo
-    form_class = ArchivoForm
-    template_name = 'rrhh/archivo/nuevo_archivo.html'
-    success_url = reverse_lazy('rrhh:archivos')
+class DocumentoFuncionarioCreateView(LoginRequiredMixin, CreateView):
+    model = DocumentoFuncionario
+    form_class = DocumentoFuncionarioForm
+    template_name = 'rrhh/documento_funcionario/nuevo_documento_funcionario.html'
+    success_url = reverse_lazy('rrhh:documentos')
 
 
-class ArchivoDetailView(LoginRequiredMixin, DetailView):
-    model = Archivo
-    template_name = 'rrhh/archivo/detalle_archivo.html'
+class DocumentoFuncionarioDetailView(LoginRequiredMixin, DetailView):
+    model = DocumentoFuncionario
+    template_name = 'rrhh/documento_funcionario/detalle_documento_funcionario.html'
 
 
-class ArchivoUpdateView(LoginRequiredMixin, UpdateView):
-    model = Archivo
-    form_class = ArchivoForm
-    template_name = 'rrhh/archivo/editar_archivo.html'
+class DocumentoFuncionarioUpdateView(LoginRequiredMixin, UpdateView):
+    model = DocumentoFuncionario
+    form_class = DocumentoFuncionarioForm
+    template_name = 'rrhh/documento_funcionario/editar_documento_funcionario.html'
 
     def get_success_url(self):
         return reverse(
-            'rrhh:archivo',
+            'rrhh:documento',
             kwargs={
                 'pk': self.object.pk,
             }
         )
 
-class ArchivoDeleteView(LoginRequiredMixin, DeleteView):
-    model = Archivo
-    success_url = reverse_lazy('rrhh:archivos')
+class DocumentoFuncionarioDeleteView(LoginRequiredMixin, DeleteView):
+    model = DocumentoFuncionario
+    success_url = reverse_lazy('rrhh:documentos')
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
 
 
 class VacacionListView(LoginRequiredMixin, ListView):
-    model = Vacacion
+    model = VacacionFuncionarioColegio
     template_name = 'rrhh/vacacion/listado_vacacion.html'
     search_fields = ['contrato__persona__rut', 'contrato__persona']
     paginate_by = 10
 
 
 class VacacionDetailView(LoginRequiredMixin, DetailView):
-    model = Vacacion
+    model = VacacionFuncionarioColegio
     template_name = 'rrhh/vacacion/detalle_vacacion.html'
 
 
 class VacacionCreateView(LoginRequiredMixin, CreateView):
-    model = Vacacion
-    form_class = VacacionForm
+    model = VacacionFuncionarioColegio
+    form_class = VacacionFuncionarioColegioForm
     template_name = 'rrhh/vacacion/nueva_vacacion.html'
     success_url = reverse_lazy('rrhh:vacaciones')
 
 
 class VacacionUpdateView(LoginRequiredMixin, UpdateView):
-    model = Vacacion
-    form_class = VacacionForm
+    model = VacacionFuncionarioColegio
+    form_class = VacacionFuncionarioColegioForm
     template_name = 'rrhh/vacacion/editar_vacacion.html'
 
     def get_success_url(self):
@@ -209,11 +488,63 @@ class VacacionUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class VacacionDeleteView(LoginRequiredMixin, DeleteView):
-    model = Vacacion
+    model = VacacionFuncionarioColegio
     success_url = reverse_lazy('rrhh:vacaciones')
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
+
+
+@login_required
+@json_view
+def nuevo_vacacion_funcionario(request):
+    """
+        Función para crear un nuevo registro de vacacion a un funcionario
+
+    :param request: Django Request
+    :return: Json
+    """
+    data = {
+        'success': False,
+        'message': u"",
+        'form_html': None
+    }
+
+    if request.method == 'GET':
+        contrato = get_object_or_404(
+            ContratoColegio,
+            id=request.GET.get('contrato', None)
+        )
+        total_dias = request.GET.get('total_dias', None)
+        fecha_inicio = request.GET.get('fecha_inicio', None)
+        fecha_termino = request.GET.get('fecha_termino', None)
+        fecha_retorno = request.GET.get('fecha_retorno', None)
+        total_feriados = request.GET.get('total_feriados', None)
+        dias_pendiente = request.GET.get('dias_pendiente', None)
+        es_pendiente = request.GET.get('es_pendiente', None)
+
+        vacacion = VacacionFuncionarioColegio.objects.create(
+            contrato=contrato,
+            total_dias=total_dias,
+            fecha_inicio=fecha_inicio,
+            fecha_termino=fecha_termino,
+            fecha_retorno=fecha_retorno,
+            total_feriados=total_feriados,
+            dias_pendiente=dias_pendiente,
+            es_pendiente=es_pendiente
+        )
+        data['success'] = True
+        data['message'] = u"la licencia fue agregada exitosamente"
+        data['periodo'] = vacacion.periodo
+        data['total_dias'] = vacacion.total_dias
+        data['dias_pendiente'] = vacacion.dias_pendiente
+        data['fecha_retorno'] = naturalday(vacacion.fecha_retorno)
+        data['total_feriados'] = vacacion.total_feriados
+        data['es_pendiente'] = yesno(vacacion.es_pendiente)
+    else:
+        data['message'] = u"La solicitud debe ser GET"
+
+    return data
 
 
 class TipoLicenciaListView(LoginRequiredMixin, ListView):
@@ -258,7 +589,7 @@ class TipoLicenciaDeleteView(LoginRequiredMixin, DeleteView):
 
 
 class LicenciaListView(LoginRequiredMixin, ListView):
-    model = Licencia
+    model = LicenciaFuncionarioColegio
     template_name = 'rrhh/licencia/listado_licencia.html'
     search_fields = ['contrato__persona', 'contrato__persona_rut']
     paginate_by = 10
@@ -266,20 +597,20 @@ class LicenciaListView(LoginRequiredMixin, ListView):
 
 
 class LicenciaDetailView(LoginRequiredMixin, DetailView):
-    model = Licencia
+    model = LicenciaFuncionarioColegio
     template_name = 'rrhh/licencia/detalle_licencia.html'
 
 
 class LicenciaCreateView(LoginRequiredMixin, CreateView):
-    model = Licencia
-    form_class = LicenciaForm
+    model = LicenciaFuncionarioColegio
+    form_class = LicenciaFuncionarioColegioForm
     template_name = 'rrhh/licencia/nuevo_licencia.html'
     success_url = reverse_lazy('rrhh:licencias')
 
 
 class LicenciaUpdateView(LoginRequiredMixin, UpdateView):
-    model = Licencia
-    form_class = LicenciaForm
+    model = LicenciaFuncionarioColegio
+    form_class = LicenciaFuncionarioColegioForm
     template_name = 'rrhh/licencia/editar_licencia.html'
 
     def get_success_url(self):
@@ -292,7 +623,7 @@ class LicenciaUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class LicenciaDeleteView(LoginRequiredMixin, DeleteView):
-    model = Licencia
+    model = LicenciaFuncionarioColegio
     success_url = reverse_lazy('rrhh:licencias')
 
     def get(self, request, *args, **kwargs):
@@ -314,46 +645,106 @@ def nuevo_licencia_tipo_funcionario(request):
         'form_html': None
     }
 
-    if request.is_ajax():
-        if request.method == 'POST':
-            form = LicenciaTipoFuncionarioForm(request.POST)
-            print(form.is_valid())
-            print(form)
-            if form.is_valid():
-                licencia = form.save()
-                data['success'] = True
-                data['message'] = u"la licencia fue agregada exitosamente"
-                data['tipo_licencia'] = licencia.tipo_licencia.nombre if licencia.tipo_licencia else licencia.tipo_licencia_descripcion
-                data['folio'] = beauty_none(licencia.folio_licencia)
-                data['periodo'] = '{} - {}'.format(
-                    naturalday(licencia.fecha_inicio),
-                    naturalday(licencia.fecha_termino)
-                )
-                data['total_dias'] = licencia.total_dias
-                data['fecha_retorno'] = naturalday(licencia.fecha_retorno)
-                data['total_feriados'] = licencia.total_feriados
-                data['dias_habiles'] = yesno(licencia.dias_habiles)
-            else:
-                form_html = render_crispy_form(
-                    form,
-                    context=csrf(request)
-                )
-                # Formulario con errores
-                data['message'] = u"Complete la información requerida"
-                data['form_html'] = form_html
-        else:
-            data['message'] = u"La solicitud debe ser POST"
+    if request.method == 'GET':
+
+        contrato = get_object_or_404(
+            ContratoColegio,
+            id=request.GET.get('contrato', None)
+        )
+        tipo_licencia_id = request.GET.get('tipo_licencia', None)
+        descripcion = request.GET.get('descripcion', None)
+        folio_licencia = request.GET.get('folio_licencia', None)
+        total_dias = request.GET.get('total_dias', None)
+        fecha_inicio = request.GET.get('fecha_inicio', None)
+        fecha_termino = request.GET.get('fecha_termino', None)
+        fecha_retorno = request.GET.get('fecha_retorno', None)
+        total_feriados = request.GET.get('total_feriados', None)
+        dias_habiles = request.GET.get('dias_habiles', None)
+
+        tipo_licencia = get_object_or_404(
+            TipoLicencia,
+            id=tipo_licencia_id
+        ) if tipo_licencia_id else None
+
+        licencia = LicenciaFuncionarioColegio.objects.create(
+            contrato=contrato,
+            tipo_licencia=tipo_licencia,
+            tipo_licencia_descripcion=descripcion,
+            folio_licencia=folio_licencia,
+            total_dias=total_dias,
+            fecha_inicio=fecha_inicio,
+            fecha_termino=fecha_termino,
+            fecha_retorno=fecha_retorno,
+            total_feriados=total_feriados,
+            dias_habiles=dias_habiles
+        )
+
+        data['success'] = True
+        data['message'] = u"la licencia fue agregada exitosamente"
+        data['tipo_licencia'] = licencia.tipo_licencia.nombre if licencia.tipo_licencia else licencia.tipo_licencia_descripcion
+        data['folio'] = beauty_none(licencia.folio_licencia)
+        data['periodo'] = '{} - {}'.format(
+            naturalday(licencia.fecha_inicio),
+            naturalday(licencia.fecha_termino)
+        )
+        data['total_dias'] = licencia.total_dias
+        data['fecha_retorno'] = naturalday(licencia.fecha_retorno)
+        data['total_feriados'] = licencia.total_feriados
+        data['dias_habiles'] = yesno(licencia.dias_habiles)
+
     else:
-        data['message'] = u"La solicitud debe ser ajax"
+        data['message'] = u"La solicitud debe ser GET"
 
     return data
 
 
+class PermisoListView(LoginRequiredMixin, ListView):
+    model = PermisoFuncionarioColegio
+    template_name = 'rrhh/permiso/listado_permiso.html'
+    search_fields = ['contrato__persona', 'contrato__persona_rut']
+    paginate_by = 10
+    order_by = '-id'
+
+
+class PermisoDetailView(LoginRequiredMixin, DetailView):
+    model = PermisoFuncionarioColegio
+    template_name = 'rrhh/permiso/detalle_permiso.html'
+
+
+class PermisoCreateView(LoginRequiredMixin, CreateView):
+    model = PermisoFuncionarioColegio
+    form_class = PermisoFuncionarioColegioForm
+    template_name = 'rrhh/permiso/nuevo_permiso.html'
+    success_url = reverse_lazy('rrhh:permisos')
+
+
+class PermisoUpdateView(LoginRequiredMixin, UpdateView):
+    model = PermisoFuncionarioColegio
+    form_class = PermisoFuncionarioColegioForm
+    template_name = 'rrhh/permiso/editar_permiso.html'
+
+    def get_success_url(self):
+        return reverse(
+            'rrhh:permiso',
+            kwargs={
+                'pk': self.object.pk,
+            }
+        )
+
+
+class PermisoDeleteView(LoginRequiredMixin, DeleteView):
+    model = PermisoFuncionarioColegio
+    success_url = reverse_lazy('rrhh:permisos')
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+
 @login_required
 @json_view
-def nuevo_vacacion_funcionario(request):
+def nuevo_permiso_tipo_funcionario(request):
     """
-        Función para crear un nuevo registro de vacacion a un funcionario
+        Función para crear un nuevo registro de permiso a un uncionario
 
     :param request: Django Request
     :return: Json
@@ -364,72 +755,110 @@ def nuevo_vacacion_funcionario(request):
         'form_html': None
     }
 
-    if request.is_ajax():
-        if request.method == 'POST':
-            form = VacacionFuncionarioForm(request.POST)
-            print(form.is_valid())
-            print(form)
-            if form.is_valid():
-                vacacion = form.save()
-                data['success'] = True
-                data['message'] = u"la licencia fue agregada exitosamente"
+    if request.method == 'GET':
 
-                data['periodo'] = '{} - {}'.format(
-                    naturalday(vacacion.fecha_inicio),
-                    naturalday(vacacion.fecha_termino)
-                )
-                data['total_dias'] = vacacion.total_dias
-                data['dias_pendiente'] = vacacion.dias_pendiente
-                data['fecha_retorno'] = naturalday(vacacion.fecha_retorno)
-                data['total_feriados'] = vacacion.total_feriados
-                data['es_pendiente'] = yesno(vacacion.es_pendiente)
-            else:
-                form_html = render_crispy_form(
-                    form,
-                    context=csrf(request)
-                )
-                # Formulario con errores
-                data['message'] = u"Complete la información requerida"
-                data['form_html'] = form_html
-        else:
-            data['message'] = u"La solicitud debe ser POST"
+        contrato = get_object_or_404(
+            ContratoColegio,
+            id=request.GET.get('contrato', None)
+        )
+
+        total_dias = request.GET.get('total_dias', None)
+        observaciones = request.GET.get('observaciones', None)
+        fecha_solicitud = request.GET.get('fecha_solicitud', None)
+        fecha_inicio = request.GET.get('fecha_inicio', None)
+        fecha_termino = request.GET.get('fecha_termino', None)
+        fecha_retorno = request.GET.get('fecha_retorno', None)
+        total_feriados = request.GET.get('total_feriados', None)
+        goce_sueldo = request.GET.get('goce_sueldo', None)
+        dias_habiles = request.GET.get('dias_habiles', None)
+        voto = request.GET.get('voto', None)
+        documento = request.GET.get('documento', None)
+
+        permiso = PermisoFuncionarioColegio.objects.create(
+            contrato=contrato,
+            total_dias=total_dias,
+            observaciones=observaciones,
+            fecha_solicitud=fecha_solicitud,
+            fecha_inicio=fecha_inicio,
+            fecha_termino=fecha_termino,
+            fecha_retorno=fecha_retorno,
+            total_feriados=total_feriados,
+            goce_sueldo=goce_sueldo,
+            dias_habiles=dias_habiles,
+            voto=voto,
+            documento=documento
+        )
+        data['success'] = True
+        data['message'] = u"El permiso fue agregada exitosamente"
+        data['observaciones'] = beauty_none(permiso.observaciones)
+        data['periodo'] = permiso.periodo
+        data['total_dias'] = permiso.total_dias
+        data['fecha_retorno'] = naturalday(permiso.fecha_retorno)
+        data['total_feriados'] = permiso.total_feriados
+        data['dias_habiles'] = yesno(permiso.dias_habiles)
+        data['goce_sueldo'] = yesno(permiso.goce_sueldo)
     else:
-        data['message'] = u"La solicitud debe ser ajax"
+        data['message'] = u"La solicitud debe ser GET"
 
     return data
 
 
 class ContratoListView(LoginRequiredMixin, ListView):
-    model = Contrato
+    model = ContratoColegio
     template_name = 'rrhh/contrato/listado_contrato.html'
     search_fields = ['persona__rut', 'persona']
     paginate_by = 10
+    ordering = ['-vigente', 'funcionario']
 
 
 class ContratoDetailView(LoginRequiredMixin, DetailView):
-    model = Contrato
+    model = ContratoColegio
     template_name = 'rrhh/contrato/detalle_contrato.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['lf_form'] = LicenciaTipoFuncionarioForm(initial={'contrato':self})
-        context['vf_form'] = VacacionFuncionarioForm(initial={'contrato':self})
+        context['documentos'] = DOCUMENTO
+        context['doc_form'] = DocumentoPersonalForm(initial={'contrato':self.object.id})
+        context['ec_form'] = EstadoContratacionForm(initial={'contrato':self.object.id})
+        context['pf_form'] = PermisoTipoFuncionarioColegioForm(initial={'contrato':self.object.id })
+        context['lf_form'] = LicenciaTipoFuncionarioColegioForm(initial={'contrato':self.object.id})
+        context['vf_form'] = VacacionTipoFuncionarioColegioForm(initial={'contrato':self.object.id})
         return context
 
 
 class ContratoCreateView(LoginRequiredMixin, CreateView):
-    model = Contrato
-    form_class = ContratoForm
+    model = ContratoColegio
+    form_class = ContratoColegioForm
     template_name = 'rrhh/contrato/nuevo_contrato.html'
-    success_url = reverse_lazy('rrhh:contratos')
+    # success_url = reverse_lazy('rrhh:contratos')
+
+    def get_success_url(self):
+        EstadoContratacion.objects.create(
+            contrato=self.objet,
+            estado=1,
+            observaciones='Se inicia el proceso de contratación',
+            autor=self.request.user
+        )
+        return reverse(
+            'rrhh:contrato',
+            kwargs={
+                'pk': self.object.pk,
+            }
+        )
 
 
 class ContratoUpdateView(LoginRequiredMixin, UpdateView):
-    model = Contrato
-    form_class = ContratoForm
+    model = ContratoColegio
+    form_class = ContratoColegioForm
     template_name = 'rrhh/contrato/editar_contrato.html'
 
     def get_success_url(self):
+        EstadoContratacion.objects.create(
+            contrato=self.objet,
+            estado=1,
+            observaciones='Se vuelve el proceso a inicio, por actualización de los datos',
+            autor=self.request.user
+        )
         return reverse(
             'rrhh:contrato',
             kwargs={
@@ -439,7 +868,7 @@ class ContratoUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class ContratoDeleteView(LoginRequiredMixin, DeleteView):
-    model = Contrato
+    model = ContratoColegio
     success_url = reverse_lazy('rrhh:contratos')
 
     def get(self, request, *args, **kwargs):
@@ -572,13 +1001,13 @@ class IsapreDeleteView(LoginRequiredMixin, DeleteView):
 @login_required
 def nuevo_finiquito(request, id_contrato):
     contrato = get_object_or_404(
-        Contrato,
+        ContratoColegio,
         pk=id_contrato
     )
     context = {}
 
     if request.method == 'POST':
-        form = FiniquitoForm(
+        form = FiniquitoColegioForm(
             request.POST,
             request.FILES,
             id_contrato=contrato.id
@@ -596,7 +1025,7 @@ def nuevo_finiquito(request, id_contrato):
             context['form'] = form
 
     else:
-        form = FiniquitoForm(
+        form = FiniquitoColegioForm(
             initial={
                 'contrato': contrato
             },
@@ -619,7 +1048,7 @@ def nuevo_finiquito(request, id_contrato):
 
 
 class FiniquitoDeleteView(LoginRequiredMixin, DeleteView):
-    model = Finiquito
+    model = FiniquitoColegio
 
     def get_success_url(self):
         return reverse(
@@ -631,3 +1060,460 @@ class FiniquitoDeleteView(LoginRequiredMixin, DeleteView):
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
+
+
+class SolicitudListView(LoginRequiredMixin, ListView):
+    model = Solicitud
+    template_name = 'rrhh/solicitud/listado_solicitud.html'
+    search_fields = ['nombre']
+    paginate_by = 10
+
+
+class SolicitudDetailView(LoginRequiredMixin, DetailView):
+    model = Solicitud
+    template_name = 'rrhh/solicitud/detalle_solicitud.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = EstadoSolicitudForm()
+        return context
+
+
+class SolicitudCreateView(LoginRequiredMixin, CreateView):
+    model = Solicitud
+    form_class = SolicitudForm
+    template_name = 'rrhh/solicitud/nueva_solicitud.html'
+    #success_url = reverse_lazy('rrhh:solicitudes')
+
+    def get_success_url(self):
+        EstadoSolicitud.objects.create(
+            solicitud=self.object,
+            estado=2,
+            observaciones='Se crea la solicitud de contratación',
+            autor=self.request.user
+        )
+        return reverse(
+            'rrhh:solicitud',
+            kwargs={
+                'pk': self.object.pk,
+            }
+        )
+
+
+class SolicitudUpdateView(LoginRequiredMixin, UpdateView):
+    model = Solicitud
+    form_class = SolicitudForm
+    template_name = 'rrhh/solicitud/editar_solicitud.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tipo'] = self.object.get_tipo_display()
+        if self.object.tipo >= 3:
+            context['funcionario'] = 'para {}'.format(self.object.contrato.funcionario)
+        return context
+
+    def get_success_url(self):
+        EstadoSolicitud.objects.create(
+            solicitud=self.object,
+            estado=2,
+            observaciones='Los datos de la solicitud de {}, fueron actualizados'.format(self.object.get_tipo_display()),
+            autor=self.request.user
+        )
+        return reverse(
+            'rrhh:solicitud',
+            kwargs={
+                'pk': self.object.pk,
+            }
+        )
+
+
+class SolicitudDeleteView(LoginRequiredMixin, DeleteView):
+    model = Solicitud
+    success_url = reverse_lazy('rrhh:solicitudes')
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+
+@login_required
+def cambiar_estado_solicitud(request):
+    form = EstadoSolicitudForm(request.POST)
+    if form.is_valid():
+        id_solicitud = request.POST.get('solicitud', None)
+        solicitud = get_object_or_404(
+            Solicitud,
+            id=id_solicitud
+        )
+        estado = request.POST.get('estado', None)
+        voto = request.POST.get('voto', None)
+        observaciones = request.POST.get('observaciones', None)
+
+        texto_inicial = 'Se acepta la solicitud de contratación'
+
+        if estado == '2':
+            texto_inicial = 'Pendiente de aceptación u observaciones'
+        elif estado == '3':
+            texto_inicial = 'Se rechaza la solicitud de contratación'
+        elif estado == '4':
+            texto_inicial = 'En espera de selección de candidatos'
+        elif estado == '5':
+            texto_inicial = 'Pendiente de aprobación'
+        elif estado == '6':
+            texto_inicial = 'Se aprueba la solicitud de {} con {} votos'.format(solicitud.get_tipo_display(), voto)
+
+        observaciones_completo = '{}{} {}'.format(
+            texto_inicial,
+            ', con observaciones: <br>' if observaciones != '' else '',
+            observaciones
+        )
+
+        es = EstadoSolicitud.objects.create(
+            solicitud=solicitud,
+            estado=estado,
+            voto=voto,
+            observaciones=observaciones_completo,
+            autor=request.user
+        )
+        if estado == '1':
+            EstadoSolicitud.objects.create(
+                solicitud=solicitud,
+                estado=4,
+                observaciones='En espera de selección de candidatos',
+                autor=request.user
+            )
+
+        return redirect('rrhh:solicitud', es.solicitud.pk)
+
+    else:
+        pass
+
+
+@login_required
+def seleccionar_candidatos(request, id_solicitud):
+    context = {}
+    postulantes = { p for p in Persona.objects.all() if 'Postulante' in p.clasificacion }
+
+    context['postulantes'] = postulantes
+    context['id_solicitud'] = id_solicitud
+
+    return render(
+        request,
+        'rrhh/solicitud/seleccionar_candidatos.html',
+        context
+    )
+
+
+@login_required
+@json_view
+def guardar_candidato(request):
+    persona = get_object_or_404(
+        Persona,
+        id=request.GET.get('id_persona')
+    )
+    solicitud = get_object_or_404(
+        Solicitud,
+        id=request.GET.get('id_solicitud')
+    )
+    index = request.GET.get('index')
+
+    solicitud.postulantes.add(persona)
+
+    if index == '0' :
+        EstadoSolicitud.objects.create(
+            solicitud=solicitud,
+            estado=5,
+            observaciones='Pendiente de aprobación <br>Candidatos seleccionados',
+            autor=request.user
+        )
+
+    return {'mensaje': 'Todo bien'}
+
+
+@login_required
+def crear_contrato_colegio(request, id_funcionario, id_solicitud):
+    funcionario = get_object_or_404(
+        Funcionario,
+        id=id_funcionario
+    )
+    solicitud = get_object_or_404(
+        Solicitud,
+        id=id_solicitud
+    )
+
+    if solicitud.tipo >= 3:
+        solicitud.contrato.vigente = False
+        solicitud.contrato.save()
+
+    context = crear_contrato_colegio_funcion(
+        request,
+        funcionario,
+        solicitud.colegio,
+        solicitud.categoria,
+        solicitud.tipo_contrato,
+        solicitud.reemplazando_licencia,
+        solicitud.horas,
+        solicitud.fecha_inicio,
+        solicitud.fecha_termino,
+    )
+
+    if context['success']:
+        EstadoSolicitud.objects.create(
+            solicitud=solicitud,
+            estado=7,
+            observaciones='Se aprueba y culmina con el contrato de {} en {}'.format(funcionario, solicitud.colegio),
+            autor=request.user
+        )
+        return redirect('rrhh:contrato', context['contrato'].id)
+
+        if solicitud.tipo >= 3:
+            solicitud.contrato.vigente = True
+            solicitud.contrato.save()
+
+    return render(
+        request,
+        'rrhh/contrato/nuevo_contrato.html',
+        context
+    )
+
+
+@login_required
+def renovar_contrato(request, id_contrato):
+    contrato = get_object_or_404(
+        ContratoColegio,
+        id=id_contrato
+    )
+
+    context = crear_solicitud_funcion(
+        request,
+        3,
+        contrato.colegio,
+        contrato,
+        contrato.categoria,
+        contrato.horas_total,
+        contrato.tipo_contrato,
+        None,
+        contrato.fecha_termino,
+        None,
+        'Renovación de contrato',
+    )
+
+    if context['success']:
+        EstadoSolicitud.objects.create(
+            solicitud=context['solicitud'],
+            estado=2,
+            observaciones='Se crea la solicitud de renovación de contrato',
+            autor=request.user
+        )
+        return redirect('rrhh:solicitud', context['solicitud'].id)
+
+    return render(
+        request,
+        'rrhh/solicitud/nueva_solicitud.html',
+        context
+    )
+
+
+@login_required
+def trasladar_funcionario(request, id_contrato):
+    contrato = get_object_or_404(
+        ContratoColegio,
+        id=id_contrato
+    )
+
+    context = crear_solicitud_funcion(
+        request,
+        4,
+        None,
+        contrato,
+        contrato.categoria,
+        contrato.horas_total,
+        contrato.tipo_contrato,
+        None,
+        contrato.fecha_inicio,
+        contrato.fecha_termino,
+        'Se traslada al Docente',
+    )
+
+    if context['success']:
+        EstadoSolicitud.objects.create(
+            solicitud=context['solicitud'],
+            estado=2,
+            observaciones='Se crea la solicitud de traslado',
+            autor=request.user
+        )
+        return redirect('rrhh:solicitud', context['solicitud'].id)
+
+    return render(
+        request,
+        'rrhh/solicitud/nueva_solicitud.html',
+        context
+    )
+
+
+def crear_solicitud_funcion(
+    request,
+    tipo_solicitud,
+    colegio,
+    contrato,
+    categoria,
+    horas,
+    tipo_contrato,
+    licencia,
+    fecha_inicio,
+    fecha_termino,
+    justificacion,
+):
+
+    context = {
+        'success': False
+    }
+
+    if request.method == 'POST':
+        form = SolicitudForm(request.POST)
+        if form.is_valid():
+            solicitud = form.save()
+
+            context['success'] = True
+            context['solicitud'] = solicitud
+        else:
+            context['form'] = form
+            context['menssge'] = 'El Formulario no es válido'
+
+    else:
+        form = SolicitudForm(
+            initial={
+                'tipo': tipo_solicitud,
+                'colegio': colegio,
+                'contrato': contrato,
+                'categoria': categoria,
+                'horas': horas,
+                'tipo_contrato': tipo_contrato,
+                'remmplazando_licencia': licencia,
+                'fecha_inicio': fecha_inicio,
+                'fecha_termino': fecha_termino,
+                'justificacion': justificacion,
+            }
+        )
+
+        tipos = ['Contratación', 'Contratación de reemplazo', 'Renovación de contrato', 'Traslado']
+        context['form'] = form
+        context['funcionario'] = 'para {}'.format(contrato.funcionario)
+        context['tipo'] = tipos[tipo_solicitud - 1]
+
+    return context
+
+
+def crear_contrato_colegio_funcion(
+    request,
+    funcionario,
+    colegio,
+    categoria,
+    tipo_contrato,
+    licencia,
+    horas_total,
+    fecha_inicio,
+    fecha_termino,
+):
+
+    context = {}
+    context['success'] = False
+
+    if request.method == 'POST':
+        form = ContratoColegioForm(request.POST)
+        if form.is_valid():
+            c = form.save()
+
+            EstadoContratacion.objects.create(
+                contrato=c,
+                estado=1,
+                observaciones='Se inicia el proceso de contratación',
+                autor=request.user
+            )
+            context['success'] = True
+            context['contrato'] = c
+        else:
+            # Formulario con errores
+            context['message'] = u"Complete la información requerida"
+            context['form'] = form
+
+    else:
+        form = ContratoColegioForm(
+            initial={
+                'funcionario': funcionario,
+                'colegio': colegio,
+                'categoria': categoria,
+                'tipo_contrato': tipo_contrato,
+                'reemplazando_licencia': licencia,
+                'horas_total': horas_total,
+                'fecha_inicio': fecha_inicio,
+                'fecha_termino': fecha_termino,
+            },
+        )
+        context['form'] = form
+
+    return context
+
+
+@login_required
+def cambiar_estado_contratacion(request):
+    form = EstadoContratacionForm(request.POST, request.FILES)
+    if form.is_valid():
+        contrato = get_object_or_404(
+            ContratoColegio,
+            pk=request.POST.get('contrato')
+        )
+        estado = request.POST.get('estado')
+        observaciones = request.POST.get('observaciones')
+
+        texto_inicial = 'El Contrato esta listo para ser descargado y firmado'
+
+        if estado == '3':
+            texto_inicial = 'Se debe revisar nuevamente el contrato'
+        elif estado == '4':
+            texto_inicial = 'Se aprueba y firma el contrato'
+            contrato.documento = request.FILES['documento']
+            contrato.vigente = True
+            contrato.save()
+
+        observaciones_completo = '{}{} {}'.format(
+            texto_inicial,
+            ', con observaciones: <br>' if observaciones != '' else '',
+            observaciones
+        )
+
+        EstadoContratacion.objects.create(
+            contrato=contrato,
+            estado=estado,
+            observaciones=observaciones_completo,
+            autor=request.user
+        )
+
+        return redirect('rrhh:contrato', contrato.pk)
+
+    else:
+        print("Todo Mal")
+        print(form.errors)
+
+
+@login_required
+def cargar_documento_personal(request):
+    if request.method == 'POST':
+        form = DocumentoPersonalForm(request.POST, request.FILES)
+        if form.is_valid():
+            contrato = form.cleaned_data['contrato']
+            documento = form.cleaned_data['documento']
+            if 'cargar_1' in request.POST:
+                tipo_documento = 1
+            elif 'cargar_2' in request.POST:
+                tipo_documento = 2
+            elif 'cargar_3' in request.POST:
+                tipo_documento = 3
+            else:
+                tipo_documento = None
+
+            dp = DocumentoPersonal.objects.create(
+                contrato=contrato,
+                tipo_documento=tipo_documento,
+                documento=documento
+            )
+            return redirect('rrhh:contrato', dp.contrato.pk)

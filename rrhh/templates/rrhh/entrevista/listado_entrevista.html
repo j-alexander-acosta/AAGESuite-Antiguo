@@ -7,27 +7,25 @@
 {% endblock %}
 
 {% block content %}
-<div class="card">
+<div class="card" style="margin-top: 80px;">
     <div class="card-header">
         <h4 class="card-title">Entrevistas
-          <a class="btn btn-sm btn-primary pull-right" href="{% url 'rrhh:entrevista__nuevo'%}" role="button">
-	    <span>
-	      Crear Entrevista
-              <i class="fa fa-plus"></i>
+          <a class="btn btn-outline-primary" href="{% url 'rrhh:entrevista__nuevo'%}" role="button">
+	    <span>Crear Entrevista<i class="uil-plus"></i>
 	    </span>
             </a>
         </h4>
-        <h6 class="card-subtitle mb-2 text-muted">Tabla para configuración de entrevistas</h6>
+        <h5 class="card-text mb-2 text-muted">Tabla para configuración de entrevistas</h5>
     </div>
     <div class="card-body">
         <div class="table-responsive">
         <table class="table table-striped">
             <thead>
             <tr>
-                <th><i class="fa fa-user"></i> Entrevistado </th>
-                <th><i class="fa fa-clock-o"></i> Entrevistador </th>
-                <th><i class="fa fa-clock-o"></i> Tipo </th>
-                <th><i class="fa fa-cogs"></i> Acciones </th>
+                <th><i class="uil-user text-muted font-weight-normal"></i> Entrevistado </th>
+                <th><i class="uil-clock text-muted font-weight-normal"></i> Entrevistador </th>
+                <th><i class="uil-clock text-muted font-weight-normal"></i> Tipo </th>
+                <th><i class="mdi mdi-cogs text-muted font-weight-normal"></i> Acciones </th>
             </tr>
             </thead>
             <tbody>
@@ -37,26 +35,26 @@
                     <td> {{ p.entrevistador }} </td>
                     <td> {{ p.get_tipo_display }} </td>
                     <td>
-                        <a class="btn btn-sm btn-primary" href="{% url 'rrhh:entrevista__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
-                        <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_entrevista_{{p.pk}}"><i class="fa fa-trash"></i></a>
+                        <a class="btn btn-outline-primary" href="{% url 'rrhh:entrevista__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
+                        <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_entrevista_{{p.pk}}"><i class="uil-trash-alt"></i></a>
                     </td>
                 </tr>
                 <div class="modal" tabindex="-1" role="dialog" id="eliminar_entrevista_{{p.pk}}">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar un Entrevista</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <h5 class="modal-title alert alert-warning bg-white text-warning" role="alert"><strong>¡Alerta!</strong> Está a punto de eliminar un Entrevista</h5>
+                                <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <div class="modal-body">
+                            <div class="modal-body alert alert-danger bg-white text-danger">
                                 <p>Está seguro que desea eliminar el entrevista "{{ p.nombre }}"?.</p>
                                 <p class="text-muted">Recuerde que eliminará todos los registros asociados a este entrevista.</p>
                             </div>
                             <div class="modal-footer">
-                                <a role="button" class="btn btn-danger" href="{% url 'rrhh:entrevista__eliminar' p.pk %}">Eliminar</a>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                <a role="button" class="btn btn-outline-danger" href="{% url 'rrhh:entrevista__eliminar' p.pk %}">Eliminar</a>
+                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
                     </div>

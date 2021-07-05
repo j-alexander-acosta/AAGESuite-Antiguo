@@ -1,15 +1,31 @@
 {% load staticfiles compress %}
 
 {% compress css %}
-    <!-- Bootstrap core CSS -->
+    <!-- Bootstrap core CSS 
+    {% comment %}
     <link href="{% static 'base/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'base/css/chosen.min.css' %}" rel="stylesheet">
     <link href="{% static 'base/css/bootstrap-chosen.css' %}" rel="stylesheet">
-    <link href="{% static 'insumos/alertifyjs/css/alertify.min.css' %}" rel="stylesheet">
-    <link href="{% static 'insumos/alertifyjs/css/themes/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'base/css/font-awesome.min.css' %}" rel="stylesheet">
     <link href="{% static 'base/pickadate/themes/classic.css' %}" rel="stylesheet">
     <link href="{% static 'base/pickadate/themes/classic.date.css' %}" rel="stylesheet">
     <link href="{% static 'base/css/jumbotron.css' %}" rel="stylesheet">
-    <link href="{% static 'base/css/global.css' %}" rel="stylesheet">
+    <link href="{% static 'base/css/global.css' %}" rel="stylesheet">   
+    {% endcomment %}-->
+
+    <!-- HYPER TEMPLATE -->
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="{% static 'assets/images/favicon.ico'%}">
+
+    <!-- third party css -->
+    <link href="{% static 'assets/css/vendor/jquery-jvectormap-1.2.2.css' %}" rel="stylesheet" type="text/css" />
+    <!-- third party css end -->
+    <link href="{% static 'assets/css/icons.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'assets/css/icons.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'assets/css/app.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'assets/css/app.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'assets/css/app-creative.css' %}" rel="stylesheet" type="text/css" id="light-style" />
+    <link href="{% static 'assets/css/app-creative.min.css' %}" rel="stylesheet" type="text/css" id="light-style" />
+    
+
 {% endcompress %}

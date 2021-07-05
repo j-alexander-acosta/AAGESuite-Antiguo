@@ -1,0 +1,72 @@
+{% extends 'base/base.html' %}
+{% load staticfiles humanize %}
+
+{% block title_page %}
+    Selección de Candidatos
+{% endblock %}
+
+{% block content %}
+
+<div class="card" style="margin-top: 80px;">
+    <div class="card-header">
+        <input type="hidden" id="id_solicitud" value="{{ id_solicitud }}"></input>
+        <h4 class="card-title page-title"><strong>Postulantes</strong></h4>
+        <h6 class="card-subtitle mb-2 text-muted">Seleccione los candidatos para la solicitud</h6>
+    </div>
+    <div class="card-body">
+        {% for p in postulantes %}
+            <div class="row pl-3">
+                <div class="">
+                    <input type="checkbox" id="seleccion" name="seleccion" value="{{ p.id }}"></input>
+                </div>
+                <div class="col-md-2">
+                    {% if p.foto %}
+                    <img class="img-responsive" src="{{ p.foto}}" alt="{{ p.username }}" width="100%">
+                    {% else %}
+                    <img class="img-responsive" src="{% static "base/img/user.png" %}" alt="{{ p.username }}" width="100%">
+                    {% endif %}
+                </div>
+                <a href="{% url 'rrhh:persona' p.id %}" target="_blank" style="color: black;">
+                    <div class="">
+                        <h4>{{ p.get_full_name }}</h4>
+                        <em>
+                            {{ p.profesion }}<br>
+                            email: {{ p.email }}<br>
+                            tel: {{ p.telefono }}
+                        </em>
+                    </div>
+                </a>
+            </div>
+            <br>
+        {% endfor %}
+    </div>
+    <div class="card-footer">
+        <button class="btn btn-outline-success" type="button" id="guardar_candidatos" name="guardar_candidatos">Enviar Candidatos</button>
+        <a href="{{ request.META.HTTP_REFERER }}" role="button" class="btn btn-outline-info">Volver</a>
+    </div>
+ </div>
+
+{% endblock content %}
+
+{% block extra_js %}
+    <script>
+        $(function() {
+            $(document).on('click', '#guardar_candidatos', function() {
+                let id_solicitud = $(document).find('#id_solicitud').val();
+                $(document).find("[id^=seleccion]:checked").each(function(index) {
+                    let id_persona = $(this).val();
+                    console.log(id_persona);
+                    $.get('/rrhh/solicitudes/guardar_candidato/', { index: index, id_persona: id_persona, id_solicitud: id_solicitud }, function(data) {
+                        console.log('ok');
+                    }).fail(function(e) {
+                        console.log(e);
+                    });
+                });
+                let success_url = '/rrhh/solicitudes/id_solicitud/'.replace('id_solicitud', id_solicitud);
+                setTimeout(function(){
+                    document.location.replace(success_url);
+                }, 500);
+            });
+        });
+    </script>
+{% endblock %}

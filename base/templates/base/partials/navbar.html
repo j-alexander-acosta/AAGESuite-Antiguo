@@ -1,7 +1,7 @@
 {% load staticfiles %}
-<nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: #203c53">
+<nav class="navbar navbar-light navbar-expand-lg topnav-menu fixed-top" style="background-color: #ffffff">
     <a class="navbar-brand" href="#">
-        <img src="{% static 'base/img/logotipo.png' %}" height="45" alt="">
+        <img src="{% static 'base/img/logotipo2.png' %}" height="45" alt="">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
@@ -12,100 +12,100 @@
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
                 <a class="nav-link" href="/carga/">
-                    <i class="fa fa-home"></i> Inicio <span class="sr-only">(current)</span>
+                    <i class="uil-home"></i> Inicio <span class="sr-only">(current)</span>
                 </a>
             </li>
             {% if request.user.usuariofuncion.es_departamental %}
                 <li class="nav-item">
                     <a class="nav-link" href="#">
-                        <i class="fa fa-building-o"></i> Mi Fundación</a>
+                        <i class="uil-building"></i> Mi Fundación</a>
                 </li>
             {% elif request.user.usuariofuncion.es_supervisor %}
                 <li class="nav-item">
                     <a class="nav-link" href="#">
-                        <i class="fa fa-building-o"></i> Mis Colegios</a>
+                        <i class="uil-building"></i> Mis Colegios</a>
                 </li>
             {% elif request.user.usuariofuncion.es_dirplac_or_admin %}
                 <li class="nav-item">
                     <a class="nav-link" href="#">
-                        <i class="fa fa-dashboard"></i> Dashboard</a>
+                        <i class="uil-dashboard"></i> Dashboard</a>
                 </li>
             {% endif %}
             <li class="nav-item">
                 <a class="nav-link" href="#">
-                    <i class="fa fa-building-o"></i> Gestión </a>
+                    <i class="uil-building"></i> Gestión </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/carga/">
-                  <i class="fa fa-building-o"></i> Carga Horaria</a>
+                  <i class="uil-building"></i> Carga Horaria</a>
 	    </li>
             <li class="nav-item">
                 <a class="nav-link" href="/rrhh/">
-                  <i class="fa fa-building-o"></i> Recursos Humanos</a>
+                  <i class="uil-building"></i> Recursos Humanos</a>
 	    </li>
             {% if request.user.usuariofuncion.es_supervisor or request.user.usuariofuncion.es_dirplac_or_admin %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#"
                        id="dropdownAdministracion" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-gears"></i> Administración</a>
+                        <i class="dripicons-gear"></i> Administración</a>
                     <div class="dropdown-menu" aria-labelledby="dropdownAdministracion">
                         {% if request.user.usuariofuncion.es_dirplac_or_admin %}
                             <h6 class="dropdown-header">Administración General</h6>
                             <a class="dropdown-item" href="#">
-                                <i class="fa fa-user"></i> Administración de Usuarios</a>
+                                <i class="uil-user"></i> Administración de Usuarios</a>
                             <a class="dropdown-item" href="#">
-                                <i class="fa fa-users"></i> Perfiles de Usuarios</a>
+                                <i class="uil-users"></i> Perfiles de Usuarios</a>
                             <div class="dropdown-divider"></div>
                         {% endif %}
                         <h6 class="dropdown-header">Insumos</h6>
                         <a class="dropdown-item" href="#">
-                            <i class="fa fa-clipboard"></i> Tipos de insumos</a>
+                            <i class="uil-clipboard-alt"></i> Tipos de insumos</a>
                         <a class="dropdown-item" href="#">
-                            <i class="fa fa-list-ul"></i> Insumos</a>
+                            <i class="uil-list-ul"></i> Insumos</a>
                         <a class="dropdown-item" href="#">
-                            <i class="fa fa-hand-o-right"></i> Indicadores</a>
+                            <i class="mdi mdi-hand-pointing-right"></i> Indicadores</a>
                         <a class="dropdown-item" href="#">
-                            <i class="fa fa-puzzle-piece"></i> Estrategias</a>
+                            <i class="mdi mdi-puzzle-piece"></i> Estrategias</a>
                         <div class="dropdown-divider"></div>
                         <h6 class="dropdown-header">Departamentos</h6>
                         <a class="dropdown-item" href="#">
-                            <i class="fa fa-building"></i> Fundaciones</a>
+                            <i class="uil-building"></i> Fundaciones</a>
                         <a class="dropdown-item" href="#">
-                            <i class="fa fa-graduation-cap"></i> Colegios</a>
+                            <i class="uil-graduation-hat"></i> Colegios</a>
                         <a class="dropdown-item" href="#">
-                            <i class="fa fa-building-o"></i> Unidades</a>
+                            <i class="uil-building"></i> Unidades</a>
                         <a class="dropdown-item" href="#">
-                            <i class="fa fa-user-circle-o"></i> Responsables de Unidades</a>
+                            <i class="uil-user-circle-o"></i> Responsables de Unidades</a>
                         <div class="dropdown-divider"></div>
                         <h6 class="dropdown-header">Ciclos de Calidad</h6>
                         <a class="dropdown-item" href="#">
-                            <i class="fa fa-refresh"></i> Ciclos de Calidad</a>
+                            <i class="uil-refresh"></i> Ciclos de Calidad</a>
                         <a class="dropdown-item" href="#">
-                            <i class="fa fa-money"></i> Cuentas</a>
+                            <i class="uil-money-bill"></i> Cuentas</a>
                         <a class="dropdown-item" href="#">
-                            <i class="fa fa-calendar-check-o"></i> Periodos</a>
+                            <i class="mdi mdi-calendar-check"></i> Periodos</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#"
                        id="dropdownAdministracion" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-bar-chart"></i> Reportes</a>
+                        <i class="uil-chart-bar"></i> Reportes</a>
                     <div class="dropdown-menu" aria-labelledby="dropdownAdministracion">
                         <h6 class="dropdown-header">Ciclos de Calidad</h6>
                         <a class="dropdown-item" href="#">
-                            <i class="fa fa-line-chart"></i> Avance en Ciclos de Calidad</a>
+                            <i class="uil-chart-line"></i> Avance en Ciclos de Calidad</a>
                         <a class="dropdown-item" href="#">
-                            <i class="fa fa-money"></i> Reporte por cuentas</a>
+                            <i class="uil-money-bill"></i> Reporte por cuentas</a>
                         <a class="dropdown-item" href="#">
-                            <i class="fa fa-table"></i> Planes de Trabajo de Unidades</a>
+                            <i class="uil-table"></i> Planes de Trabajo de Unidades</a>
                         <a class="dropdown-item" href="#">
-                            <i class="fa fa-building-o"></i> Avance por Unidades</a>
+                            <i class="uil-building"></i> Avance por Unidades</a>
                         <a class="dropdown-item" href="#">
-                            <i class="fa fa-table"></i> Diagrama de Datos</a>
+                            <i class="uil-table"></i> Diagrama de Datos</a>
                         <a class="dropdown-item" href="#">
-                            <i class="fa fa-check-square-o"></i> Evidencia por Unidades</a>
+                            <i class="uil-check-square"></i> Evidencia por Unidades</a>
                         <a class="dropdown-item" href="#">
-                            <i class="fa fa-check"></i> Avance por Nivel de Logro</a>
+                            <i class="uil-check"></i> Avance por Nivel de Logro</a>
                     </div>
                 </li>
             {% endif %}
@@ -116,18 +116,18 @@
                     <a class="nav-link dropdown-toggle" href="#"
                        id="dropdownUsuario" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-institution"></i> {{ request.session.colegio__nombre }}</a>
+                        <i class="mdi mdi-bank"></i> {{ request.session.colegio__nombre }}</a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownUsuario">
                         <a class="dropdown-item" href="{% url 'carga-horaria:switch' %}">
-                            <i class="fa fa-refresh"></i> Cambiar </a>
+                            <i class="uil-refresh"></i> Cambiar </a>
                         <a class="dropdown-item" href="{% url 'carga-horaria:clear' %}">
-                            <i class="fa fa-window-close"></i> Limpiar </a>
+                            <i class="mdi mdi-window-close"></i> Limpiar </a>
                     </div>
                 </li>
             {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'carga-horaria:switch' %}">
-                        <i class="fa fa-check-square"></i> Elegir Colegio</a>
+                        <i class="uil-check-square"></i> Elegir Colegio</a>
                 </li>
             {% endif %}
                 &nbsp;
@@ -135,14 +135,20 @@
                     <a class="nav-link dropdown-toggle" href="#"
                        id="dropdownUsuario" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-calendar"></i> Período {{ request.session.periodo|default:2020 }}</a>
+                        <i class="uil-calendar-alt"></i> Período {{ request.session.periodo|default:2020 }}</a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownUsuario">
                         <a class="dropdown-item" href="{% url 'carga-horaria:switch-periodo' 2020 %}">
-                            <i class="fa fa-refresh"></i> 2020 </a>
+                            <i class="uil-refresh"></i> 2020 </a>
                         <a class="dropdown-item" href="{% url 'carga-horaria:switch-periodo' 2021 %}">
+<<<<<<< HEAD
                             <i class="fa fa-refresh"></i> 2021 </a>
                         <a class="dropdown-item" href="{% url 'carga-horaria:switch-periodo' 2022 %}">
                             <i class="fa fa-refresh"></i> 2022 </a>
+=======
+                            <i class="uil-refresh"></i> 2021 </a>
+                        <a class="dropdown-item" href="{% url 'carga-horaria:switch-periodo' 2022 %}">
+                            <i class="uil-refresh"></i> 2022 </a>
+>>>>>>> 02c345c19d15c9ff740a381e905f95ef309c2645
                     </div>
                 </li>
         </ul>
@@ -152,18 +158,18 @@
                     <a class="nav-link dropdown-toggle" href="#"
                        id="dropdownUsuario" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-user-o"></i> {{ request.user.username }}</a>
+                        <i class="uil-user"></i> {{ request.user.username }}</a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownUsuario">
                         <a class="dropdown-item" href="#">
-                            <i class="fa fa-user-secret"></i> Perfil </a>
+                            <i class="uil-user-secret"></i> Perfil </a>
                         <a class="dropdown-item" href="/admin/logout/?next=/">
-                            <i class="fa fa-sign-out"></i> Cerrar Sesión</a>
+                            <i class="uil-sign-out-alt"></i> Cerrar Sesión</a>
                     </div>
                 </li>
             {% else %}
                 <li class="nav-item">
                     <a href="#">
-                        <i class="fa fa-sign-in"></i> Iniciar Sesión</a>
+                        <i class="uil-sign-in-alt"></i> Iniciar Sesión</a>
                 </li>
             {% endif %}
         </ul>

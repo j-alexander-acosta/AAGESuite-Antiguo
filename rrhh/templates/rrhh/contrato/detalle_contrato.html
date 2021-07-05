@@ -7,22 +7,89 @@
 
 {% block content %}
 
-<div class="card">
-    <div class="card-header {% if not object.vigente %}alert-danger{% endif %}">
-      <h4 class="card-title"><strong>Detalle del Trabajador</strong></h4>
+<div class="card" style="margin-top: 80px;">
+    <div class="card-header
+        {% if object.vigente %}
+            {% if object.dias_termino_contrato <= 120 and object.categoria == 2 %}
+                alert-warning
+            {% elif object.dias_termino_contrato <= 60 %}
+                alert-warning
+            {% endif %}
+        {% elif object.estado_id != 4 %}
+            alert-warning
+        {% else %}
+            alert-danger
+        {% endif%}">
+        <!-- {% if object.vigente and object.dias_termino_contrato < 50 %}
+            alert-warning
+        {% elif not object.vigente %}
+            alert-danger
+        {% endif %}"> -->
+      <h4 class="card-title">
+          <strong>Detalle del Trabajador
+              <small> <span class="badge badge-pill
+                  {% if object.estado_id <= 3 %}
+                      badge-warning
+                  {% else %}
+                      badge-success
+                  {% endif %}"> {{ object.estado }}
+              </span></small>
+          </strong>
+      </h4>
         {% block buttons %}
             <div class="btn-group pull-right">
-                <a href="{% url 'rrhh:contratos' %}" type="button" class="btn btn-sm btn-dark">
-                    <i class="fa fa-arrow-left"> Volver</i>
+                <a href="{% url 'rrhh:contratos' %}" type="button" class="btn btn-outline-info">
+                    <i class="uil-arrow-left"></i> Volver
                 </a>
+                {% if not object.solicitud.set.all %}
+                    {% if object.dias_termino_contrato <= 120 and object.categoria == 2 %}
+                        <a href="{% url 'rrhh:contrato__renovar' object.pk %}" type="button" class="btn btn-outline-success">
+                            <i class="mdi mdi-star"></i> Renovar Contrato
+                        </a>
+                    {% elif object.dias_termino_contrato <= 60 %}
+                        <a href="{% url 'rrhh:contrato__renovar' object.pk %}" type="button" class="btn btn-outline-success">
+                            <i class="mdi mdi-star"></i> Renovar Contrato
+                        </a>
+                    {% endif %}
+                {% endif %}
+
             </div>
         {% endblock %}
         <h6 class="card-subtitle mb-2 text-muted">{{ object }}</h6>
+        {% if object.vigente %}
+            <p class="text-danger">
+            {% if object.solicitudrenovacion.estado == 4 %}
+                El contrato continúa vigente aún cuando la renovación ya se ha realizado
+            {% elif object.dias_termino_contrato <= 120 and object.categoria == 2 %}
+                El contrato expirará en {{ object.dias_termino_contrato }} días
+            {% elif object.dias_termino_contrato <= 60 %}
+                El contrato expirará en {{ object.dias_termino_contrato }} días
+            {% endif %}
+            </p>
+        {% endif %}
+
     </div>
     <div class="card-body">
-        <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="contrato">
                 <a class="nav-link active" id="contrato-tab" data-toggle="tab" href="#contrato" role="tab" aria-controls="contrato" aria-selected="true">Contrato</a>
+            </li>
+            <li class="nav-item" role="historial">
+                <a class="nav-link" id="historial-tab" data-toggle="tab" href="#historial" role="tab" aria-controls="historial" aria-selected="false">Historial de contratación</a>
+            </li>
+            {% if object.estado_id != 4 %}
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Cambiar estado"></a>
+                <div class="dropdown-menu">
+                    {% if object.estado_id == 2 %}<a class="dropdown-item text-warning" id="cec" name="3" href="#"><i class="uil-eye"></i> En revisión</a> {% endif %}
+                    {% if object.estado_id == 3 or object.estado_id == 1 %}<a class="dropdown-item text-warning" id="cec" name="2" href="#"><i class="uil-check-square"></i> Listo para firmar</a> {% endif %}
+                    {% if object.estado_id == 2 %}<a class="dropdown-item text-success" id="cec" name="4" href="#"><i class="uil-check"></i> Cargar contrato firmado</a> {% endif %}
+                </div>
+            {% endif %}
+            <li class="nav-item" role="documento">
+                <a class="nav-link" id="documento-tab" data-toggle="tab" href="#documento" role="tab" aria-controls="documento" aria-selected="false">Documentos</a>
+            </li>
+            <li class="nav-item" role="permiso">
+                <a class="nav-link" id="permiso-tab" data-toggle="tab" href="#permiso" role="tab" aria-controls="permiso" aria-selected="false">Permisos</a>
             </li>
             <li class="nav-item" role="licencia">
                 <a class="nav-link" id="licencia-tab" data-toggle="tab" href="#licencia" role="tab" aria-controls="licencia" aria-selected="false">Licencias</a>
@@ -30,27 +97,35 @@
             <li class="nav-item" role="vacacion">
                 <a class="nav-link" id="vacacion-tab" data-toggle="tab" href="#vacacion" role="tab" aria-controls="vacacion" aria-selected="false">Vacaciones</a>
             </li>
+            {% if object.solicitud_set.all %}
+                <li class="nav-item" role="solicitud">
+                    <a class="nav-link" id="solicitud-tab" data-toggle="tab" href="#solicitud" role="tab" aria-controls="solicitud" aria-selected="false">Solicitudes</a>
+                </li>
+            {% endif %}
         </ul>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="contrato" role="tabpanel" aria-labelledby="contrato-tab">
                 <br>
                 <div class="pmb-block">
                     <div class="pmbb-body">
-                        <p>Información del contrato y finiquito, en caso de existencia, del trabajador.
-                                <button name="eliminar_contrato" type="button" class="btn btn-sm btn-danger pull-right" data-toggle="modal" data-target="#eliminar_contrato_{{object.pk}}" style="cursor: pointer">
-                                    <span><i class="fa fa-trash"></i> Eliminar</span>
-                                </button>
-                                <a href="{% url 'rrhh:contrato__editar' object.pk %}" type="button" class="btn btn-sm btn-primary pull-right">
-                                    <i class="fa fa-edit"> Editar</i>
-                                </a>
-                        </p>
+                        Información del contrato y finiquito, en caso de existencia, del trabajador
+                        <div class="btn-group pull-right" role="group">
+                            <a href="{% url 'rrhh:contrato__editar' object.pk %}" type="button" class="btn btn-outline-primary">
+                                <i class="uil-edit"></i> Editar
+                            </a>
+                            <button name="eliminar_contrato" type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#eliminar_contrato_{{object.pk}}" style="cursor: pointer">
+                                <i class="uil-trash-alt"></i> Eliminar
+                            </button>
+                        </div>
+                        </br>
+                        </br>
                         <div class="pmbb-view">
                             <table class="table table-hover table-sm">
                                 <tbody>
                                 <tr>
                                     <th> Persona </th>
-                                    <td><a href="{% url 'rrhh:persona' object.persona.id %}" data-toggle="tooltip" data-placement="top" title="Ver información de la Persona">
-                                        {{ object.persona }}</a></td>
+                                    <td><a href="{% url 'rrhh:persona' object.funcionario.persona.pk %}" data-toggle="tooltip" data-placement="top" title="Ver información de la Persona">
+                                        {{ object.funcionario }}</a></td>
                                 </tr>
                                 <tr>
                                     <th> Establecimiento </th>
@@ -62,28 +137,27 @@
                                 </tr>
                                 <tr>
                                     <th> Horas contratadas </th>
-                                    <td>  {{ object.horas }}  </td>
+                                    <td>  {{ object.horas_total }}  </td>
                                 </tr>
                                 <tr>
                                     <th> Periodo de contrato </th>
-                                    <td>  {{ object.fecha_inicio|naturalday }} -
-                                        {% if object.tipo_contrato == 1 %}
-                                            Indefinido
-                                        {% else %}
-                                            {{ object.fecha_termino|beauty_none|naturalday }}
-                                        {% endif %}
+                                    <td>  {{ object.periodo_contrato }}
                                     </td>
                                 </tr>
-                                <tr>
-                                    <th> En reemplazo de</th>
-                                    <td> {{ object.reemplazando }} </td>
-                                </tr>
+                                {% if object.tipo_contrato == 3 %}
+                                    <tr>
+                                        <th> En reemplazo de</th>
+                                        <td> {{ object.reemplazando }} </td>
+                                    </tr>
+                                {% endif %}
                                 <tr>
                                     <th>Estado Trabajador</th>
                                     <td> {% if object.vigente %}
                                             <i class="text-success">Contratado</i>
-                                        {% else %}
+                                        {% elif estado_id == 4 %}
                                             <i class="text-danger">Desvinculado</i>
+                                        {% else %}
+                                            <i class="text-warning">En proceso de contratación</i>
                                         {% endif %}
                                     </td>
                                 </tr>
@@ -109,20 +183,20 @@
                                 </tr>
                                 <tr>
                                     <th> Sistema de Salud </th>
-                                    <td>  {{ object.get_salud_display }}
+                                    <td>  {{ object.funcionario.get_salud_display }}
                                         {% if object.salud == 2 %}
-                                            , {{ object.isapre|beauty_none }}
+                                            , {{ object.funcionario.isapre|beauty_none }}
                                         {% endif %}
                                     </td>
                                 </tr>
                                 <tr>
                                     <th> AFP </th>
-                                    <td> {{ object.afp|beauty_none }} </td>
+                                    <td> {{ object.funcionario.afp|beauty_none }} </td>
                                 </tr>
                                 </tbody>
                             </table>
                             <br>
-                            {% if object.finiquito %}
+                            {% if object.finiquitocolegio %}
                                 <h5 class="card-title">Finiquito</h5>
                                 <table class="table table-responsive">
                                     <thead>
@@ -134,23 +208,25 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>{{ object.finiquito.get_razon_baja_display }}</td>
-                                            <td>{{ object.finiquito.descripcion }}</td>
+                                            <td>{{ object.finiquitocolegio.get_razon_baja_display }}</td>
+                                            <td>{{ object.finiquitocolegio.descripcion }}</td>
                                             <td>
-                                                <a class="btn btn-info" href="{{ MEDIA_URL }}{{ object.finiquito.archivo.url }}" target="_blank">
-                                                    <i class="fa fa-download"></i> Descargar</a>
-                                                <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#eliminar_finiquito_{{object.finiquito.pk}}">
-                                                    <i class="fa fa-trash"></i> Eliminar</a>
+                                                {% if object.finiquitocolegio.archivo %}
+                                                    <a class="btn btn-outline-info" href="{{ MEDIA_URL }}{{ object.finiquitocolegio.archivo.url }}" target="_blank">
+                                                        <i class="uil-download-alt"></i> Descargar</a>
+                                                {% endif %}
+                                                <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#eliminar_finiquito_{{object.finiquitocolegio.pk}}">
+                                                    <i class="uil-trash-alt"></i> Eliminar</a>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div class="modal" tabindex="-1" role="dialog" id="eliminar_finiquito_{{object.finiquito.pk}}">
+                                <div class="modal" tabindex="-1" role="dialog" id="eliminar_finiquito_{{object.finiquitocolegio.pk}}">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar El Finiquito de {{ object }}</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <h5 class="modal-title alert alert-warning bg-white text-warning" role="alert"><strong>¡Alerta!</strong> Está a punto de eliminar El Finiquito de {{ object }}</h5>
+                                                <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
@@ -158,8 +234,8 @@
                                                 <p>Está seguro que desea eliminar el Finiquito de "{{ object }}"?.</p>
                                             </div>
                                             <div class="modal-footer">
-                                                <a role="button" class="btn btn-danger" href="{% url 'rrhh:finiquito__eliminar' object.finiquito.pk %}">Eliminar</a>
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                <a role="button" class="btn btn-danger" href="{% url 'rrhh:finiquito__eliminar' object.finiquitocolegio.pk %}">Eliminar</a>
+                                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                                             </div>
                                         </div>
                                     </div>
@@ -169,13 +245,39 @@
                     </div>
                 </div>
             </div>
+            <div class="tab-pane fade" id="historial" role="tabpanel" aria-labelledby="historial-tab">
+                <table class="table table-hover">
+                    <thead>
+                        <th>Estado</th>
+                        <th>Ejecutor</th>
+                        <th>Fecha</th>
+                        <th>Observaciones</th>
+                    </thead>
+                    <tbody>
+                        {% for e in object.estadocontratacion_set.all|dictsortreversed:'id' %}
+                            <tr>
+                                <td><span class="badge badge-pill
+                                    {% if e.estado <= 3 %}
+                                        badge-warning
+                                    {% else %}
+                                        badge-success
+                                    {% endif %}"> {{ e.get_estado_display }} </span>
+                                </td>
+                                <td> {{ e.autor }} </td>
+                                <td> {{ e.fecha }} </td>
+                                <td> {{ e.observaciones|safe|escape }} </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
             <div class="tab-pane fade" id="vacacion" role="tabpanel" aria-labelledby="vacacion-tab">
                 <br>
                 <div class="pmb-block">
                     <div class="pmbb-body">
                         <p>Listado de Vacaciones del funcionario, ordenado del mas reciente al mas antiguo.
-                            <button name="agregar_vacacion" type="button" class="btn btn-sm btn-primary pull-right" data-toggle="modal" data-target="#crear_vacacion">
-                                <span><i class="fa fa-plus"></i> Agregar vacación</span>
+                            <button name="agregar_vacacion" type="button" class="btn btn-outline-primary pull-right" data-toggle="modal" data-target="#crear_vacacion">
+                                <span><i class="uil-plus"></i> Agregar vacación</span>
                             </button>
                         </p>
                         <div class="pmbb-view">
@@ -190,9 +292,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for v in object.vacacion_set.all %}
+                                    {% for v in object.vacacionfuncionariocolegio_set.all|dictsortreversed:"fecha_inicio" %}
                                         <tr>
-                                            <td>{{ v.fecha_inicio|naturalday }} - {{ v.fecha_termino|naturalday }}</td>
+                                            <td>{{ v.periodo }}</td>
                                             <td>{{ v.fecha_retorno|naturalday }}</td>
                                             <td>{{ v.total_dias }}</td>
                                             <td>{{ v.total_feriados }}</td>
@@ -209,13 +311,129 @@
                     </div>
                 </div>
             </div>
+            <div class="tab-pane fade" id="documento" role="tabpanel" aria-labelledby="documento-tab">
+                <br>
+                <div class="pmb-block">
+                    <div class="pmbb-body">
+                        <div class="pmbb-view">
+                            <table class="table table-responsive">
+                                <thead>
+                                    <th>Nombre</th>
+                                    <th>Documento</th>
+                                    <th>Opciones</th>
+                                </thead>
+                                <tbody>
+                                    <tr class="{% if not object.documento %}alert-danger{% endif %}">
+                                        <td>Contrato</td>
+                                        <td>{{ object.documento }}</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi mdi-file-pdf"></i></button>
+                                                {% if object.estado_id == 4 %}<button type="button" id="cec" class="btn btn-outline-success" name="4" title="Actualizar documento" data-toggle="tooltip" data-placement="top"><i class="uil-upload-alt"></i></button> {% endif %}
+                                                {% if object.documento %}
+                                                    <a role="button" class="btn btn-outline-primary" href="{{ media_url }}{{ object.documento }}" name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="right" download><i class="uil-download-alt"></i></a>
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% for d in documentos %}
+                                        {% for dp in object.documentopersonal_set.all %}
+                                            {% if d.0 == dp.tipo_documento %}
+                                                <tr>
+                                                    <td>{{ dp.get_tipo_documento_display }}</td>
+                                                    <td>{{ dp.documento }}</td>
+                                                    <td>
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi mdi-file-pdf"></i></button>
+                                                            <button type="button" class="btn btn-outline-success" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>
+                                                            <a role="button" class="btn btn-outline-primary" href="{{ media_url }}{{ dp.documento }}" download name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="right"><i class="mdi mdi-file-pdf"></i></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            {% else %}
+                                                <tr class="alert-danger">
+                                                    <td>{{ d.1 }}</td>
+                                                    <td>No cargado</td>
+                                                    <td>
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi mdi-file-pdf"></i></button>
+                                                            <button type="button" class="btn btn-outline-success" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>
+                                                            <button type="button" class="btn btn-outline-primary disabled" name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="down"><i class="mdi mdi-file-pdf"></i></button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                        {% empty %}
+                                            <tr class="alert-danger">
+                                                <td>{{ d.1 }}</td>
+                                                <td>No cargado</td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi mdi-file-pdf"></i></button>
+                                                        <button type="button" class="btn btn-outline-success" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>
+                                                        <button type="button" class="btn btn-outline-primary disabled" name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="down"><i class="mdi mdi-file-pdf"></i></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="permiso" role="tabpanel" aria-labelledby="permiso-tab">
+                <br>
+                <div class="pmb-block">
+                    <div class="pmbb-body">
+                        <p>Listado de los Permisos del funcionario, ordenado del mas reciente al mas antiguo.
+                            <button name="agregar_permiso" type="button" class="btn btn-outline-primary pull-right" data-toggle="modal" data-target="#crear_permiso">
+                                <i class="uil-plus"></i> Agregar Permiso
+                            </button>
+                        </p>
+                        <div class="pmbb-view">
+                            <table id="permisos" class="table table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>Observaciones</th>
+                                        <th>Periodo</th>
+                                        <th>Total de días</th>
+                                        <th>Fecha de retorno</th>
+                                        <th>Total feriados</th>
+                                        <th>Son días hábiles</th>
+                                        <th>Goce d esueldo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for l in object.permisofuncionariocolegio_set.all|dictsortreversed:"fecha_inicio" %}
+                                        <tr>
+                                            <td>{{ l.observaciones }}</td>
+                                            <td>{{ l.periodo }}</td>
+                                            <td>{{ l.total_dias }}</td>
+                                            <td>{{ l.fecha_retorno|naturalday }}</td>
+                                            <td>{{ l.total_feriados }}</td>
+                                            <td>{{ l.dias_habiles|yesno }}</td>
+                                            <td>{{ l.goce_sueldo|yesno }}</td>
+                                        </tr>
+                                    {% empty %}
+                                        <tr>
+                                            <td>No existen registros de permisos</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="tab-pane fade" id="licencia" role="tabpanel" aria-labelledby="licencia-tab">
                 <br>
                 <div class="pmb-block">
                     <div class="pmbb-body">
                         <p>Listado de Licencias del funcionario, ordenado del mas reciente al mas antiguo.
-                            <button name="agregar_licencia" type="button" class="btn btn-sm btn-primary pull-right" data-toggle="modal" data-target="#crear_licencia">
-                                <span><i class="fa fa-plus"></i> Agregar licencia</span>
+                            <button name="agregar_licencia" type="button" class="btn btn-outline-primary pull-right" data-toggle="modal" data-target="#crear_licencia">
+                                <span><i class="uil-plus"></i> Agregar licencia</span>
                             </button>
                         </p>
                         <div class="pmbb-view">
@@ -232,12 +450,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for l in object.licencia_set.all|dictsortreversed:"id" %}
+                                    {% for l in object.licenciafuncionariocolegio_set.all|dictsortreversed:"fecha_inicio" %}
                                         <tr>
                                             <td>{% if l.tipo_licencia %} {{ l.tipo_licencia }} {% else %} {{ l.tipo_licencia_descripcion }} {% endif %}</td>
 
                                             <td>{{ l.folio_licencia|beauty_none }}</td>
-                                            <td>{{ l.fecha_inicio|naturalday }} - {{ l.fecha_termino|naturalday }}</td>
+                                            <td>{{ l.periodo }}</td>
                                             <td>{{ l.fecha_retorno|naturalday }}</td>
                                             <td>{{ l.total_dias }}</td>
                                             <td>{{ l.total_feriados }}</td>
@@ -254,6 +472,37 @@
                     </div>
                 </div>
             </div>
+            <div class="tab-pane fade" id="solicitud" role="tabpanel" aria-labelledby="solicitud-tab">
+                <br>
+                <div class="pmb-block">
+                    <div class="pmbb-body">
+                        <div class="pmbb-view">
+                            <table class="table table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>Tipo</th>
+                                        <th>Cargo</th>
+                                        <th>Horas</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for solicitud in object.solicitud_set.all %}
+
+                                        <tr>
+                                            <td><a href="{% url 'rrhh:solicitud' solicitud.id %}">{{ solicitud.get_tipo_display }}</a></td>
+                                            <td>{{ solicitud.cargo }}</td>
+                                            <td>{{ solicitud.horas }}</td>
+                                            <td>{{ solicitud.estado }}</td>
+                                        </tr>
+
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -263,7 +512,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar el registro de Contraton</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -272,9 +521,33 @@
                 <p class="text-muted">Recuerde que eliminará todos los registros asociados a este contrato.</p>
             </div>
             <div class="modal-footer">
-                <a role="button" class="btn btn-danger" href="{% url 'rrhh:contrato__eliminar' object.pk %}">Eliminar</a>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <a role="button" class="btn btn-outline-danger" href="{% url 'rrhh:contrato__eliminar' object.pk %}">Eliminar</a>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="crear_permiso" tabindex="-1" role="dialog" aria-labelledby="crear_permisoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar permiso a {{ object }} </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="permisoForm" class="form-horizontal" action="{% url 'rrhh:permiso_funcionario__nuevo' %}" method="post" enctype="multipart/form-data">
+                <div class="modal-body m-10">
+                    {% csrf_token %}
+                    {% crispy pf_form %}
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-outline-primary">Guardar</button>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -293,7 +566,7 @@
                 <div class="modal-body m-10">
                     <div class="checkbox pull-right">
                         <label for="id_licencia_tipo">
-                            <input type="checkbox" name="licencia_tipo" class="checkboxinput" id="id_licencia_tipo" checked>
+                            <input type="checkbox" name="licencia_tipo" class="checkboxinput" id="id_licencia_tipo">
                             Utilizar licencias tipo
                         </label>
                     </div>
@@ -301,8 +574,8 @@
                     {% crispy lf_form %}
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Guardar</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-outline-primary">Guardar</button>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
             </form>
         </div>
@@ -315,7 +588,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="crear_vacacionLabel">Agregar vacación a {{ object }} </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -325,8 +598,91 @@
                     {% crispy vf_form %}
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Guardar</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-outline-primary">Guardar</button>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="cambiar_estado_renovacion" tabindex="-1" role="dialog" aria-labelledby="cambiar_estado_renovacionLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cambiar_estado_renovacionLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="cambiar_estado_renovacion_form" class="form-horizontal">
+                <div class="modal-body m-10">
+                    <input type="hidden" name="contrato" value="{{ object.id }}"></input>
+                    <input type="hidden" name="estado" value=""></input>
+                    <div id="div_id_observaciones">
+                        <label for="observaciones">Observaciones</label>
+                        <textarea class="form-control" id="observaciones" rows="4"></textarea>
+                    </div>
+                    <div id="div_id_voto">
+                        <label for="voto">Voto</label>
+                        <input type="number" min="1" class="form-control" id="voto">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-outline-primary">Guardar</button>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="cambiar_estado_contratacion">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="form-horizontal" method="post" action="{% url 'rrhh:estado_contratacion__cambiar' %}" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <input type="hidden" name="contrato" value="{{ object.pk }}">
+                    {% crispy ec_form %}
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-outline-success">Guardar</a>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="cargar_documento_personal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title page-title">Cargar documento de funcionario</h4>
+                <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="cargar_documento_form" class="form-horizontal" method="post" action="{% url 'rrhh:personal__cargar_documento' %}" enctype="multipart/form-data">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    {% crispy doc_form %}
+                    <!-- <input type="hidden" name="contrato" value="{{ object.pk }}"> -->
+                    <!-- <div id="div_id_documento">
+                        <label for="documento">Dcoumento</label>
+                        <input type="file" class="form-control" id="documento">
+                    </div> -->
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-outline-success">Guardar</a>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
             </form>
         </div>
@@ -336,117 +692,86 @@
 {% endblock content %}
 
 {% block extra_js %}
-    <script src="{% static 'rrhh/ownscripts/nueva_licencia_funcionario.js' %}"></script>
+    <!-- <script src="{% static 'rrhh/ownscripts/nueva_licencia_funcionario.js' %}"></script> -->
     <script>
-        function cambio_licencia_descripcion(){
-            setTimeout(function(){
-                $(document).find('#div_id_tipo_licencia_descripcion').fadeIn();
-            }, 500);
-            $(document).find('#id_tipo_licencia_descripcion').prop('disabled', false);
-            $(document).find('#div_id_tipo_licencia').fadeOut();
-            $(document).find('#id_tipo_licencia').attr('disabled', true);
-            $(document).find('#id_total_dias').attr('readonly', false);
-            $(document).find('#id_dias_habiles').attr('checked', false);
+        function ocultar_input_fecha_retorno_termino(form){
+            form.find('#id_fecha_termino').attr('readonly', 'true');
+            form.find('#id_fecha_retorno').attr('readonly', 'true');
         }
-        function cambio_tipo_licencia(){
-            $(document).find('#div_id_tipo_licencia_descripcion').fadeOut();
-            $(document).find('#id_tipo_licencia_descripcion').attr('disabled', true);
-            setTimeout(function(){
-                $(document).find('#div_id_tipo_licencia').fadeIn();
-            }, 500);
-            $(document).find('#id_tipo_licencia').prop('disabled', false);
-            $(document).find('#id_total_dias').attr('readonly', 'true');
+        function estado_inicial(){
+            let licenciaform = $(document).find('#licenciaForm');
+            let permisoform = $(document).find('#permisoForm');
+            let vacacionform = $(document).find('#vacacionForm');
+
+            // ocultar_input_fecha_retorno_termino(licenciaform);
+            // ocultar_input_fecha_retorno_termino(permisoform);
+            // ocultar_input_fecha_retorno_termino(vacacionform);
+
             $(document).find('#id_fecha_termino').attr('readonly', 'true');
             $(document).find('#id_fecha_retorno').attr('readonly', 'true');
-            $(document).find('#id_dias_habiles').attr('checked', false);
+
+            cambiar_tipo_licencia(
+                licenciaform.find('#id_licencia_tipo'),
+                licenciaform
+            );
         }
 
-        function revision_campos_obligatorios(form){
-            let fecha_inicio = form.find('#id_fecha_inicio').val();
-            let fecha_termino = form.find('#id_fecha_termino').val();
-            let fecha_retorno = form.find('#id_fecha_retorno').val();
-            let total_dias = form.find('#id_total_dias').val();
-            let opcion = form.find('#id_tipo_licencia_chosen').find('a.chosen-single').find('span').html();
-
-            console.log(opcion);
-            if (fecha_inicio !== '' && fecha_termino !== '' && fecha_retorno !== '' && total_dias !== ''){
-                return true;
+        function cambiar_tipo_licencia(checkbox, form){
+            if (checkbox.is(":checked")) {
+                form.find('#div_id_tipo_licencia_descripcion').fadeOut();
+                form.find('#div_id_tipo_licencia').fadeIn();
+                form.find('#id_total_dias').attr('readonly', 'true');
+            }else{
+                form.find('#div_id_tipo_licencia').fadeOut();
+                form.find('#div_id_tipo_licencia_descripcion').fadeIn();
+                form.find('#id_total_dias').attr('readonly', false);
             }
-
-            return false;
         }
 
-        function calculo_fechas(){
-            let fecha_inicio = $(document).find('#id_fecha_inicio').val();
-            let total_dias = $(document).find('#id_total_dias').val();
+        function calculo_fechas(form){
+            let fecha_inicio = form.find('#id_fecha_inicio').val();
+            let total_dias = form.find('#id_total_dias').val();
+            console.log(total_dias);
             if (fecha_inicio !== '' && total_dias !== ''){
-                let total_feriados = $(document).find('#id_total_feriados').val();
+                let total_feriados = form.find('#id_total_feriados').val();
+                if (total_feriados == ''){
+                    total_feriados = 0;
+                }
                 let fecha_inicio_part = fecha_inicio.split('/');
                 let fecha = new Date(fecha_inicio_part[2] + '/' + fecha_inicio_part[1] + '/' + fecha_inicio_part[0]);
 
                 //let fecha_termino = new Date(fecha_inicial.getFullYear() + '/' + fecha_inicial.getMonth() + '/' + (fecha_inicial.getDate() + parseInt(total_dias) - 1 + parseInt(total_feriados)));
                 fecha.setDate(fecha.getDate() + parseInt(total_dias) - 1 + parseInt(total_feriados));
                 let fecha_string = fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear();
-                $(document).find('#id_fecha_termino').val((fecha_string));
+                form.find('#id_fecha_termino').val((fecha_string));
 
                 //let fecha_retorno = new Date((fecha_termino.getFullYear()) + '/' + fecha_termino.getMonth() + '/' + (fecha_termino.getDate() + 1 ));
                 fecha.setDate(fecha.getDate() + 1);
                 fecha_string = fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear();
-                $(document).find('#id_fecha_retorno').val(fecha_string);
+                form.find('#id_fecha_retorno').val(fecha_string);
             }
         }
 
-        function limpiar_form(form){
-            form.find("#id_tipo_licencia_descripcion").val('');
-            form.find("#id_folio_licencia").val('');
-            form.find("#id_total_dias").val('');
-            form.find("#id_dias_habiles").val('');
-            form.find("#id_fecha_inicio").val('');
-            form.find("#id_total_feriados").val('');
-            form.find("#id_fecha_termino").val('');
-            form.find("#id_fecha_retorno").val('');
+        function formatear_fecha(fecha){
+            fecha_desgloce = fecha.split('/');
+            return fecha_desgloce[2] + '-' + fecha_desgloce[1] + '-' + fecha_desgloce[0]
         }
 
-        //--------------------VACACIONES--------------------------
-        function limpiar_form_vacacion(form){
-            form.find("#id_total_dias").val('');
-            form.find("#id_es_pendiente").val('');
-            form.find("#id_fecha_inicio").val('');
-            form.find("#id_total_feriados").val('');
-            form.find("#id_fecha_termino").val('');
-            form.find("#id_fecha_retorno").val('');
-        }
-
-        function revision_campos_obligatorios_vacacion(form){
-            let fecha_inicio = form.find('#id_fecha_inicio').val();
-            let fecha_termino = form.find('#id_fecha_termino').val();
-            let fecha_retorno = form.find('#id_fecha_retorno').val();
-            let total_dias = form.find('#id_total_dias').val();
-
-            if (fecha_inicio !== '' && fecha_termino !== '' && fecha_retorno !== '' && total_dias !== ''){
-                return true;
-            }
-
-            return false;
-        }
-
-        $(function() {
-            let total_dias = 0, dias_habiles = 0
-
-            cambio_tipo_licencia();
+        $(function(){
+            estado_inicial();
 
             $(document).find('#id_licencia_tipo').on('change', function() {
-                let checkbox = $(this);
-                if (checkbox.is(":checked")) {
-                    cambio_tipo_licencia();
-                }else{
-                    cambio_licencia_descripcion();
-                }
+                cambiar_tipo_licencia(
+                    $(this),
+                    $(this).closest('form')
+                );
             });
 
             $(document).on('change', '#id_tipo_licencia', function() {
-                let opcion = $(document).find('#id_tipo_licencia_chosen').find('a.chosen-single').find('span').html();
+                let form = $(this).closest('form');
+                let opcion = form.find('#id_tipo_licencia_chosen').find('a.chosen-single').find('span').html();
                 try {
+                    console.log(opcion);
                     total_dias = opcion.split('(')[1].split(')')[0].split('-')[0];
                     dias_habiles = opcion.split('(')[1].split(')')[0].split('-')[1];
                 }catch(err){
@@ -455,59 +780,166 @@
                     dias_habiles = 0;
                 }
                 if (dias_habiles == '1') {
-                    $(document).find('#id_dias_habiles').attr('checked', true);
+                    form.find('#id_dias_habiles').attr('checked', true);
                 }else {
-                    $(document).find('#id_dias_habiles').attr('checked', false);
+                    form.find('#id_dias_habiles').attr('checked', false);
                 }
-                $(document).find('#id_total_dias').val(total_dias);
+                form.find('#id_total_dias').val(total_dias);
             });
 
             $(document).on('change', '[id^="id_"]', function() {
-                calculo_fechas();
+                console.log("Calcular Fecha");
+                calculo_fechas($(this).closest('form'));
             });
 
             $(document).on('keyup', '[id^="id_"]', function() {
-                calculo_fechas();
+                calculo_fechas($(this).closest('form'));
+                let fecha_inicio = $(this).closest('form').find('#id_fecha_retorno').val();
+                console.log(fecha_inicio);
             });
+
+            // TODO: Cambiar submit por sentencias $.post enviando las fechas y datos directamente, asi nos aseguramos
+
+            //--------------------LICENCIAS--------------------------
 
             $(document).on('submit', '#licenciaForm', function (e) {
                 e.preventDefault();
                 let form = $(this);
-                if(revision_campos_obligatorios(form)) {
-                    console.log('Si paso');
-                    $.ajax({
-                        type: form.attr('method'),
-                        url: form.attr('action'),
-                        data: form.serialize(),
-                        dataType: 'json',
-                        success: function(data) {
-                            if (!(data['success'])) {
-                                if(data['form_html'] !== null){
-                                    // console.log(data['form_html']);
-                                    form.find('.modal-body').html(data['form_html']);
-                                    // ocultar_inicial();
-                                    // alertify.warning(data['message']);
-                                }
-                            } else {
-                                let tbody = $(document).find("table[id='licencias']").find('tbody');
-                                let nueva_licencia = `<tr>
-                                    <td>${data.tipo_licencia}</td>
-                                    <td><i>${data.folio}</i></td>
-                                    <td>${data.periodo}</td>
-                                    <td>${data.fecha_retorno}</td>
-                                    <td>${data.total_dias}</td>
-                                    <td>${data.total_feriados}</td>
-                                    <td>${data.dias_habiles}</td>
-                                    </tr>`;
-                                tbody.html(nueva_licencia + tbody.html());
-                                // alertify.success(data['message']);
-                                $(document).find("div[class='modal fade show']").modal('hide');
-                                limpiar_form(form);
+                let url = form.attr('action');
+                let contrato = form.find('#id_contrato').val();
+                let tipo_licencia = form.find('#id_tipo_licencia').val();
+                let descripcion = form.find('#id_tipo_licencia_descripcion').val();
+                let folio_licencia = form.find('#id_folio_licencia').val();
+                let total_dias = form.find('#id_total_dias').val();
+                let fecha_inicio = form.find('#id_fecha_inicio').val();
+                let fecha_termino = form.find('#id_fecha_termino').val();
+                let fecha_retorno = form.find('#id_fecha_retorno').val();
+                let total_feriados = form.find('#id_total_feriados').val();
+                let dias_habiles = 0;
+                if (form.find("[id^=id_dias_habiles]").is(':checked')) {
+                    dias_habiles = 1;
+                }
+
+                let licencia_tipo = 0;
+                if (form.find("[id^=id_licencia_tipo]").is(':checked')) {
+                    licencia_tipo = 1;
+                }
+
+                if(licencia_tipo == 1) {
+                    descripcion = '';
+                }else{
+                    tipo_licencia = null;
+                }
+
+                datos = {
+                    contrato: contrato,
+                    tipo_licencia: tipo_licencia,
+                    descripcion: descripcion,
+                    folio_licencia: folio_licencia,
+                    total_dias: total_dias,
+                    fecha_inicio: formatear_fecha(fecha_inicio),
+                    fecha_termino: formatear_fecha(fecha_termino),
+                    fecha_retorno: formatear_fecha(fecha_retorno),
+                    total_feriados: total_feriados,
+                    dias_habiles: dias_habiles
+                }
+
+                if(fecha_inicio) {
+                    $.get(url, datos, function(data) {
+                        if (!(data['success'])) {
+                            if(data['form_html'] !== null){
+                                // console.log(data['form_html']);
+                                form.find('.modal-body').html(data['form_html']);
+                                // ocultar_inicial();
+                                // alertify.warning(data['message']);
                             }
-                        },
-                        error: function (err) {
-                            console.log(err);
-                            // alertify.warning("Ocurrio un error inesperado..");
+                        } else {
+                            let tbody = $(document).find("table[id='licencias']").find('tbody');
+                            let nueva_licencia = `<tr>
+                                <td>${data.tipo_licencia}</td>
+                                <td><i>${data.folio}</i></td>
+                                <td>${data.periodo}</td>
+                                <td>${data.fecha_retorno}</td>
+                                <td>${data.total_dias}</td>
+                                <td>${data.total_feriados}</td>
+                                <td>${data.dias_habiles}</td>
+                                </tr>`;
+                            tbody.html(nueva_licencia + tbody.html());
+                            // alertify.success(data['message']);
+                            $(document).find("div[class='modal fade show']").modal('hide');
+                            limpiar_form(form);
+                        }
+                    });
+                }else{
+                    console.log('Se deben completar todos los campos requeridos');
+                    // alertify.warning("Se deben completar todos los campos requeridos..");
+                }
+            });
+
+            //--------------------PERMISOS--------------------------
+
+            $(document).on('submit', '#permisoForm', function (e) {
+                e.preventDefault();
+                let form = $(this);
+                let url = form.attr('action');
+                let contrato = form.find('#id_contrato').val();
+                let total_dias = form.find('#id_total_dias').val();
+                let observaciones = form.find('#id_observaciones').val();
+                let fecha_solicitud = form.find('#id_fecha_solicitud').val();
+                let fecha_inicio = form.find('#id_fecha_inicio').val();
+                let fecha_termino = form.find('#id_fecha_termino').val();
+                let fecha_retorno = form.find('#id_fecha_retorno').val();
+                let total_feriados = form.find('#id_total_feriados').val();
+                let voto = form.find('#id_voto').val();
+                let documento = form.find('#id_documento').val();
+                let dias_habiles = 0;
+                if (form.find("[id^=id_dias_habiles]").is(':checked')) {
+                    dias_habiles = 1;
+                }
+                let goce_sueldo = 0;
+                if (form.find("[id^=id_goce_sueldo]").is(':checked')) {
+                    goce_sueldo = 1;
+                }
+
+                datos = {
+                    contrato: contrato,
+                    total_dias: total_dias,
+                    observaciones: observaciones,
+                    fecha_solicitud: formatear_fecha(fecha_solicitud),
+                    fecha_inicio: formatear_fecha(fecha_inicio),
+                    fecha_termino: formatear_fecha(fecha_termino),
+                    fecha_retorno: formatear_fecha(fecha_retorno),
+                    total_feriados: total_feriados,
+                    goce_sueldo: goce_sueldo,
+                    dias_habiles: dias_habiles,
+                    voto: voto,
+                    documento: documento
+                }
+
+                if (fecha_inicio) {
+                    $.get(url, datos, function(data) {
+                        if (!(data['success'])) {
+                            if(data['form_html'] !== null){
+                                // console.log(data['form_html']);
+                                form.find('.modal-body').html(data['form_html']);
+                                // ocultar_inicial();
+                                // alertify.warning(data['message']);
+                            }
+                        } else {
+                            let tbody = $(document).find("table[id='permisos']").find('tbody');
+                            let nuevo_permiso = `<tr>
+                                <td>${data.observaciones}</td>
+                                <td><i>${data.periodo}</i></td>
+                                <td>${data.total_dias}</td>
+                                <td>${data.fecha_retorno}</td>
+                                <td>${data.total_feriados}</td>
+                                <td>${data.dias_habiles}</td>
+                                <td>${data.goce_sueldo}}</td>
+                                </tr>`;
+                            tbody.html(nuevo_permiso + tbody.html());
+                            // alertify.success(data['message']);
+                            $(document).find("div[class='modal fade show']").modal('hide');
+                            limpiar_form(form);
                         }
                     });
                 }else{
@@ -521,47 +953,514 @@
             $(document).on('submit', '#vacacionForm', function (e) {
                 e.preventDefault();
                 let form = $(this);
-                if(revision_campos_obligatorios_vacacion(form)) {
-                    console.log('Si paso');
-                    $.ajax({
-                        type: form.attr('method'),
-                        url: form.attr('action'),
-                        data: form.serialize(),
-                        dataType: 'json',
-                        success: function(data) {
-                            if (!(data['success'])) {
-                                if(data['form_html'] !== null){
-                                    // console.log(data['form_html']);
-                                    form.find('.modal-body').html(data['form_html']);
-                                    // ocultar_inicial();
-                                    // alertify.warning(data['message']);
-                                }
-                            } else {
-                                let tbody = $(document).find("table[id='vacaciones']").find('tbody');
-                                let nueva_vacacion = `<tr>
-                                    <td>${data.periodo}</td>
-                                    <td>${data.fecha_retorno}</td>
-                                    <td>${data.total_dias}</td>
-                                    <td>${data.total_feriados}</td>
-                                    <td>${data.es_pendiente}</td>
-                                    </tr>`;
-                                tbody.html(nueva_vacacion + tbody.html());
-                                // alertify.success(data['message']);
-                                $(document).find("div[class='modal fade show']").modal('hide');
-                                limpiar_form_vacacion(form);
+                let url = form.attr('action');
+                let contrato = form.find('#id_contrato').val();
+                let total_dias = form.find('#id_total_dias').val();
+                let fecha_inicio = form.find('#id_fecha_inicio').val();
+                let fecha_termino = form.find('#id_fecha_termino').val();
+                let fecha_retorno = form.find('#id_fecha_retorno').val();
+                let total_feriados = form.find('#id_total_feriados').val();
+                let dias_pendiente = form.find('#id_dias_pendiente').val();
+                let es_pendiente = 0;
+                if (form.find("[id^=id_es_pendiente]").is(':checked')) {
+                    es_pendiente = 1;
+                }
+
+                datos = {
+                    contrato: contrato,
+                    total_dias: total_dias,
+                    fecha_inicio: formatear_fecha(fecha_inicio),
+                    fecha_termino: formatear_fecha(fecha_termino),
+                    fecha_retorno: formatear_fecha(fecha_retorno),
+                    total_feriados: total_feriados,
+                    dias_pendiente: dias_pendiente,
+                    es_pendiente: es_pendiente
+                }
+
+                if (fecha_inicio) {
+                    $.get(url, datos, function(data) {
+                        if (!(data['success'])) {
+                            if(data['form_html'] !== null){
+                                // console.log(data['form_html']);
+                                form.find('.modal-body').html(data['form_html']);
+                                // ocultar_inicial();
+                                // alertify.warning(data['message']);
                             }
-                        },
-                        error: function (err) {
-                            console.log(err);
-                            // alertify.warning("Ocurrio un error inesperado..");
+                        } else {
+                            let tbody = $(document).find("table[id='vacaciones']").find('tbody');
+                            let nueva_vacacion = `<tr>
+                                <td>${data.periodo}</td>
+                                <td>${data.fecha_retorno}</td>
+                                <td>${data.total_dias}</td>
+                                <td>${data.total_feriados}</td>
+                                <td>${data.es_pendiente}</td>
+                                </tr>`;
+                            tbody.html(nueva_vacacion + tbody.html());
+                            // alertify.success(data['message']);
+                            $(document).find("#crear_vacacion").modal('hide');
+                            // limpiar_form_vacacion(form);
                         }
+                    }).fail(function(e){
+                        console.log(e);
                     });
                 }else{
                     console.log('Se deben completar todos los campos requeridos');
-                    // alertify.warning("Se deben completar todos los campos requeridos..");
                 }
             });
 
+            //--------------------ESTADOS--------------------------
+
+            $(document).on('click', '#ces', function(){
+                let opciones = [,
+                    'Marcar la solicitud como pendiente',
+                    'Aceptar la solicitud de renovación',
+                    'Rechazar la solicitud de renovación',
+                    'Pasar a Contrato'
+                ];
+                let modal = $(document).find('#cambiar_estado_renovacion');
+                let opcion = $(this).attr('name');
+                let titulo = opciones[opcion];
+                modal.find('input[name="estado"]').val(opcion);
+                modal.find('.modal-title').html(titulo);
+                if (opcion !== 2) {
+                    modal.find('#div_id_voto').fadeOut();
+                }
+                if (opcion == 4) {
+                    modal.find("#cambiar_estado_renovacion_form").submit();
+                }else{
+                    setTimeout(function(){
+                        modal.find('#div_id_observaciones').fadeIn();
+                    }, 500);
+                }
+                if (opcion == 2) {
+                    setTimeout(function(){
+                        modal.find('#div_id_voto').fadeIn();
+                    }, 500);
+                }
+                if (opcion != 4) {
+                    modal.modal('show');
+                }
+            });
+
+            $(document).on('submit', '#cambiar_estado_renovacion_form', function (e) {
+                e.preventDefault();
+                let form = $(this);
+                let id_contrato = form.find('input[name="contrato"]').val();
+                let estado = form.find('input[name="estado"]').val();
+                let observaciones = form.find('#observaciones').val();
+                let voto = form.find('#voto').val();
+                let url = '/rrhh/contratos/id_contrato/renovar/'.replace('id_contrato', id_contrato);
+
+                $.get(url, {estado: estado, observaciones: observaciones, voto: voto}, function() {
+                    let success_url = '/rrhh/contratos/id_contrato/'.replace('id_contrato', id_contrato);
+                    if (estado == 4){
+                        success_url = '/rrhh/contratos/id_contrato/renovacion/contratar'.replace('id_contrato', id_contrato);
+                    }
+                    setTimeout(function(){
+                        document.location.replace(success_url);
+                    }, 500);
+                }).fail(function(e){
+                    console.log(e);
+                });
+
+            });
+
+            $(document).on('click', '#cec', function(){
+                let opciones = [,,
+                    'Listo para ser firmado',
+                    'Devolver para revisión',
+                    'Cargar contrato firmado'
+                ];
+                let modal = $(document).find('#cambiar_estado_contratacion');
+                let opcion = $(this).attr('name');
+                let titulo = opciones[opcion];
+                modal.find('#id_estado').val(opcion);
+                modal.find('.modal-title').html(titulo);
+                modal.modal('show');
+                if (opcion == '4') {
+                    setTimeout(function(){
+                        modal.find('#div_id_documento').fadeIn();
+                        modal.find('#id_documento').attr('required', true);
+                    }, 500);
+                }else{
+                    setTimeout(function(){
+                        modal.find('#div_id_documento').fadeOut();
+                        modal.find('#id_documento').attr('required', false);
+                    }, 500);
+                }
+            });
+
+            $(document).on('click', 'button[name^="cargar_"]', function(){
+                $(document).find('#cargar_documento_personal').find('button[type="submit"]').attr('name', $(this).attr('name'));
+            });
         });
     </script>
 {% endblock %}
+
+{% comment %}
+function cambio_licencia_descripcion(){
+    setTimeout(function(){
+        $(document).find('#div_id_tipo_licencia_descripcion').fadeIn();
+    }, 500);
+    $(document).find('#id_tipo_licencia_descripcion').prop('disabled', false);
+    $(document).find('#div_id_tipo_licencia').fadeOut();
+    $(document).find('#id_tipo_licencia').attr('disabled', true);
+    $(document).find('#id_total_dias').attr('readonly', false);
+    $(document).find('#id_dias_habiles').prop('checked', false);
+    $(document).find('#id_licencia_tipo').prop('checked', false);
+}
+function cambio_tipo_licencia(){
+    $(document).find('#div_id_tipo_licencia_descripcion').fadeOut();
+    $(document).find('#id_tipo_licencia_descripcion').attr('disabled', true);
+    setTimeout(function(){
+        $(document).find('#div_id_tipo_licencia').fadeIn();
+    }, 500);
+    $(document).find('#id_tipo_licencia').prop('disabled', false);
+    $(document).find('#id_total_dias').attr('readonly', 'true');
+    $(document).find('#id_fecha_termino').attr('readonly', 'true');
+    $(document).find('#id_fecha_retorno').attr('readonly', 'true');
+    $(document).find('#id_dias_habiles').attr('checked', false);
+}
+
+function revision_campos_obligatorios(form){
+    let fecha_inicio = form.find('#id_fecha_inicio').val();
+    let fecha_termino = form.find('#id_fecha_termino').val();
+    let fecha_retorno = form.find('#id_fecha_retorno').val();
+    let total_dias = form.find('#id_total_dias').val();
+    let opcion = form.find('#id_tipo_licencia_chosen').find('a.chosen-single').find('span').html();
+
+    console.log(opcion);
+    if (fecha_inicio !== '' && fecha_termino !== '' && fecha_retorno !== '' && total_dias !== ''){
+        return true;
+    }
+
+    return false;
+}
+
+function calculo_fechas(form){
+    let fecha_inicio = form.find('#id_fecha_inicio').val();
+    let total_dias = form.find('#id_total_dias').val();
+    if (fecha_inicio !== '' && total_dias !== ''){
+        let total_feriados = form.find('#id_total_feriados').val();
+        if (total_feriados == ''){
+            total_feriados = 0;
+        }
+        let fecha_inicio_part = fecha_inicio.split('/');
+        let fecha = new Date(fecha_inicio_part[2] + '/' + fecha_inicio_part[1] + '/' + fecha_inicio_part[0]);
+
+        //let fecha_termino = new Date(fecha_inicial.getFullYear() + '/' + fecha_inicial.getMonth() + '/' + (fecha_inicial.getDate() + parseInt(total_dias) - 1 + parseInt(total_feriados)));
+        fecha.setDate(fecha.getDate() + parseInt(total_dias) - 1 + parseInt(total_feriados));
+        let fecha_string = fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear();
+        form.find('#id_fecha_termino').val((fecha_string));
+
+        //let fecha_retorno = new Date((fecha_termino.getFullYear()) + '/' + fecha_termino.getMonth() + '/' + (fecha_termino.getDate() + 1 ));
+        fecha.setDate(fecha.getDate() + 1);
+        fecha_string = fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear();
+        form.find('#id_fecha_retorno').val(fecha_string);
+    }
+}
+
+function limpiar_form(form){
+    form.find("#id_tipo_licencia_descripcion").val('');
+    form.find("#id_folio_licencia").val('');
+    form.find("#id_total_dias").val('');
+    form.find("#id_dias_habiles").val('');
+    form.find("#id_fecha_inicio").val('');
+    form.find("#id_total_feriados").val('');
+    form.find("#id_fecha_termino").val('');
+    form.find("#id_fecha_retorno").val('');
+}
+
+//--------------------VACACIONES--------------------------
+function limpiar_form_vacacion(form){
+    form.find("#id_total_dias").val('');
+    form.find("#id_es_pendiente").val('');
+    form.find("#id_fecha_inicio").val('');
+    form.find("#id_total_feriados").val('');
+    form.find("#id_fecha_termino").val('');
+    form.find("#id_fecha_retorno").val('');
+}
+
+function revision_campos_obligatorios_vacacion(form){
+    let fecha_inicio = form.find('#id_fecha_inicio').val();
+    let fecha_termino = form.find('#id_fecha_termino').val();
+    let fecha_retorno = form.find('#id_fecha_retorno').val();
+    let total_dias = form.find('#id_total_dias').val();
+
+    if (fecha_inicio !== '' && fecha_termino !== '' && fecha_retorno !== '' && total_dias !== ''){
+        return true;
+    }
+
+    return false;
+}
+
+$(function() {
+    let total_dias = 0, dias_habiles = 0
+
+    cambio_tipo_licencia();
+
+    $('.modal').on('hidden.bs.modal', function () {
+        console.log("SE CIERRA EL MODAL");
+        limpiar_form($(this).find('form'));
+        limpiar_form_vacacion($(this).find('form'));
+        cambio_licencia_descripcion();
+    });
+
+    $(document).find('#id_licencia_tipo').on('change', function() {
+        let checkbox = $(this);
+        if (checkbox.is(":checked")) {
+            cambio_tipo_licencia();
+        }else{
+            cambio_licencia_descripcion();
+        }
+    });
+
+    $(document).on('change', '#id_tipo_licencia', function() {
+        let opcion = $(document).find('#id_tipo_licencia_chosen').find('a.chosen-single').find('span').html();
+        console.log();
+        try {
+            total_dias = opcion.split('(')[1].split(')')[0].split('-')[0];
+            dias_habiles = opcion.split('(')[1].split(')')[0].split('-')[1];
+        }catch(err){
+            console.log(err.message);
+            total_dias = 0;
+            dias_habiles = 0;
+        }
+        if (dias_habiles == '1') {
+            $(document).find('#id_dias_habiles').attr('checked', true);
+        }else {
+            $(document).find('#id_dias_habiles').attr('checked', false);
+        }
+        $(document).find('#id_total_dias').val(total_dias);
+    });
+
+    $(document).on('change', '[id^="id_"]', function() {
+        calculo_fechas($(this).closest('form'));
+    });
+
+    $(document).on('keyup', '[id^="id_"]', function() {
+        calculo_fechas($(this).closest('form'));
+    });
+
+    $(document).on('submit', '#licenciaForm', function (e) {
+        e.preventDefault();
+        let form = $(this);
+        if(revision_campos_obligatorios(form)) {
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: form.serialize(),
+                dataType: 'json',
+                success: function(data) {
+                    if (!(data['success'])) {
+                        if(data['form_html'] !== null){
+                            // console.log(data['form_html']);
+                            form.find('.modal-body').html(data['form_html']);
+                            // ocultar_inicial();
+                            // alertify.warning(data['message']);
+                        }
+                    } else {
+                        let tbody = $(document).find("table[id='licencias']").find('tbody');
+                        let nueva_licencia = `<tr>
+                            <td>${data.tipo_licencia}</td>
+                            <td><i>${data.folio}</i></td>
+                            <td>${data.periodo}</td>
+                            <td>${data.fecha_retorno}</td>
+                            <td>${data.total_dias}</td>
+                            <td>${data.total_feriados}</td>
+                            <td>${data.dias_habiles}</td>
+                            </tr>`;
+                        tbody.html(nueva_licencia + tbody.html());
+                        // alertify.success(data['message']);
+                        $(document).find("div[class='modal fade show']").modal('hide');
+                        limpiar_form(form);
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                    // alertify.warning("Ocurrio un error inesperado..");
+                }
+            });
+        }else{
+            console.log('Se deben completar todos los campos requeridos');
+            // alertify.warning("Se deben completar todos los campos requeridos..");
+        }
+    });
+
+    //--------------------PERMISOS--------------------------
+
+    $(document).on('submit', '#permisoForm', function (e) {
+        e.preventDefault();
+        let form = $(this);
+        if(revision_campos_obligatorios(form)) {
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: form.serialize(),
+                dataType: 'json',
+                success: function(data) {
+                    if (!(data['success'])) {
+                        if(data['form_html'] !== null){
+                            // console.log(data['form_html']);
+                            form.find('.modal-body').html(data['form_html']);
+                            // ocultar_inicial();
+                            // alertify.warning(data['message']);
+                        }
+                    } else {
+                        let tbody = $(document).find("table[id='permisos']").find('tbody');
+                        let nuevo_permiso = `<tr>
+                            <td>${data.observaciones}</td>
+                            <td><i>${data.periodo}</i></td>
+                            <td>${data.total_dias}</td>
+                            <td>${data.fecha_retorno}</td>
+                            <td>${data.total_feriados}</td>
+                            <td>${data.dias_habiles}</td>
+                            <td>${data.goce_sueldo}}</td>
+                            </tr>`;
+                        tbody.html(nuevo_permiso + tbody.html());
+                        // alertify.success(data['message']);
+                        $(document).find("div[class='modal fade show']").modal('hide');
+                        limpiar_form(form);
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                    // alertify.warning("Ocurrio un error inesperado..");
+                }
+            });
+        }else{
+            console.log('Se deben completar todos los campos requeridos');
+            // alertify.warning("Se deben completar todos los campos requeridos..");
+        }
+    });
+
+    //--------------------VACACIONES--------------------------
+
+    $(document).on('submit', '#vacacionForm', function (e) {
+        console.log('Si apreta');
+        e.preventDefault();
+        let form = $(this);
+        if(revision_campos_obligatorios_vacacion(form)) {
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: form.serialize(),
+                dataType: 'json',
+                success: function(data) {
+                    console.log('si paso');
+                    if (!(data['success'])) {
+                        if(data['form_html'] !== null){
+                            // console.log(data['form_html']);
+                            form.find('.modal-body').html(data['form_html']);
+                            // ocultar_inicial();
+                            // alertify.warning(data['message']);
+                        }
+                    } else {
+                        console.log('acaaaaaa');
+                        let tbody = $(document).find("table[id='vacaciones']").find('tbody');
+                        let nueva_vacacion = `<tr>
+                            <td>${data.periodo}</td>
+                            <td>${data.fecha_retorno}</td>
+                            <td>${data.total_dias}</td>
+                            <td>${data.total_feriados}</td>
+                            <td>${data.es_pendiente}</td>
+                            </tr>`;
+                        tbody.html(nueva_vacacion + tbody.html());
+                        // alertify.success(data['message']);
+                        $(document).find("#vacacionform").modal('hide');
+                        limpiar_form_vacacion(form);
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                    // alertify.warning("Ocurrio un error inesperado..");
+                }
+            });
+        }else{
+            console.log('Se deben completar todos los campos requeridos');
+            // alertify.warning("Se deben completar todos los campos requeridos..");
+        }
+    });
+
+    $(document).on('click', '#ces', function(){
+        let opciones = [,
+            'Marcar la solicitud como pendiente',
+            'Aceptar la solicitud de renovación',
+            'Rechazar la solicitud de renovación',
+            'Pasar a Contrato'
+        ];
+        let modal = $(document).find('#cambiar_estado_renovacion');
+        let opcion = $(this).attr('name');
+        let titulo = opciones[opcion];
+        modal.find('input[name="estado"]').val(opcion);
+        modal.find('.modal-title').html(titulo);
+        if (opcion !== 2) {
+            modal.find('#div_id_voto').fadeOut();
+        }
+        if (opcion == 4) {
+            modal.find("#cambiar_estado_renovacion_form").submit();
+        }else{
+            setTimeout(function(){
+                modal.find('#div_id_observaciones').fadeIn();
+            }, 500);
+        }
+        if (opcion == 2) {
+            setTimeout(function(){
+                modal.find('#div_id_voto').fadeIn();
+            }, 500);
+        }
+        if (opcion != 4) {
+            modal.modal('show');
+        }
+    });
+
+    $(document).on('submit', '#cambiar_estado_renovacion_form', function (e) {
+        e.preventDefault();
+        let form = $(this);
+        let id_contrato = form.find('input[name="contrato"]').val();
+        let estado = form.find('input[name="estado"]').val();
+        let observaciones = form.find('#observaciones').val();
+        let voto = form.find('#voto').val();
+        let url = '/rrhh/contratos/id_contrato/renovar/'.replace('id_contrato', id_contrato);
+
+        $.get(url, {estado: estado, observaciones: observaciones, voto: voto}, function() {
+            let success_url = '/rrhh/contratos/id_contrato/'.replace('id_contrato', id_contrato);
+            if (estado == 4){
+                success_url = '/rrhh/contratos/id_contrato/renovacion/contratar'.replace('id_contrato', id_contrato);
+            }
+            setTimeout(function(){
+                document.location.replace(success_url);
+            }, 500);
+        }).fail(function(e){
+            console.log(e);
+        });
+
+    });
+
+    $(document).on('click', '#cec', function(){
+        let opciones = [,,
+            'Listo para ser firmado',
+            'Devolver para revisión',
+            'Cargar contrato firmado'
+        ];
+        let modal = $(document).find('#cambiar_estado_contratacion');
+        let opcion = $(this).attr('name');
+        let titulo = opciones[opcion];
+        modal.find('#id_estado').val(opcion);
+        modal.find('.modal-title').html(titulo);
+        modal.modal('show');
+        if (opcion == '4') {
+            setTimeout(function(){
+                modal.find('#div_id_documento').fadeIn();
+                modal.find('#id_documento').attr('required', true);
+            }, 500);
+        }else{
+            setTimeout(function(){
+                modal.find('#div_id_documento').fadeOut();
+                modal.find('#id_documento').attr('required', false);
+            }, 500);
+        }
+    });
+
+});
+{% endcomment %}

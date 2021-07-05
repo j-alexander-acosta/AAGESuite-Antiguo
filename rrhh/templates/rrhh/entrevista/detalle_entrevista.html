@@ -1,4 +1,4 @@
-{% extends 'base/base.html' %}
+    {% extends 'base/base.html' %}
 {% load staticfiles %}
 
 {% block title_page %}
@@ -12,14 +12,14 @@
       <h4 class="card-title"><strong> {{ object.funcionario }}</strong>
           {% block buttons %}
               <div class="btn-group pull-right">
-                  <a href="{% url 'rrhh:entrevistas' %}" type="button" class="btn btn-sm btn-dark">
-                      <i class="fa fa-arrow-left"></i>
+                  <a href="{% url 'rrhh:entrevistas' %}" type="button" class="btn btn-outline-info">
+                      <i class="uil-arrow-left"></i>
                   </a>
-                  <a href="{% url 'rrhh:entrevista__editar' object.pk %}" type="button" class="btn btn-sm btn-primary">
-                      <i class="fa fa-edit"></i>
+                  <a href="{% url 'rrhh:entrevista__editar' object.pk %}" type="button" class="btn btn-outline-primary">
+                      <i class="uil-edit"></i>
                   </a>
-                  <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_entrevista_{{object.pk}}">
-                      <i class="fa fa-trash"></i>
+                  <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_entrevista_{{object.pk}}">
+                      <i class="uil-trash-alt"></i>
                   </a>
               </div>
           {% endblock %}
@@ -36,7 +36,7 @@
                 <tr>
                     <th colspan="2" class="table-info">
                 <span>
-                    <i class="fa fa-info-circle"></i>
+                    <i class="uil-info-circle"></i>
                      Descripción
                 </span>
                     </th>
@@ -92,7 +92,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar un Entrevista</h5>
+                <h5 class="modal-title alert alert-warning bg-white text-warning" role="alert"><strong>¡Alerta!</strong> Está a punto de eliminar un Entrevista</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

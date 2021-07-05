@@ -1,0 +1,86 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+{% load bootstrap_pagination %}
+
+{% block title_page %}
+    Solicitudes de contrataciones
+{% endblock %}
+
+{% block content %}
+<div class="card" style="margin-top: 80px;">
+    <div class="card-header page-title">
+        <h4 class="card-title">Solicitudes
+            <div class="btn-group pull-right" role="group">
+                <a class="btn btn-outline-primary" href="{% url 'rrhh:solicitud__nuevo'%}" role="button">
+    	             <span> Crear Solicitud <i class="uil-plus"></i></span>
+                </a>
+            </div>
+        </h4>
+        <h6 class="card-subtitle mb-2 text-muted">Tabla para configuración de Solicitudes</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th><i class="uil-user"></i> Cargo </th>
+                    <th><i class="uil-calendar-alt"></i> Colegio </th>
+                    <th><i class="uil-calendar-alt"></i> Tipo </th>
+                    <th><i class="uil-calendar-alt"></i> Estado </th>
+                    <th><i class="uil-clock"></i> Opciones </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for i in object_list %}
+                    <tr>
+                        <td><a href="{% url 'rrhh:solicitud' i.pk %}"> {{ i.cargo }} </a></td>
+                        <td> {{ i.colegio }} </td>
+                        <td> {{ i.get_tipo_display }} </td>
+                        <td><h5><span class="badge badge-pill
+                            {% if i.estado_id == 2 or i.estado_id == 4 or i.estado_id == 5 or i.estado_id == 6 %}
+                                badge-warning
+                            {% elif i.estado_id == 1 or i.estado_id == 7 %}
+                                badge-success
+                            {% else %}
+                                badge-danger
+                            {% endif %}"> {{ i.estado }} </span></h5></td>
+                        <td>
+                            <a class="btn btn-outline-primary" href="{% url 'rrhh:solicitud__editar' i.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
+                            <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_solicitud_{{i.pk}}"><i class="uil-trash-alt"></i></a>
+                        </td>
+                    </tr>
+                    <div class="modal" tabindex="-1" role="dialog" id="eliminar_solicitud_{{i.pk}}">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title alert alert-warning bg-white text-warning" role="alert"><strong>¡Alerta!</strong> Está a punto de eliminar una Solicitud de contratación</h5>
+                                    <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Está seguro que desea eliminar la Solicitud de contratación "{{ i }}"?.</p>
+                                    <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta Solicitud de contratación.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <a role="button" class="btn btn-outline-danger" href="{% url 'rrhh:solicitud__eliminar' i.pk %}">Eliminar</a>
+                                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card-footer">
+        <div align="center">
+            {% bootstrap_paginate page_obj range=5 %}
+        </div>
+    </div>
+
+</div>
+
+{% endblock content  %}

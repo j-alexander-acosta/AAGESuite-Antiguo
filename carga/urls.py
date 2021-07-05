@@ -25,7 +25,7 @@ urlpatterns = [
     url(r'^login/', views.login_view, name='login'),
     url(r'^logout/', views.logout_view, name='logout'),
     url(r'^carga/', include('carga_horaria.urls')),
-#    url(r'^rrhh/', include('rrhh.urls')),
+    url(r'^rrhh/', include('rrhh.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^$', RedirectView.as_view(url='/carga/', permanent=False)),
 ]

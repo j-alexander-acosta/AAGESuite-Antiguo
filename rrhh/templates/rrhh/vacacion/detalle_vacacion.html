@@ -7,19 +7,19 @@
 
 {% block content %}
 
-<div class="card">
+<div class="card" style="margin-top: 80px;">
     <div class="card-header">
       <h4 class="card-title"><strong>Detalle de Vacaciones</strong>
           {% block buttons %}
               <div class="btn-group pull-right">
-                  <a href="{% url 'rrhh:vacaciones' %}" type="button" class="btn btn-sm btn-dark">
-                      <i class="fa fa-arrow-left"></i>
+                  <a href="{% url 'rrhh:vacaciones' %}" type="button" class="btn btn-outline-dark">
+                      <i class="uil-arrow-left"></i>
                   </a>
-                  <a href="{% url 'rrhh:vacacion__editar' object.pk %}" type="button" class="btn btn-sm btn-primary">
-                      <i class="fa fa-edit"></i>
+                  <a href="{% url 'rrhh:vacacion__editar' object.pk %}" type="button" class="btn btn-outline-primary">
+                      <i class="uil-edit"></i>
                   </a>
-                  <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_vacacion_{{object.pk}}">
-                      <i class="fa fa-trash"></i>
+                  <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_vacacion_{{object.pk}}">
+                      <i class="uil-trash"></i>
                   </a>
               </div>
           {% endblock %}
@@ -36,7 +36,7 @@
             </tr>
             <tr>
                 <th> Periodo de vacaciones </th>
-                <td>  {{ object.fecha_inicio|naturalday }} - {{ object.fecha_termino|naturalday }} </td>
+                <td>  {{ object.periodo }} </td>
             </tr>
             <tr>
                 <th> Fecha de retorno </th>
@@ -63,7 +63,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar el registro de Vacación</h5>
+                <h5 class="modal-title alert alert-warning bg-white text-warning" role="alert"><strong>¡Alerta!</strong> Está a punto de eliminar el registro de Vacación</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -74,7 +74,7 @@
             </div>
             <div class="modal-footer">
                 <a role="button" class="btn btn-danger" href="{% url 'rrhh:vacacion__eliminar' object.pk %}">Eliminar</a>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>

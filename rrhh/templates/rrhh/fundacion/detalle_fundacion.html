@@ -1,0 +1,67 @@
+{% extends 'base/base.html' %}
+{% load staticfiles humanize %}
+
+{% block title_page %}
+    Fundación - Detalle
+{% endblock %}
+
+{% block content %}
+
+<div class="card" style="margin-top: 80px;">
+    <div class="card-header">
+      <h4 class="card-title"><strong>Detalle de Fundación</strong>
+          {% block buttons %}
+              <div class="btn-group pull-right">
+                  <a href="{% url 'rrhh:fundaciones' %}" type="button" class="btn btn-outline-dark">
+                      <i class="uil-arrow-left"></i>
+                  </a>
+                  <a href="{% url 'rrhh:fundacion__editar' object.pk %}" type="button" class="btn btn-outline-primary">
+                      <i class="uil-edit"></i>
+                  </a>
+                  <a class="btn btn-outline-info" href="#" data-toggle="modal" data-target="#eliminar_fundacion_{{object.pk}}">
+                      <i class="uil-trash"></i>
+                  </a>
+              </div>
+          {% endblock %}
+        </h4>
+        <h6 class="card-subtitle mb-2 text-muted">{{ object }}</h6>
+
+    </div>
+    <div class="card-body">
+        <table class="table table-hover table-sm">
+            <tbody>
+                <tr>
+                    <th> Nombre </th>
+                    <td>  {{ object.nombre }}  </td>
+                </tr>
+                <tr>
+                    <th> Descripcion </th>
+                    <td>  {% if object.descripcion %} {{ object.descripcion }} {% else %} No hay datos {% endif %}  </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+ </div>
+
+<div class="modal" tabindex="-1" role="dialog" id="eliminar_fundacion_{{object.pk}}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title alert alert-warning bg-white text-warning" role="alert"><strong>¡Alerta!</strong> Está a punto de eliminar la Fundación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Está seguro que desea eliminar la Fundación "{{ object }}"?.</p>
+                <p class="text-muted">Recuerde que eliminará todos los registros asociados a la Fundación.</p>
+            </div>
+            <div class="modal-footer">
+                <a role="button" class="btn btn-outline-info" href="{% url 'rrhh:fundacion__eliminar' object.pk %}">Eliminar</a>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
