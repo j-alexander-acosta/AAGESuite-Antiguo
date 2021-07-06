@@ -12,10 +12,10 @@
       <h4 class="card-title"><strong> {{ object.descripcion }}</strong>
           {% block buttons %}
               <div class="btn-group pull-right">
-                  <a href="{% url 'rrhh:documentos' %}" type="button" class="btn-outline">
+                  <a href="{% url 'rrhh:documentos' %}" type="button" class="btn btn-outline-info">
                       <i class="uil-arrow-left"></i>
                   </a>
-                  <a href="{% url 'rrhh:documento__editar' object.pk %}" type="button" class="btn-outline">
+                  <a href="{% url 'rrhh:documento__editar' object.pk %}" type="button" class="btn btn-outline-primary">
                       <i class="uil-edit"></i>
                   </a>
                   <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_documento_{{object.pk}}">
