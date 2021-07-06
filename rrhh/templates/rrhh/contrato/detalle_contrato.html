@@ -37,23 +37,23 @@
           </strong>
       </h4>
         {% block buttons %}
-            <div class="btn-group pull-right">
-                <a href="{% url 'rrhh:contratos' %}" type="button" class="btn btn-outline-info">
-                    <i class="uil-arrow-left"></i> Volver
-                </a>
-                {% if not object.solicitud.set.all %}
-                    {% if object.dias_termino_contrato <= 120 and object.categoria == 2 %}
-                        <a href="{% url 'rrhh:contrato__renovar' object.pk %}" type="button" class="btn btn-outline-success">
-                            <i class="mdi mdi-star"></i> Renovar Contrato
-                        </a>
-                    {% elif object.dias_termino_contrato <= 60 %}
-                        <a href="{% url 'rrhh:contrato__renovar' object.pk %}" type="button" class="btn btn-outline-success">
-                            <i class="mdi mdi-star"></i> Renovar Contrato
-                        </a>
-                    {% endif %}
+        <div class="btn-group pull-right" style="margin-bottom: 10px;">
+            <a href="{% url 'rrhh:contratos' %}" type="button" class="btn btn-outline-info">
+                <i class="uil-arrow-left"></i> Volver
+            </a>
+            {% if not object.solicitud.set.all %}
+                {% if object.dias_termino_contrato <= 120 and object.categoria == 2 %}
+                    <a href="{% url 'rrhh:contrato__renovar' object.pk %}" type="button" class="btn btn-outline-success">
+                        <i class="mdi mdi-star"></i> Renovar Contrato
+                    </a>
+                {% elif object.dias_termino_contrato <= 60 %}
+                    <a href="{% url 'rrhh:contrato__renovar' object.pk %}" type="button" class="btn btn-outline-success">
+                        <i class="mdi mdi-star"></i> Renovar Contrato
+                    </a>
                 {% endif %}
+            {% endif %}
 
-            </div>
+        </div>
         {% endblock %}
         <h6 class="card-subtitle mb-2 text-muted">{{ object }}</h6>
         {% if object.vigente %}
