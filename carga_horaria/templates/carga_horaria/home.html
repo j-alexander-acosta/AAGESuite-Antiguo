@@ -5,82 +5,77 @@
     Inicio
 {% endblock %}
 
-{% block extra_css %}
-    <style media="screen">
-        body {
-            background: url({% static 'base/img/fondo.jpg' %}) no-repeat center center fixed;
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            background-size: cover;
-        }
-    </style>
-{% endblock %}
-
 {% block content %}
-    <div class="row">
-        <div class="tab-content col-md-12">
-            <div class="tab-pane show active" id="justified-tabs-preview">
-                <div class="card-header">
-                    <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                    <h6><a href="{% url 'carga-horaria:periodos' %}" style="color: #fff;">Confección de Carga Horaria</a></h6>
-                </div>
-            </div>
+    <div class="row" style="margin-top: 80px;">
+        <div class="col-md-4 text-center"></div>
+        <div class="col-md-4 text-center">
+            <a class="btn btn-rounded btn-lg text-white" href="{% url 'carga-horaria:periodos' %}" style="background-color: #3688FC">
+                <h2><i class="mdi mdi-pencil"></i> {{ total_unidades_directivas }} </h2>
+            </a>
+            <h5 class="font-black-normal text-center">Confección de Carga Horaria</h5>
         </div>
     </div>
     <br>
     <div class="row">
-        <div class="col">
-            <div class="card text-white card-inverse bgm-purple text-center">
-                <div class="card-header">
-                    <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                    <h6><a href="{% url 'carga-horaria:colegios' %}" style="color: #fff;">Colegios</a></h6>
-                </div>
-            </div>
+        <div class="col-md-4 text-center">
+            <a class="btn btn-rounded btn-lg text-white" href="{% url 'carga-horaria:colegios' %}" style="background-color: #FF0000">
+                <h2><i class=" uil-bus-school"></i> {{ total_unidades_directivas }} </h2>
+            </a>
+            <h5 class="font-black-normal text-center">Colegios</h5>
         </div>
-        <div class="col">
-            <div class="card text-white card-inverse bgm-{% if request.user.is_superuser %}yellow{% else %}gray{% endif %} text-center">
-                <div class="card-header">
-                    <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                    <h6><a href="{% if request.user.is_superuser %}{% url 'carga-horaria:planes' %}{% else %}#{% endif %}" style="color: #fff;">Planes de Estudio</a></h6>
-                </div>
-            </div>
+
+        <div class="col-md-4 text-center">
+            <a class="btn btn-rounded btn-lg text-white" href="{% if request.user.is_superuser %}{% url 'carga-horaria:planes' %}{% else %}#{% endif %}" style="background-color: #4B0082">
+                <h2><i class="uil-book-open"></i> {{ total_unidades_directivas }} </h2>
+            </a>
+            <h5 class="font-black-normal text-center">Planes de Estudio</h5>
         </div>
-        <div class="col">
+
+        <div class="col-md-4 text-center">
+            <a class="btn btn-rounded btn-lg text-white" href="{% if request.user.is_superuser %}{% url 'carga-horaria:asignaturasbase' %}{% else %}#{% endif %}" style="background-color: #800080">
+                <h2><i class="uil-presentation-edit"></i> {{ total_unidades_directivas }} </h2>
+            </a>
+            <h5 class="font-black-normal text-center">Asignatura Base</h5>
+        </div>
+        <!--<div class="col">
             <div class="card text-white card-inverse bgm-{% if request.user.is_superuser %}lightblue{% else %}gray{% endif %} text-center">
                 <div class="card-header">
                     <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
                     <h6><a href="{% if request.user.is_superuser %}{% url 'carga-horaria:asignaturasbase' %}{% else %}#{% endif %}" style="color: #fff;">Asignatura Base</a></h6>
                 </div>
             </div>
-        </div>
+        </div>-->
     </div>
     <br>
     <div class="row">
-        <div class="col">
-            <div class="card text-white card-inverse bgm-lightgreen text-center">
-                <div class="card-header">
-                    <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                    <h6><a href="{% url 'carga-horaria:profesores' %}" style="color: #fff;">Profesores</a></h6>
-                </div>
-            </div>
+        <div class="col-md-4 text-center">
+            <a class="btn btn-rounded btn-lg text-white" href="{% url 'carga-horaria:profesores' %}" style="background-color: #008080">
+                <h2><i class="uil-user"></i> {{ total_unidades_directivas }} </h2>
+            </a>
+            <h5 class="font-black-normal text-center">Profesores</h5>
         </div>
-        <div class="col">
-            <div class="card text-white card-inverse bgm-green text-center">
-                <div class="card-header">
-                    <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                    <h6><a href="{% url 'carga-horaria:asistentes' %}" style="color: #fff;">Asistentes</a></h6>
-                </div>
-            </div>
+
+        <div class="col-md-4 text-center">
+            <a class="btn btn-rounded btn-lg text-white" href="{% url 'carga-horaria:asistentes' %}" style="background-color: #90EE90">
+                <h2><i class="uil-users-alt"></i> {{ total_unidades_directivas }} </h2>
+            </a>
+            <h5 class="font-black-normal text-center">Asistentes</h5>
         </div>
-        <div class="col">
+
+        <div class="col-md-4 text-center">
+            <a class="btn btn-rounded btn-lg text-white" href="{% ifequal request.user.groups.all.0.name 'boton-reportes' %}https://app.powerbi.com/{% else %}#{% endifequal %}" style="background-color: #3688FC">
+                <h2><i class="uil-notes"></i> {{ total_unidades_directivas }} </h2>
+            </a>
+            <h5 class="font-black-normal text-center">Reportes</h5>
+        </div>
+        <!--<div class="col">
             <div class="card text-white card-inverse bgm-{% ifequal request.user.groups.all.0.name 'boton-reportes' %}teal{% else %}gray{% endifequal %} text-center">
                 <div class="card-header">
                     <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
                     <h6><a href="{% ifequal request.user.groups.all.0.name 'boton-reportes' %}https://app.powerbi.com/{% else %}#{% endifequal %}" target="_blank" style="color: #fff;">Reportes</a></h6>
                 </div>
             </div>
-        </div>
+        </div>-->
     </div>
     <br>
 
