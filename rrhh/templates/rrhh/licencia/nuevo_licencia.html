@@ -2,7 +2,26 @@
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 
+{% block extra_js %}
+<script>
 
+    
+    focusMethod = function getFocus() {
+        document.getElementById("id_total_dias").focus();
+        document.getElementById("id_fecha_inicio").focus();
+    }
+
+    sumaFecha = function(dias, fecha)
+        {
+            var fecha = new Date($('#id_fecha_inicio').val());
+            var dias = $('#id_total_dias').val();
+            var sum = fecha.setDate(fecha.getDate() + dias);
+            $('#id_tipo_licencia_descripcion').val(sum);
+            //id_fecha_termino
+        }
+
+</script>
+{% endblock %}
 {% block content %}
 <div class="card" style="margin-top: 80px;">
     <div class="card-header">
