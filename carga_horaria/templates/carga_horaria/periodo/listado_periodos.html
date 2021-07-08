@@ -9,13 +9,12 @@
 {% block content %}
 <div class="card" style="margin-top: 80px;">
     <div class="card-header">
-        <h4 class="card-title">Cursos 
-          <a class="btn btn-sm btn-primary pull-right" href="{% url 'carga-horaria:periodo__nuevo'%}" role="button">
-	    <span>
-	      Crear Curso
-              <i class="fa fa-plus"></i>
-	    </span>
-            </a>
+        <h4 class="card-title">Cursos
+            <div class="btn-group pull-right" role="group"></div>
+                <a class="btn btn-outline-primary" href="{% url 'carga-horaria:periodo__nuevo'%}" role="button">
+	                <span>Crear Curso <i class="uil-plus"></i></span>
+                </a>
+            </div>
         </h4>
     </div>
     <div class="card-body">

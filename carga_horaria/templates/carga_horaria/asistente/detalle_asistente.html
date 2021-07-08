@@ -8,22 +8,22 @@
 
 {% block content %}
 
-<div class="card">
+<div class="card" style="margin-top: 80px;">
     <div class="card-header">
       <h4 class="card-title"><strong> {{ object.nombre }}</strong>
           {% block buttons %}
               <div class="btn-group pull-right">
-                  <a href="{% url 'carga-horaria:asistentes' %}" type="button" class="btn btn-sm btn-dark">
-                      <i class="fa fa-arrow-left"></i>
+                  <a href="{% url 'carga-horaria:asistentes' %}" type="button" class="btn btn-outline-dark">
+                      <i class="uil-arrow-left"></i>
                   </a>
                   <a href="{% url 'carga-horaria:asistente__anexo' object.pk %}" type="button" class="btn btn-sm btn-success">
                       <i class="fa fa-handshake-o"></i>
                   </a>
-                  <a href="{% url 'carga-horaria:asistente__editar' object.pk %}" type="button" class="btn btn-sm btn-primary">
-                      <i class="fa fa-edit"></i>
+                  <a href="{% url 'carga-horaria:asistente__editar' object.pk %}" type="button" class="btn btn-outline-primary">
+                      <i class="uil-edit"></i>
                   </a>
-                  <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asistente_{{object.pk}}">
-                      <i class="fa fa-trash"></i>
+                  <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_asistente_{{object.pk}}">
+                      <i class="uil-trash-alt"></i>
                   </a>
               </div>
           {% endblock %}
