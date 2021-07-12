@@ -591,9 +591,16 @@ class ContratoColegioForm(forms.ModelForm):
         self.fields['funcion_secundaria'].widget.attrs['class'] = 'chosen'
         self.fields['tipo_contrato'].widget.attrs['class'] = 'chosen'
         self.fields['reemplazando_licencia'].widget.attrs['class'] = 'chosen'
-        self.fields['fecha_inicio'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
+        self.fields['fecha_inicio'] = forms.DateField(
+            widget=forms.widgets.DateInput(attrs={'type': 'date'}),
+            input_formats=['%Y-%m-%d']
+        )
         self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
-        self.fields['fecha_termino'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
+        self.fields['fecha_termino'] = forms.DateField(
+            widget=forms.widgets.DateInput(attrs={'type': 'date'}),
+            input_formats=['%Y-%m-%d'],
+            required=False
+        )
         self.fields['fecha_termino'].widget.attrs['class'] = 'datepicker'
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -800,7 +807,7 @@ class SolicitudForm(forms.ModelForm):
         super(SolicitudForm, self).__init__(*args, **kwargs)
         self.fields['fecha_inicio'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
-        self.fields['fecha_termino'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
+        self.fields['fecha_termino'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'], required=False)
         self.fields['fecha_termino'].widget.attrs['class'] = 'datepicker'
         self.fields['colegio'].widget.attrs['class'] = 'chosen'
         self.fields['categoria'].widget.attrs['class'] = 'chosen'

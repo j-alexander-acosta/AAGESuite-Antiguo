@@ -174,19 +174,25 @@ class FiniquitoColegio(models.Model):
 
 class VacacionFuncionarioColegio(models.Model):
     contrato = models.ForeignKey('ContratoColegio', on_delete=models.CASCADE)
+    anio_vacacion = models.PositiveIntegerField(max_length=4, default=0)
     total_dias = models.IntegerField(verbose_name='Total de días de vacaciones')
     fecha_inicio = models.DateField(verbose_name='Fecha de inicio')
     total_feriados = models.IntegerField(default=0, verbose_name='Total de feriados en el periodo de vacaciones')
     fecha_termino = models.DateField(null=True, blank=True, verbose_name='Fecha de término')
     fecha_retorno = models.DateField(null=True, blank=True, verbose_name='Fecha de retorno')
-    dias_pendiente = models.IntegerField(default=0, verbose_name='Días pendientes')
     es_pendiente = models.BooleanField(default=False, verbose_name='Corresponde a vacaciones pendientes')
 
-    def __str__(self):
-        return '{}, {}'.format(
-            self.contrato,
-            self.fecha_inicio
-        )
+    @property
+    def dias_correspondientes(self):
+        # TODO crear funcion dias correspondientes, apartir de la antiguedad del funcionario
+        dias = 0
+        return dias
+
+    @property
+    def dias_pendientes(self):
+        dias = 0
+
+        return dias
 
     @property
     def periodo(self):
@@ -195,15 +201,32 @@ class VacacionFuncionarioColegio(models.Model):
             humanize.naturalday(self.fecha_termino)
         )
 
+    def __str__(self):
+        return '{}, {}'.format(
+            self.contrato,
+            self.fecha_inicio
+        )
+
     class Meta:
         verbose_name = u'Vacación de empleado de colegio'
         verbose_name_plural = u'Vacaciones de empleados de colegios'
 
-    @property
-    def dias_correspondientes(self):
-        # TODO crear funcion dias correspondientes, apartir de la antiguedad del funcionario
-        dias = 0
-        return dias
+
+class DiasPendientesVacacion(models.Model):
+    anio_vacacion = models.PositiveIntegerField(max_length=4)
+    vacacion_funcionario = models.ForeignKey("VacacionFuncionarioColegio", on_delete=models.CASCADE)
+    dias_pendientes = models.PositiveIntegerField(max_length=2, default=0)
+
+    def __str__(self):
+        return '{} / {} / {}'.format(
+            self.anio_vacacion,
+            self.vacacion_funcionario,
+            self.dias_pendientes
+        )
+
+    class Meta:
+        verbose_name = u'Dias pendientes de vacación'
+        verbose_name_plural = u'Dias pendinetes de vacaciones'
 
 
 class LicenciaFuncionarioColegio(models.Model):
