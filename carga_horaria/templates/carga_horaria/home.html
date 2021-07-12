@@ -66,18 +66,10 @@
         </div>
 
         <div class="col-md-4 text-center">
-            <a class="btn btn-rounded btn-lg text-white" href="{% ifequal request.user.groups.all.0.name 'boton-reportes' %}https://app.powerbi.com/{% else %}#{% endifequal %}" style="background-color: #3688FC">
+            <a class="btn btn-rounded btn-lg text-white" href="https://app.powerbi.com/" style="background-color: #3688FC">
                 <h2><i class="uil-notes"></i> {{ total_unidades_directivas }} </h2>
             </a>
             <h5 class="font-black-normal text-center">Reportes</h5>
-        </div>
-        <div class="col">
-            <div class="card text-white card-inverse bgm-{% ifequal request.user.groups.all.0.name 'boton-reportes' %}teal{% else %}gray{% endifequal %} text-center">
-                <div class="card-header">
-                    <h2><i class="fa fa-institution"></i> {{ total_unidades_directivas }} </h2>
-                    <h6><a href="{% ifequal request.user.groups.all.0.name 'boton-reportes' %}https://app.powerbi.com/{% else %}#{% endifequal %}" target="_blank" style="color: #fff;">Reportes</a></h6>
-                </div>
-            </div>
         </div>
     </div>
     <br>
