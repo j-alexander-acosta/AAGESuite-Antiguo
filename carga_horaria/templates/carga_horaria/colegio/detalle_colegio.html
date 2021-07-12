@@ -13,10 +13,10 @@
 
         {% block buttons %}
             <div class="btn-group pull-right">
-                <a href="{% url 'carga-horaria:colegios' %}" type="button" class="btn btn-outline-dark">
+                <a href="{% url 'carga-horaria:colegios' %}" type="button" class="btn btn-outline-dark" data-toggle="tooltip" data-placement="top" title="Volver">
                     <i class="uil-arrow-left"></i>
                 </a>
-                <a href="{% url 'carga-horaria:colegio__editar' object.pk %}" type="button" class="btn btn-outline-primary">
+                <a href="{% url 'carga-horaria:colegio__editar' object.pk %}" type="button" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Editar">
                       <i class="uil-edit"></i>
                 </a>
                 {% if request.user.is_superuser %}

@@ -19,15 +19,15 @@
         
         {% block buttons %}
             <div class="btn-group pull-right">
-                <a href="{% url 'carga-horaria:periodos' %}" type="button" class="btn btn-sm btn-dark">
-                    <i class="fa fa-arrow-left"></i>
+                <a href="{% url 'carga-horaria:periodos' %}" type="button" class="btn btn-outline-dark" data-toggle="tooltip" data-placement="top" title="Volver">
+                    <i class="uil-arrow-left"></i>
                 </a>
-                <a href="{% url 'carga-horaria:periodo__editar' object.pk %}" type="button" class="btn btn-sm btn-primary">
-                      <i class="fa fa-edit"></i>
+                <a href="{% url 'carga-horaria:periodo__editar' object.pk %}" type="button" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Editar">
+                      <i class="uil-edit"></i>
                 </a>
                 {% if request.user.is_superuser %}
-                  <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_periodo_{{object.pk}}">
-                      <i class="fa fa-trash"></i>
+                  <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_periodo_{{object.pk}}" title="Eliminar">
+                      <i class="uil-trash"></i>
                   </a>
                   {% endif %}
             </div>
@@ -44,29 +44,29 @@
         <div class="row">
         <div class="col-md-12">
       <div class="pull-right" style="padding-bottom: 10px;">
-        <a class="btn btn-sm btn-default" href="{% url 'carga-horaria:periodo-pdf' pk=object.pk %}"><i class="fa fa-print"></i> Imprimir</a>
+        <a class="btn btn-outline-default" href="{% url 'carga-horaria:periodo-pdf' pk=object.pk %}"><i class="uil-print"></i> Imprimir</a>
       </div>
             <table class="table table-hover table-sm">
                 <thead>
                 <tr>
                     <th colspan="6" class="table-info">
                 <span>
-                    <i class="fa fa-info-circle"></i>
+                    <i class="uil-info-circle"></i>
 		    Asignaturas
                 </span>
 
-		<a class="btn btn-sm btn-warning float-right" style="margin-left: 20px;" href="{% url 'carga-horaria:asignatura_maybe' object.pk %}" role="button">
+		<a class="btn btn-outline-warning float-right" style="margin-left: 20px;" href="{% url 'carga-horaria:asignatura_maybe' object.pk %}" role="button">
 		  <span>
 		    Añadir Asignatura
-                    <i class="fa fa-plus"></i>
+                    <i class="uil-plus"></i>
 		  </span>
 		</a>
 
                 {% if object.can_dif %}
-		<a class="btn btn-sm btn-info float-right" href="{% url 'carga-horaria:asignatura_dif__nuevo' object.pk %}" role="button">
+		<a class="btn btn-outline-info float-right" href="{% url 'carga-horaria:asignatura_dif__nuevo' object.pk %}" role="button">
 		  <span>
 		    Crear Asignatura Plan Diferenciado
-                    <i class="fa fa-plus"></i>
+                    <i class="uil-plus"></i>
 		  </span>
 		</a>
                 {% endif %}
@@ -92,12 +92,12 @@
                     <td>  {% for p in a.profesores %}<a href="{% url 'carga-horaria:profesor' p.pk %}">{{ p }} ({{ p.horas_disponibles|decimal_maybe }}) </a>{% endfor %}  </td>
                   <td>  <a href="{% url 'carga-horaria:asignar' a.pk object.pk %}">Asignar</a>{% if not a.base %} | {% endif %}
 
-                    {% if a.asignacion_set.count %}<a class="btn btn-sm btn-warning" href="{% url 'carga-horaria:asignatura__limpiar' a.pk object.pk %}">
-                      <i class="fa fa-close"></i>
+                    {% if a.asignacion_set.count %}<a class="btn btn-outline-warning" href="{% url 'carga-horaria:asignatura__limpiar' a.pk object.pk %}">
+                      <i class="uil-shutter"></i>
                     </a>{% endif %}
                     
-                    {% if not a.base %}<a class="btn btn-sm btn-danger" href="{% url 'carga-horaria:asignatura__eliminar' a.pk object.pk %}" onclick="return confirm('¿Está seguro de eliminar {{ a }}?')">
-                      <i class="fa fa-trash"></i>
+                    {% if not a.base %}<a class="btn btn-outline-danger" href="{% url 'carga-horaria:asignatura__eliminar' a.pk object.pk %}" onclick="return confirm('¿Está seguro de eliminar {{ a }}?')">
+                      <i class="uil-trash"></i>
                     </a>{% endif %}
 		  </td>
                   </tr>
@@ -109,8 +109,8 @@
                     <td>  {{ a.horas_asignadas|decimal_maybe }}  </td>
                     <td>  {{ a.horas_disponibles|decimal_maybe }}  </td>
                     <td>  {% for p in a.profesores %}<a href="{% url 'carga-horaria:profesor' p.pk %}">{{ p }} ({{ p.horas_disponibles|decimal_maybe }}) </a>{% endfor %}  </td>
-                  <td>  <a href="{% url 'carga-horaria:asignar' a.pk object.pk %}">Asignar</a>{% if not a.base %} | {% endif %}{% if not a.base %}<a class="btn btn-sm btn-danger" href="{% url 'carga-horaria:asignatura__eliminar' a.pk object.pk %}" onclick="return confirm('¿Está seguro de eliminar {{ a }}?')">
-                      <i class="fa fa-trash"></i>
+                  <td>  <a href="{% url 'carga-horaria:asignar' a.pk object.pk %}">Asignar</a>{% if not a.base %} | {% endif %}{% if not a.base %}<a class="btn btn-outline-danger" href="{% url 'carga-horaria:asignatura__eliminar' a.pk object.pk %}" onclick="return confirm('¿Está seguro de eliminar {{ a }}?')">
+                      <i class="uil-trash"></i>
                     </a>{% endif %}
 		  </td>
                   </tr>
@@ -192,8 +192,8 @@
                 <p class="text-muted">Recuerde que eliminará todos los registros asociados a este curso.</p>
             </div>
             <div class="modal-footer">
-                <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:periodo__eliminar' object.pk %}">Eliminar</a>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <a role="button" class="btn btn-outline-danger" href="{% url 'carga-horaria:periodo__eliminar' object.pk %}">Eliminar</a>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>

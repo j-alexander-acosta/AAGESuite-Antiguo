@@ -48,7 +48,7 @@
                     <td> {{ p.funcion }} </td>
                     <td> {{ p.horas }} </td>
                     <td>
-                      <a class="btn btn-outline-success" href="{% url 'carga-horaria:asistente__anexo' p.pk %}" data-toggle="tooltip" data-placement="top" title="Generar Anexo 1"><i class="uil-cloud-download"></i></a>
+                      <a class="btn btn-outline-success" href="{% url 'carga-horaria:asistente__anexo' p.pk %}" data-toggle="tooltip" data-placement="top" title="Generar Anexo 1"><i class="uil-file-upload-alt"></i></a>
                         <a class="btn btn-outline-primary" href="{% url 'carga-horaria:asistente__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
                         <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_asistente_{{p.pk}}"><i class="uil-trash-alt"></i></a>
                     </td>

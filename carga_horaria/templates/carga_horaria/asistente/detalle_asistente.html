@@ -13,13 +13,13 @@
       <h4 class="card-title"><strong> {{ object.nombre }}</strong>
           {% block buttons %}
               <div class="btn-group pull-right">
-                  <a href="{% url 'carga-horaria:asistentes' %}" type="button" class="btn btn-outline-dark">
+                  <a href="{% url 'carga-horaria:asistentes' %}" type="button" class="btn btn-outline-dark" data-toggle="tooltip" data-placement="top" title="Volver">
                       <i class="uil-arrow-left"></i>
                   </a>
-                  <a href="{% url 'carga-horaria:asistente__anexo' object.pk %}" type="button" class="btn btn-sm btn-success">
-                      <i class="uil-cloud-download"></i>
+                  <a href="{% url 'carga-horaria:asistente__anexo' object.pk %}" type="button" class="btn btn-outline-success" data-toggle="tooltip" data-placement="top" title="Anexo">
+                      <i class="uil-file-upload-alt"></i>
                   </a>
-                  <a href="{% url 'carga-horaria:asistente__editar' object.pk %}" type="button" class="btn btn-outline-primary">
+                  <a href="{% url 'carga-horaria:asistente__editar' object.pk %}" type="button" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Editar">
                       <i class="uil-edit"></i>
                   </a>
                   <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_asistente_{{object.pk}}">
