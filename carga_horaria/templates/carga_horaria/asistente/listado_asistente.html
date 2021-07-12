@@ -10,35 +10,35 @@
 <div class="card" style="margin-top: 80px;">
     <div class="card-header">
         <h4 class="card-title">Asistentes
-          <a class="btn btn-sm btn-primary pull-right" href="{% url 'carga-horaria:asistente__nuevo'%}" role="button">
+          <a class="btn btn-outline-primary" href="{% url 'carga-horaria:asistente__nuevo'%}" role="button">
 	    <span>
 	      Crear Asistente
-              <i class="fa fa-plus"></i>
+              <i class="uil-plus"></i>
 	    </span>
             </a>
         </h4>
         <h6 class="card-subtitle mb-2 text-muted">
-          <a class="btn btn-sm btn-default" href="{% url 'carga-horaria:asistentes-info' %}"><i class="fa fa-address-card"></i> Descargar información Asistentes</a>
+          <a class="btn btn-sm btn-default" href="{% url 'carga-horaria:asistentes-info' %}"><i class=" uil-postcard"></i> Descargar información Asistentes</a>
         </h6>
     </div>
     <div class="card-body">
       <div class="pull-left">
         <form action="." method="GET">
-          <i class="fa fa-search"></i> <input name="q" placeholder="Buscar por nombre" value="{{ request.GET.q }}">{% if 'q' in request.GET %} <a href="{% url 'carga-horaria:asistentes' %}" class="text-muted">limpiar</a>{% endif %}
+          <i class="uil-search"></i> <input name="q" placeholder="Buscar por nombre" value="{{ request.GET.q }}">{% if 'q' in request.GET %} <a href="{% url 'carga-horaria:asistentes' %}" class="text-muted">limpiar</a>{% endif %}
         </form>
       </div>
       <div class="pull-right" style="padding-bottom: 10px;">
-        <a class="btn btn-sm btn-default" href="{% url 'carga-horaria:asistente__anexos' %}"><i class="fa fa-handshake-o"></i> Generar Anexo 1 Masivo</a>
-        <a class="btn btn-sm btn-default" href="{% url 'carga-horaria:asistentes-pdf' %}"><i class="fa fa-print"></i> Imprimir</a>
+        <a class="btn btn-sm btn-default" href="{% url 'carga-horaria:asistente__anexos' %}"><i class=" uil-cloud-download"></i> Generar Anexo 1 Masivo</a>
+        <a class="btn btn-sm btn-default" href="{% url 'carga-horaria:asistentes-pdf' %}"><i class="uil-print"></i> Imprimir</a>
       </div>
         <div class="table-responsive">
         <table class="table table-striped">
             <thead>
             <tr>
-                <th><i class="fa fa-user"></i> Nombre </th>
-                <th><i class="fa fa-clock-o"></i> Función </th>
-                <th><i class="fa fa-clock-o"></i> Horas de contrato </th>
-                <th><i class="fa fa-cogs"></i> Acciones </th>
+                <th><i class="uil-user"></i> Nombre </th>
+                <th><i class="uil-suitcase-alt"></i> Función </th>
+                <th><i class="uil-clock-eight"></i> Horas de contrato </th>
+                <th><i class="uil-cog"></i> Acciones </th>
             </tr>
             </thead>
             <tbody>
@@ -48,9 +48,9 @@
                     <td> {{ p.funcion }} </td>
                     <td> {{ p.horas }} </td>
                     <td>
-                      <a class="btn btn-sm btn-success" href="{% url 'carga-horaria:asistente__anexo' p.pk %}" data-toggle="tooltip" data-placement="top" title="Generar Anexo 1"><i class="fa fa-handshake-o"></i></a>
-                        <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asistente__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
-                        <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asistente_{{p.pk}}"><i class="fa fa-trash"></i></a>
+                      <a class="btn btn-outline-success" href="{% url 'carga-horaria:asistente__anexo' p.pk %}" data-toggle="tooltip" data-placement="top" title="Generar Anexo 1"><i class="uil-cloud-download"></i></a>
+                        <a class="btn btn-outline-primary" href="{% url 'carga-horaria:asistente__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
+                        <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_asistente_{{p.pk}}"><i class="uil-trash-alt"></i></a>
                     </td>
                 </tr>
                 <div class="modal" tabindex="-1" role="dialog" id="eliminar_asistente_{{p.pk}}">
@@ -67,8 +67,8 @@
                                 <p class="text-muted">Recuerde que eliminará todos los registros asociados a este asistente.</p>
                             </div>
                             <div class="modal-footer">
-                                <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:asistente__eliminar' p.pk %}">Eliminar</a>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                <a role="button" class="btn btn-outline-danger" href="{% url 'carga-horaria:asistente__eliminar' p.pk %}">Eliminar</a>
+                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
                     </div>

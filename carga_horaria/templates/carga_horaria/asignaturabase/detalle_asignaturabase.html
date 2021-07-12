@@ -12,14 +12,14 @@
         <h4 class="card-title"><strong> {{ object.nombre }}
           {% block buttons %}
               <div class="btn-group pull-right">
-                  <a href="{% url 'carga-horaria:asignaturasbase' %}" type="button" class="btn btn-sm btn-dark">
-                      <i class="fa fa-arrow-left"></i>
+                  <a href="{% url 'carga-horaria:asignaturasbase' %}" type="button" class="btn btn-outline-dark">
+                      <i class="uil-arrow-left"></i>
                   </a>
-                  <a href="{% url 'carga-horaria:asignaturabase__editar' object.pk %}" type="button" class="btn btn-sm btn-primary">
-                      <i class="fa fa-edit"></i>
+                  <a href="{% url 'carga-horaria:asignaturabase__editar' object.pk %}" type="button" class="btn btn-outline-primary">
+                      <i class="uil-edit"></i>
                   </a>
-                  <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignaturabase_{{object.pk}}">
-                      <i class="fa fa-trash"></i>
+                  <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_asignaturabase_{{object.pk}}">
+                      <i class="uil-trash"></i>
                   </a>
               </div>
           {% endblock %}
@@ -79,8 +79,8 @@
                 <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta Asignatura Base.</p>
             </div>
             <div class="modal-footer">
-                <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:asignaturabase__eliminar' object.pk %}">Eliminar</a>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <a role="button" class="btn btn-outline-danger" href="{% url 'carga-horaria:asignaturabase__eliminar' object.pk %}">Eliminar</a>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>

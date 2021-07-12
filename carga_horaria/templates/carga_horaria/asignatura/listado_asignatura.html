@@ -21,9 +21,9 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th><i class="fa fa-user"></i> Asignatura </th>
-                <th><i class="fa fa-clock-o"></i> Curso </th>
-                <th><i class="fa fa-cogs"></i> Acciones </th>
+                <th><i class="uil-user"></i> Asignatura </th>
+                <th><i class="uil-graduation-hat"></i> Curso </th>
+                <th><i class="uil-cog"></i> Acciones </th>
             </tr>
             </thead>
             <tbody>
@@ -32,8 +32,8 @@
                     <td><a href="{% url 'carga-horaria:asignatura' a.pk %}"> {{ a.base }} </a></td>
                     <td><a href="?periodo={{ a.periodo.pk}}">{{ a.periodo }}</a></td>
                     <td>
-                        <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignatura__editar' a.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
-                        <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignatura_{{a.pk}}"><i class="fa fa-trash"></i></a>
+                        <a class="btn btn-outline-primary" href="{% url 'carga-horaria:asignatura__editar' a.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
+                        <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_asignatura_{{a.pk}}"><i class="uil-trash-alt"></i></a>
                     </td>
                 </tr>
                 <div class="modal" tabindex="-1" role="dialog" id="eliminar_asignatura_{{a.pk}}">
@@ -50,8 +50,8 @@
                                 <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta asignatura.</p>
                             </div>
                             <div class="modal-footer">
-                                <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:asignatura__eliminar' a.pk a.periodo.pk %}">Eliminar</a>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                <a role="button" class="btn btn-outline-danger" href="{% url 'carga-horaria:asignatura__eliminar' a.pk a.periodo.pk %}">Eliminar</a>
+                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
                     </div>
