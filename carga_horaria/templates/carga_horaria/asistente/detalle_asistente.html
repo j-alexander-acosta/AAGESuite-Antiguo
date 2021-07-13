@@ -8,22 +8,22 @@
 
 {% block content %}
 
-<div class="card">
+<div class="card" style="margin-top: 80px;">
     <div class="card-header">
       <h4 class="card-title"><strong> {{ object.nombre }}</strong>
           {% block buttons %}
               <div class="btn-group pull-right">
-                  <a href="{% url 'carga-horaria:asistentes' %}" type="button" class="btn btn-sm btn-dark">
-                      <i class="fa fa-arrow-left"></i>
+                  <a href="{% url 'carga-horaria:asistentes' %}" type="button" class="btn btn-outline-dark" data-toggle="tooltip" data-placement="top" title="Volver">
+                      <i class="uil-arrow-left"></i>
                   </a>
-                  <a href="{% url 'carga-horaria:asistente__anexo' object.pk %}" type="button" class="btn btn-sm btn-success">
-                      <i class="fa fa-handshake-o"></i>
+                  <a href="{% url 'carga-horaria:asistente__anexo' object.pk %}" type="button" class="btn btn-outline-success" data-toggle="tooltip" data-placement="top" title="Anexo">
+                      <i class="uil-file-upload-alt"></i>
                   </a>
-                  <a href="{% url 'carga-horaria:asistente__editar' object.pk %}" type="button" class="btn btn-sm btn-primary">
-                      <i class="fa fa-edit"></i>
+                  <a href="{% url 'carga-horaria:asistente__editar' object.pk %}" type="button" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Editar">
+                      <i class="uil-edit"></i>
                   </a>
-                  <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asistente_{{object.pk}}">
-                      <i class="fa fa-trash"></i>
+                  <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_asistente_{{object.pk}}">
+                      <i class="uil-trash-alt"></i>
                   </a>
               </div>
           {% endblock %}
@@ -40,7 +40,7 @@
                 <tr>
                     <th colspan="2" class="table-info">
                 <span>
-                    <i class="fa fa-info-circle"></i>
+                    <i class="uil-invoice"></i>
                      Descripción
                 </span>
                     </th>
@@ -80,13 +80,13 @@
                 <tr>
                     <th colspan="4" class="table-warning">
                 <span>
-                    <i class="fa fa-info-circle"></i>
+                    <i class="uil-stopwatch"></i>
 		    Asignaciones Sostenedor (60 minutos)
                 </span>
 
 		{% if object.horas_disponibles > 0 %}
-		<a class="btn btn-sm btn-primary float-right" href="{% url 'carga-horaria:asignar-asistente' object.pk 2 %}" role="button">
-                  <i class="fa fa-plus"></i>
+		<a class="btn btn-outline-primary float-right" href="{% url 'carga-horaria:asignar-asistente' object.pk 2 %}" role="button">
+                  <i class="uil-plus"></i>
 		</a>
                 {% endif %}
              
@@ -104,7 +104,7 @@
                       <td> {{ ax.curso|default:"Todos" }} </td>
                       <td> {{ ax.horas|hhmm }} </td>
 		      <td>
-                        <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_asistente_{{ax.pk}}"><i class="fa fa-trash"></i></a>
+                        <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_asistente_{{ax.pk}}"><i class="uil-trash-alt"></i></a>
 			
 		      </td>
                     </tr>
@@ -122,8 +122,8 @@
                                 <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta asignación.</p>
                             </div>
                             <div class="modal-footer">
-                              <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:asignacion-asistente__eliminar' ax.pk %}">Eliminar</a>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                              <a role="button" class="btn btn-outline-danger" href="{% url 'carga-horaria:asignacion-asistente__eliminar' ax.pk %}">Eliminar</a>
+                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
                     </div>    
@@ -136,13 +136,13 @@
                 <tr>
                     <th colspan="4" class="table-warning">
                 <span>
-                    <i class="fa fa-info-circle"></i>
+                    <i class="uil-stopwatch"></i>
 		    Asignaciones SEP (60 minutos)
                 </span>
 
 		{% if object.horas_disponibles > 0 %}
-		<a class="btn btn-sm btn-primary float-right" href="{% url 'carga-horaria:asignar-asistente' object.pk 3 %}" role="button">
-                  <i class="fa fa-plus"></i>
+		<a class="btn btn-outline-primary float-right" href="{% url 'carga-horaria:asignar-asistente' object.pk 3 %}" role="button">
+                  <i class="uil-plus"></i>
 		</a>
                 {% endif %}
 
@@ -160,7 +160,7 @@
                       <td> {{ ax.curso|default:"Todos" }} </td>
                       <td> {{ ax.horas|hhmm }} </td>
 		      <td>
-                        <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_asistente_{{ax.pk}}"><i class="fa fa-trash"></i></a>
+                        <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_asistente_{{ax.pk}}"><i class="uil-trash"></i></a>
 			
 		      </td>
                     </tr>
@@ -178,8 +178,8 @@
                                 <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta asignación.</p>
                             </div>
                             <div class="modal-footer">
-                              <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:asignacion-asistente__eliminar' ax.pk %}">Eliminar</a>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                              <a role="button" class="btn btn-outline-danger" href="{% url 'carga-horaria:asignacion-asistente__eliminar' ax.pk %}">Eliminar</a>
+                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
                     </div>    
@@ -192,13 +192,13 @@
                 <tr>
                     <th colspan="4" class="table-warning">
                 <span>
-                    <i class="fa fa-info-circle"></i>
+                    <i class="uil-stopwatch"></i>
 		    Asignaciones PIE (60 minutos)
                 </span>
 
 		{% if object.horas_disponibles > 0 %}
-		<a class="btn btn-sm btn-primary float-right" href="{% url 'carga-horaria:asignar-asistente' object.pk 4 %}" role="button">
-                  <i class="fa fa-plus"></i>
+		<a class="btn btn-outline-primary float-right" href="{% url 'carga-horaria:asignar-asistente' object.pk 4 %}" role="button">
+                  <i class="uil-plus"></i>
 		</a>
                 {% endif %}
                     </th>
@@ -216,7 +216,7 @@
                       <td> {{ ax.curso|default:"Todos" }} </td>
                       <td> {{ ax.horas|hhmm }} </td>
 		      <td>
-                        <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_asistente_{{ax.pk}}"><i class="fa fa-trash"></i></a>
+                        <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_asignacion_asistente_{{ax.pk}}"><i class="uil-trash-alt"></i></a>
 			
 		      </td>
                     </tr>
@@ -234,8 +234,8 @@
                                 <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta asignación.</p>
                             </div>
                             <div class="modal-footer">
-                              <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:asignacion-asistente__eliminar' ax.pk %}">Eliminar</a>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                              <a role="button" class="btn btn-outline-danger" href="{% url 'carga-horaria:asignacion-asistente__eliminar' ax.pk %}">Eliminar</a>
+                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
                     </div>    
@@ -259,7 +259,7 @@
                 <tr>
                     <th colspan="2" class="table-success">
                 <span>
-                    <i class="fa fa-info-circle"></i>
+                    <i class="uil-stopwatch"></i>
                      Resumen Horas
                 </span>
                     </th>
@@ -315,8 +315,8 @@
                 <p class="text-muted">Recuerde que eliminará todos los registros asociados a este asistente.</p>
             </div>
             <div class="modal-footer">
-                <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:asistente__eliminar' object.pk %}">Eliminar</a>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <a role="button" class="btn btn-outline-danger" href="{% url 'carga-horaria:asistente__eliminar' object.pk %}">Eliminar</a>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>

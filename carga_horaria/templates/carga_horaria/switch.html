@@ -5,9 +5,9 @@
 {% endblock %}
 
 {% block content %}
-<h2>Elija colegio para trabajar</h2>
 
-<div class="list-group">
+<div class="list-group" style="margin-top: 80px;">
+  <h2>Elija colegio para trabajar</h2>
   {% for c in colegios %}
     <a href="{% url 'carga-horaria:switch' pk=c.pk %}" class="list-group-item list-group-item-action">{{ c }}</a>
   {% endfor %}

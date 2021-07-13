@@ -7,21 +7,21 @@
 
 {% block content %}
 
-<div class="card">
+<div class="card" style="margin-top: 80px;">
     <div class="card-header">
         <h4 class="card-title">Colegio: <strong> {{ object.nombre }} 
 
         {% block buttons %}
             <div class="btn-group pull-right">
-                <a href="{% url 'carga-horaria:colegios' %}" type="button" class="btn btn-sm btn-dark">
-                    <i class="fa fa-arrow-left"></i>
+                <a href="{% url 'carga-horaria:colegios' %}" type="button" class="btn btn-outline-dark" data-toggle="tooltip" data-placement="top" title="Volver">
+                    <i class="uil-arrow-left"></i>
                 </a>
-                <a href="{% url 'carga-horaria:colegio__editar' object.pk %}" type="button" class="btn btn-sm btn-primary">
-                      <i class="fa fa-edit"></i>
+                <a href="{% url 'carga-horaria:colegio__editar' object.pk %}" type="button" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Editar">
+                      <i class="uil-edit"></i>
                 </a>
                 {% if request.user.is_superuser %}
-                  <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_colegio_{{object.pk}}">
-                      <i class="fa fa-trash"></i>
+                  <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_colegio_{{object.pk}}">
+                      <i class="uil-trash-alt"></i>
                   </a>
                 {% endif %}
 
@@ -38,7 +38,7 @@
                 <tr>
                     <th colspan="2" class="table-info">
                 <span>
-                    <i class="fa fa-info-circle"></i>
+                    <i class="uil-invoice"></i>
                      Descripción
                 </span>
                     </th>
@@ -118,8 +118,8 @@
                 <p class="text-muted">Recuerde que eliminará todos los registros asociados a este colegio.</p>
             </div>
             <div class="modal-footer">
-                <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:colegio__eliminar' object.pk %}">Eliminar</a>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <a role="button" class="btn btn-outline-danger" href="{% url 'carga-horaria:colegio__eliminar' object.pk %}">Eliminar</a>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>

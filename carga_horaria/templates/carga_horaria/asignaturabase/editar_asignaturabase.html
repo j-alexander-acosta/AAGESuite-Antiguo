@@ -7,16 +7,16 @@
 {% endblock %}
 
 {% block block_editar_eliminar %}
-    <li class="breadcrumb-item">
+    <li class="breadcrumb-item" style="margin-top: 80px;">
         <a href="{{ object.get_absolute_url }}">
             {{ icono|safe }} {{ object }}
         </a>
     </li>
     <li class="breadcrumb-item active">
-        <i class="fa fa-edit"></i> Editar ({{ object.pk }})
+        <i class="uil-edit"></i> Editar ({{ object.pk }})
     </li>
 {% endblock %}
 
 {% block titulo_formulario %}
-  <i class="fa fa-calendar-check-o"></i>  Editar Asignatura Base | {{ object }}
+  <i class="uil-edit-alt"></i>  Editar Asignatura Base | {{ object }}
 {% endblock %}

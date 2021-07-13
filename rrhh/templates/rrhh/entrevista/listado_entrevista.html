@@ -31,7 +31,7 @@
             <tbody>
             {% for p in object_list %}
                 <tr>
-                    <td><a href="{% url 'rrhh:entrevista' p.pk %}"> {{ p.funcionario }} </a></td>
+                    <td><a href="{% url 'rrhh:entrevista' p.pk %}"> {{ p.contrato }} </a></td>
                     <td> {{ p.entrevistador }} </td>
                     <td> {{ p.get_tipo_display }} </td>
                     <td>

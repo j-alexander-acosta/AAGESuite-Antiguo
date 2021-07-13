@@ -408,8 +408,8 @@ class Profesor(BaseModel):
                      (INSPECTOR, 'Inspector General'),
                      (UTP, 'Jefe de UTP'),
                      (CAPELLAN, 'Capellán'),
-                     (CAPELLAN, 'Administrador Financiero'),
-                     (CAPELLAN, 'Orientador'))
+                     (FINANCIERO, 'Administrador Financiero'),
+                     (ORIENTADOR, 'Orientador'))
 
     INDEFINIDO = 1
     FIJO = 2

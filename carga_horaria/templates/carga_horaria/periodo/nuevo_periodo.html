@@ -4,7 +4,7 @@
 
 
 {% block content %}
-<div class="card">
+<div class="card" style="margin-top: 80px;">
     <div class="card-header">
         <h4 class="card-title">Crear Curso
         </h4>
@@ -16,13 +16,13 @@
             {% crispy form %}
             <div class="form-group">
                 <div class="col-sm-10 col-sm-offset-2">
-                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <button type="submit" class="btn btn-outline-success">Guardar</button>
                     <a {% if object %}
                         href="{% url 'carga-horaria:periodo' object.pk %}"
                     {% else %}
                         href="{% url 'carga-horaria:periodos' %}"
                     {% endif %}
-                    role="button" class="btn btn-dark">
+                    role="button" class="btn btn-outline-dark">
                         Volver
                     </a>
                 </div>

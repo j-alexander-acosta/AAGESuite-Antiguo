@@ -7,15 +7,14 @@
 {% endblock %}
 
 {% block content %}
-<div class="card">
+<div class="card" style="margin-top: 80px;">
     <div class="card-header">
-        <h4 class="card-title">Cursos 
-          <a class="btn btn-sm btn-primary pull-right" href="{% url 'carga-horaria:periodo__nuevo'%}" role="button">
-	    <span>
-	      Crear Curso
-              <i class="fa fa-plus"></i>
-	    </span>
-            </a>
+        <h4 class="card-title">Cursos
+            <div class="btn-group pull-right" role="group"></div>
+                <a class="btn btn-outline-primary" href="{% url 'carga-horaria:periodo__nuevo'%}" role="button">
+	                <span>Crear Curso <i class="uil-plus"></i></span>
+                </a>
+            </div>
         </h4>
     </div>
     <div class="card-body">
@@ -26,10 +25,10 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th><i class="fa fa-calendar-check-o"></i> Curso </th>
-                <th><i class="fa fa-check-circle"></i> Progreso </th>
-                <th><i class="fa fa-edit"></i> Estado </th>
-                <th><i class="fa fa-cogs"></i> Acciones </th>
+                <th><i class="uil-graduation-hat"></i> Curso </th>
+                <th><i class="uil-check-circle"></i> Progreso </th>
+                <th><i class="uil-edit"></i> Estado </th>
+                <th><i class="uil-cog"></i> Acciones </th>
             </tr>
             </thead>
             <tbody>
@@ -39,9 +38,9 @@
                     <td align="center">{{ p.completion_percentage }}%</td>
                     <td>{% if p.completion_percentage >= 100 %}Completo{% else %}Incompleto{% endif %}</td>
                     <td>
-                      <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:periodo__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
+                      <a class="btn btn-outline-primary" href="{% url 'carga-horaria:periodo__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
                       {% if request.user.is_superuser %}
-                      <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_periodo_{{p.pk}}"><i class="fa fa-trash"></i></a>
+                      <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_periodo_{{p.pk}}"><i class="uil-trash"></i></a>
                       {% endif %}
                     </td>
                 </tr>
@@ -60,8 +59,8 @@
                                 <p class="text-muted">Recuerde que eliminará todos los registros asociados a este curso.</p>
                             </div>
                             <div class="modal-footer">
-                                <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:periodo__eliminar' p.pk %}">Eliminar</a>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                <a role="button" class="btn btn-outline-danger" href="{% url 'carga-horaria:periodo__eliminar' p.pk %}">Eliminar</a>
+                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
                     </div>    

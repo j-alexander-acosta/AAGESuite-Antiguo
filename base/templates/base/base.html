@@ -16,7 +16,7 @@
     {% endblock %}
 </head>
 
-<body>
+<body background="{% static 'base/img/fondo_aventista.png' %}" style="background-repeat: no-repeat; background-position: right">
 {% include 'base/partials/navbar.html' %}
 
 {% block suma_presupuesto %}{% endblock %}
@@ -30,7 +30,7 @@
 <br><br><br>
 
 <footer class="footer">
-    <div class="container">
+    <div class="container" style="text-align: right !important;">
     <span class="text-muted">
       Copyright &copy; 2021 Universidad Adventista de Chile
     </span>

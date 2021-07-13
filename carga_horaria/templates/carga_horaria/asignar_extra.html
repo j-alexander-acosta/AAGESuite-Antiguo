@@ -9,7 +9,7 @@
 
 {% block content %}
 
-<div class="card">
+<div class="card" style="margin-top: 80px;">
     <div class="card-header">
         <h4 class="card-title">Asignar horas no lectivas para {{ profesor }} <strong>
         
@@ -36,13 +36,13 @@
             {% crispy form %}
             <div class="form-group">
                 <div class="col-sm-10 col-sm-offset-2">
-                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <button type="submit" class="btn btn-outline-success">Guardar</button>
                     <a {% if profesor %}
                         href="{% url 'carga-horaria:profesor' profesor.pk %}"
                     {% else %}
                         href="{% url 'carga-horaria:profesor' profesor.pk %}"
                     {% endif %}
-                    role="button" class="btn btn-default">
+                    role="button" class="btn btn-outline-primary">
                         Volver
                     </a>
                 </div>
