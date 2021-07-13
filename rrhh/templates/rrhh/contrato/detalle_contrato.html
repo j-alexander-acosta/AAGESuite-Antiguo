@@ -728,27 +728,28 @@
             }
         }
 
+        function diasHabiles(form){
+            alert("diasHabiles");
+            var isChecked = document.getElementById('id_dias_habiles').checked;
+            alert("diasHabiles: "+isChecked);
+            if(isChecked){
+                $('#id_fecha_termino').val(fechaTerminoHabil);
+                $('#id_fecha_retorno').val(fechaRetornoHabil);
+            }
+            if(!isChecked){
+                $('#id_fecha_termino').val(fechaTerminoNoHabil);
+                $('#id_fecha_retorno').val(fechaRetornoNoHabil);
+            }
+        }
+
         function calculo_fechas(form){
             let fecha_inicio = form.find('#id_fecha_inicio').val();
             let total_dias = form.find('#id_total_dias').val();
-            console.log(total_dias);
-            if (fecha_inicio !== '' && total_dias !== ''){
-                let total_feriados = form.find('#id_total_feriados').val();
-                if (total_feriados == ''){
-                    total_feriados = 0;
-                }
-                let fecha_inicio_part = fecha_inicio.split('/');
-                let fecha = new Date(fecha_inicio_part[2] + '/' + fecha_inicio_part[1] + '/' + fecha_inicio_part[0]);
-
-                //let fecha_termino = new Date(fecha_inicial.getFullYear() + '/' + fecha_inicial.getMonth() + '/' + (fecha_inicial.getDate() + parseInt(total_dias) - 1 + parseInt(total_feriados)));
-                fecha.setDate(fecha.getDate() + parseInt(total_dias) - 1 + parseInt(total_feriados));
-                let fecha_string = fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear();
-                form.find('#id_fecha_termino').val((fecha_string));
-
-                //let fecha_retorno = new Date((fecha_termino.getFullYear()) + '/' + fecha_termino.getMonth() + '/' + (fecha_termino.getDate() + 1 ));
-                fecha.setDate(fecha.getDate() + 1);
-                fecha_string = fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear();
-                form.find('#id_fecha_retorno').val(fecha_string);
+            alert("fecha_inicio: "+fecha_inicio+"/ total_dias:"+total_dias);
+            if($('#id_fecha_inicio').val() != null && $('#id_fecha_inicio').val() != ''
+                && $('#id_total_dias').val() != null && $('#id_total_dias').val() != '') {
+            
+                
             }
         }
 
@@ -758,6 +759,11 @@
         }
 
         $(function(){
+            var fechaTerminoHabil = "";
+            var fechaRetornoHabil = "";
+            var fechaTerminoNoHabil = "";
+            var fechaRetornoNoHabil = "";
+
             estado_inicial();
 
             $(document).find('#id_licencia_tipo').on('change', function() {
@@ -789,10 +795,14 @@
 
             $(document).on('change', '[id^="id_"]', function() {
                 console.log("Calcular Fecha");
+                alert("change");
+                diasHabiles($(this).closest('form'));
                 calculo_fechas($(this).closest('form'));
+                
             });
 
             $(document).on('keyup', '[id^="id_"]', function() {
+                alert("keyup");
                 calculo_fechas($(this).closest('form'));
                 let fecha_inicio = $(this).closest('form').find('#id_fecha_retorno').val();
                 console.log(fecha_inicio);
@@ -803,6 +813,7 @@
             //--------------------LICENCIAS--------------------------
 
             $(document).on('submit', '#licenciaForm', function (e) {
+                alert("licencia form");  
                 e.preventDefault();
                 let form = $(this);
                 let url = form.attr('action');
@@ -877,8 +888,8 @@
             });
 
             //--------------------PERMISOS--------------------------
-
             $(document).on('submit', '#permisoForm', function (e) {
+                alert("permiso form");
                 e.preventDefault();
                 let form = $(this);
                 let url = form.attr('action');
@@ -951,6 +962,7 @@
             //--------------------VACACIONES--------------------------
 
             $(document).on('submit', '#vacacionForm', function (e) {
+                alert("vacaiones form");
                 e.preventDefault();
                 let form = $(this);
                 let url = form.attr('action');
@@ -1140,6 +1152,7 @@ function revision_campos_obligatorios(form){
 function calculo_fechas(form){
     let fecha_inicio = form.find('#id_fecha_inicio').val();
     let total_dias = form.find('#id_total_dias').val();
+    console.log(total_dias);
     if (fecha_inicio !== '' && total_dias !== ''){
         let total_feriados = form.find('#id_total_feriados').val();
         if (total_feriados == ''){

@@ -7,13 +7,10 @@
 
 {% block content %}
 {% if contratos_contratar or contratos_expirar or solicitudes_pendientes or contrataos_finiquitar %}
-    <div class="row" style="margin-top: 80px;">
-        <div class="col-sm-1" style="position: absolute; left:0px; top: 250px;">
-            <img src="{% static 'base/img/aagelogo.jpg' %}" height="150">
-        </div>
+    <div class="row">
         <div class="col-md-8">
 {% endif %}
-            <div class="row" >
+            <div class="row" style="margin-top: 80px;">
                 <div class="tab-content col-md-12">
                     <div class="tab-pane show active" id="justified-tabs-preview">
                         <ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
@@ -58,10 +55,10 @@
             <br>
             <div class="row">
                 <div class="col-md-4 text-center">
-                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:solicitudes' %}" style="background-color: red">
-                        <h2><i class="mdi mdi-pencil"></i> {{ total_unidades_directivas }} </h2>
+                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:permisos' %}" style="background-color: blue">
+                        <h2><i class="uil uil-unlock-alt "></i> {{ total_unidades_directivas }} </h2>
                     </a>
-                    <h5 class="font-black-normal text-center">Solicitudes</h5>
+                    <h5 class="font-black-normal text-center">Permiso</h5>
                 </div>
                 <div class="col-md-4 text-center">
                     <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:vacaciones' %}" style="background-color: indigo">
@@ -78,6 +75,12 @@
             </div>
             <br>
             <div class="row">
+                <div class="col-md-4 text-center">
+                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:solicitudes' %}" style="background-color: red">
+                        <h2><i class="mdi mdi-pencil"></i> {{ total_unidades_directivas }} </h2>
+                    </a>
+                    <h5 class="font-black-normal text-center">Solicitudes</h5>
+                </div>
                 <div class="col-md-4 text-center">
                     <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:documentos' %}" style="background-color: teal">
                         <h2><i class="mdi mdi-file-document"></i> {{ total_unidades_directivas }} </h2>
@@ -96,7 +99,7 @@
             <br>
         </div>
         {% if contratos_contratar or contratos_expirar or solicitudes_pendientes or contrataos_finiquitar %}
-            <div class="col-md-4">
+            <div class="col-md-4" style="margin-top: 80px;">
                 <div class="card" style="cursor: pointer">
                     {% if contratos_contratar %}
                         <div class="card bg-danger">
