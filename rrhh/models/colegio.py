@@ -174,7 +174,7 @@ class FiniquitoColegio(models.Model):
 
 class VacacionFuncionarioColegio(models.Model):
     contrato = models.ForeignKey('ContratoColegio', on_delete=models.CASCADE)
-    anio_vacacion = models.PositiveIntegerField(max_length=4, default=0)
+    anio_vacacion = models.PositiveIntegerField(default=0)
     total_dias = models.IntegerField(verbose_name='Total de días de vacaciones')
     fecha_inicio = models.DateField(verbose_name='Fecha de inicio')
     total_feriados = models.IntegerField(default=0, verbose_name='Total de feriados en el periodo de vacaciones')
@@ -213,9 +213,9 @@ class VacacionFuncionarioColegio(models.Model):
 
 
 class DiasPendientesVacacion(models.Model):
-    anio_vacacion = models.PositiveIntegerField(max_length=4)
+    anio_vacacion = models.PositiveIntegerField()
     vacacion_funcionario = models.ForeignKey("VacacionFuncionarioColegio", on_delete=models.CASCADE)
-    dias_pendientes = models.PositiveIntegerField(max_length=2, default=0)
+    dias_pendientes = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return '{} / {} / {}'.format(

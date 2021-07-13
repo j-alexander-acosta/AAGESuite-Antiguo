@@ -249,7 +249,6 @@ class VacacionFuncionarioColegioForm(forms.ModelForm):
             'fecha_termino',
             'total_feriados',
             'fecha_retorno',
-            'dias_pendiente',
             'es_pendiente'
         ]
         help_texts = {
@@ -279,7 +278,6 @@ class VacacionTipoFuncionarioColegioForm(forms.ModelForm):
             'fecha_termino',
             'fecha_retorno',
             'total_feriados',
-            'dias_pendiente',
             'es_pendiente',
         ]
         widgets = {
@@ -302,15 +300,11 @@ class VacacionTipoFuncionarioColegioForm(forms.ModelForm):
                 Div(
                     Div(
                         Field('total_dias'),
-                        css_class='col-md-4'
+                        css_class='col-md-6'
                     ),
                     Div(
                         Field('es_pendiente'),
-                        css_class='col-md-4'
-                    ),
-                    Div(
-                        Field('dias_pendiente'),
-                        css_class='col-md-4'
+                        css_class='col-md-6'
                     ),
                     css_class='row'
                 ),
