@@ -4,7 +4,7 @@
 
 
 {% block content %}
-<div class="card">
+<div class="card" style="margin-top: 80px;">
     <div class="card-header">
         <h4 class="card-title">Combinar Asignatura
         </h4>
@@ -32,7 +32,7 @@
         <td>
         <form action="{% url 'carga-horaria:asignatura_merge' object.pk aa.pk %}" class="form-horizontal" method="post">
           {% csrf_token %}
-          <button type="submit" value="{{ aa.pk }}" class="btn btn-success">Combinar</button>
+          <button type="submit" value="{{ aa.pk }}" class="btn btn-outline-success">Combinar</button>
         </form>
         </td>
       </tr>
@@ -40,9 +40,9 @@
         {% endfor %}
             </table>
       <p>Si desea crear una <strong>nueva instancia</strong> en lugar de combinar con una existente:</p>
-      <a class="btn btn-warning" href="{% url 'carga-horaria:asignatura__nuevo' object.pk %}">Crear Nueva Asignatura</a>
+      <a class="btn btn-outline-danger" href="{% url 'carga-horaria:asignatura__nuevo' object.pk %}">Crear Nueva Asignatura</a>
                     <a href="{{ request.META.HTTP_REFERER }}"
-                    role="button" class="btn btn-default">
+                    role="button" class="btn btn-outline-primary">
                         Volver
                     </a>
                 </div>

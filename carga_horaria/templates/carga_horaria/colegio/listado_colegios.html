@@ -7,12 +7,13 @@
 {% endblock %}
 
 {% block content %}
-<div class="card">
+<div class="card" style="margin-top: 80px;">
     <div class="card-header">
         <h4 class="card-title">Listado de Colegios
 	  {% if request.user.is_superuser %}
-            <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:colegio__nuevo'%}" role="button">
-                <i class="fa fa-plus"></i>
+            <div class="btn-group pull-right" role="group">
+            <a class="btn btn-outline-primary" href="{% url 'carga-horaria:colegio__nuevo'%}" role="button">
+                Crear Colegio<i class="uil-plus"></i>
             </a>
 	  {% endif %}
         </h4>
@@ -23,14 +24,14 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th><i class="fa fa-calendar-check-o"></i> Nombre </th>
-                <th><i class="fa fa-calendar-minus-o"></i> JEC </th>
-                <th><i class="fa fa-calendar-minus-o"></i> SEP </th>
-                <th><i class="fa fa-calendar-minus-o"></i> PIE </th>
-                <th><i class="fa fa-calendar-minus-o"></i> Dirección </th>
-                <th><i class="fa fa-calendar-minus-o"></i> Teléfono </th>
-                <th><i class="fa fa-calendar-minus-o"></i> Email </th>
-                <th><i class="fa fa-cogs"></i> Acciones </th>
+                <th><i class="uil-user"></i> Nombre </th>
+                <th><i class="uil-book-alt"></i> JEC </th>
+                <th><i class="uil-book-alt"></i> SEP </th>
+                <th><i class="uil-book-alt"></i> PIE </th>
+                <th><i class="uil-home"></i> Dirección </th>
+                <th><i class="uil-phone"></i> Teléfono </th>
+                <th><i class="uil-envelope-alt"></i> Email </th>
+                <th><i class="uil-cog"></i> Acciones </th>
             </tr>
             </thead>
             <tbody>
@@ -44,9 +45,9 @@
                     <td>{{c.teléfono|default:"Ninguno"}}</td>
                     <td>{{c.email|default:"Ninguno"}}</td>
                     <td>
-                      <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:colegio__editar' c.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
+                      <a class="btn btn-outline-primary" href="{% url 'carga-horaria:colegio__editar' c.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
                       {% if request.user.is_superuser %}
-                      <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_colegio_{{c.pk}}"><i class="fa fa-trash"></i></a>
+                      <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_colegio_{{c.pk}}"><i class="uil-trash"></i></a>
                       {% endif %}
                     </td>
                 </tr>
@@ -64,8 +65,8 @@
                                 <p class="text-muted">Recuerde que eliminará todos los registros asociados a este Colegio.</p>
                             </div>
                             <div class="modal-footer">
-                                <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:colegio__eliminar' c.pk %}">Eliminar</a>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                <a role="button" class="btn btn-outline-danger" href="{% url 'carga-horaria:colegio__eliminar' c.pk %}">Eliminar</a>
+                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
                     </div>    

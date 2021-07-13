@@ -7,56 +7,58 @@
 {% endblock %}
 
 {% block content %}
-<div class="card">
+<div class="card" style="margin-top: 80px;">
     <div class="card-header">
         <h4 class="card-title">Profesores
-          <a class="btn btn-sm btn-primary pull-right" href="{% url 'carga-horaria:profesor__nuevo'%}" role="button">
+          <a class="btn btn-outline-primary pull-right" href="{% url 'carga-horaria:profesor__nuevo'%}" role="button">
 	    <span>
 	      Crear Profesor
-              <i class="fa fa-plus"></i>
+              <i class="uil-plus"></i>
 	    </span>
             </a>
         </h4>
         <h6 class="card-subtitle mb-2 text-muted">
-          <a class="btn btn-sm btn-default" href="{% url 'carga-horaria:profesores-info' %}"><i class="fa fa-address-card"></i> Descargar información Profesores</a>
+          <a class="btn btn-outline-default" href="{% url 'carga-horaria:profesores-info' %}"><i class="uil-cloud-download"></i> Descargar información Profesores</a>
         </h6>
     </div>
     <div class="card-body">
       <div class="pull-left">
         <form action="." method="GET">
-          <i class="fa fa-search"></i> <input name="q" placeholder="Buscar" value="{{ request.GET.q }}">{% if 'q' in request.GET %} <a href="{% url 'carga-horaria:profesores' %}" class="text-muted">limpiar</a>{% endif %}
+          <i class="uil-search"></i> <input name="q" placeholder="Buscar" value="{{ request.GET.q }}">{% if 'q' in request.GET %} <a href="{% url 'carga-horaria:profesores' %}" class="text-muted">limpiar</a>{% endif %}
         </form>
       </div>
       <div class="pull-right" style="padding-bottom: 10px;">
-          <a class="btn btn-sm btn-default" href="{% url 'carga-horaria:profesor__anexos' %}"><i class="fa fa-handshake-o"></i> Generar Anexo 1 Masivo</a>
-          <a class="btn btn-sm btn-default" href="{% url 'carga-horaria:profesores-pdf' %}"><i class="fa fa-print"></i> Imprimir</a>
+          <a class="btn btn-outline-default" href="{% url 'carga-horaria:profesor__anexos' %}"><i class="uil-file-upload-alt"></i> Generar Anexo 1 Masivo</a>
+          <a class="btn btn-outline-default" href="{% url 'carga-horaria:profesores-pdf' %}"><i class="uil-print"></i> Imprimir</a>
       </div>
         <div class="table-responsive">
         <table class="table table-striped">
             <thead>
             <tr>
-                <th><i class="fa fa-user"></i> Nombre </th>
-                <th><i class="fa fa-clock-o"></i> Hrs contrato</th>
-                <th><i class="fa fa-clock-o"></i> Hrs docentes </th>
-                <th><i class="fa fa-clock-o"></i> Hrs disp. docentes </th>
-                <th><i class="fa fa-clock-o"></i> Hrs no aula </th>
-                <th><i class="fa fa-clock-o"></i> Hrs disp. no aula </th>
-                <th><i class="fa fa-cogs"></i> Acciones </th>
+                <th><i class="uil-user"></i> Nombre </th>
+                <!--<th><i class="uil-user"></i> Cargo </th>-->
+                <th><i class="uil-clock-seven"></i> Hrs contrato</th>
+                <th><i class="uil-clock-eight"></i> Hrs docentes </th>
+                <th><i class="uil-clock-two"></i> Hrs disp. docentes </th>
+                <th><i class="uil-clock-five"></i> Hrs no aula </th>
+                <th><i class="uil-clock-seven"></i> Hrs disp. no aula </th>
+                <th><i class="uil-cog"></i> Acciones </th>
             </tr>
             </thead>
             <tbody>
             {% for p in object_list %}
                 <tr>
                     <td><a href="{% url 'carga-horaria:profesor' p.pk %}"> {{ p.nombre }} </a></td>
+                    <!--<td> {{ p.cargo }} </td>-->
                     <td> {{ p.horas_contratadas }} </td>
                     <td> {{ p.horas_docentes }} </td>
                     <td> {{ p.horas_disponibles }} </td>
                     <td> {{ p.horas_no_aula }} </td>
                     <td> {{ p.horas_no_aula_disponibles }} </td>
                     <td>
-                        <a class="btn btn-sm btn-success" href="{% url 'carga-horaria:profesor__anexo' p.pk %}" data-toggle="tooltip" data-placement="top" title="Generar Anexo 1"><i class="fa fa-handshake-o"></i></a>
-                        <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:profesor__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
-                        <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_profesor_{{p.pk}}"><i class="fa fa-trash"></i></a>
+                        <a class="btn btn-outline-success" href="{% url 'carga-horaria:profesor__anexo' p.pk %}" data-toggle="tooltip" data-placement="top" title="Generar Anexo 1"><i class="uil-file-upload-alt"></i></a>
+                        <a class="btn btn-outline-primary" href="{% url 'carga-horaria:profesor__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
+                        <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_profesor_{{p.pk}}"><i class="uil-trash"></i></a>
                     </td>
                 </tr>
                 <div class="modal" tabindex="-1" role="dialog" id="eliminar_profesor_{{p.pk}}">
@@ -73,8 +75,8 @@
                                 <p class="text-muted">Recuerde que eliminará todos los registros asociados a este profesor.</p>
                             </div>
                             <div class="modal-footer">
-                                <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:profesor__eliminar' p.pk %}">Eliminar</a>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                <a role="button" class="btn btn-outline-danger" href="{% url 'carga-horaria:profesor__eliminar' p.pk %}">Eliminar</a>
+                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
                     </div>

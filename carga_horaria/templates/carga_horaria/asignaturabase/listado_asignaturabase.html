@@ -7,11 +7,11 @@
 {% endblock %}
 
 {% block content %}
-<div class="card">
+<div class="card" style="margin-top: 80px;">
     <div class="card-header">
         <h4 class="card-title">Listado de Asignaturas Base
-            <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignaturabase__nuevo'%}" role="button">
-                <i class="fa fa-plus"></i>
+            <a class="btn btn-outline-primary" href="{% url 'carga-horaria:asignaturabase__nuevo'%}" role="button">
+                Crear Asignatura Base<i class="uil-plus"></i>
             </a>
         </h4>
         <h6 class="card-subtitle mb-2 text-muted">Tabla para configuración de asignaturas base</h6>
@@ -25,9 +25,9 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th><i class="fa fa-user"></i> Nombre </th>
-                <th><i class="fa fa-clock-o"></i> Plan </th>
-                <th><i class="fa fa-cogs"></i> Acciones </th>
+                <th><i class="uil-user"></i> Nombre </th>
+                <th><i class="uil-book-open"></i> Plan </th>
+                <th><i class="uil-cog"></i> Acciones </th>
             </tr>
             </thead>
             <tbody>
@@ -36,8 +36,8 @@
                     <td><a href="{% url 'carga-horaria:asignaturabase' ab.pk %}"> {{ ab.nombre }} </a></td>
                     <td> {{ ab.plan }} </td>
                     <td>
-                        <a class="btn btn-sm btn-primary" href="{% url 'carga-horaria:asignaturabase__editar' ab.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-edit"></i></a>
-                        <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#eliminar_asignaturabase_{{ab.pk}}"><i class="fa fa-trash"></i></a>
+                        <a class="btn btn-outline-primary" href="{% url 'carga-horaria:asignaturabase__editar' ab.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
+                        <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_asignaturabase_{{ab.pk}}"><i class="uil-trash"></i></a>
                     </td>
                 </tr>
                 <div class="modal" tabindex="-1" role="dialog" id="eliminar_asignaturabase_{{ab.pk}}">
@@ -54,8 +54,8 @@
                                 <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta asignatura base.</p>
                             </div>
                             <div class="modal-footer">
-                                <a role="button" class="btn btn-danger" href="{% url 'carga-horaria:asignaturabase__eliminar' ab.pk %}">Eliminar</a>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                <a role="button" class="btn btn-outline-danger" href="{% url 'carga-horaria:asignaturabase__eliminar' ab.pk %}">Eliminar</a>
+                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
                     </div>
