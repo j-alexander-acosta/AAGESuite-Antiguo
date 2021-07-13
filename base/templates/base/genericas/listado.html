@@ -4,7 +4,7 @@
 {% block breadcrumb %}
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">
-            <i class="fa fa-gears"></i> Administración
+            <i class="uil-cog"></i> Administración
         </a>
         </li>
         <li class="breadcrumb-item active">
@@ -40,8 +40,8 @@
                                            placeholder="{% block search_placeholder %}{% endblock %}"
                                            {% if request.GET.q %}value="{{ request.GET.q }}"{% endif %} >
                                     <span class="input-group-btn">
-                                <button class="btn btn-info" type="submit">
-                                    <i class="him-icon fa fa-search"></i>
+                                <button class="btn btn-outline-info" type="submit">
+                                    <i class="uil-search"></i>
                                 </button>
                             </span>
                                 </div>

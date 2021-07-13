@@ -141,9 +141,9 @@ class Colegio(models.Model):
     PAID = 1
     SHARED = 2
     FREE = 3
-    FINANCING_CHOICES = ((PAID, 'particular pagado'),
-                         (SHARED, 'financiamiento compartido'),
-                         (FREE, 'gratuito'))
+    FINANCING_CHOICES = ((PAID, 'Particular pagado'),
+                         (SHARED, 'Financiamiento compartido'),
+                         (FREE, 'Gratuito'))
     
     nombre = models.CharField(max_length=255)
     abrev = models.CharField(max_length=10, blank=True, null=True)
@@ -910,18 +910,18 @@ class Persona(models.Model):
     DIVORCIADO = 4
     VIUDO = 5
 
-    ESTADO_CIVIL_CHOICES = ((SOLTERO, 'soltero(a)'),
-                            (CASADO, 'casado(a)'),
-                            (SEPARADO, 'separado(a)'),
-                            (DIVORCIADO, 'divorciado(a)'),
-                            (VIUDO, 'viudo(a)'))
+    ESTADO_CIVIL_CHOICES = ((SOLTERO, 'Soltero(a)'),
+                            (CASADO, 'Casado(a)'),
+                            (SEPARADO, 'Separado(a)'),
+                            (DIVORCIADO, 'Divorciado(a)'),
+                            (VIUDO, 'Viudo(a)'))
 
     rut = models.CharField(max_length=13, blank=True, null=True, unique=True)
     nombre = models.CharField(max_length=255)
     direccion = models.CharField('dirección', max_length=255)
     comuna = models.CharField('comuna', max_length=255)
     nacionalidad = models.CharField('nacionalidad', max_length=255)
-    telefono = models.CharField('telefono', max_length=255)
+    telefono = models.CharField('teléfono', max_length=255)
     email_personal = models.EmailField('email personal')
     email_institucional = models.EmailField('email institucional')
     estado_civil = models.PositiveSmallIntegerField(default=SOLTERO, choices=ESTADO_CIVIL_CHOICES)

@@ -127,7 +127,7 @@ class ProfesorListView(LoginRequiredMixin, SearchMixin, GetObjectsForUserMixin, 
     model = Profesor
     lookup = 'colegio__pk'
     template_name = 'carga_horaria/profesor/listado_profesor.html'
-    search_fields = ['nombre', 'horas']
+    search_fields = ['nombre', 'get_cargo_display', 'horas']
     paginate_by = 6
 
 

@@ -49,7 +49,7 @@
             {% for p in object_list %}
                 <tr>
                     <td><a href="{% url 'carga-horaria:profesor' p.pk %}"> {{ p.nombre }} </a></td>
-                    <!--<td> {{ p.cargo }} </td>-->
+                    <!--<td> {{ p.get_cargo_display }} </td>-->
                     <td> {{ p.horas_contratadas }} </td>
                     <td> {{ p.horas_docentes }} </td>
                     <td> {{ p.horas_disponibles }} </td>
