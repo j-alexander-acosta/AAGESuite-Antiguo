@@ -76,3 +76,4 @@ media/
 # Estilos 
 
 /.static
+*.dump
