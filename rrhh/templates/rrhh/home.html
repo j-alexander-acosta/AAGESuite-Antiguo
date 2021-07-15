@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block title_page %}
-    Inicio
+    Recursos Humanos
 {% endblock %}
 
 {% block content %}
@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col-md-8">
 {% endif %}
-            <div class="row" style="margin-top: 80px;">
+            <div class="row">
                 <div class="tab-content col-md-12">
                     <div class="tab-pane show active" id="justified-tabs-preview">
                         <ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
@@ -99,7 +99,7 @@
             <br>
         </div>
         {% if contratos_contratar or contratos_expirar or solicitudes_pendientes or contrataos_finiquitar %}
-            <div class="col-md-4" style="margin-top: 80px;">
+            <div class="col-md-4">
                 <div class="card" style="cursor: pointer">
                     {% if contratos_contratar %}
                         <div class="card bg-danger">

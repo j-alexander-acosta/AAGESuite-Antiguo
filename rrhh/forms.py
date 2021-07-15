@@ -49,12 +49,13 @@ class ColegioForm(forms.ModelForm):
 class PersonaForm(forms.ModelForm):
     class Meta:
         model = Persona
-        fields = '__all__'
+        exclude = ['usuario']
 
         help_texts = {
             'titulado': u"Marque si la persona tiene un título profesional"
         }
-    rut  = CLRutField()
+
+    rut = CLRutField()
 
     def __init__(self, *args, **kwargs):
         super(PersonaForm, self).__init__(*args, **kwargs)

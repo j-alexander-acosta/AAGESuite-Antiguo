@@ -238,7 +238,7 @@ def persona_detail(request, pk_persona):
 
     return render(
         request,
-        'rrhh/persona/perfil.html',
+        'rrhh/persona/perfil2.html',
         context
     )
 

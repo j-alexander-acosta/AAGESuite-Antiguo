@@ -1,5 +1,7 @@
-from django.db import models
-from .base import *
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
+from rrhh.models.base import *
+from rrhh.models.colegio import Colegio, ContratoColegio
 
 
 class Persona(models.Model):
@@ -19,6 +21,7 @@ class Persona(models.Model):
     email = models.EmailField()
     titulado = models.BooleanField(default=False)
     profesion = models.CharField(max_length=255, null=True, blank=True, verbose_name='Profesión', default='')
+    usuario = models.OneToOneField(User, null=True, blank=True)
 
     def __str__(self):
         return '{} {} {} ({})'.format(
@@ -41,12 +44,19 @@ class Persona(models.Model):
         )
 
     @property
+    def get_short_name(self):
+        return '{} {}'.format(
+            self.nombres.split(' ')[0],
+            self.apellido_paterno
+        )
+
+    @property
     def clasificacion(self):
         clasificacion = 'Postulante'
         try:
-            if self.funcionario.contrato_set.all():
+            if self.funcionario.contratocolegio_set.all():
                 clasificacion = 'Postulante SEA'
-            if self.funcionario.contrato_set.filter(vigente=True):
+            if self.funcionario.contratocolegio_set.filter(vigente=True):
                 clasificacion = 'Funcionario'
         except:
             pass

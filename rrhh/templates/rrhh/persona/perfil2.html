@@ -1,0 +1,603 @@
+{% extends 'base/base.html' %}
+{% load humanize crispy_forms_tags staticfiles rrhh_utils %}
+
+{% block title_page %}
+    Perfil de {{ object }}
+{% endblock %}
+
+{% block content %}
+
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Hyper</a></li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Pages</a></li>
+                        <li class="breadcrumb-item active">Profile 2</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Perfil de usuario</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+        <div class="col-xl-4 col-lg-5">
+            <div class="card text-center">
+                <div class="card-body">
+                    {% if object.foto %}
+                        <img src="{{ object.foto}}" class="rounded-circle avatar-lg img-thumbnail" alt="{{ object.username }}">
+                    {% else %}
+                        <img src="{% static 'base/img/user.png' %}" class="rounded-circle avatar-lg img-thumbnail" alt="{{ object.username }}">
+                    {% endif %}
+
+                    <h4 class="mb-0 mt-2">{{ object.get_short_name }}</h4>
+                    <p class="text-muted font-14">{{ object.profesion }}</p>
+
+                    <div class="text-left mt-3">
+                        <h4 class="font-13 text-uppercase">Informacion personal</h4>
+                        <p class="text-muted mb-2 font-13"><strong>Nombre completo :</strong> <span class="ml-2">{{ object.get_full_name }}</span></p>
+                        <p class="text-muted mb-2 font-13"><strong>RUT :</strong> <span class="ml-2">{{ object.rut }}</span></p>
+                        <p class="text-muted mb-2 font-13"><strong>Fecha de nacimiento :</strong> <span class="ml-2">{{ object.fecha_nacimiento }}</span></p>
+                        <p class="text-muted mb-2 font-13"><strong>Genero :</strong> <span class="ml-2">{{ object.genero }}</span></p>
+                        <p class="text-muted mb-2 font-13"><strong>Nacionalidad :</strong> <span class="ml-2">{{ object.nacionalidad|beauty_none }}</span></p>
+                        <p class="text-muted mb-2 font-13"><strong>Estado civil :</strong> <span class="ml-2">{{ object.estado_civil|beauty_none }}</span></p>
+                        <p class="text-muted mb-2 font-13"><strong>Religión :</strong> <span class="ml-2">{{ object.religion|beauty_none }}</span></p>
+                        <p class="text-muted mb-2 font-13"><strong>Dirección :</strong> <span class="ml-2">{{ object.direccion }}</span></p>
+                        <p class="text-muted mb-2 font-13"><strong>Teléfono :</strong> <span class="ml-2">{{ object.telefono }}</span></p>
+                        <p class="text-muted mb-2 font-13"><strong>Correo electrónico :</strong> <span class="ml-2">{{ object.email }}</span></p>
+                    </div>
+                </div> <!-- end card-body -->
+            </div> <!-- end card -->
+
+        </div> <!-- end col-->
+
+        <div class="col-xl-8 col-lg-7">
+            <div class="card">
+                <div class="card-body">
+                    <ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
+                        {% if object.funcionario %}
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link rounded-0 active" id="profesional-tab" data-toggle="tab" href="#settings"
+                                   role="tab" aria-controls="profesional" aria-selected="false">Inf. Funcionario</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item" role="link">
+                                <a class="nav-link rounded-0" href="{% url 'rrhh:funcionario__nuevo' object.id %}" role="tab">
+                                    <i class="uil-plus"></i> Crear Funcionario
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if object.historial.union or object.historial.fundacion or object.historial.colegio %}
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link rounded-0" id="historial-contrato-tab" data-toggle="tab" href="#timeline"
+                                   role="tab" aria-controls="ihstorial-contrato" aria-selected="false">Hitorial</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane show active" id="settings">
+                            <form>
+                                <h5 class="mb-4 text-uppercase"><i class="mdi mdi-account-circle mr-1"></i> Personal Info</h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="firstname">First Name</label>
+                                            <input type="text" class="form-control" id="firstname" placeholder="Enter first name">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="lastname">Last Name</label>
+                                            <input type="text" class="form-control" id="lastname" placeholder="Enter last name">
+                                        </div>
+                                    </div> <!-- end col -->
+                                </div> <!-- end row -->
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="userbio">Bio</label>
+                                            <textarea class="form-control" id="userbio" rows="4" placeholder="Write something..."></textarea>
+                                        </div>
+                                    </div> <!-- end col -->
+                                </div> <!-- end row -->
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="useremail">Email Address</label>
+                                            <input type="email" class="form-control" id="useremail" placeholder="Enter email">
+                                            <span class="form-text text-muted"><small>If you want to change email please <a href="javascript: void(0);">click</a> here.</small></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="userpassword">Password</label>
+                                            <input type="password" class="form-control" id="userpassword" placeholder="Enter password">
+                                            <span class="form-text text-muted"><small>If you want to change password please <a href="javascript: void(0);">click</a> here.</small></span>
+                                        </div>
+                                    </div> <!-- end col -->
+                                </div> <!-- end row -->
+
+                                <h5 class="mb-3 text-uppercase bg-light p-2"><i class="mdi mdi-office-building mr-1"></i> Company Info</h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="companyname">Company Name</label>
+                                            <input type="text" class="form-control" id="companyname" placeholder="Enter company name">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="cwebsite">Website</label>
+                                            <input type="text" class="form-control" id="cwebsite" placeholder="Enter website url">
+                                        </div>
+                                    </div> <!-- end col -->
+                                </div> <!-- end row -->
+
+                                <h5 class="mb-3 text-uppercase bg-light p-2"><i class="mdi mdi-earth mr-1"></i> Social</h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="social-fb">Facebook</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="mdi mdi-facebook"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control" id="social-fb" placeholder="Url">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="social-tw">Twitter</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="mdi mdi-twitter"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control" id="social-tw" placeholder="Username">
+                                            </div>
+                                        </div>
+                                    </div> <!-- end col -->
+                                </div> <!-- end row -->
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="social-insta">Instagram</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="mdi mdi-instagram"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control" id="social-insta" placeholder="Url">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="social-lin">Linkedin</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="mdi mdi-linkedin"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control" id="social-lin" placeholder="Url">
+                                            </div>
+                                        </div>
+                                    </div> <!-- end col -->
+                                </div> <!-- end row -->
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="social-sky">Skype</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="mdi mdi-skype"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control" id="social-sky" placeholder="@username">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="social-gh">Github</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="mdi mdi-github-circle"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control" id="social-gh" placeholder="Username">
+                                            </div>
+                                        </div>
+                                    </div> <!-- end col -->
+                                </div> <!-- end row -->
+
+                                <div class="text-right">
+                                    <button type="submit" class="btn btn-success mt-2"><i class="mdi mdi-content-save"></i> Save</button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- end settings content-->
+
+                        <div class="tab-pane" id="timeline">
+
+                            <!-- comment box -->
+                            <div class="border rounded mt-2 mb-3">
+                                <form action="#" class="comment-area-box">
+                                    <textarea rows="3" class="form-control border-0 resize-none" placeholder="Write something...."></textarea>
+                                    <div class="p-2 bg-light d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <a href="#" class="btn btn-sm px-2 font-16 btn-light"><i class="mdi mdi-account-circle"></i></a>
+                                            <a href="#" class="btn btn-sm px-2 font-16 btn-light"><i class="mdi mdi-map-marker"></i></a>
+                                            <a href="#" class="btn btn-sm px-2 font-16 btn-light"><i class="mdi mdi-camera"></i></a>
+                                            <a href="#" class="btn btn-sm px-2 font-16 btn-light"><i class="mdi mdi-emoticon-outline"></i></a>
+                                        </div>
+                                        <button type="submit" class="btn btn-sm btn-dark waves-effect">Post</button>
+                                    </div>
+                                </form>
+                            </div> <!-- end .border-->
+                            <!-- end comment box -->
+
+                            <!-- Story Box-->
+                            <div class="border border-light rounded p-2 mb-3">
+                                <div class="media">
+                                    <img class="mr-2 rounded-circle" src="assets/images/users/avatar-3.jpg"
+                                         alt="Generic placeholder image" height="32">
+                                    <div class="media-body">
+                                        <h5 class="m-0">Jeremy Tomlinson</h5>
+                                        <p class="text-muted"><small>about 2 minuts ago</small></p>
+                                    </div>
+                                </div>
+                                <p>Story based around the idea of time lapse, animation to post soon!</p>
+
+                                <img src="assets/images/small/small-1.jpg" alt="post-img" class="rounded mr-1"
+                                     height="60" />
+                                <img src="assets/images/small/small-2.jpg" alt="post-img" class="rounded mr-1"
+                                     height="60" />
+                                <img src="assets/images/small/small-3.jpg" alt="post-img" class="rounded"
+                                     height="60" />
+
+                                <div class="mt-2">
+                                    <a href="javascript: void(0);" class="btn btn-sm btn-link text-muted"><i
+                                            class="mdi mdi-reply"></i> Reply</a>
+                                    <a href="javascript: void(0);" class="btn btn-sm btn-link text-muted"><i
+                                            class="mdi mdi-heart-outline"></i> Like</a>
+                                    <a href="javascript: void(0);" class="btn btn-sm btn-link text-muted"><i
+                                            class="mdi mdi-share-variant"></i> Share</a>
+                                </div>
+                            </div>
+
+                            <!-- Story Box-->
+                            <div class="border border-light rounded p-2 mb-3">
+                                <div class="media">
+                                    <img class="mr-2 rounded-circle" src="assets/images/users/avatar-4.jpg"
+                                         alt="Generic placeholder image" height="32">
+                                    <div class="media-body">
+                                        <h5 class="m-0">Thelma Fridley</h5>
+                                        <p class="text-muted"><small>about 1 hour ago</small></p>
+                                    </div>
+                                </div>
+                                <div class="font-16 text-center font-italic text-dark">
+                                    <i class="mdi mdi-format-quote-open font-20"></i> Cras sit amet nibh libero, in
+                                    gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras
+                                    purus odio, vestibulum in vulputate at, tempus viverra turpis. Duis
+                                    sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper
+                                    porta. Mauris massa.
+                                </div>
+
+                                <div class="mx-n2 p-2 mt-3 bg-light">
+                                    <div class="media">
+                                        <img class="mr-2 rounded-circle" src="assets/images/users/avatar-3.jpg"
+                                             alt="Generic placeholder image" height="32">
+                                        <div class="media-body">
+                                            <h5 class="mt-0">Jeremy Tomlinson <small class="text-muted">3 hours ago</small></h5>
+                                            Nice work, makes me think of The Money Pit.
+
+                                            <br/>
+                                            <a href="javascript: void(0);" class="text-muted font-13 d-inline-block mt-2"><i
+                                                    class="mdi mdi-reply"></i> Reply</a>
+
+                                            <div class="media mt-3">
+                                                <a class="pr-2" href="#">
+                                                    <img src="assets/images/users/avatar-4.jpg" class="rounded-circle"
+                                                         alt="Generic placeholder image" height="32">
+                                                </a>
+                                                <div class="media-body">
+                                                    <h5 class="mt-0">Thelma Fridley <small class="text-muted">5 hours ago</small></h5>
+                                                    i'm in the middle of a timelapse animation myself! (Very different though.) Awesome stuff.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="media mt-2">
+                                        <a class="pr-2" href="#">
+                                            <img src="assets/images/users/avatar-1.jpg" class="rounded-circle"
+                                                 alt="Generic placeholder image" height="32">
+                                        </a>
+                                        <div class="media-body">
+                                            <input type="text" id="simpleinput" class="form-control border-0 form-control-sm" placeholder="Add comment">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-2">
+                                    <a href="javascript: void(0);" class="btn btn-sm btn-link text-danger"><i
+                                            class="mdi mdi-heart"></i> Like (28)</a>
+                                    <a href="javascript: void(0);" class="btn btn-sm btn-link text-muted"><i
+                                            class="mdi mdi-share-variant"></i> Share</a>
+                                </div>
+                            </div>
+
+                            <!-- Story Box-->
+                            <div class="border border-light p-2 mb-3">
+                                <div class="media">
+                                    <img class="mr-2 rounded-circle" src="assets/images/users/avatar-6.jpg"
+                                         alt="Generic placeholder image" height="32">
+                                    <div class="media-body">
+                                        <h5 class="m-0">Martin Williamson</h5>
+                                        <p class="text-muted"><small>15 hours ago</small></p>
+                                    </div>
+                                </div>
+                                <p>The parallax is a little odd but O.o that house build is awesome!!</p>
+
+                                <iframe src='https://player.vimeo.com/video/87993762' height='300' class="img-fluid border-0"></iframe>
+                            </div>
+
+                            <div class="text-center">
+                                <a href="javascript:void(0);" class="text-danger"><i class="mdi mdi-spin mdi-loading mr-1"></i> Load more </a>
+                            </div>
+
+                        </div>
+                        <!-- end timeline content-->
+
+                    </div> <!-- end tab-content -->
+                </div> <!-- end card body -->
+            </div> <!-- end card -->
+        </div> <!-- end col -->
+    </div>
+
+{% endblock content %}
+
+{#{% block content %}#}
+{#    <div class="container">#}
+{#        <div class="card" id="profile-main" style="min-height: 520px">#}
+{#            <div class="pm-overview c-overflow">#}
+{#                <div class="pmo-pic">#}
+{#                    <div class="p-relative">#}
+{#                        <a href="">#}
+{#                            {% if object.foto %}#}
+{#                                <img class="img-responsive" src="{{ object.foto}}" alt="{{ object.username }}">#}
+{#                            {% else %}#}
+{#                                <img class="img-responsive" src="{% static 'base/img/user.png' %}" alt="{{ object.username }}">#}
+{#                            {% endif %}#}
+{#                        </a>#}
+{#                    </div>#}
+{##}
+{#                    <div class="pmo-stat">#}
+{#                        <h5 class="m-0 c-white">{{ object.rut }}</h5>#}
+{#                        {{ object.get_full_name }}<br>#}
+{#                        <em>{{ object.profesion }}</em>#}
+{#                    </div>#}
+{#                    {% if object.clasificacion == 'Postulante' %}#}
+{#                        <div class="pmo-stat c-white" style="background-color: #ffc105">#}
+{#                            <h4>{{ object.clasificacion }}</h4>#}
+{#                        </div>#}
+{#                    {% elif object.clasificacion == 'Funcionario' %}#}
+{#                        <div class="pmo-stat c-white" style="background-color: #28a745">#}
+{#                            <h4>{{ object.clasificacion }}</h4>#}
+{#                        </div>#}
+{#                    {% else %}#}
+{#                        <div class="pmo-stat c-white" style="background-color: lightseagreen">#}
+{#                            <h4>{{ object.clasificacion }}</h4>#}
+{#                        </div>#}
+{#                    {% endif %}#}
+{#                </div>#}
+{#            </div>#}
+{##}
+{##}
+{#            <div class="pm-body clearfix m-l-5">#}
+{#                <br>#}
+{#                <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">#}
+{#                    <li class="nav-item" role="presentation">#}
+{#                        <a class="nav-link active" id="perfil-tab" data-toggle="tab" href="#perfil"#}
+{#                           role="tab" aria-controls="perfil" aria-selected="true">Perfil</a>#}
+{#                    </li>#}
+{#                    {% if object.funcionario %}#}
+{#                        <li class="nav-item" role="presentation">#}
+{#                            <a class="nav-link" id="profesional-tab" data-toggle="tab" href="#profesional"#}
+{#                               role="tab" aria-controls="profesional" aria-selected="false">Inf. Funcionario</a>#}
+{#                        </li>#}
+{#                    {% else %}#}
+{#                        <li class="nav-item" role="link">#}
+{#                            <a class="nav-link" href="{% url 'rrhh:funcionario__nuevo' object.id %}" role="tab">#}
+{#                                <i class="uil-plus"></i> Crear Funcionario#}
+{#                            </a>#}
+{#                        </li>#}
+{#                    {% endif %}#}
+{#                    {% if object.historial.union or object.historial.fundacion or object.historial.colegio %}#}
+{#                        <li class="nav-item" role="presentation">#}
+{#                            <a class="nav-link" id="historial-contrato-tab" data-toggle="tab" href="#historial-contrato"#}
+{#                               role="tab" aria-controls="ihstorial-contrato" aria-selected="false">Hitorial</a>#}
+{#                        </li>#}
+{#                    {% endif %}#}
+{#                </ul>#}
+{#                <div class="tab-content" id="myTabContent">#}
+{#                    <div class="tab-pane fade show active" id="perfil" role="tabpanel" aria-labelledby="perfil-tab">#}
+{#                        <div class="pmb-block">#}
+{#                            <div class="pmbb-body">#}
+{#                                <div class="pmbb-view">#}
+{#                                    <table class="table table-responsive">#}
+{#                                        <body>#}
+{#                                        <tr>#}
+{#                                            <th>Fecha de Nacimiento</th>#}
+{#                                            <td>{{ object.fecha_nacimiento }}</td>#}
+{#                                        </tr>#}
+{#                                        <tr>#}
+{#                                            <th>Genero</th>#}
+{#                                            <td>{{ object.genero }}</td>#}
+{#                                        </tr>#}
+{#                                        <tr>#}
+{#                                            <th>Nacionalidad</th>#}
+{#                                            <td>{{ object.nacionalidad|beauty_none }}</td>#}
+{#                                        </tr>#}
+{#                                        <tr>#}
+{#                                            <th>Estado Civil</th>#}
+{#                                            <td>{{ object.estado_civil|beauty_none }}</td>#}
+{#                                        </tr>#}
+{#                                        <tr>#}
+{#                                            <th>Religión</th>#}
+{#                                            <td>{{ object.religion|beauty_none }}</td>#}
+{#                                        </tr>#}
+{#                                        <tr>#}
+{#                                            <th>Dirección</th>#}
+{#                                            <td>{{ object.direccion }}</td>#}
+{#                                        </tr>#}
+{#                                        <tr>#}
+{#                                            <th>Teléfono</th>#}
+{#                                            <td>{{ object.telefono }}</td>#}
+{#                                        </tr>#}
+{#                                        <tr>#}
+{#                                            <th>Correo Electrónico</th>#}
+{#                                            <td>{{ object.email }}</td>#}
+{#                                        </tr>#}
+{#                                        </body>#}
+{#                                    </table>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    {% if object.funcionario %}#}
+{#                        <div class="tab-pane fade" id="profesional" role="tabpanel" aria-labelledby="profesional-tab">#}
+{#                            <div class="pmb-block">#}
+{#                                <div class="pmbb-body">#}
+{#                                    <div class="pmbb-view">#}
+{#                                        <table class="table table-responsive">#}
+{#                                            <body>#}
+{#                                            <tr>#}
+{#                                                <th>AFP</th>#}
+{#                                                <td>{{ object.funcionario.afp|beauty_none }}</td>#}
+{#                                            </tr>#}
+{#                                            <tr>#}
+{#                                                <th>Salud</th>#}
+{#                                                <td>{{ object.funcionario.get_salud_display|beauty_none }}</td>#}
+{#                                            </tr>#}
+{#                                            {% if object.funcionario.salud == 2 %}#}
+{#                                                <tr>#}
+{#                                                    <th>Isapre</th>#}
+{#                                                    <td>{{ object.funcionario.isapre|beauty_none }}</td>#}
+{#                                                </tr>#}
+{#                                            {% endif %}#}
+{#                                            <tr>#}
+{#                                                <th>Fecha de ingreso de Docente</th>#}
+{#                                                <td>{{ object.funcionario.fecha_ingreso_docente|beauty_none }}</td>#}
+{#                                            </tr>#}
+{#                                            <tr>#}
+{#                                                <th>Fecha de ingreso al SEA</th>#}
+{#                                                <td>{{ object.funcionario.fecha_ingreso_sea|beauty_none }}</td>#}
+{#                                            </tr>#}
+{#                                            <tr>#}
+{#                                                <th>Estado del Funcionario</th>#}
+{#                                                <td>{{ object.funcionario.get_estado_display }}</td>#}
+{#                                            </tr>#}
+{#                                            {% if object.estado == 2 %}#}
+{#                                                <tr>#}
+{#                                                    <th>Tipo de misionero</th>#}
+{#                                                    <td>{{ object.funcionario.get_tipo_misionero_display }}</td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                    <th>Puntos</th>#}
+{#                                                    <td>{{ object.funcionario.puntos }}</td>#}
+{#                                                </tr>#}
+{#                                            {% endif %}#}
+{#                                            </body>#}
+{#                                        </table>#}
+{#                                        <a role="button" class="btn btn-outline-info text-right" href="{% url 'rrhh:funcionario__editar' object.funcionario.pk %}"><i class="uil-edit"></i> Editar</a>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    {% endif %}#}
+{#                    {% if object.historial %}#}
+{#                        <div class="tab-pane fade show active" id="historial-contrato" role="tabpanel" aria-labelledby="historial-contrato-tab">#}
+{#                            <div class="pmb-block">#}
+{#                                <div class="accordion" id="accordionExample">#}
+{#                                    {% for contrato in object.contrato_set.all|dictsortreversed:"vigente" %}#}
+{#                                        <div class="card">#}
+{#                                            <div class="card-header" id="heading{{contrato.id}}" data-toggle="collapse" data-target="#collapse{{contrato.id}}" aria-expanded="true" aria-controls="collapse{{contrato.id}}">#}
+{#                                                <h2 class="mb-0">#}
+{#                                                    <button class="btn btn-link" type="button">#}
+{#                                                        {{ contrato.colegio }}#}
+{#                                                    </button>#}
+{#                                                </h2>#}
+{#                                            </div>#}
+{#                                            <div id="collapse{{contrato.id}}" class="collapse {% if forloop.first %}show{% endif %}" aria-labelledby="heading{{contrato.id}}" data-parent="#accordionExample">#}
+{#                                                <div class="card-body">#}
+{#                                                    <table class="table table-responsive">#}
+{#                                                        <tbody>#}
+{#                                                        <tr>#}
+{#                                                            <th> Tipo de contrato </th>#}
+{#                                                            <td> {{ contrato.get_tipo_contrato_display }} </td>#}
+{#                                                        </tr>#}
+{#                                                        <tr>#}
+{#                                                            <th> Horas contratadas </th>#}
+{#                                                            <td> {{ contrato.horas }} hrs. ({{ contrato.get_tipo_horas_display }}) </td>#}
+{#                                                        </tr>#}
+{#                                                        <tr>#}
+{#                                                            <th> Periodo </th>#}
+{#                                                            <td>  {{ contrato.periodo_contrato }}#}
+{#                                                            </td>#}
+{#                                                        </tr>#}
+{#                                                        {% if contrato.reemplazando %}#}
+{#                                                            <tr>#}
+{#                                                                <th> En reemplazo de</th>#}
+{#                                                                <td> {{ contrato.reemplazando }} </td>#}
+{#                                                            </tr>#}
+{#                                                        {% endif %}#}
+{#                                                        <tr>#}
+{#                                                            <th> Categoria </th>#}
+{#                                                            <td> {{ contrato.get_categoria_display }} </td>#}
+{#                                                        </tr>#}
+{#                                                        <tr>#}
+{#                                                            <th> Función principal </th>#}
+{#                                                            <td> {{ contrato.funcion_principal }} </td>#}
+{#                                                        </tr>#}
+{#                                                        <tr>#}
+{#                                                            <th> Estado Trabajador </th>#}
+{#                                                            <td> {% if contrato.vigente %}#}
+{#                                                                <i class="text-success">Contratado</i>#}
+{#                                                            {% else %}#}
+{#                                                                <i class="text-danger">Desvinculado</i>#}
+{#                                                            {% endif %}#}
+{#                                                            </td>#}
+{#                                                        </tr>#}
+{#                                                        {% if not contrato.vigente %}#}
+{#                                                            <tr>#}
+{#                                                                <th> Razón de baja </th>#}
+{#                                                                <td> {{ contrato.finiquito.get_razon_baja_display }} </td>#}
+{#                                                            </tr>#}
+{#                                                            <tr>#}
+{#                                                                <th> Fecha de finiquito </th>#}
+{#                                                                <td> {{ contrato.fecha }} </td>#}
+{#                                                            </tr>#}
+{#                                                        {% endif %}#}
+{#                                                        </tbody>#}
+{#                                                    </table>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    {% endfor %}#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    {% endif %}#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#    <br><br><br><br>#}
+{##}
+{#{% endblock %}#}

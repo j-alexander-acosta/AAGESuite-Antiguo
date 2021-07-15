@@ -3,8 +3,7 @@ from django.contrib.auth.models import User
 from django.template.defaultfilters import truncatewords
 from django.contrib.humanize.templatetags import humanize
 from rrhh.models.base import *
-from rrhh.models.persona import Funcionario, Persona
-from datetime import datetime, date
+from datetime import date
 
 
 CATEGORIAS = (
@@ -323,7 +322,7 @@ class Solicitud(models.Model):
     fecha_inicio = models.DateField()
     fecha_termino = models.DateField(null=True, blank=True)
     justificacion = models.CharField(max_length=255, verbose_name='Justificación')
-    postulantes = models.ManyToManyField(Persona, blank=True)
+    postulantes = models.ManyToManyField('Persona', blank=True)
 
     def __str__(self):
         return '{}, {}'.format(

@@ -6,7 +6,7 @@
 
 {% block content %}
 
-<div class="list-group" style="margin-top: 80px;">
+<div class="list-group">
   <h2>Elija colegio para trabajar</h2>
   {% for c in colegios %}
     <a href="{% url 'carga-horaria:switch' pk=c.pk %}" class="list-group-item list-group-item-action">{{ c }}</a>
