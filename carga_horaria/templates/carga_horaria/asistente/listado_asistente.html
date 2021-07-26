@@ -18,36 +18,38 @@
             </a>
         </h4>
         <h6 class="card-subtitle mb-2 text-muted">
-          <a class="btn btn-sm btn-default" href="{% url 'carga-horaria:asistentes-info' %}"><i class=" uil-postcard"></i> Descargar información Asistentes</a>
+          <a class="btn btn-sm btn-default" href="{% url 'carga-horaria:asistentes-info' %}"><i class=" uil-cloud-download"></i> Descargar información Asistentes</a>
         </h6>
     </div>
     <div class="card-body">
-      <div class="pull-left">
-        <form action="." method="GET">
-          <i class="uil-search"></i> <input name="q" placeholder="Buscar por nombre" value="{{ request.GET.q }}">{% if 'q' in request.GET %} <a href="{% url 'carga-horaria:asistentes' %}" class="text-muted">limpiar</a>{% endif %}
-        </form>
-      </div>
-      <div class="pull-right" style="padding-bottom: 10px;">
-        <a class="btn btn-sm btn-default" href="{% url 'carga-horaria:asistente__anexos' %}"><i class=" uil-cloud-download"></i> Generar Anexo 1 Masivo</a>
-        <a class="btn btn-sm btn-default" href="{% url 'carga-horaria:asistentes-pdf' %}"><i class="uil-print"></i> Imprimir</a>
-      </div>
+        <div class="row" style="padding-bottom: 10px;">
+            <div class="col-md-8 pull-left">
+                <form action="." method="GET">
+                <i class="uil-search"></i> <input name="q" placeholder="Buscar por nombre" value="{{ request.GET.q }}">{% if 'q' in request.GET %} <a href="{% url 'carga-horaria:asistentes' %}" class="text-muted">limpiar</a>{% endif %}
+                </form>
+            </div>
+            <div class="col-sm-4 pull-right">
+                <a class="btn btn-outline-default" href="{% url 'carga-horaria:asistente__anexos' %}"><i class="uil-file-upload-alt"></i> Generar Anexo 1 Masivo</a>
+                <a class="btn btn-outline-default" href="{% url 'carga-horaria:asistentes-pdf' %}"><i class="uil-print"></i> Imprimir</a>
+            </div>
+        </div>
         <div class="table-responsive">
         <table class="table table-striped">
             <thead>
             <tr>
-                <th><i class="uil-user"></i> Nombre </th>
-                <th><i class="uil-suitcase-alt"></i> Función </th>
-                <th><i class="uil-clock-eight"></i> Horas de contrato </th>
-                <th><i class="uil-cog"></i> Acciones </th>
+                <th style="text-align: center;"><i class="uil-user"></i> Nombre </th>
+                <th style="text-align: center;"><i class="uil-suitcase-alt"></i> Función </th>
+                <th style="text-align: center;"><i class="uil-clock-eight"></i> Horas de contrato </th>
+                <th style="text-align: center;"><i class="uil-cog"></i> Acciones </th>
             </tr>
             </thead>
             <tbody>
             {% for p in object_list %}
                 <tr>
                     <td><a href="{% url 'carga-horaria:asistente' p.pk %}"> {{ p.nombre }} </a></td>
-                    <td> {{ p.funcion }} </td>
-                    <td> {{ p.horas }} </td>
-                    <td>
+                    <td style="text-align: center;"> {{ p.funcion }} </td>
+                    <td style="text-align: center;"> {{ p.horas }} </td>
+                    <td style="text-align: center;">
                       <a class="btn btn-outline-success" href="{% url 'carga-horaria:asistente__anexo' p.pk %}" data-toggle="tooltip" data-placement="top" title="Generar Anexo 1"><i class="uil-file-upload-alt"></i></a>
                         <a class="btn btn-outline-primary" href="{% url 'carga-horaria:asistente__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
                         <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_asistente_{{p.pk}}"><i class="uil-trash-alt"></i></a>

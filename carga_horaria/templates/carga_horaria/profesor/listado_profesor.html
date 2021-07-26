@@ -22,39 +22,46 @@
         </h6>
     </div>
     <div class="card-body">
-      <div class="pull-left">
-        <form action="." method="GET">
-          <i class="uil-search"></i> <input name="q" placeholder="Buscar" value="{{ request.GET.q }}">{% if 'q' in request.GET %} <a href="{% url 'carga-horaria:profesores' %}" class="text-muted">limpiar</a>{% endif %}
-        </form>
-      </div>
-      <div class="pull-right" style="padding-bottom: 10px;">
-          <a class="btn btn-outline-default" href="{% url 'carga-horaria:profesor__anexos' %}"><i class="uil-file-upload-alt"></i> Generar Anexo 1 Masivo</a>
-          <a class="btn btn-outline-default" href="{% url 'carga-horaria:profesores-pdf' %}"><i class="uil-print"></i> Imprimir</a>
-      </div>
+        <div class="row" style="padding-bottom: 10px;">
+            <div class="col-md-8 pull-left">
+                <form action="." method="GET">
+                <i class="uil-search"></i> <input name="q" placeholder="Buscar por nombre" value="{{ request.GET.q }}">{% if 'q' in request.GET %} <a href="{% url 'carga-horaria:profesores' %}" class="text-muted">limpiar</a>{% endif %}
+                </form>
+            </div>
+            <div class="col-sm-4 pull-right">
+                <a class="btn btn-outline-default" href="{% url 'carga-horaria:profesor__anexos' %}"><i class="uil-file-upload-alt"></i> Generar Anexo 1 Masivo</a>
+                <a class="btn btn-outline-default" href="{% url 'carga-horaria:profesores-pdf' %}"><i class="uil-print"></i> Imprimir</a>
+            </div>
+            <div class="col-md-8 pull-left">
+                <form action="." method="GET">
+                <i class="uil-search"></i> <input cargo="r" placeholder="Buscar por cargo" value="{{ request.GET.r }}">{% if 'r' in request.GET %} <a href="{% url 'carga-horaria:profesores' %}" class="text-muted">limpiar</a>{% endif %}
+                </form>
+            </div>
+        </div>
         <div class="table-responsive">
         <table class="table table-striped">
             <thead>
             <tr>
-                <th><i class="uil-user"></i> Nombre </th>
-                <th><i class="uil-user"></i> Cargo </th>
-                <th><i class="uil-clock-seven"></i> Hrs contrato</th>
-                <th><i class="uil-clock-eight"></i> Hrs docentes </th>
-                <th><i class="uil-clock-two"></i> Hrs disp. docentes </th>
-                <th><i class="uil-clock-five"></i> Hrs no aula </th>
-                <th><i class="uil-clock-seven"></i> Hrs disp. no aula </th>
-                <th><i class="uil-cog"></i> Acciones </th>
+                <th style="text-align: center;"><i class="uil-user"></i> Nombre </th>
+                <th style="text-align: center;"><i class="uil-user-circle"></i> Cargo </th>
+                <th style="text-align: center;"><i class="uil-clock-seven"></i> Hrs contrato</th>
+                <th style="text-align: center;"><i class="uil-clock-eight"></i> Hrs docentes </th>
+                <th style="text-align: center;"><i class="uil-clock-two"></i> Hrs disp. docentes </th>
+                <th style="text-align: center;"><i class="uil-clock-five"></i> Hrs no aula </th>
+                <th style="text-align: center;"><i class="uil-clock-seven"></i> Hrs disp. no aula </th>
+                <th style="text-align: center;"><i class="uil-cog"></i> Acciones </th>
             </tr>
             </thead>
             <tbody>
             {% for p in object_list %}
-                <tr>
+                <tr text-align: center>
                     <td><a href="{% url 'carga-horaria:profesor' p.pk %}"> {{ p.nombre }} </a></td>
                     <td> {{ p.get_cargo_display }} </td>
-                    <td> {{ p.horas_contratadas }} </td>
-                    <td> {{ p.horas_docentes }} </td>
-                    <td> {{ p.horas_disponibles }} </td>
-                    <td> {{ p.horas_no_aula }} </td>
-                    <td> {{ p.horas_no_aula_disponibles }} </td>
+                    <td style="text-align: center;"> {{ p.horas_contratadas }} </td>
+                    <td style="text-align: center;"> {{ p.horas_docentes }} </td>
+                    <td style="text-align: center;"> {{ p.horas_disponibles }} </td>
+                    <td style="text-align: center;"> {{ p.horas_no_aula }} </td>
+                    <td style="text-align: center;"> {{ p.horas_no_aula_disponibles }} </td>
                     <td>
                         <a class="btn btn-outline-success" href="{% url 'carga-horaria:profesor__anexo' p.pk %}" data-toggle="tooltip" data-placement="top" title="Generar Anexo 1"><i class="uil-file-upload-alt"></i></a>
                         <a class="btn btn-outline-primary" href="{% url 'carga-horaria:profesor__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>

@@ -22,8 +22,8 @@
             <thead>
             <tr>
                 <th><i class="uil-user"></i> Asignatura </th>
-                <th><i class="uil-graduation-hat"></i> Curso </th>
-                <th><i class="uil-cog"></i> Acciones </th>
+                <th style="text-align: center;"><i class="uil-graduation-hat"></i> Curso </th>
+                <th style="text-align: center;"><i class="uil-cog"></i> Acciones </th>
             </tr>
             </thead>
             <tbody>
@@ -31,7 +31,7 @@
                 <tr>
                     <td><a href="{% url 'carga-horaria:asignatura' a.pk %}"> {{ a.base }} </a></td>
                     <td><a href="?periodo={{ a.periodo.pk}}">{{ a.periodo }}</a></td>
-                    <td>
+                    <td style="text-align: center;">
                         <a class="btn btn-outline-primary" href="{% url 'carga-horaria:asignatura__editar' a.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
                         <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_asignatura_{{a.pk}}"><i class="uil-trash-alt"></i></a>
                     </td>

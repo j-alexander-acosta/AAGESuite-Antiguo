@@ -24,27 +24,27 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th><i class="uil-user"></i> Nombre </th>
-                <th><i class="uil-book-alt"></i> JEC </th>
-                <th><i class="uil-book-alt"></i> SEP </th>
-                <th><i class="uil-book-alt"></i> PIE </th>
-                <th><i class="uil-home"></i> Dirección </th>
-                <th><i class="uil-phone"></i> Teléfono </th>
-                <th><i class="uil-envelope-alt"></i> Email </th>
-                <th><i class="uil-cog"></i> Acciones </th>
+                <th style="text-align: center;"><i class="uil-user"></i> Nombre </th>
+                <th style="text-align: center;"><i class="uil-book-alt"></i> JEC </th>
+                <th style="text-align: center;"><i class="uil-book-alt"></i> SEP </th>
+                <th style="text-align: center;"><i class="uil-book-alt"></i> PIE </th>
+                <th style="text-align: center;"><i class="uil-home"></i> Dirección </th>
+                <th style="text-align: center;"><i class="uil-phone"></i> Teléfono </th>
+                <th style="text-align: center;"><i class="uil-envelope-alt"></i> Email </th>
+                <th style="text-align: center;"><i class="uil-cog"></i> Acciones </th>
             </tr>
             </thead>
             <tbody>
             {% for c in object_list %}
                 <tr>
                     <td><a href="{% url 'carga-horaria:colegio' c.pk %}">{{ c.nombre }}</a></td>
-                    <td>{{c.jec|yesno}}</td>
-                    <td>{{c.sep|yesno}}</td>
-                    <td>{{c.pie|yesno}}</td>
-                    <td>{{c.direccion|default:"Ninguna"|truncatewords:2}}</td>
-                    <td>{{c.teléfono|default:"Ninguno"}}</td>
-                    <td>{{c.email|default:"Ninguno"}}</td>
-                    <td>
+                    <td style="text-align: center;">{{c.jec|yesno}}</td>
+                    <td style="text-align: center;">{{c.sep|yesno}}</td>
+                    <td style="text-align: center;">{{c.pie|yesno}}</td>
+                    <td style="text-align: center;">{{c.direccion|default:"Ninguna"|truncatewords:2}}</td>
+                    <td style="text-align: center;">{{c.teléfono|default:"Ninguno"}}</td>
+                    <td style="text-align: center;">{{c.email|default:"Ninguno"}}</td>
+                    <td style="text-align: center;">
                       <a class="btn btn-outline-primary" href="{% url 'carga-horaria:colegio__editar' c.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
                       {% if request.user.is_superuser %}
                       <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_colegio_{{c.pk}}"><i class="uil-trash"></i></a>
