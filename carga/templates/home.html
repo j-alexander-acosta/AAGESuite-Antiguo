@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block title_page %}
-    SINAGE
+    AAGE
 {% endblock %}
 
 {% block content %}
@@ -16,8 +16,81 @@
                         <li class="breadcrumb-item active">Starter</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Inicio SINAGE</h4>
+                <h4 class="page-title">Inicio Suite AAGE</h4>
             </div>
+            <br>
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'carga-horaria:colegios' %}" style="background-color: #093c71">
+                        <h2><i class="mdi mdi-bank"></i> {{ total_unidades_directivas }} </h2>
+                    </a>
+                    <h5 class="font-black-normal text-center">Carga Horaria</h5>
+                </div>
+        
+                <div class="col-md-4 text-center">
+                    <a class="btn btn-rounded btn-lg text-white" href="{% if request.user.is_superuser %}{% url 'carga-horaria:planes' %}{% else %}#{% endif %}" style="background-color: #093c71">
+                        <h2><i class="mdi mdi-bank"></i> {{ total_unidades_directivas }} </h2>
+                    </a>
+                    <h5 class="font-black-normal text-center">Recursos Humanos</h5>
+                </div>
+        
+                <div class="col-md-4 text-center">
+                    <a class="btn btn-rounded btn-lg text-white" href="{% if request.user.is_superuser %}{% url 'carga-horaria:asignaturasbase' %}{% else %}#{% endif %}" style="background-color:  #093c71">
+                        <h2><i class="mdi mdi-bank"></i> {{ total_unidades_directivas }} </h2>
+                    </a>
+                    <h5 class="font-black-normal text-center">Ciclos de Calidad</h5>
+                </div>
+            </div>
+            <br>
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'carga-horaria:colegios' %}" style="background-color:  #093c71">
+                        <h2><i class="mdi mdi-bank"></i> {{ total_unidades_directivas }} </h2>
+                    </a>
+                    <h5 class="font-black-normal text-center">Evaluación Docente</h5>
+                </div>
+        
+                <div class="col-md-4 text-center">
+                    <a class="btn btn-rounded btn-lg text-white" href="{% if request.user.is_superuser %}{% url 'carga-horaria:planes' %}{% else %}#{% endif %}" style="background-color:  #093c71">
+                        <h2><i class="mdi mdi-bank"></i> {{ total_unidades_directivas }} </h2>
+                    </a>
+                    <h5 class="font-black-normal text-center">Power BI</h5>
+                </div>
+        
+                <div class="col-md-4 text-center">
+                    <a class="btn btn-rounded btn-lg text-white" href="{% if request.user.is_superuser %}{% url 'carga-horaria:asignaturasbase' %}{% else %}#{% endif %}" style="background-color:  #093c71">
+                        <h2><i class="mdi mdi-bank"></i> {{ total_unidades_directivas }} </h2>
+                    </a>
+                    <h5 class="font-black-normal text-center">Evaluación de Aprendizajes</h5>
+                </div>
+            </div>
+            <br>
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'carga-horaria:colegios' %}" style="background-color:  #093c71">
+                        <h2><i class="mdi mdi-bank"></i> {{ total_unidades_directivas }} </h2>
+                    </a>
+                    <h5 class="font-black-normal text-center">UnACh</h5>
+                </div>
+                <div class="col-md-4 text-center">
+                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'carga-horaria:colegios' %}" style="background-color:  #093c71">
+                        <h2><i class="mdi mdi-bank"></i> {{ total_unidades_directivas }} </h2>
+                    </a>
+                    <h5 class="font-black-normal text-center">AAGE</h5>
+                </div>
+                <div class="col-md-4 text-center">
+                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'carga-horaria:colegios' %}" style="background-color:  #093c71">
+                        <h2><i class="mdi mdi-bank"></i> {{ total_unidades_directivas }} </h2>
+                    </a>
+                    <h5 class="font-black-normal text-center">Portal Adventista</h5>
+                </div>
+
         </div>
     </div>
 {% endblock %}
