@@ -20,77 +20,75 @@
             </div>
             <br>
             <br>
-            <br>
             <div class="row">
                 <div class="col-md-4 text-center">
-                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'carga-horaria:colegios' %}" style="background-color: #093c71">
-                        <h2><i class="mdi mdi-bank"></i> {{ total_unidades_directivas }} </h2>
+                    <a href="/carga/" target="blank">
+                        <img src="/static/base/img/Carga-Horaria-Personalizado.jpg" width="80" height="80">
                     </a>
-                    <h5 class="font-black-normal text-center">Carga Horaria</h5>
+                    <h5 class="font-black-normal text-center"><a href="/carga/" target="blank">Carga Horaria</h5>
                 </div>
         
                 <div class="col-md-4 text-center">
-                    <a class="btn btn-rounded btn-lg text-white" href="{% if request.user.is_superuser %}{% url 'carga-horaria:planes' %}{% else %}#{% endif %}" style="background-color: #093c71">
-                        <h2><i class="mdi mdi-bank"></i> {{ total_unidades_directivas }} </h2>
+                    <a href="/rrhh/" target="blank">
+                        <img src="/static/base/img/Gestión-del-Talento-Humano-Personalizado.jpg" width="80" height="80">
                     </a>
-                    <h5 class="font-black-normal text-center">Recursos Humanos</h5>
+                    <h5 class="font-black-normal text-center"><a href="/rrhh/" target="blank">Recursos Humanos</h5>
                 </div>
         
                 <div class="col-md-4 text-center">
-                    <a class="btn btn-rounded btn-lg text-white" href="{% if request.user.is_superuser %}{% url 'carga-horaria:asignaturasbase' %}{% else %}#{% endif %}" style="background-color:  #093c71">
-                        <h2><i class="mdi mdi-bank"></i> {{ total_unidades_directivas }} </h2>
+                    <a href="https://ac.unach.cl/" target="blank">
+                        <img src="/static/base/img/Ciclos-de-Calidad-Personalizado.jpg" width="80" height="80">
                     </a>
-                    <h5 class="font-black-normal text-center">Ciclos de Calidad</h5>
+                    <h5 class="font-black-normal text-center"><a href="https://ac.unach.cl/" target="blank">Ciclos de Calidad</h5>
                 </div>
             </div>
             <br>
             <br>
-            <br>
             <div class="row">
                 <div class="col-md-4 text-center">
-                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'carga-horaria:colegios' %}" style="background-color:  #093c71">
-                        <h2><i class="mdi mdi-bank"></i> {{ total_unidades_directivas }} </h2>
+                    <a href="https://sistemaencuestas.unach.cl/accounts/login/?next=/app/home/" target="blank">
+                        <img src="/static/base/img/Evaluación-Docente-Personalizado.jpg" width="80" height="80">
                     </a>
-                    <h5 class="font-black-normal text-center">Evaluación Docente</h5>
+                    <h5 class="font-black-normal text-center"><a href="https://sistemaencuestas.unach.cl/accounts/login/?next=/app/home/" target="blank">Evaluación Docente</h5>
                 </div>
         
                 <div class="col-md-4 text-center">
-                    <a class="btn btn-rounded btn-lg text-white" href="{% if request.user.is_superuser %}{% url 'carga-horaria:planes' %}{% else %}#{% endif %}" style="background-color:  #093c71">
-                        <h2><i class="mdi mdi-bank"></i> {{ total_unidades_directivas }} </h2>
+                    <a href="https://app.powerbi.com/?noSignUpCheck=1&pbi_source=weblandingsignin" target="blank">
+                        <img src="/static/base/img/Gestión-Escolar-Personalizado.jpg" width="80" height="80">
                     </a>
-                    <h5 class="font-black-normal text-center">Power BI</h5>
+                    <h5 class="font-black-normal text-center"><a href="https://app.powerbi.com/?noSignUpCheck=1&pbi_source=weblandingsignin" target="blank">Power Bi</h5>
                 </div>
         
                 <div class="col-md-4 text-center">
-                    <a class="btn btn-rounded btn-lg text-white" href="{% if request.user.is_superuser %}{% url 'carga-horaria:asignaturasbase' %}{% else %}#{% endif %}" style="background-color:  #093c71">
-                        <h2><i class="mdi mdi-bank"></i> {{ total_unidades_directivas }} </h2>
+                    <a href="https://unach.cl" target="blank">
+                        <img src="/static/base/img/logotipo4.jpeg" width="80" height="80">
                     </a>
-                    <h5 class="font-black-normal text-center">Evaluación de Aprendizajes</h5>
+                    <h5 class="font-black-normal text-center"><a href="https://unach.cl" target="blank">UnACh</h5>
                 </div>
             </div>
             <br>
             <br>
-            <br>
             <div class="row">
                 <div class="col-md-4 text-center">
-                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'carga-horaria:colegios' %}" style="background-color:  #093c71">
-                        <h2><i class="mdi mdi-bank"></i> {{ total_unidades_directivas }} </h2>
+                    <a href="https://aage.cl" target="blank">
+                        <img src="/static/base/img/logotipo4.jpeg" width="80" height="80">
                     </a>
-                    <h5 class="font-black-normal text-center">UnACh</h5>
-                </div>
-                <div class="col-md-4 text-center">
-                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'carga-horaria:colegios' %}" style="background-color:  #093c71">
-                        <h2><i class="mdi mdi-bank"></i> {{ total_unidades_directivas }} </h2>
-                    </a>
-                    <h5 class="font-black-normal text-center">AAGE</h5>
-                </div>
-                <div class="col-md-4 text-center">
-                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'carga-horaria:colegios' %}" style="background-color:  #093c71">
-                        <h2><i class="mdi mdi-bank"></i> {{ total_unidades_directivas }} </h2>
-                    </a>
-                    <h5 class="font-black-normal text-center">Portal Adventista</h5>
+                    <h5 class="font-black-normal text-center"><a href="https://aage.cl" target="blank">AAGE</h5>
                 </div>
 
+                <div class="col-md-4 text-center">
+                    <a href="https://www.educacionadventista.com/" target="blank">
+                        <img src="/static/base/img/logotipo4.jpeg" width="80" height="80">
+                    </a>
+                    <h5 class="font-black-normal text-center"><a href="https://www.educacionadventista.com/" target="blank">Portal Adventista</h5>
+                </div>
+
+                <div class="col-md-4 text-center">
+                    <a href="#" target="blank">
+                        <img src="/static/base/img/Evaluación-de-los-Aprendizajes-Personalizado.jpg" width="80" height="80">
+                    </a>
+                    <h5 class="font-black-normal text-center"><a href="#" target="blank">Evaluación Aprendizajes</h5>
+                </div>
         </div>
     </div>
 {% endblock %}
