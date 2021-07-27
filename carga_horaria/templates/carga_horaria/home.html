@@ -6,10 +6,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-sm-1" style="position: absolute; left:100px; top: 350px;">
-            <img src="{% static 'base/img/aagelogo.jpg' %}" height="150">
-        </div>
+    <div class="row" style="margin-top: 80px;">
         <div class="col-md-4 text-center"></div>
         <div class="col-md-4 text-center">
             <a class="btn btn-rounded btn-lg text-white" href="{% url 'carga-horaria:periodos' %}" style="background-color: #3688FC">
@@ -19,7 +16,7 @@
         </div>
     </div>
     <br>
-    <div class="row">
+    <div class="row" style="margin-top: 80px;">
         <div class="col-md-4 text-center">
             <a class="btn btn-rounded btn-lg text-white" href="{% url 'carga-horaria:colegios' %}" style="background-color: #FF0000">
                 <h2><i class=" uil-bus-school"></i> {{ total_unidades_directivas }} </h2>
@@ -50,7 +47,7 @@
         </div>-->
     </div>
     <br>
-    <div class="row">
+    <div class="row" style="margin-top: 80px;">
         <div class="col-md-4 text-center">
             <a class="btn btn-rounded btn-lg text-white" href="{% url 'carga-horaria:profesores' %}" style="background-color: #008080">
                 <h2><i class="uil-user"></i> {{ total_unidades_directivas }} </h2>
