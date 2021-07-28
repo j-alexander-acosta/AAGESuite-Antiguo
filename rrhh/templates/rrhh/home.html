@@ -5,6 +5,15 @@
     Recursos Humanos
 {% endblock %}
 
+{% block title %}
+    Recursos Humanos
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item active">Recursos Humanos</li>
+{% endblock %}
+
 {% block content %}
 {% if contratos_contratar or contratos_expirar or solicitudes_pendientes or contrataos_finiquitar %}
     <div class="row">
@@ -56,19 +65,19 @@
             <div class="row">
                 <div class="col-md-4 text-center">
                     <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:permisos' %}" style="background-color: blue">
-                        <h2><i class="uil uil-unlock-alt "></i> {{ total_unidades_directivas }} </h2>
+                        <h2><i class="uil uil-unlock-alt "></i></h2>
                     </a>
                     <h5 class="font-black-normal text-center">Permiso</h5>
                 </div>
                 <div class="col-md-4 text-center">
                     <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:vacaciones' %}" style="background-color: indigo">
-                        <h2><i class="dripicons-photo-group"></i> {{ total_unidades_directivas }} </h2>
+                        <h2><i class="dripicons-photo-group"></i></h2>
                     </a>
                     <h5 class="font-black-normal text-center">Vacaciones</h5>
                 </div>
                 <div class="col-md-4 text-center">
                     <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:licencias' %}" style="background-color: purple">
-                        <h2><i class="mdi mdi-license"></i> {{ total_unidades_directivas }} </h2>
+                        <h2><i class="mdi mdi-license"></i></h2>
                     </a>
                     <h5 class="font-black-normal text-center">Licencias</h5>
                 </div>
@@ -77,19 +86,19 @@
             <div class="row">
                 <div class="col-md-4 text-center">
                     <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:solicitudes' %}" style="background-color: red">
-                        <h2><i class="mdi mdi-pencil"></i> {{ total_unidades_directivas }} </h2>
+                        <h2><i class="mdi mdi-pencil"></i></h2>
                     </a>
                     <h5 class="font-black-normal text-center">Solicitudes</h5>
                 </div>
                 <div class="col-md-4 text-center">
                     <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:documentos' %}" style="background-color: teal">
-                        <h2><i class="mdi mdi-file-document"></i> {{ total_unidades_directivas }} </h2>
+                        <h2><i class="mdi mdi-file-document"></i></h2>
                     </a>
                     <h5 class="font-black-normal text-center">Documentación Funcionarios</h5>
                 </div>
                 <div class="col-md-4 text-center">
                     <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:entrevistas' %}" style="background-color: lightgreen">
-                        <h2><i class="mdi mdi-account-group-outline"></i> {{ total_unidades_directivas }} </h2>
+                        <h2><i class="mdi mdi-account-group-outline"></i></h2>
                     </a>
                     <h5 class="font-black-normal text-center">Entrevistas</h5> 
             {% if contratos_contratar or contratos_expirar or solicitudes_pendientes or contrataos_finiquitar %}
@@ -102,7 +111,7 @@
             <div class="col-md-4">
                 <div class="card" style="cursor: pointer">
                     {% if contratos_contratar %}
-                        <div class="card bg-danger">
+                        <div class="card mb-1">
                             <a class="text-muted font-black-normal text-left" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                 <div class="card-header" id="headingOne">
                                     En proceso de contratación

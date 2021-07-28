@@ -59,11 +59,12 @@ class ContratoColegio(models.Model):
     horas_total = models.PositiveIntegerField(verbose_name='Horas contratadas')
     vigente = models.BooleanField(default=False)
 
-    def __str__(self):
-        return '{} - {}'.format(
-            self.funcionario,
-            self.colegio.abrev
-        )
+    @property
+    def documento_name(self):
+        if self.documento:
+            return self.documento.name.split('/')[-1]
+        else:
+            return '-'
 
     @property
     def periodo_contrato(self):
@@ -94,6 +95,12 @@ class ContratoColegio(models.Model):
 
         return estado
 
+    def __str__(self):
+        return '{} - {}'.format(
+            self.funcionario,
+            self.colegio.abrev
+        )
+
     class Meta:
         verbose_name = u'Contrato de colegio'
         verbose_name_plural = u'Contratos de colegios'
@@ -121,7 +128,14 @@ class DocumentoPersonal(models.Model):
     contrato = models.ForeignKey('ContratoColegio', on_delete=models.CASCADE)
     tipo_documento = models.PositiveSmallIntegerField(choices=DOCUMENTO)
     fecha_carga = models.DateTimeField(auto_now=True)
-    documento = models.FileField(upload_to="rrhh/DocumentoDePersonal", verbose_name='Documento')
+    documento = models.FileField(upload_to="rrhh/documentosPersonal", verbose_name='Documento')
+
+    @property
+    def documento_name(self):
+        if self.documento:
+            return self.documento.name.split('/')[-1]
+        else:
+            return '-'
 
     def __str__(self):
         return '{}, {}'.format(

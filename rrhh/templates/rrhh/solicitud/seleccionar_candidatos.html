@@ -2,35 +2,45 @@
 {% load staticfiles humanize %}
 
 {% block title_page %}
-    Selección de Candidatos
+    Postulantes - Selección
+{% endblock %}
+
+{% block title %}
+    Postulantes
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'rrhh:home_rrhh' %}">Recursos Humanos</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'rrhh:solicitudes' %}">Solicitudes</a></li>
+    <li class="breadcrumb-item active">Seleccionar postulante</li>
 {% endblock %}
 
 {% block content %}
 
 <div class="card">
     <div class="card-header">
-        <input type="hidden" id="id_solicitud" value="{{ id_solicitud }}"></input>
-        <h4 class="card-title page-title"><strong>Postulantes</strong></h4>
-        <h6 class="card-subtitle mb-2 text-muted">Seleccione los candidatos para la solicitud</h6>
+        <input type="hidden" id="id_solicitud" value="{{ id_solicitud }}">
+        <h5>Seleccione los candidatos para la solicitud</h5>
     </div>
     <div class="card-body">
         {% for p in postulantes %}
             <div class="row pl-3">
                 <div class="">
-                    <input type="checkbox" id="seleccion" name="seleccion" value="{{ p.id }}"></input>
+                    <input type="checkbox" id="seleccion" name="seleccion" value="{{ p.id }}">
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2 text-center">
                     {% if p.foto %}
-                    <img class="img-responsive" src="{{ p.foto}}" alt="{{ p.username }}" width="100%">
+                        <img src="{{ p.foto.url }}" class="img-responsive" alt="{{ p.username }}" width="100%">
                     {% else %}
-                    <img class="img-responsive" src="{% static "base/img/user.png" %}" alt="{{ p.username }}" width="100%">
+                        <img src="{% static 'base/img/user.png' %}" class="img-reponsive" alt="{{ p.username }}" width="100%">
                     {% endif %}
                 </div>
                 <a href="{% url 'rrhh:persona' p.id %}" target="_blank" style="color: black;">
                     <div class="">
                         <h4>{{ p.get_full_name }}</h4>
                         <em>
-                            {{ p.profesion }}<br>
+                            {% if p.profesion %}{{ p.profesion }}<br>{% endif %}
                             email: {{ p.email }}<br>
                             tel: {{ p.telefono }}
                         </em>

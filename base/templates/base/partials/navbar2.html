@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load staticfiles rrhh_utils%}
 
 <div class="topnav shadow-sm">
     <div class="container-fluid">
@@ -15,22 +15,6 @@
                             <i class="uil-home"></i> Inicio
                         </a>
                     </li>
-                    {% if request.user.usuariofuncion.es_departamental %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="uil-building"></i> Mi Fundación</a>
-                        </li>
-                    {% elif request.user.usuariofuncion.es_supervisor %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="uil-building"></i> Mis Colegios</a>
-                        </li>
-                    {% elif request.user.usuariofuncion.es_dirplac_or_admin %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="uil-dashboard"></i> Dashboard</a>
-                        </li>
-                    {% endif %}
                     <!--
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-dashboards" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -49,113 +33,47 @@
                             <i class="uil-apps mr-1"></i> Aplicaciones <div class="arrow-down"></div>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="topnav-apps">
-                            <a href="{% url 'carga-horaria:home' %}" target="_blank" class="dropdown-item">Carga Horaria</a>
-                            <a href="{% url 'rrhh:home_rrhh' %}" target="_blank" class="dropdown-item">Recursos Humanos</a>
+                            <a href="{% url 'rrhh:home_rrhh' %}" class="dropdown-item">Recursos Humanos</a>
+                            <a href="{% url 'carga-horaria:home' %}" class="dropdown-item">Carga Horaria</a>
                             <a href="https://ac.unach.cl/" target="_blank" class="dropdown-item">Ciclos de Calidad</a>
                             <a href="https://sistemaencuestas.unach.cl/accounts/login/?next=/app/home/" target="_blank" class="dropdown-item">Evaluación Docente</a>
+                            <a href="#" class="dropdown-item">Evaluación Aprendizajes</a>
                             <a href="https://app.powerbi.com/?noSignUpCheck=1&pbi_source=weblandingsignin" target="_blank" class="dropdown-item">Power Bi</a>
-                            <a href="https://www.unach.cl/" target="_blank" class="dropdown-item">UnACh</a>
-                            <a href="http://aage.cl/" target="_blank" class="dropdown-item">AAGE</a>
                             <a href="https://www.educacionadventista.com/" target="_blank" class="dropdown-item">Portal Adventista</a>
-                            <a href="" class="dropdown-item">Evaluación Aprendizajes</a>
+                            <a href="http://aage.cl/" target="_blank" class="dropdown-item">AAGE</a>
+                            <a href="https://www.unach.cl/" target="_blank" class="dropdown-item">UnACh</a>
                         </div>
                     </li>
-                    {% if request.user.usuariofuncion.es_supervisor or request.user.usuariofuncion.es_dirplac_or_admin %}
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#"
-                       id="dropdownAdministracion" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="dripicons-gear"></i> Administración</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownAdministracion">
-                        {% if request.user.usuariofuncion.es_dirplac_or_admin %}
-                            <h6 class="dropdown-header">Administración General</h6>
-                            <a class="dropdown-item" href="#">
-                                <i class="uil-user"></i> Administración de Usuarios</a>
-                            <a class="dropdown-item" href="#">
-                                <i class="uil-users"></i> Perfiles de Usuarios</a>
-                            <div class="dropdown-divider"></div>
-                        {% endif %}
-                        <h6 class="dropdown-header">Insumos</h6>
-                        <a class="dropdown-item" href="#">
-                            <i class="uil-clipboard-alt"></i> Tipos de insumos</a>
-                        <a class="dropdown-item" href="#">
-                            <i class="uil-list-ul"></i> Insumos</a>
-                        <a class="dropdown-item" href="#">
-                            <i class="mdi mdi-hand-pointing-right"></i> Indicadores</a>
-                        <a class="dropdown-item" href="#">
-                            <i class="mdi mdi-puzzle-piece"></i> Estrategias</a>
-                        <div class="dropdown-divider"></div>
-                        <h6 class="dropdown-header">Departamentos</h6>
-                        <a class="dropdown-item" href="#">
-                            <i class="uil-building"></i> Fundaciones</a>
-                        <a class="dropdown-item" href="#">
-                            <i class="uil-graduation-hat"></i> Colegios</a>
-                        <a class="dropdown-item" href="#">
-                            <i class="uil-building"></i> Unidades</a>
-                        <a class="dropdown-item" href="#">
-                            <i class="uil-user-circle-o"></i> Responsables de Unidades</a>
-                        <div class="dropdown-divider"></div>
-                        <h6 class="dropdown-header">Ciclos de Calidad</h6>
-                        <a class="dropdown-item" href="#">
-                            <i class="uil-refresh"></i> Ciclos de Calidad</a>
-                        <a class="dropdown-item" href="#">
-                            <i class="uil-money-bill"></i> Cuentas</a>
-                        <a class="dropdown-item" href="#">
-                            <i class="mdi mdi-calendar-check"></i> Periodos</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#"
-                       id="dropdownAdministracion" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="uil-chart-bar"></i> Reportes</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownAdministracion">
-                        <h6 class="dropdown-header">Ciclos de Calidad</h6>
-                        <a class="dropdown-item" href="#">
-                            <i class="uil-chart-line"></i> Avance en Ciclos de Calidad</a>
-                        <a class="dropdown-item" href="#">
-                            <i class="uil-money-bill"></i> Reporte por cuentas</a>
-                        <a class="dropdown-item" href="#">
-                            <i class="uil-table"></i> Planes de Trabajo de Unidades</a>
-                        <a class="dropdown-item" href="#">
-                            <i class="uil-building"></i> Avance por Unidades</a>
-                        <a class="dropdown-item" href="#">
-                            <i class="uil-table"></i> Diagrama de Datos</a>
-                        <a class="dropdown-item" href="#">
-                            <i class="uil-check-square"></i> Evidencia por Unidades</a>
-                        <a class="dropdown-item" href="#">
-                            <i class="uil-check"></i> Avance por Nivel de Logro</a>
-                    </div>
-                </li>
-                {% endif %}
                 </ul>
-                
             </div>
-            <ul class="navbar-nav pull-right mr-5">
-                {% if request.session.colegio__nombre %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#"
-                           id="dropdownUsuario" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
-                            <i class="mdi mdi-bank"></i> {{ request.session.colegio__nombre }}</a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownUsuario">
-                            <a class="dropdown-item" href="{% url 'carga-horaria:switch' %}">
-                                <i class="uil-refresh"></i> Cambiar </a>
-                            <a class="dropdown-item" href="{% url 'carga-horaria:clear' %}">
-                                <i class="mdi mdi-window-close"></i> Limpiar </a>
-                        </div>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'carga-horaria:switch' %}">
-                            <i class="uil-check-square"></i> Elegir Colegio</a>
-                    </li>
-                {% endif %}
+            <ul class="navbar-nav list-unstyled topbar-right-menu float-right mb-0">
+                {% if request.path|start_with:"/carga/" %}
+                    {% if request.session.colegio__nombre %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#"
+                               id="dropdownUsuario" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                <i class="mdi mdi-bank"></i> {{ request.session.colegio__nombre }}</a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownUsuario">
+                                <a class="dropdown-item" href="{% url 'carga-horaria:switch' %}">
+                                    <i class="uil-refresh"></i> Cambiar </a>
+                                <a class="dropdown-item" href="{% url 'carga-horaria:clear' %}">
+                                    <i class="mdi mdi-window-close"></i> Limpiar </a>
+                            </div>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'carga-horaria:switch' %}">
+                                <i class="uil-check-square"></i> Elegir Colegio</a>
+                        </li>
+                    {% endif %}
                     &nbsp;
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#"
                            id="dropdownUsuario" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">
                             <i class="uil-calendar-alt"></i> Período {{ request.session.periodo|default:2020 }}</a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownUsuario">
+                        <div class="dropdown-menu" aria-labelledby="dropdownUsuario">
                             <a class="dropdown-item" href="{% url 'carga-horaria:switch-periodo' 2020 %}">
                                 <i class="uil-refresh"></i> 2020 </a>
                             <a class="dropdown-item" href="{% url 'carga-horaria:switch-periodo' 2021 %}">
@@ -164,14 +82,19 @@
                                 <i class="uil-refresh"></i> 2022 </a>
                         </div>
                     </li>
-            </ul>
-            <ul class="navbar-nav list-unstyled topbar-right-menu float-right mb-0">
+                {% endif %}
                 {% if request.user.is_authenticated %}
                     <li class="dropdown notification-list">
                         <a class="dropdown-toggle nav-user arrow-none mr-0 nav-link" data-toggle="dropdown"
                            id="topbar-userdrop" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                             <span class="account-user-avatar">
-                                <img src="{% static 'base/img/user.png' %}" alt="user-image" class="rounded-circle">
+                                <img src="
+                                    {% if request.user.persona %}
+                                        {{ request.user.persona.foto.url }}
+                                    {% else %}
+                                        {% static 'base/img/user.png' %}
+                                    {% endif %}
+                                " alt="{{ request.user.username }}" class="rounded-circle">
                             </span>
                             <span>
                                 <span class="account-user-name">
@@ -210,10 +133,10 @@
                             </a>
 
                             <!-- item-->
-{#                            <a href="javascript:void(0);" class="dropdown-item notify-item">#}
-{#                                <i class="mdi mdi-lock-outline mr-1"></i>#}
-{#                                <span>Bloquear Pantalla</span>#}
-{#                            </a>#}
+                            {#                            <a href="javascript:void(0);" class="dropdown-item notify-item">#}
+                            {#                                <i class="mdi mdi-lock-outline mr-1"></i>#}
+                            {#                                <span>Bloquear Pantalla</span>#}
+                            {#                            </a>#}
 
                             <!-- item-->
                             <a href="{% url 'logout' %}" class="dropdown-item notify-item">

@@ -1,14 +1,25 @@
 {% extends 'base/base.html' %}
-{% load staticfiles %}
-{% load crispy_forms_tags %}
+{% load staticfiles crispy_forms_tags %}
 
+{% block title_page %}
+    Contrato - Crear
+{% endblock %}
+
+{% block title %}
+    Crear Contrato
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'rrhh:home_rrhh' %}">Recursos Humanos</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'rrhh:contratos' %}">Contratos</a></li>
+    <li class="breadcrumb-item active">Crear contrato</li>
+{% endblock %}
 
 {% block content %}
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title page-title">Crear Contrato
-        </h4>
-        <h6 class="card-subtitle font-weight-normal text-muted">Datos del contrato</h6>
+        <h5>Datos del contrato</h5>
     </div>
     <div class="card-body">
 

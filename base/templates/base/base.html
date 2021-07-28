@@ -10,15 +10,23 @@
     <link rel="icon" href="{% static 'base/img/logo-icon.png' %}">
 
     <title>
-        {% block title_page %}{% endblock %}
+        {% block title_page %}Suite AAGE{% endblock %}
     </title>
 
     {% include 'base/partials/css_imports.html' %}
     {% block extra_css %}{% endblock %}
 
+    <style>
+        body {
+            background: url("{% static 'base/img/fondo_aventista.png' %}") no-repeat;
+            background-position-x: 130%;
+            background-position-y: 110px;
+        }
+    </style>
+
 </head>
 
-<body background="{% static 'base/img/fondo_aventista.png' %}" style="background-repeat: no-repeat; background-position: right" class="loading" data-layout="topnav">
+<body class="loading" data-layout="topnav">
 
 <div id="preloader">
     <div id="status">
@@ -32,15 +40,26 @@
         <div class="content">
             {% include 'base/partials/navbar2.html' %}
 
-            {% block suma_presupuesto %}{% endblock %}
-
             <div class="container-fluid" id="contenidoApp">
 
-                {% block breadcrumb %}
-                {% endblock %}
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box">
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    {% block breadcrumb %}
+                                    {% endblock %}
+                                </ol>
+                            </div>
 
-                {% block content %}
-                {% endblock %}
+                            <h4 class="page-title">{% block title %}Suite AAGE{% endblock %}</h4>
+
+                            {% block content %}
+                            {% endblock %}
+
+                        </div>
+                    </div>
+                </div>
 
             </div> <!-- /container -->
         </div>

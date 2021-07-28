@@ -52,7 +52,10 @@ class PersonaForm(forms.ModelForm):
         exclude = ['usuario']
 
         help_texts = {
-            'titulado': u"Marque si la persona tiene un título profesional"
+            'titulado': u"Marque si la persona tiene un título profesional",
+            'religion': u"Marque si la persona pertence a esta religión",
+            'telefono': u"Si es un número móvil, la forma debe ser 9 1234 5678;\n"
+                        u"en el caso de ser fijo, 45 2 711234",
         }
 
     rut = CLRutField()
@@ -105,19 +108,14 @@ class PersonaForm(forms.ModelForm):
                 ),
                 css_class="row"
             ),
-            'religion',
             Div(
                 Div(
                     Field('direccion'),
-                    css_class="col-md-4"
-                ),
-                Div(
-                    Field('comuna'),
-                    css_class="col-md-4"
+                    css_class="col-md-6"
                 ),
                 Div(
                     Field('ciudad'),
-                    css_class="col-md-4"
+                    css_class="col-md-6"
                 ),
                 css_class="row"
             ),
@@ -143,6 +141,17 @@ class PersonaForm(forms.ModelForm):
                 ),
                 css_class="row"
             ),
+            Div(
+                Div(
+                    Field('religion'),
+                    css_class='col-md-6'
+                ),
+                Div(
+                    Field('foto'),
+                    css_class='col-md-6'
+                ),
+                css_class='row'
+            )
         )
 
 

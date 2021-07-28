@@ -204,3 +204,56 @@ class Isapre(models.Model):
     class Meta:
         verbose_name = u'Isapre'
         verbose_name_plural = u'Isapres'
+
+
+class Region(models.Model):
+    nombre = models.CharField(max_length=150)
+    numero = models.PositiveSmallIntegerField(default=0)
+    numero_romano = models.CharField(max_length=5, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        self.nombre = self.nombre.title()
+        return super(Region, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return '{} {}'.format(
+            self.numero_romano,
+            self.nombre
+        )
+
+    class Meta:
+        verbose_name = u'Región'
+        verbose_name_plural = u'Regiones'
+        ordering = ['numero']
+
+
+class Comuna(models.Model):
+    nombre = models.CharField(max_length=150)
+    region = models.ForeignKey('Region', on_delete=models.CASCADE, verbose_name='Región')
+
+    def save(self, *args, **kwargs):
+        self.nombre = self.nombre.title()
+        return super(Comuna, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        verbose_name = u'Comuna'
+        verbose_name_plural = u'Comunas'
+
+
+class Ciudad(models.Model):
+    nombre = models.CharField(max_length=150)
+    comuna = models.ForeignKey('Comuna', on_delete=models.CASCADE)
+
+    def save(self, *args, **kwargs):
+        self.nombre = self.nombre.title()
+        return super(Ciudad, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        verbose_name = u'Ciudad'
+        verbose_name_plural = u'Ciudades'
