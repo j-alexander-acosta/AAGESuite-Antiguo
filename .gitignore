@@ -78,3 +78,5 @@ media/
 /.static
 *.dump
 docker-compose.yml
+carga/static
+.vscode
