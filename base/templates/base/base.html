@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load staticfiles rrhh_utils %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,7 +10,15 @@
     <link rel="icon" href="{% static 'base/img/logo-icon.png' %}">
 
     <title>
-        {% block title_page %}Suite AAGE{% endblock %}
+        {% block title_page %}
+            {% if request.path|start_with:"/carga/" %}
+                Carga Horaria
+            {% elif request.path|start_with:"/rrhh/" %}
+                Recursos Humanos
+            {% else %}
+                Suite AAGE
+            {% endif %}
+        {% endblock %}
     </title>
 
     {% include 'base/partials/css_imports.html' %}
@@ -52,7 +60,7 @@
                                 </ol>
                             </div>
 
-                            <h4 class="page-title">{% block title %}Suite AAGE{% endblock %}</h4>
+                            <h4 class="page-title">{% block title %}{% endblock %}</h4>
 
                             {% block content %}
                             {% endblock %}
@@ -77,9 +85,9 @@
             </div>
             <div class="col-md-6">
                 <div class="text-md-right footer-links d-none d-md-block">
-                    <a href="https://aage.cl">Acerca de Nosotros</a>
-                    <a href="">Soporte</a>
-                    <a href="">Contáctenos</a>
+                    <a href="http://aage.cl/#conocenos" target="blanck">Acerca de Nosotros</a>
+                    <a href="http://aage.cl/#contacto" target="blanck">Soporte</a>
+                    <a href="http://aage.cl/#contacto" target="blanck">Contáctenos</a>
                 </div>
             </div>
         </div>
