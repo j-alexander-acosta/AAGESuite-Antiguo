@@ -78,7 +78,7 @@ class UnionCreateView(LoginRequiredMixin, CreateView):
     template_name = 'rrhh/union/nuevo_union.html'
 
     def get_success_url(self):
-        return reverse(
+        return reverse_lazy(
             'rrhh:union',
             kwargs={
                 'pk': self.object.pk,
@@ -97,12 +97,13 @@ class UnionUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'rrhh/union/editar_union.html'
 
     def get_success_url(self):
-        return reverse(
+        return reverse_lazy(
             'rrhh:union',
             kwargs={
                 'pk': self.object.pk,
             }
         )
+
 
 class UnionDeleteView(LoginRequiredMixin, DeleteView):
     model = Union
@@ -124,7 +125,7 @@ class FundacionCreateView(LoginRequiredMixin, CreateView):
     template_name = 'rrhh/fundacion/nuevo_fundacion.html'
 
     def get_success_url(self):
-        return reverse(
+        return reverse_lazy(
             'rrhh:fundacion',
             kwargs={
                 'pk': self.object.pk,
@@ -143,12 +144,13 @@ class FundacionUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'rrhh/fundacion/editar_fundacion.html'
 
     def get_success_url(self):
-        return reverse(
+        return reverse_lazy(
             'rrhh:fundacion',
             kwargs={
                 'pk': self.object.pk,
             }
         )
+
 
 class FundacionDeleteView(LoginRequiredMixin, DeleteView):
     model = Fundacion
@@ -170,7 +172,7 @@ class ColegioCreateView(LoginRequiredMixin, CreateView):
     template_name = 'rrhh/colegio/nuevo_colegio.html'
 
     def get_success_url(self):
-        return reverse(
+        return reverse_lazy(
             'rrhh:colegio',
             kwargs={
                 'pk': self.object.pk,
@@ -189,12 +191,13 @@ class ColegioUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'rrhh/colegio/editar_colegio.html'
 
     def get_success_url(self):
-        return reverse(
+        return reverse_lazy(
             'rrhh:colegio',
             kwargs={
                 'pk': self.object.pk,
             }
         )
+
 
 class ColegioDeleteView(LoginRequiredMixin, DeleteView):
     model = Colegio
@@ -220,9 +223,9 @@ class PersonaCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         if self.request.POST.get('funcionario'):
-            return reverse_lazy('rrhh:funcionario__nuevo')
+            return reverse('rrhh:funcionario__nuevo', args=[str(self.object.id)])
         else:
-            return reverse_lazy('rrhh:personas')
+            return reverse('rrhh:persona', args=[str(self.object.id)])
 
 
 @login_required
@@ -234,7 +237,6 @@ def persona_detail(request, pk_persona):
     )
 
     context['object'] = persona
-
 
     return render(
         request,
@@ -249,7 +251,7 @@ class PersonaDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['lf_form'] = LicenciaTipoFuncionarioForm(instance=self)
+        context['lf_form'] = LicenciaTipoFuncionarioColegioForm(instance=self)
         return context
 
 
@@ -259,12 +261,13 @@ class PersonaUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'rrhh/persona/editar_persona.html'
 
     def get_success_url(self):
-        return reverse(
+        return reverse_lazy(
             'rrhh:persona',
             kwargs={
                 'pk_persona': self.object.pk,
             }
         )
+
 
 class PersonaDeleteView(LoginRequiredMixin, DeleteView):
     model = Persona
@@ -286,7 +289,7 @@ class FuncionarioCreateView(LoginRequiredMixin, CreateView):
     template_name = 'rrhh/funcionario/nuevo_funcionario.html'
 
     def get_success_url(self):
-        return reverse(
+        return reverse_lazy(
             'rrhh:persona',
             kwargs={
                 'pk': self.object.persona.pk,
@@ -328,20 +331,20 @@ def crear_funcionario(request, id_persona):
     )
 
 
-
-
 # class FuncionarioDetailView(LoginRequiredMixin, DetailView):
 #     model = Funcionario
 #     template_name = 'rrhh/funcionario/detalle_funcionario.html'
 #
 #
+
+
 class FuncionarioUpdateView(LoginRequiredMixin, UpdateView):
     model = Funcionario
     form_class = FuncionarioForm
     template_name = 'rrhh/funcionario/editar_funcionario.html'
 
     def get_success_url(self):
-        return reverse(
+        return reverse_lazy(
             'rrhh:persona',
             kwargs={
                 'pk': self.object.persona.pk,
@@ -397,7 +400,7 @@ class EntrevistaUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'rrhh/entrevista/editar_entrevista.html'
 
     def get_success_url(self):
-        return reverse(
+        return reverse_lazy(
             'rrhh:entrevista',
             kwargs={
                 'pk': self.object.pk,
@@ -439,7 +442,7 @@ class DocumentoFuncionarioUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'rrhh/documento_funcionario/editar_documento_funcionario.html'
 
     def get_success_url(self):
-        return reverse(
+        return reverse_lazy(
             'rrhh:documento',
             kwargs={
                 'pk': self.object.pk,
@@ -479,7 +482,7 @@ class VacacionUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'rrhh/vacacion/editar_vacacion.html'
 
     def get_success_url(self):
-        return reverse(
+        return reverse_lazy(
             'rrhh:vacacion',
             kwargs={
                 'pk': self.object.pk,
@@ -572,7 +575,7 @@ class TipoLicenciaUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'rrhh/tipo_licencia/editar_tipolicencia.html'
 
     def get_success_url(self):
-        return reverse(
+        return reverse_lazy(
             'rrhh:tipolicencia',
             kwargs={
                 'pk': self.object.pk,
@@ -614,7 +617,7 @@ class LicenciaUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'rrhh/licencia/editar_licencia.html'
 
     def get_success_url(self):
-        return reverse(
+        return reverse_lazy(
             'rrhh:licencia',
             kwargs={
                 'pk': self.object.pk,
@@ -724,7 +727,7 @@ class PermisoUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'rrhh/permiso/editar_permiso.html'
 
     def get_success_url(self):
-        return reverse(
+        return reverse_lazy(
             'rrhh:permiso',
             kwargs={
                 'pk': self.object.pk,
@@ -834,12 +837,12 @@ class ContratoCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         EstadoContratacion.objects.create(
-            contrato=self.objet,
+            contrato=self.object,
             estado=1,
             observaciones='Se inicia el proceso de contratación',
             autor=self.request.user
         )
-        return reverse(
+        return reverse_lazy(
             'rrhh:contrato',
             kwargs={
                 'pk': self.object.pk,
@@ -854,12 +857,12 @@ class ContratoUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         EstadoContratacion.objects.create(
-            contrato=self.objet,
+            contrato=self.object,
             estado=1,
             observaciones='Se vuelve el proceso a inicio, por actualización de los datos',
             autor=self.request.user
         )
-        return reverse(
+        return reverse_lazy(
             'rrhh:contrato',
             kwargs={
                 'pk': self.object.pk,
@@ -900,7 +903,7 @@ class FuncionUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'rrhh/funcion/editar_funcion.html'
 
     def get_success_url(self):
-        return reverse(
+        return reverse_lazy(
             'rrhh:funcion',
             kwargs={
                 'pk': self.object.pk,
@@ -941,7 +944,7 @@ class AFPUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'rrhh/afp/editar_afp.html'
 
     def get_success_url(self):
-        return reverse(
+        return reverse_lazy(
             'rrhh:afp',
             kwargs={
                 'pk': self.object.pk,
@@ -982,7 +985,7 @@ class IsapreUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'rrhh/isapre/editar_isapre.html'
 
     def get_success_url(self):
-        return reverse(
+        return reverse_lazy(
             'rrhh:isapre',
             kwargs={
                 'pk': self.object.pk,
@@ -1033,9 +1036,9 @@ def nuevo_finiquito(request, id_contrato):
         )
         context['form'] = form
         context['funcionario'] = '{} {} {} - {}'.format(
-            contrato.persona.nombres,
-            contrato.persona.apellido_paterno,
-            contrato.persona.apellido_materno,
+            contrato.funcionario.persona.nombres,
+            contrato.funcionario.persona.apellido_paterno,
+            contrato.funcionario.persona.apellido_materno,
             contrato.funcion_principal
         )
 
@@ -1046,12 +1049,11 @@ def nuevo_finiquito(request, id_contrato):
     )
 
 
-
 class FiniquitoDeleteView(LoginRequiredMixin, DeleteView):
     model = FiniquitoColegio
 
     def get_success_url(self):
-        return reverse(
+        return reverse_lazy(
             'rrhh:contrato',
             kwargs={
                 'pk': self.object.contrato.pk,
@@ -1092,7 +1094,7 @@ class SolicitudCreateView(LoginRequiredMixin, CreateView):
             observaciones='Se crea la solicitud de contratación',
             autor=self.request.user
         )
-        return reverse(
+        return reverse_lazy(
             'rrhh:solicitud',
             kwargs={
                 'pk': self.object.pk,
@@ -1119,7 +1121,7 @@ class SolicitudUpdateView(LoginRequiredMixin, UpdateView):
             observaciones='Los datos de la solicitud de {}, fueron actualizados'.format(self.object.get_tipo_display()),
             autor=self.request.user
         )
-        return reverse(
+        return reverse_lazy(
             'rrhh:solicitud',
             kwargs={
                 'pk': self.object.pk,
@@ -1263,11 +1265,12 @@ def crear_contrato_colegio(request, id_funcionario, id_solicitud):
             observaciones='Se aprueba y culmina con el contrato de {} en {}'.format(funcionario, solicitud.colegio),
             autor=request.user
         )
-        return redirect('rrhh:contrato', context['contrato'].id)
 
         if solicitud.tipo >= 3:
             solicitud.contrato.vigente = True
             solicitud.contrato.save()
+
+        return redirect('rrhh:contrato', context['contrato'].id)
 
     return render(
         request,
@@ -1351,17 +1354,17 @@ def trasladar_funcionario(request, id_contrato):
 
 
 def crear_solicitud_funcion(
-    request,
-    tipo_solicitud,
-    colegio,
-    contrato,
-    categoria,
-    horas,
-    tipo_contrato,
-    licencia,
-    fecha_inicio,
-    fecha_termino,
-    justificacion,
+        request,
+        tipo_solicitud,
+        colegio,
+        contrato,
+        categoria,
+        horas,
+        tipo_contrato,
+        licencia,
+        fecha_inicio,
+        fecha_termino,
+        justificacion,
 ):
 
     context = {
@@ -1404,15 +1407,15 @@ def crear_solicitud_funcion(
 
 
 def crear_contrato_colegio_funcion(
-    request,
-    funcionario,
-    colegio,
-    categoria,
-    tipo_contrato,
-    licencia,
-    horas_total,
-    fecha_inicio,
-    fecha_termino,
+        request,
+        funcionario,
+        colegio,
+        categoria,
+        tipo_contrato,
+        licencia,
+        horas_total,
+        fecha_inicio,
+        fecha_termino,
 ):
 
     context = {}

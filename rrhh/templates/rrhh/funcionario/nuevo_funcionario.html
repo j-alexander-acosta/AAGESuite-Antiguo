@@ -1,6 +1,5 @@
 {% extends 'base/base.html' %}
-{% load staticfiles %}
-{% load crispy_forms_tags %}
+{% load staticfiles crispy_forms_tags %}
 
 {% block title_page %}
     Crear Funcionario
@@ -22,16 +21,17 @@
     <div class="card-header">
         <h5>Datos del funcionario</h5>
     </div>
-    <div class="card-body">
 
+    <div class="card-body">
         <form class="form-horizontal" method="post">
             {% csrf_token %}
             {% crispy form %}
+            <br>
             <div class="form-group">
                 <div class="col-sm-10 col-sm-offset-2">
                     <button type="submit" class="btn btn-outline-success">Guardar</button>
                     <a href="{{ request.META.HTTP_REFERER }}"
-                    role="button" class="btn btn-outline-info">
+                       role="button" class="btn btn-outline-info">
                         Volver
                     </a>
                 </div>
