@@ -6,6 +6,16 @@
     Editar {{ object }}
 {% endblock %}
 
+{% block title %}
+    Colegio - Editar
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:home' %}">Carga Horaria</a></li>
+    <li class="breadcrumb-item active">Colegio - Editar</li>
+{% endblock %}
+
 {% block block_editar_eliminar %}
     <li class="breadcrumb-item">
         <a href="{{ object.get_absolute_url }}">
