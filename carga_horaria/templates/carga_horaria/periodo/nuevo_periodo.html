@@ -2,11 +2,25 @@
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 
+{% block title_page %}
+    Curso - Crear
+{% endblock %}
+
+{% block title %}
+Curso - Crear
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:home' %}">Carga Horaria</a></li>
+    <li class="breadcrumb-item active">Curso - Crear</li>
+{% endblock %}
+
 
 {% block content %}
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title">Crear Curso
+        <h4 class="card-title">Curso - Crear
         </h4>
         <h6 class="card-subtitle mb-2 text-muted">Tabla para configuración de un nuevo curso</h6>
     </div>

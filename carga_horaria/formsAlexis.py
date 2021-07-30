@@ -35,6 +35,14 @@ class ProfesorForm(forms.ModelForm):
 
     class Meta:
         model = models.Profesor
+
+        help_texts = {
+            'discapacidad': u"Marque si la persona tiene una discapacidad",
+            'recibe_pension': u"Marque si la persona recibe pensión",
+            'religion': u"Marque si la persona pertenece a esta religión",
+            'telefono': u"Si es un móvil, la forma debe ser 9 1234 5678;\n"
+                        u"en caso de ser fijo, 45 2 711234",
+        }
         fields = [
             'rut',
             'nombre',
@@ -67,6 +75,154 @@ class ProfesorForm(forms.ModelForm):
         widgets = {
             'horas': forms.NumberInput(attrs={'step': '1'}),
         }
+        
+        """def __init__(self, *args, **kwargs):
+            super (ProfesorForm, self).__init__(*args, **kwargs)
+            self.fields['fecha_nacimiento'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
+            self.fields['fecha_nacimiento'].widget.attrs['class'] = 'datepicker'
+            self.fields['fecha_inicio'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
+            self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
+            self.helper = FormHelper()
+            self.helper.form_tag = False
+            self.helper.layout = Layout(
+                Div(
+                    Div(
+                        Field('rut'),
+                        css_class="col-md-6"
+                    ),
+                    Div(
+                        Field('fecha_nacimiento'),
+                        css_class="col-md-6"
+                    ),
+                    css_class="row"
+                ),
+                Div(
+                    Div(
+                        Field('nombres'),
+                        css_class="col-md-4"
+                    ),
+                    Div(
+                        Field('apellido_paterno'),
+                        css_class="col-md-4"
+                    ),
+                    Div(
+                        Field('apellido_materno'),
+                        css_class="col-md-4"
+                    ),
+                    css_class="row"
+                ),
+                Div(
+                    Div(
+                        Field('genero'),
+                        css_class="col-md-4"
+                    ),
+                    Div(
+                        Field('nacionalidad'),
+                        css_class="col-md-4"
+                    ),
+                    Div(
+                        Field('estado_civil'),
+                        css_class="col-md-4"
+                    ),
+                    css_class="row"
+                ),
+                Div(
+                    Div(
+                        Field('direccion'),
+                        css_class="col-md-4"
+                    ),
+                    Div(
+                        Field('telefono'),
+                        css_class="col-md-4"
+                    ),
+                    Div(
+                        Field('ciudad'),
+                        css_class="col-md-4"
+                    ),
+                    css_class="row"
+                ),
+                Div(
+                    Div(
+                        Field('email_personal'),
+                        css_class="col-md-6"
+                    ),
+                    Div(
+                        Field('email_institucional'),
+                        css_class="col-md-6"
+                    ),
+                    css_class="row"
+                ),
+                Div(
+                    Div(
+                        Field('discapacidad'),
+                        css_class="col-md-4"
+                    ),
+                    Div(
+                        Field('recibe_pension'),
+                        css_class="col-md-4"
+                    ),
+                    Div(
+                        Field('adventista'),
+                        css_class="col-md-4"
+                    ),
+                    css_class="row"
+                ),
+                Div(
+                    Div(
+                        Field('tipo'),
+                        css_class="col-md-6"
+                    ),
+                    Div(
+                        Field('fecha_inicio'),
+                        css_class="col-md-6"
+                    ),
+                    css_class="row"
+                ),
+                Div(
+                    Div(
+                        Field('horas'),
+                        css_class="col-md-4"
+                    ),
+                    Div(
+                        Field('horas_indefenidas'),
+                        css_class="col-md-4"
+                    ),
+                    Div(
+                        Field('horas_plazo_fijo'),
+                        css_class="col-md-4"
+                    ),
+                    css_class="row"
+                ),
+                Div(
+                    Div(
+                        Field('especialidad'),
+                        css_class="col-md-6"
+                    ),
+                    Div(
+                        Field('cargo'),
+                        css_class="col-md-6"
+                    ),
+                    css_class="row"
+                ),
+                Div(
+                    Div(
+                        Field('colegio'),
+                        css_class="col-md-6"
+                    ),
+                    Div(
+                        Field('fundacion'),
+                        css_class="col-md-6"
+                    ),
+                    css_class="row"
+                ),
+                Div(
+                    Div(
+                        Field('observaciones'),
+                        css_class="col-md-12"
+                    ),
+                    css_class="row"
+                ),
+            )"""
 
     def clean(self):
         cleaned_data = super(ProfesorForm, self).clean()

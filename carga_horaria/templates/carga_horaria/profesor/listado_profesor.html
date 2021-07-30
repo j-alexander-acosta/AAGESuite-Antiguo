@@ -10,7 +10,7 @@
 <div class="card">
     <div class="card-header">
         <h4 class="card-title">Profesores
-          <a class="btn btn-outline-primary pull-right" href="{% url 'carga-horaria:profesor__nuevo'%}" role="button">
+          <a class="btn btn-outline-primary float-right" href="{% url 'carga-horaria:profesor__nuevo'%}" role="button">
 	    <span>
 	      Crear Profesor
               <i class="uil-plus"></i>
@@ -22,12 +22,12 @@
         </h6>
     </div>
     <div class="card-body">
-      <div class="pull-left">
+      <div class="float-left">
         <form action="." method="GET">
           <i class="uil-search"></i> <input name="q" placeholder="Buscar" value="{{ request.GET.q }}">{% if 'q' in request.GET %} <a href="{% url 'carga-horaria:profesores' %}" class="text-muted">limpiar</a>{% endif %}
         </form>
       </div>
-      <div class="pull-right" style="padding-bottom: 10px;">
+      <div class="float-right" style="padding-bottom: 10px;">
           <a class="btn btn-outline-default" href="{% url 'carga-horaria:profesor__anexos' %}"><i class="uil-file-upload-alt"></i> Generar Anexo 1 Masivo</a>
           <a class="btn btn-outline-default" href="{% url 'carga-horaria:profesores-pdf' %}"><i class="uil-print"></i> Imprimir</a>
       </div>
