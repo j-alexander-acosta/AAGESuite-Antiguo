@@ -602,7 +602,7 @@ class ContratoColegioForm(forms.ModelForm):
                 Div(
                     Div(
                         HTML(
-                            "<div class='checkbox pull-right'>" +
+                            "<div class='checkbox float-right'>" +
                             "<a href='/rrhh/personas/nuevo'><i class='uil-plus'></i> Agregar Persona</a>" +
                             "</div>"
                         ),
@@ -610,11 +610,6 @@ class ContratoColegioForm(forms.ModelForm):
                         css_class='col-md-6',
                     ),
                     Div(
-                        HTML(
-                            "<div class='text-white'>" +
-                            "<a><i class='text-white'></i>Colegio</a>" +
-                            "</div>"
-                        ),
                         Field('colegio'),
                         css_class='col-md-6'
                     ),

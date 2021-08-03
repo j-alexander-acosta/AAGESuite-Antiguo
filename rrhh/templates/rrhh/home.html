@@ -106,7 +106,7 @@
                             <a class="text-muted font-black-normal text-left" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                 <div class="card-header" id="headingOne">
                                     En proceso de contratación
-                                    <span class="badge badge-warning pull-right">{{ contratos_contratar|length }}</span>
+                                    <span class="badge badge-warning float-right">{{ contratos_contratar|length }}</span>
                                 </div>
                             </a>
                             <div id="collapseOne" class="collapse" aria-labelledby="headingOne">
@@ -115,7 +115,7 @@
                                         <a href="{% url 'rrhh:contrato' c.pk %}">
                                             <li class="list-group-item list-group-item-warning">
                                                 {{ c }}
-                                                <span class="badge badge-danger badge-sm pull-right"> {{ c.estado }}</span>
+                                                <span class="badge badge-danger badge-sm float-right"> {{ c.estado }}</span>
                                             </li>
                                         </a>
                                     {% endfor %}
@@ -128,7 +128,7 @@
                             <a class="text-muted font-black-normal text-left" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                 <div class="card-header" id="headingOne">
                                     Contratos apunto de expirar
-                                    <span class="badge badge-warning pull-right">{{ contratos_expirar|length }}</span>
+                                    <span class="badge badge-warning float-right">{{ contratos_expirar|length }}</span>
                                 </div>
                             </a>
                             <div id="collapseOne" class="collapse" aria-labelledby="headingOne">
@@ -137,7 +137,7 @@
                                         <a href="{% url 'rrhh:contrato' c.pk %}">
                                             <li class="list-group-item list-group-item-warning">
                                                 {{ c }}
-                                                <span class="badge badge-danger badge-sm pull-right"> {{ c.dias_termino_contrato }} dias</span>
+                                                <span class="badge badge-danger badge-sm float-right"> {{ c.dias_termino_contrato }} dias</span>
                                             </li>
                                         </a>
                                     {% endfor %}
@@ -150,7 +150,7 @@
                             <a class="text-muted font-black-normal text-left collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                 <div class="card-header" id="headingTwo">
                                     Contratos que se deben finiquitar
-                                    <span class="badge badge-warning pull-right">{{ contratos_finiquitar|length }}</span>
+                                    <span class="badge badge-warning float-right">{{ contratos_finiquitar|length }}</span>
                                 </div>
                             </a>
                             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo">
@@ -159,7 +159,7 @@
                                         <a href="{% url 'rrhh:contrato' c.pk %}">
                                             <li class="list-group-item list-group-item-warning">
                                                 {{ c }}
-                                                <span class="badge badge-danger badge-sm pull-right"> {{ c.solicitud_set.all.0.get_tipo_display }} en {{ c.dias_termino_contrato }} dias</span>
+                                                <span class="badge badge-danger badge-sm float-right"> {{ c.solicitud_set.all.0.get_tipo_display }} en {{ c.dias_termino_contrato }} dias</span>
                                             </li>
                                         </a>
                                     {% endfor %}
@@ -172,7 +172,7 @@
                               <a class="text-muted font-black-normal text-left collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                                 <div class="card-header" id="headingThree">
                                     Solicitudes que requieren atención
-                                    <span class="badge badge-warning pull-right">{{ solicitudes_pendientes|length }}</span>
+                                    <span class="badge badge-warning float-right">{{ solicitudes_pendientes|length }}</span>
                                 </div>
                             </a>
                             <div id="collapseThree" class="collapse" aria-labelledby="headingThree">
@@ -181,7 +181,7 @@
                                         <a href="{% url 'rrhh:solicitud' s.pk %}">
                                             <li class="list-group-item list-group-item-warning">
                                                 {{ s }}
-                                                <span class="badge badge-danger badge-sm pull-right"> {{ s.estado }}</span>
+                                                <span class="badge badge-danger badge-sm float-right"> {{ s.estado }}</span>
                                             </li>
                                         </a>
                                     {% endfor %}

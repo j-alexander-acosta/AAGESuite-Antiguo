@@ -37,7 +37,7 @@
           </strong>
       </h4>
         {% block buttons %}
-        <div class="btn-group pull-right" style="margin-bottom: 10px;">
+        <div class="btn-group float-right" style="margin-bottom: 10px;">
             <a href="{% url 'rrhh:contratos' %}" type="button" class="btn btn-outline-info">
                 <i class="uil-arrow-left"></i> Volver
             </a>
@@ -109,7 +109,7 @@
                 <div class="pmb-block">
                     <div class="pmbb-body">
                         Información del contrato y finiquito, en caso de existencia, del trabajador
-                        <div class="btn-group pull-right" role="group">
+                        <div class="btn-group float-right" role="group">
                             <a href="{% url 'rrhh:contrato__editar' object.pk %}" type="button" class="btn btn-outline-primary">
                                 <i class="uil-edit"></i> Editar
                             </a>
@@ -276,7 +276,7 @@
                 <div class="pmb-block">
                     <div class="pmbb-body">
                         <p>Listado de Vacaciones del funcionario, ordenado del mas reciente al mas antiguo.
-                            <button name="agregar_vacacion" type="button" class="btn btn-outline-primary pull-right" data-toggle="modal" data-target="#crear_vacacion">
+                            <button name="agregar_vacacion" type="button" class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#crear_vacacion">
                                 <span><i class="uil-plus"></i> Agregar vacación</span>
                             </button>
                         </p>
@@ -388,7 +388,7 @@
                 <div class="pmb-block">
                     <div class="pmbb-body">
                         <p>Listado de los Permisos del funcionario, ordenado del mas reciente al mas antiguo.
-                            <button name="agregar_permiso" type="button" class="btn btn-outline-primary pull-right" data-toggle="modal" data-target="#crear_permiso">
+                            <button name="agregar_permiso" type="button" class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#crear_permiso">
                                 <i class="uil-plus"></i> Agregar Permiso
                             </button>
                         </p>
@@ -432,7 +432,7 @@
                 <div class="pmb-block">
                     <div class="pmbb-body">
                         <p>Listado de Licencias del funcionario, ordenado del mas reciente al mas antiguo.
-                            <button name="agregar_licencia" type="button" class="btn btn-outline-primary pull-right" data-toggle="modal" data-target="#crear_licencia">
+                            <button name="agregar_licencia" type="button" class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#crear_licencia">
                                 <span><i class="uil-plus"></i> Agregar licencia</span>
                             </button>
                         </p>
@@ -564,7 +564,7 @@
             </div>
             <form id="licenciaForm" class="form-horizontal" action="{% url 'rrhh:licencia_funcionario__nuevo' %}" method="post">
                 <div class="modal-body m-10">
-                    <div class="checkbox pull-right">
+                    <div class="checkbox float-right">
                         <label for="id_licencia_tipo">
                             <input type="checkbox" name="licencia_tipo" class="checkboxinput" id="id_licencia_tipo">
                             Utilizar licencias tipo
@@ -808,14 +808,17 @@
                 if(isChecked && isOn > 0 ){
                     form.find('#id_fecha_termino').val(fechaTerminoHabil);
                     form.find('#id_fecha_retorno').val(fechaRetornoHabil);
+                    //alert("1er: "+fechaTerminoHabil+"/"+fechaRetornoHabil);
                 }
                 if(!isChecked  && isOn > 0 ){
                     form.find('#id_fecha_termino').val(fechaTerminoNoHabil);
                     form.find('#id_fecha_retorno').val(fechaRetornoNoHabil);
+                    //alert("2do: "+fechaTerminoNoHabil+"-"+fechaRetornoNoHabil);
                 }
                 if(!isChecked  && isOn == 0 ){
                     form.find('#id_fecha_termino').val(fechaTerminoHabil);
-                    form.find('#id_fecha_retorno').val(fechaTerminoHabil);
+                    form.find('#id_fecha_retorno').val(fechaRetornoHabil);
+                    //alert("3er: "+fechaTerminoHabil+"-"+fechaRetornoHabil);
                 }
             }
         }
@@ -910,13 +913,13 @@
                     descripcion: descripcion,
                     folio_licencia: folio_licencia,
                     total_dias: total_dias,
-                    fecha_inicio: formatear_fecha(fecha_inicio),
-                    fecha_termino: formatear_fecha(fecha_termino),
-                    fecha_retorno: formatear_fecha(fecha_retorno),
+                    fecha_inicio: fecha_inicio,
+                    fecha_termino: fecha_termino,
+                    fecha_retorno: fecha_retorno,
                     total_feriados: total_feriados,
                     dias_habiles: dias_habiles
                 }
-
+                
                 if(fecha_inicio) {
                     $.get(url, datos, function(data) {
                         if (!(data['success'])) {
@@ -977,16 +980,16 @@
                     contrato: contrato,
                     total_dias: total_dias,
                     observaciones: observaciones,
-                    fecha_solicitud: formatear_fecha(fecha_solicitud),
-                    fecha_inicio: formatear_fecha(fecha_inicio),
-                    fecha_termino: formatear_fecha(fecha_termino),
-                    fecha_retorno: formatear_fecha(fecha_retorno),
+                    fecha_solicitud: fecha_solicitud,
+                    fecha_inicio: fecha_inicio,
+                    fecha_termino: fecha_termino,
+                    fecha_retorno: fecha_retorno,
                     total_feriados: total_feriados,
                     goce_sueldo: goce_sueldo,
                     dias_habiles: dias_habiles,
                     voto: voto,
                     documento: documento
-                }
+                }   
 
                 if (fecha_inicio) {
                     $.get(url, datos, function(data) {
@@ -1041,9 +1044,9 @@
                 datos = {
                     contrato: contrato,
                     total_dias: total_dias,
-                    fecha_inicio: formatear_fecha(fecha_inicio),
-                    fecha_termino: formatear_fecha(fecha_termino),
-                    fecha_retorno: formatear_fecha(fecha_retorno),
+                    fecha_inicio: fecha_inicio,
+                    fecha_termino: fecha_termino,
+                    fecha_retorno: fecha_retorno,
                     total_feriados: total_feriados,
                     dias_pendiente: dias_pendiente,
                     es_pendiente: es_pendiente
