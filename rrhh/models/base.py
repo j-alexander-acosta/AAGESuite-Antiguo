@@ -257,3 +257,53 @@ class Ciudad(models.Model):
     class Meta:
         verbose_name = u'Ciudad'
         verbose_name_plural = u'Ciudades'
+
+
+class TipoTitulo(models.Model):
+    nombre = models.CharField(max_length=150)
+    descripcion = models.TextField(max_length=550, verbose_name="Descripción")
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        verbose_name = u'Tipo de título'
+        verbose_name_plural = u'Tipos ded titulos'
+
+
+class AreaTitulo(models.Model):
+    nombre = models.CharField(max_length=150)
+    descripcion = models.TextField(max_length=550, verbose_name="Descripción")
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        verbose_name = u'Área de título'
+        verbose_name_plural = u'Areas de titulos'
+
+
+class Especialidad(models.Model):
+    nombre = models.CharField(max_length=150)
+    descripcion = models.TextField(max_length=550, verbose_name="Descripción")
+    tipo_titulo = models.ForeignKey("TipoTitulo", on_delete=models.CASCADE, verbose_name="Tipo de título")
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        verbose_name = u'Especialidad'
+        verbose_name_plural = u'Especialidades'
+
+
+class Mencion(models.Model):
+    nombre = models.CharField(max_length=150)
+    descripcion = models.TextField(max_length=550, verbose_name="Descripción")
+    tipo_titulo = models.ForeignKey("TipoTitulo", on_delete=models.CASCADE, verbose_name="Tipo de título")
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        verbose_name = u'Mención'
+        verbose_name_plural = u'Menciones'

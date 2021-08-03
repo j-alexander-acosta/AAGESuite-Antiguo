@@ -79,6 +79,7 @@ class Persona(models.Model):
         self.apellido_materno = self.apellido_materno.capitalize()
         self.direccion = self.direccion.title()
         self.profesion = self.profesion.title() if self.profesion else None
+        self.email = self.email.lower()
         return super(Persona, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -96,10 +97,14 @@ class Persona(models.Model):
 
 class Perfeccionamiento(models.Model):
     persona = models.ForeignKey('Persona', on_delete=models.CASCADE)
-    casa_formadora = models.CharField(max_length=255)
-    titulo = models.CharField(max_length=255, verbose_name='Título')
+    titulo = models.CharField(max_length=255, verbose_name='Nombre del título')
+    es_educacion = models.BooleanField(default=True, verbose_name="Títulado en educación")
+    area_titulo = models.ForeignKey("AreaTitulo", on_delete=models.CASCADE, null=True, blank=True, verbose_name="Área del título")
+    especialidad = models.ForeignKey("Especialidad", on_delete=models.CASCADE, null=True, blank=True)
+    mencion = models.ForeignKey("Mencion", on_delete=models.CASCADE, null=True, blank=True, verbose_name="Mención")
     grado_academico = models.CharField(max_length=255, verbose_name='Grado académico')
-    fecha_titulacion = models.DateField()
+    fecha_titulacion = models.DateField(verbose_name="Fecha de titulación")
+    casa_formadora = models.CharField(max_length=255)
     documento_respaldo = models.FileField(upload_to="rrhh/perfeccionamientos", verbose_name='Documento de respaldo')
 
     def __str__(self):

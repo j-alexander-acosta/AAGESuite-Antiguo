@@ -223,9 +223,9 @@ class PersonaCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         if self.request.POST.get('funcionario'):
-            return reverse('rrhh:funcionario__nuevo', args=[str(self.object.id)])
+            return reverse_lazy('rrhh:funcionario__nuevo', args=[str(self.object.id)])
         else:
-            return reverse('rrhh:persona', args=[str(self.object.id)])
+            return reverse_lazy('rrhh:persona', args=[str(self.object.id)])
 
 
 @login_required
@@ -341,15 +341,10 @@ def crear_funcionario(request, id_persona):
 class FuncionarioUpdateView(LoginRequiredMixin, UpdateView):
     model = Funcionario
     form_class = FuncionarioForm
-    template_name = 'rrhh/funcionario/editar_funcionario.html'
+    template_name = 'rrhh/funcionario/nuevo_funcionario.html'
 
     def get_success_url(self):
-        return reverse_lazy(
-            'rrhh:persona',
-            kwargs={
-                'pk': self.object.persona.pk,
-            }
-        )
+        return reverse_lazy('rrhh:persona', args=[str(self.object.persona.id)])
 #
 # class FuncionarioDeleteView(LoginRequiredMixin, DeleteView):
 #     model = Funcionario
