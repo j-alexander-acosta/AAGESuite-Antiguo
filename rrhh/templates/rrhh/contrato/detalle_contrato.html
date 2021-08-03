@@ -823,6 +823,32 @@
             }
         }
 
+        function limpiar_form(form){
+            form.find("#id_tipo_licencia_descripcion").val('');
+            form.find("#id_folio_licencia").val('');
+            form.find("#id_total_dias").val('');
+            form.find("#id_dias_habiles").val('');
+            form.find("#id_fecha_inicio").val('');
+            form.find("#id_total_feriados").val('');
+            form.find("#id_fecha_termino").val('');
+            form.find("#id_fecha_retorno").val('');
+            form.find("#id_fecha_solicitud").val('');
+            form.find("#id_observaciones").val('');
+            form.find("#id_documento").val('');
+            
+        }
+
+        //--------------------VACACIONES--------------------------
+        function limpiar_form_vacacion(form){
+            form.find("#id_total_dias").val('');
+            form.find("#id_es_pendiente").val('');
+            form.find("#id_fecha_inicio").val('');
+            form.find("#id_total_feriados").val('');
+            form.find("#id_fecha_termino").val('');
+            form.find("#id_fecha_retorno").val('');
+            form.find("#id_dias_pendiente").val('');
+        } 
+        
         function formatear_fecha(fecha){
             fecha_desgloce = fecha.split('/');
             return fecha_desgloce[2] + '-' + fecha_desgloce[1] + '-' + fecha_desgloce[0]
@@ -1009,7 +1035,7 @@
                                 <td>${data.fecha_retorno}</td>
                                 <td>${data.total_feriados}</td>
                                 <td>${data.dias_habiles}</td>
-                                <td>${data.goce_sueldo}}</td>
+                                <td>${data.goce_sueldo}</td>
                                 </tr>`;
                             tbody.html(nuevo_permiso + tbody.html());
                             // alertify.success(data['message']);
@@ -1073,7 +1099,7 @@
                             tbody.html(nueva_vacacion + tbody.html());
                             // alertify.success(data['message']);
                             $(document).find("#crear_vacacion").modal('hide');
-                            // limpiar_form_vacacion(form);
+                            limpiar_form_vacacion(form);
                         }
                     }).fail(function(e){
                         console.log(e);
@@ -1169,6 +1195,7 @@
                 $(document).find('#cargar_documento_personal').find('button[type="submit"]').attr('name', $(this).attr('name'));
             });
         });
+
     </script>
 {% endblock %}
 
