@@ -104,7 +104,13 @@
                                         {{ request.user.username }}
                                     {% endif %}
                                 </span>
-                                <span class="account-position">Cargo</span>
+                                <span class="account-position">
+                                    {% if request.user.is_staff %}
+                                        Administrador (STAFF)
+                                    {% else %}
+                                        Cargo
+                                    {% endif %}
+                                </span>
                             </span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated topbar-dropdown-menu profile-dropdown" aria-labelledby="topbar-userdrop">
@@ -126,6 +132,7 @@
                                 </a>
                             {% endif %}
 
+
                             <!-- item-->
                             <a href="javascript:void(0);" class="dropdown-item notify-item">
                                 <i class="mdi mdi-lifebuoy mr-1"></i>
@@ -137,6 +144,14 @@
                             {#                                <i class="mdi mdi-lock-outline mr-1"></i>#}
                             {#                                <span>Bloquear Pantalla</span>#}
                             {#                            </a>#}
+
+                            <!-- item-->
+                            {% if request.user.is_staff %}
+                                <a href="/admin/" class="dropdown-item notify-item">
+                                    <i class="mdi mdi-cogs mr-1"></i>
+                                    <span>Sitio de Administración</span>
+                                </a>
+                            {% endif %}
 
                             <!-- item-->
                             <a href="{% url 'logout' %}" class="dropdown-item notify-item">

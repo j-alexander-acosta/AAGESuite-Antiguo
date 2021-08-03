@@ -5,7 +5,7 @@ register = template.Library()
 
 @register.filter
 def beauty_none(value):
-    if value == None or value == '':
+    if value is None or value == '':
         return 'No especificado'
     else:
         return value

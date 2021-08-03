@@ -2,18 +2,18 @@
 {% load staticfiles crispy_forms_tags %}
 
 {% block title_page %}
-    Crear Funcionario
+    Funcionario - {% if object %}Editar{% else %}Crear{% endif %}
 {% endblock %}
 
 {% block title %}
-    Crear Funcionario
+    {% if object %}Editar{% else %}Crear{% endif %} Funcionario
 {% endblock %}
 
 {% block breadcrumb %}
     <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
     <li class="breadcrumb-item"><a href="{% url 'rrhh:home_rrhh' %}">Recursos Humanos</a></li>
     <li class="breadcrumb-item"><a href="{% url 'rrhh:personas' %}">Personas</a></li>
-    <li class="breadcrumb-item active">Crear funcionario</li>
+    <li class="breadcrumb-item active">{% if object %}Editar{% else %}Crear{% endif %} funcionario</li>
 {% endblock %}
 
 {% block content %}
@@ -39,4 +39,8 @@
         </form>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'rrhh/ownscripts/crear_funcionario.js' %}"></script>
 {% endblock %}

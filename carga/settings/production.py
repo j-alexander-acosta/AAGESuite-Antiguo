@@ -27,6 +27,15 @@ DATABASES = {
         'HOST': '/var/run/postgresql',
     }
 }
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+)
+
+COMPRESS_ENABLED = False
+COMPRESS_OFFLINE = False
+COMPRESS_CSS_HASHING_METHOD = 'content'
 
 STATIC_ROOT = '/var/lib/carga/static/'
 MEDIA_ROOT = '/var/lib/carga/media/'
