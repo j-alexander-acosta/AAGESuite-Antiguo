@@ -7,6 +7,17 @@
     Curso - Detalle
 {% endblock %}
 
+{% block title %}
+  Curso - Detalle
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:home' %}">Carga Horaria</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:periodos' %}">Cursos</a></li>
+    <li class="breadcrumb-item active">Curso - Detalle</li>
+{% endblock %}
+
 {% block content %}
 
 <div class="card">

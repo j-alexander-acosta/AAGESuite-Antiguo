@@ -5,6 +5,17 @@
     Plan - Detalle
 {% endblock %}
 
+{% block title %}
+    Plan - Detalle
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:home' %}">Carga Horaria</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:planes' %}">Planes</a></li>
+    <li class="breadcrumb-item active">Plan - Detalle</li>
+{% endblock %}
+
 {% block content %}
 
 <div class="card">
