@@ -2,6 +2,20 @@
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 
+{% block title_page %}
+    Crear Asignatura Base
+{% endblock %}
+
+{% block title %}
+    Crear Asignatura Base
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:home' %}">Carga Horaria</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:asignaturasbase' %}">Asignatura Base</a></li>
+    <li class="breadcrumb-item active">Crear Asignatura Base</li>
+{% endblock %}
 
 {% block content %}
 <div class="card">

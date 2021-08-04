@@ -6,6 +6,18 @@
     Editar {{ object }}
 {% endblock %}
 
+{% block title %}
+    Editar Asignatura Base
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:home' %}">Carga Horaria</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:asignaturasbase' %}">Asignatura Base</a></li>
+    <li class="breadcrumb-item active">Editar Asignatura Base</li>
+{% endblock %}
+
+
 {% block block_editar_eliminar %}
     <li class="breadcrumb-item">
         <a href="{{ object.get_absolute_url }}">

@@ -6,13 +6,24 @@
     Asistente - Detalle
 {% endblock %}
 
+{% block title %}
+    Asistente - Detalle
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:home' %}">Carga Horaria</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:asistentes' %}">Asistentes</a></li>
+    <li class="breadcrumb-item active">Asistente - Detalle</li>
+{% endblock %}
+
 {% block content %}
 
 <div class="card">
     <div class="card-header">
       <h4 class="card-title"><strong> {{ object.nombre }}</strong>
           {% block buttons %}
-              <div class="btn-group pull-right">
+              <div class="btn-group float-right">
                   <a href="{% url 'carga-horaria:asistentes' %}" type="button" class="btn btn-outline-dark" data-toggle="tooltip" data-placement="top" title="Volver">
                       <i class="uil-arrow-left"></i>
                   </a>

@@ -2,8 +2,19 @@
 {% load humanize %}
 {% load staticfiles %}
 {% load carga_filters %}
+
 {% block title_page %}
     Profesor - Detalle
+{% endblock %}
+
+{% block title %}
+    Profesor - Detalle
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:home' %}">Carga Horaria</a></li>
+    <li class="breadcrumb-item active">Profesor - Detalle</li>
 {% endblock %}
 
 {% block content %}
@@ -12,7 +23,10 @@
     <div class="card-header">
       <h4 class="card-title"><strong> {{ object.nombre }}</strong>
           {% block buttons %}
-              <div class="btn-group pull-right">
+              <div class="btn-group float-right">
+                <a href="{% url 'carga-horaria:profesores' %}" type="button" class="btn btn-outline-dark" data-toggle="tooltip" data-placement="top" title="Comparativo">
+                    <i class="uil-cog"></i>
+                </a>
                   <a href="{% url 'carga-horaria:profesores' %}" type="button" class="btn btn-outline-dark" data-toggle="tooltip" data-placement="top" title="Volver">
                       <i class="uil-arrow-left"></i>
                   </a>
@@ -28,7 +42,8 @@
               </div>
           {% endblock %}
       </h4>{% if object.periodo_set.count %}<p class="text-muted text-xs">Profesor Jefe de {{ object.periodo_set.first }}</p>{% endif %}
-      	<div class="progress pull-right" style="width: 50%;">
+      <br>
+      	<div class="progress float-right" style="width: 50%;">
 	  <div class="progress-bar progress-bar-striped progress-bar-animated" style="width:{{ object.completion_percentage }}%;">
 	    <strong>{{ object.get_progress_display }}</strong>
 	  </div>
@@ -65,7 +80,7 @@
       </h6>
 
       <!--
-      <div class="btn-group pull-right">
+      <div class="btn-group float-right">
         <table class="table table-sm">
           <tbody>
             <tr>

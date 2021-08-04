@@ -53,7 +53,7 @@ class PersonaForm(forms.ModelForm):
 
         help_texts = {
             'titulado': u"Marque si la persona tiene un título profesional",
-            'religion': u"Marque si la persona pertence a esta religión",
+            'religion': u"Marque si la persona pertenece a esta religión",
             'telefono': u"Si es un número móvil, la forma debe ser 9 1234 5678;\n"
                         u"en el caso de ser fijo, 45 2 711234",
         }

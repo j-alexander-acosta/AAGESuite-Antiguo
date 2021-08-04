@@ -6,11 +6,22 @@
     Cursos
 {% endblock %}
 
+{% block title %}
+    Cursos
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:home' %}">Carga Horaria</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:periodos' %}">Cursos</a></li>
+    <li class="breadcrumb-item active">Cursos</li>
+{% endblock %}
+
 {% block content %}
 <div class="card">
     <div class="card-header">
         <h4 class="card-title">Listado de Cursos
-            <div class="btn-group pull-right" role="group"></div>
+            <div class="btn-group float-right" role="group"></div>
                 <a class="btn btn-outline-primary" href="{% url 'carga-horaria:curso__nuevo'%}" role="button">
                     <i class="uil-plus"></i>
                 </a>
