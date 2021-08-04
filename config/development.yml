@@ -2,7 +2,7 @@ version: '3'
 
 services:
   db:
-    container_name: carga_db
+    container_name: aagesuite_db
     image: postgres
     restart: always
     ports:
@@ -12,7 +12,7 @@ services:
       - carga_db:/var/lib/postgresql/data
 
   web:  
-    container_name: carga
+    container_name: aagesuite
     restart: always
     build: .
     command: python manage.py runserver 0.0.0.0:8000
@@ -21,7 +21,7 @@ services:
     volumes:
       - .:/code
     ports:
-      - "8091:8000"
+      - "8001:8000"
     depends_on:
       - db
 

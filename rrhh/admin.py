@@ -121,6 +121,36 @@ class IsapreAdmin(admin.ModelAdmin):
     search_fields = ['nombre']
 
 
+@admin.register(base.Region)
+class RegionAdmin(admin.ModelAdmin):
+    list_display = (
+        'numero',
+        'numero_romano',
+        'nombre',
+    )
+    search_fields = ['nombre']
+
+
+@admin.register(base.Comuna)
+class ComunaAdmin(admin.ModelAdmin):
+    list_display = (
+        'nombre',
+        'region',
+    )
+    search_fields = ['nombre', 'region']
+    list_filter = ['region']
+
+
+@admin.register(base.Ciudad)
+class CiudadAdmin(admin.ModelAdmin):
+    list_display = (
+        'nombre',
+        'comuna',
+    )
+    search_fields = ['nombre']
+    list_filter = ['comuna', 'comuna__region']
+
+
 @admin.register(colegio.FiniquitoColegio)
 class FiniquitoColegioAdmin(admin.ModelAdmin):
     list_display = (

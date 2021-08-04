@@ -1,4 +1,5 @@
-{% load staticfiles %}
+{% load staticfiles rrhh_utils %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,18 +7,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="{% static 'base/img/icono.png' %}">
+    <link rel="icon" href="{% static 'base/img/logo-icon.png' %}">
 
-    <title>{% block title_page %}
-    {% endblock %} </title>
+    <title>
+        {% block title_page %}
+            {% if request.path|start_with:"/carga/" %}
+                Carga Horaria
+            {% elif request.path|start_with:"/rrhh/" %}
+                Recursos Humanos
+            {% else %}
+                Suite AAGE
+            {% endif %}
+        {% endblock %}
+    </title>
 
     {% include 'base/partials/css_imports.html' %}
-    {% block extra_css %}
-    {% endblock %}
+    {% block extra_css %}{% endblock %}
+
+    <style>
+        body {
+            background: url("{% static 'base/img/fondo_aventista.png' %}") no-repeat;
+            background-position-x: 130%;
+            background-position-y: 110px;
+        }
+    </style>
+
 </head>
 
-<body background="{% static 'base/img/fondo_aventista.png' %}" style="background-repeat: no-repeat; background-position: right">
-{% include 'base/partials/navbar.html' %}
+<body class="loading" data-layout="topnav">
+
+<div id="preloader">
+    <div id="status">
+        <div class="bouncing-loader"><div ></div><div ></div><div ></div></div>
+    </div>
+</div>
+
+<!-- Begin page -->
+<div class="wrapper">
+    <div class="content-page pb-2">
+        <div class="content">
+            {% include 'base/partials/navbar2.html' %}
+
+            <div class="container-fluid" id="contenidoApp">
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box">
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    {% block breadcrumb %}
+                                    {% endblock %}
+                                </ol>
+                            </div>
+
+                            <h4 class="page-title">{% block title %}{% endblock %}</h4>
 
 {% block suma_presupuesto %}{% endblock %}
 <div {% block container %}class="container" style="max-width:1300px !important"{% endblock %} id="contenidoApp">
@@ -29,13 +72,24 @@
 
 <br><br><br>
 
-<footer class="footer">
-    <div class="container" style="text-align: right !important;">
-    <span class="text-muted">
-      Copyright &copy; 2021 Universidad Adventista de Chile
-    </span>
+<!-- Footer Start -->
+<footer class="footer bg-light">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <script>document.write(new Date().getFullYear())</script> © Universidad Adventista de Chile
+            </div>
+            <div class="col-md-6">
+                <div class="text-md-right footer-links d-none d-md-block">
+                    <a href="http://aage.cl/#conocenos" target="blanck">Acerca de Nosotros</a>
+                    <a href="http://aage.cl/#contacto" target="blanck">Soporte</a>
+                    <a href="http://aage.cl/#contacto" target="blanck">Contáctenos</a>
+                </div>
+            </div>
+        </div>
     </div>
 </footer>
+<!-- end Footer -->
 
 <a href="javascript:void(0);" id="scroll" title="Scroll Arriba" style="display: none;">Top<span></span></a>
 

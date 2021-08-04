@@ -2,9 +2,24 @@
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 
+{% block title_page %}
+    Crear Plan
+{% endblock %}
+
+{% block title %}
+    Crear Plan
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:home' %}">Carga Horaria</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:planes' %}">Planes</a></li>
+    <li class="breadcrumb-item active">Crear Plan</li>
+{% endblock %}
+
 
 {% block content %}
-<div class="card" style="margin-top: 80px;">
+<div class="card">
     <div class="card-header">
         <h4 class="card-title">Crear Plan
         </h4>

@@ -6,8 +6,24 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 {% endblock %}
 
+{% block title_page %}
+    Crear Asistente
+{% endblock %}
+
+{% block title %}
+Crear Asistente
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:home' %}">Carga Horaria</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:asistentes' %}">Asistentes</a></li>
+    <li class="breadcrumb-item active">Crear Asistente</li>
+{% endblock %}
+
+
 {% block content %}
-<div class="card" style="margin-top: 80px;">
+<div class="card">
     <div class="card-header">
         <h4 class="card-title">Asistente
         </h4>

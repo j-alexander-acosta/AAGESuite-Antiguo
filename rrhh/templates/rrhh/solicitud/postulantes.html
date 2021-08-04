@@ -5,20 +5,29 @@
     Postulantes
 {% endblock %}
 
+{% block title %}
+    Postulantes
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'rrhh:home_rrhh' %}">Recursos Humanos</a></li>
+    <li class="breadcrumb-item active">Postulantes</li>
+{% endblock %}
+
 {% block content %}
 
-<div class="card" style="margin-top: 80px;">
+<div class="card">
     <div class="card-header page-title">
-      <h4 class="card-title"><strong>Postulantes</strong></h4>
-        <h6 class="card-subtitle mb-2 text-muted">Detalle de los Postulantes</h6>
+        <h5>Detalle de los Postulantes</h5>
     </div>
     <div class="card-body">
         {% for p in postulantes %}
             <a href="{% url 'rrhh:persona' p.pk %}" style="color: black;">
                 <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-md-2 text-center">
                         {% if p.foto %}
-                            <img class="img-responsive" src="{{ p.foto}}" alt="{{ p.username }}" width="100%">
+                            <img class="img-responsive" src="{{ p.foto.url }}" alt="{{ p.username }}" width="100%">
                         {% else %}
                             <img class="img-responsive" src="{% static "base/img/user.png" %}" alt="{{ p.username }}" width="100%">
                         {% endif %}

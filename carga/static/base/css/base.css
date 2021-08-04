@@ -7,35 +7,21 @@ body {
 }
 
 .login-content {
-    padding-top: 80px;
+  padding-top: 80px;
 }
 
 .back-to-top {
-
-background: none;
-
-margin: 0;
-
-position: fixed;
-
-bottom: 0;
-
-right: 0;
-
-width: 70px;
-
-height: 70px;
-
-z-index: 100;
-
-display: none;
-
-text-decoration: none;
-
-color: #ffffff;
-
-background-color: #ff9000;
-
+  margin: 0;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 70px;
+  height: 70px;
+  z-index: 100;
+  display: none;
+  text-decoration: none;
+  color: #ffffff;
+  background: #ff9000 none;
 }
 
 

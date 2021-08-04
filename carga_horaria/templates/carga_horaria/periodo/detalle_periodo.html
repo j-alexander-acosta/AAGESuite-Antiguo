@@ -7,9 +7,20 @@
     Curso - Detalle
 {% endblock %}
 
+{% block title %}
+  Curso - Detalle
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:home' %}">Carga Horaria</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:periodos' %}">Cursos</a></li>
+    <li class="breadcrumb-item active">Curso - Detalle</li>
+{% endblock %}
+
 {% block content %}
 
-<div class="card" style="margin-top: 80px;">
+<div class="card">
     <div class="card-header">
       <h4 class="card-title">Curso: <strong> {{ object }} </strong>
         {% if object.profesor_jefe %}
@@ -18,7 +29,7 @@
         {% endif %}
         
         {% block buttons %}
-            <div class="btn-group pull-right">
+            <div class="btn-group float-right">
                 <a href="{% url 'carga-horaria:periodos' %}" type="button" class="btn btn-outline-dark" data-toggle="tooltip" data-placement="top" title="Volver">
                     <i class="uil-arrow-left"></i>
                 </a>
@@ -43,7 +54,7 @@
         <div class="card-body">
         <div class="row">
         <div class="col-md-12">
-      <div class="pull-right" style="padding-bottom: 10px;">
+      <div class="float-right" style="padding-bottom: 10px;">
         <a class="btn btn-outline-default" href="{% url 'carga-horaria:periodo-pdf' pk=object.pk %}"><i class="uil-print"></i> Imprimir</a>
       </div>
             <table class="table table-hover table-sm">

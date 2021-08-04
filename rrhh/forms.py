@@ -49,12 +49,16 @@ class ColegioForm(forms.ModelForm):
 class PersonaForm(forms.ModelForm):
     class Meta:
         model = Persona
-        fields = '__all__'
+        exclude = ['usuario']
 
         help_texts = {
-            'titulado': u"Marque si la persona tiene un título profesional"
+            'titulado': u"Marque si la persona tiene un título profesional",
+            'religion': u"Marque si la persona pertenece a esta religión",
+            'telefono': u"Si es un número móvil, la forma debe ser 9 1234 5678;\n"
+                        u"en el caso de ser fijo, 45 2 711234",
         }
-    rut  = CLRutField()
+
+    rut = CLRutField()
 
     def __init__(self, *args, **kwargs):
         super(PersonaForm, self).__init__(*args, **kwargs)
@@ -104,19 +108,14 @@ class PersonaForm(forms.ModelForm):
                 ),
                 css_class="row"
             ),
-            'religion',
             Div(
                 Div(
                     Field('direccion'),
-                    css_class="col-md-4"
-                ),
-                Div(
-                    Field('comuna'),
-                    css_class="col-md-4"
+                    css_class="col-md-6"
                 ),
                 Div(
                     Field('ciudad'),
-                    css_class="col-md-4"
+                    css_class="col-md-6"
                 ),
                 css_class="row"
             ),
@@ -142,6 +141,17 @@ class PersonaForm(forms.ModelForm):
                 ),
                 css_class="row"
             ),
+            Div(
+                Div(
+                    Field('religion'),
+                    css_class='col-md-6'
+                ),
+                Div(
+                    Field('foto'),
+                    css_class='col-md-6'
+                ),
+                css_class='row'
+            )
         )
 
 
@@ -249,7 +259,6 @@ class VacacionFuncionarioColegioForm(forms.ModelForm):
             'fecha_termino',
             'total_feriados',
             'fecha_retorno',
-            'dias_pendiente',
             'es_pendiente'
         ]
         help_texts = {
@@ -279,7 +288,6 @@ class VacacionTipoFuncionarioColegioForm(forms.ModelForm):
             'fecha_termino',
             'fecha_retorno',
             'total_feriados',
-            'dias_pendiente',
             'es_pendiente',
         ]
         widgets = {
@@ -302,15 +310,11 @@ class VacacionTipoFuncionarioColegioForm(forms.ModelForm):
                 Div(
                     Div(
                         Field('total_dias'),
-                        css_class='col-md-4'
+                        css_class='col-md-6'
                     ),
                     Div(
                         Field('es_pendiente'),
-                        css_class='col-md-4'
-                    ),
-                    Div(
-                        Field('dias_pendiente'),
-                        css_class='col-md-4'
+                        css_class='col-md-6'
                     ),
                     css_class='row'
                 ),
@@ -591,9 +595,16 @@ class ContratoColegioForm(forms.ModelForm):
         self.fields['funcion_secundaria'].widget.attrs['class'] = 'chosen'
         self.fields['tipo_contrato'].widget.attrs['class'] = 'chosen'
         self.fields['reemplazando_licencia'].widget.attrs['class'] = 'chosen'
-        self.fields['fecha_inicio'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
+        self.fields['fecha_inicio'] = forms.DateField(
+            widget=forms.widgets.DateInput(attrs={'type': 'date'}),
+            input_formats=['%Y-%m-%d']
+        )
         self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
-        self.fields['fecha_termino'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
+        self.fields['fecha_termino'] = forms.DateField(
+            widget=forms.widgets.DateInput(attrs={'type': 'date'}),
+            input_formats=['%Y-%m-%d'],
+            required=False
+        )
         self.fields['fecha_termino'].widget.attrs['class'] = 'datepicker'
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -795,7 +806,7 @@ class SolicitudForm(forms.ModelForm):
         super(SolicitudForm, self).__init__(*args, **kwargs)
         self.fields['fecha_inicio'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
-        self.fields['fecha_termino'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
+        self.fields['fecha_termino'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'], required=False)
         self.fields['fecha_termino'].widget.attrs['class'] = 'datepicker'
         self.fields['colegio'].widget.attrs['class'] = 'chosen'
         self.fields['categoria'].widget.attrs['class'] = 'chosen'

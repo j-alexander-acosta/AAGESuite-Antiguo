@@ -5,13 +5,24 @@
     Asignatura Base - Detalle
 {% endblock %}
 
+{% block title %}
+    Asignatura Base - Detalle
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:home' %}">Carga Horaria</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:asignaturasbase' %}">Asignaturas Base</a></li>
+    <li class="breadcrumb-item active">Asignatura Base - Detalle</li>
+{% endblock %}
+
 {% block content %}
 
-<div class="card" style="margin-top: 80px;">
+<div class="card">
     <div class="card-header">
         <h4 class="card-title"><strong> {{ object.nombre }}
           {% block buttons %}
-              <div class="btn-group pull-right">
+              <div class="btn-group float-right">
                   <a href="{% url 'carga-horaria:asignaturasbase' %}" type="button" class="btn btn-outline-dark" data-toggle="tooltip" data-placement="top" title="Volver">
                       <i class="uil-arrow-left"></i>
                   </a>

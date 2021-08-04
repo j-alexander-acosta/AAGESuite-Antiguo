@@ -6,12 +6,22 @@
     Colegios
 {% endblock %}
 
+{% block title %}
+    Colegios
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:home' %}">Carga Horaria</a></li>
+    <li class="breadcrumb-item active">Colegios</li>
+{% endblock %}
+
 {% block content %}
-<div class="card" style="margin-top: 80px;">
+<div class="card">
     <div class="card-header">
         <h4 class="card-title">Listado de Colegios
 	  {% if request.user.is_superuser %}
-            <div class="btn-group pull-right" role="group">
+            <div class="btn-group float-right" role="group">
             <a class="btn btn-outline-primary" href="{% url 'carga-horaria:colegio__nuevo'%}" role="button">
                 Crear Colegio<i class="uil-plus"></i>
             </a>

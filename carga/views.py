@@ -8,6 +8,11 @@ from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 
 
+@login_required()
+def home(request):
+    return render(request, 'home.html')
+
+
 def login_view(request):
     """
         Pantalla de Login
@@ -31,7 +36,7 @@ def login_view(request):
                     )
                 else:
                     return redirect(
-                        'carga-horaria:home'
+                        'home'
                     )
             else:
                 messages.add_message(
@@ -52,12 +57,10 @@ def login_view(request):
             'Ingrese con su usuario'
         )
 
-    return render(request, 'registration/login.html')
+    return render(request, 'registration/login2.html')
 
 
 @login_required
 def logout_view(request):
     logout(request)
-    return redirect(
-        'login'
-    )
+    return render(request, 'registration/logout.html')

@@ -131,10 +131,6 @@ STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder',
 )
 
-COMPRESS_ENABLED = False
-COMPRESS_OFFLINE = False
-COMPRESS_CSS_HASHING_METHOD = 'content'
-
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 

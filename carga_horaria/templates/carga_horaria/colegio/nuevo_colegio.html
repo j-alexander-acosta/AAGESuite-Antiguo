@@ -2,9 +2,23 @@
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 
+{% block title_page %}
+    Crear - Colegio {{ object }}
+{% endblock %}
+
+{% block title %}
+    Crear - Colegio
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:home' %}">Carga Horaria</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:colegios' %}">Colegios</a></li>
+    <li class="breadcrumb-item active">Crear - Colegio</li>
+{% endblock %}
 
 {% block content %}
-<div class="card" style="margin-top: 80px;">
+<div class="card">
     <div class="card-header">
         <h4 class="card-title">Crear Colegio
         </h4>

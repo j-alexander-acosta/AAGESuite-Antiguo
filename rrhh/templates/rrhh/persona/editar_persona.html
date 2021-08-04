@@ -1,18 +1,29 @@
 {% extends 'base/base.html' %}
-{% load staticfiles %}
-{% load crispy_forms_tags %}
+{% load staticfiles crispy_forms_tags %}
 
+{% block title_page %}
+    Persona - Editar
+{% endblock %}
+
+{% block title %}
+    Editar Persona
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'rrhh:home_rrhh' %}">Recursos Humanos</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'rrhh:personas' %}">Personas</a></li>
+    <li class="breadcrumb-item active">Editar persona</li>
+{% endblock %}
 
 {% block content %}
-<div class="card" style="margin-top: 80px;">
+<div class="card">
     <div class="card-header">
-        <h4 class="card-title">Editar Persona
-        </h4>
-        <h6 class="card-subtitle mb-2 text-muted">Datos de la persona</h6>
+        <h5>Datos de la persona</h5>
     </div>
-    <div class="card-body">
 
-        <form class="form-horizontal" method="post">
+    <div class="card-body">
+        <form class="form-horizontal" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {% crispy form %}
             <div class="form-group">

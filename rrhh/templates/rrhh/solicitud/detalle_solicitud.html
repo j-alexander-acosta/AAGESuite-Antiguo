@@ -5,77 +5,88 @@
     Solicitud - Detalle
 {% endblock %}
 
+{% block title %}
+    Detalle de Solicitud de {{ object.get_tipo_display }}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'rrhh:home_rrhh' %}">Recursos Humanos</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'rrhh:solicitudes' %}">Solicitudes</a></li>
+    <li class="breadcrumb-item active">Detalle de la solicitud</li>
+{% endblock %}
+
 {% block content %}
 
-<div class="card" style="margin-top: 80px;">
-    <div class="card-header page-title">
-        <h4 class="card-title">
-            <strong>Detalle de Solicitud de {{ object.get_tipo_display }}<small> <span class="badge badge-pill
-                {% if object.estado_id == 2 or object.estado_id == 4 or object.estado_id == 5 or object.estado_id == 6 %}
-                    badge-warning
-                {% elif object.estado_id == 1 or object.estado_id == 7 %}
-                    badge-success
-                {% else %}
-                    badge-danger
-                {% endif %}"> {{ object.estado }} </span></small>
-            </strong>
-            {% block buttons %}
-                <div class="btn-group float-right">
-                    <a href="{% url 'rrhh:solicitudes' %}" type="button" class="btn btn-outline-dark">
-                        <i class="uil-arrow-left"></i>
-                    </a>
-                    <a href="{% url 'rrhh:solicitud__editar' object.pk %}" type="button" class="btn btn-outline-primary">
-                        <i class="uil-edit"></i>
-                    </a>
-                    <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_solicitud_{{object.pk}}">
-                        <i class="uil-trash-alt"></i>
-                    </a>
-                </div>
-            {% endblock %}
-        </h4>
-        <h6 class="card-subtitle mb-2 text-muted">{{ object }}</h6>
+    <div class="card">
+        <div class="card-header">
+            <h5>
+                {{ object }}
+                <strong><span class="badge badge-pill
+                    {% if object.estado_id == 2 or object.estado_id == 4 or object.estado_id == 5 or object.estado_id == 6 %}
+                        badge-warning
+                    {% elif object.estado_id == 1 or object.estado_id == 7 %}
+                        badge-success
+                    {% else %}
+                        badge-danger
+                    {% endif %}">
+                    {{ object.estado }}
+                </span></strong>
+                {% block buttons %}
+                    <div class="btn-group btn-group-sm float-right">
+                        <a href="{% url 'rrhh:solicitudes' %}" type="button" class="btn btn-outline-dark">
+                            <i class="uil-arrow-left"></i>
+                        </a>
+                        <a href="{% url 'rrhh:solicitud__editar' object.pk %}" type="button" class="btn btn-outline-primary">
+                            <i class="uil-edit"></i>
+                        </a>
+                        <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_solicitud_{{object.pk}}">
+                            <i class="uil-trash-alt"></i>
+                        </a>
+                    </div>
+                {% endblock %}
+            </h5>
+        </div>
+        <div class="card-body">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="detalle-tab" data-toggle="tab" href="#detalle" role="tab" aria-controls="detalle" aria-selected="true">Detalle</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="historial-tab" data-toggle="tab" href="#historial" role="tab" aria-controls="historial" aria-selected="false">Historial</a>
+                </li>
+                {% if object.postulantes.all %}
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="candidatos-tab" data-toggle="tab" href="#candidatos" role="tab" aria-controls="candidatos" aria-selected="false">Candidatos</a>
+                    </li>
+                {% endif %}
+                {% if object.estado_id == 4 %}
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" href="{% url 'rrhh:candidatos__seleccionar' object.id %}" role="tab">Seleccionar candidatos</a>
+                    </li>
+                {% endif %}
 
-    </div>
-    <div class="card-body">
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="detalle-tab" data-toggle="tab" href="#detalle" role="tab" aria-controls="detalle" aria-selected="true">Detalle</a>
-            </li>
-            <li class="nav-item" role="presentation">
-                <a class="nav-link" id="historial-tab" data-toggle="tab" href="#historial" role="tab" aria-controls="historial" aria-selected="false">Historial</a>
-            </li>
-            {% if object.postulantes.all %}
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="candidatos-tab" data-toggle="tab" href="#candidatos" role="tab" aria-controls="candidatos" aria-selected="false">Candidatos</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Cambiar estado</a>
+                    <div class="dropdown-menu">
+                        {% if object.estado_id == 2 and object.tipo < 3 %}<a class="dropdown-item text-success" id="ces" name="1" href="#"><i class="uil-check"></i> Aceptar</a> {% endif %}
+                        <a class="dropdown-item text-warning" id="ces" name="2" href="#"><i class="uil-refresh"></i> Pendiente</a>
+                        {% if not object.estado_id == 3 %}<a class="dropdown-item text-danger" id="ces" name="3" href="#"><i class="uil-times-circle"></i> Rechazar</a>{% endif %}
+                        {% if object.tipo < 3 %}<a class="dropdown-item text-warning" id="ces" name="4" href="#"><i class="mdi mdi-stop"></i> En espera de candidatos</a>{% endif %}
+                        {% if object.estado_id == 5 or object.tipo >= 3 %}<a class="dropdown-item text-warning" id="ces" name="6" href="#"><i class="uil-check"></i> Aprobar, lista para contratar</a>{% endif %}
+                        {% comment %}data-toggle="modal" data-target="#estado_solicitud_{{object.pk}}{% endcomment %}
+                    </div>
                 </li>
-            {% endif %}
-            {% if object.estado_id == 4 %}
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" href="{% url 'rrhh:candidatos__seleccionar' object.id %}" role="tab">Seleccionar candidatos</a>
-                </li>
-            {% endif %}
-
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Cambiar estado</a>
-                <div class="dropdown-menu">
-                    {% if object.estado_id == 2 and object.tipo < 3 %}<a class="dropdown-item text-success" id="ces" name="1" href="#"><i class="uil-check"></i> Aceptar</a> {% endif %}
-                    <a class="dropdown-item text-warning" id="ces" name="2" href="#"><i class="uil-refresh"></i> Pendiente</a>
-                    {% if not object.estado_id == 3 %}<a class="dropdown-item text-danger" id="ces" name="3" href="#"><i class="uil-times-circle"></i> Rechazar</a>{% endif %}
-                    {% if object.tipo < 3 %}<a class="dropdown-item text-warning" id="ces" name="4" href="#"><i class="mdi mdi-stop"></i> En espera de candidatos</a>{% endif %}
-                    {% if object.estado_id == 5 or object.tipo >= 3 %}<a class="dropdown-item text-warning" id="ces" name="6" href="#"><i class="uil-check"></i> Aprobar, lista para contratar</a>{% endif %}
-                    {% comment %}data-toggle="modal" data-target="#estado_solicitud_{{object.pk}}{% endcomment %}
-                </div>
-            </li>
-            {% if object.tipo >= 3 and object.estado_id == 6 %}
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link btn btn-outline-primary" href="{% url 'rrhh:contrato_colegio__crear' object.contrato.funcionario.id object.id %}" role="tab">Contratar</a>
-                </li>
-            {% endif %}
-        </ul>
-        <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="detalle" role="tabpanel" aria-labelledby="home-tab">
-                <table class="table table-hover">
-                    <tbody>
+                {% if object.tipo >= 3 and object.estado_id == 6 %}
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link btn btn-outline-primary" href="{% url 'rrhh:contrato_colegio__crear' object.contrato.funcionario.id object.id %}" role="tab">Contratar</a>
+                    </li>
+                {% endif %}
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="detalle" role="tabpanel" aria-labelledby="home-tab">
+                    <table class="table table-hover">
+                        <tbody>
                         {% if object.tipo >= 3 %}
                             <tr>
                                 <th> Funcionario </th>
@@ -114,17 +125,17 @@
                             <th> Justificación </th>
                             <td> {{ object.justificacion }} </td>
                         </tr>
-                        {% if object.estado_id == 6 or 7 %}
+                        {% if object.estado_id == 6 or object.estado_id == 7 %}
                             <th> Voto de autorización </th>
                             <td> {{ object.voto }} </td>
                         {% endif %}
-                    </tbody>
-                </table>
-            </div>
-            {% if object.postulantes.all %}
-                <div class="tab-pane fade" id="candidatos" role="tabpanel" aria-labelledby="candidatos-tab">
-                    <table class="table table-hover">
-                        <thead>
+                        </tbody>
+                    </table>
+                </div>
+                {% if object.postulantes.all %}
+                    <div class="tab-pane fade" id="candidatos" role="tabpanel" aria-labelledby="candidatos-tab">
+                        <table class="table table-hover">
+                            <thead>
                             <th>RUN</th>
                             <th>Nombre</th>
                             <th>Historial de trabajo</th>
@@ -132,8 +143,8 @@
                             {% if object.estado_id == 6 %}
                                 <th>Opciones</td>
                             {% endif %}
-                        </thead>
-                        <tbody>
+                            </thead>
+                            <tbody>
                             {% for p in object.postulantes.all %}
                                 <tr>
                                     <td><a href="{% url 'rrhh:persona' p.pk %}"> {{ p.rut }} </a></td>
@@ -161,19 +172,19 @@
                                     {% endif %}
                                 </tr>
                             {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            {% endif %}
-            <div class="tab-pane fade" id="historial" role="tabpanel" aria-labelledby="profile-tab">
-                <table class="table table-hover">
-                    <thead>
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
+                <div class="tab-pane fade" id="historial" role="tabpanel" aria-labelledby="profile-tab">
+                    <table class="table table-hover">
+                        <thead>
                         <th>Estado</th>
                         <th>Ejecutor</th>
                         <th>Fecha</th>
                         <th>Observaciones</th>
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
                         {% for e in object.estadosolicitud_set.all|dictsortreversed:'id' %}
                             <tr>
                                 <td><span class="badge badge-pill
@@ -190,56 +201,56 @@
                                 <td> {{ e.observaciones|safe|escape }} </td>
                             </tr>
                         {% endfor %}
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
- </div>
 
-<div class="modal" tabindex="-1" role="dialog" id="eliminar_solicitud_{{object.pk}}">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title alert alert-warning bg-white text-warning" role="alert"><strong>¡Alerta!</strong> Está a punto de eliminar la Solicitud de contratación</h5>
-                <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Está seguro que desea eliminar la Solicitud de contratación "{{ object }}"?.</p>
-                <p class="text-muted">Recuerde que eliminará todos los registros asociados a la Solicitud de contratación.</p>
-            </div>
-            <div class="modal-footer">
-                <a role="button" class="btn btn-outline-danger" href="{% url 'rrhh:solicitud__eliminar' object.pk %}">Eliminar</a>
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal" tabindex="-1" role="dialog" id="cambiar_estado_solicitud">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title"></h4>
-                <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form class="form-horizontal" method="post" action="{% url 'rrhh:estado_solicitud__cambiar' %}">
+    <div class="modal" tabindex="-1" role="dialog" id="eliminar_solicitud_{{object.pk}}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title alert alert-warning bg-white text-warning" role="alert"><strong>¡Alerta!</strong> Está a punto de eliminar la Solicitud de contratación</h5>
+                    <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
                 <div class="modal-body">
-                    <input type="hidden" name="solicitud" value="{{ object.id }}">
-                    {% crispy form %}
+                    <p>Está seguro que desea eliminar la Solicitud de contratación "{{ object }}"?.</p>
+                    <p class="text-muted">Recuerde que eliminará todos los registros asociados a la Solicitud de contratación.</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-outline-success">Guardar</a>
+                    <a role="button" class="btn btn-outline-danger" href="{% url 'rrhh:solicitud__eliminar' object.pk %}">Eliminar</a>
                     <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-</div>
+
+    <div class="modal" tabindex="-1" role="dialog" id="cambiar_estado_solicitud">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"></h4>
+                    <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form class="form-horizontal" method="post" action="{% url 'rrhh:estado_solicitud__cambiar' %}">
+                    <div class="modal-body">
+                        <input type="hidden" name="solicitud" value="{{ object.id }}">
+                        {% crispy form %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-outline-success">Guardar</button>
+                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 {% endblock content %}
 

@@ -1,0 +1,175 @@
+{% load staticfiles rrhh_utils%}
+
+<div class="topnav shadow-sm">
+    <div class="container-fluid">
+        <nav class="navbar navbar-light navbar-expand-lg topnav-menu">
+            <div class="collapse navbar-collapse" id="topnav-menu-content">
+                <ul class="navbar-nav">
+                    <a href="{% url 'home' %}" class="topnav-logo" style="padding-right: 20px">
+                        <span class="topnav-logo-lg">
+                            <img src="{% static 'base/img/logotipo4.jpeg' %}" height="55" alt="">
+                        </span>
+                    </a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">
+                            <i class="uil-home"></i> Inicio
+                        </a>
+                    </li>
+                    <!--
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-dashboards" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="uil-dashboard mr-1"></i>Dashboards <div class="arrow-down"></div>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="topnav-dashboards">
+                            <a href="dashboard-analytics.html" class="dropdown-item">Analytics</a>
+                            <a href="dashboard-crm.html" class="dropdown-item">CRM</a>
+                            <a href="index.html" class="dropdown-item">Ecommerce</a>
+                            <a href="dashboard-projects.html" class="dropdown-item">Projects</a>
+                        </div>
+                    </li>
+                    -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-apps" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="uil-apps mr-1"></i> Aplicaciones <div class="arrow-down"></div>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="topnav-apps">
+                            <a href="{% url 'rrhh:home_rrhh' %}" class="dropdown-item">Recursos Humanos</a>
+                            <a href="{% url 'carga-horaria:home' %}" class="dropdown-item">Carga Horaria</a>
+                            <a href="https://ac.unach.cl/" target="_blank" class="dropdown-item">Ciclos de Calidad</a>
+                            <a href="https://sistemaencuestas.unach.cl/accounts/login/?next=/app/home/" target="_blank" class="dropdown-item">Evaluación Docente</a>
+                            <a href="#" class="dropdown-item">Evaluación Aprendizajes</a>
+                            <a href="https://app.powerbi.com/?noSignUpCheck=1&pbi_source=weblandingsignin" target="_blank" class="dropdown-item">Power Bi</a>
+                            <a href="https://www.educacionadventista.com/" target="_blank" class="dropdown-item">Portal Adventista</a>
+                            <a href="http://aage.cl/" target="_blank" class="dropdown-item">AAGE</a>
+                            <a href="https://www.unach.cl/" target="_blank" class="dropdown-item">UnACh</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <ul class="navbar-nav list-unstyled topbar-right-menu float-right mb-0">
+                {% if request.path|start_with:"/carga/" %}
+                    {% if request.session.colegio__nombre %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#"
+                               id="dropdownUsuario" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                <i class="mdi mdi-bank"></i> {{ request.session.colegio__nombre }}</a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownUsuario">
+                                <a class="dropdown-item" href="{% url 'carga-horaria:switch' %}">
+                                    <i class="uil-refresh"></i> Cambiar </a>
+                                <a class="dropdown-item" href="{% url 'carga-horaria:clear' %}">
+                                    <i class="mdi mdi-window-close"></i> Limpiar </a>
+                            </div>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'carga-horaria:switch' %}">
+                                <i class="uil-check-square"></i> Elegir Colegio</a>
+                        </li>
+                    {% endif %}
+                    &nbsp;
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#"
+                           id="dropdownUsuario" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            <i class="uil-calendar-alt"></i> Período {{ request.session.periodo|default:2020 }}</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownUsuario">
+                            <a class="dropdown-item" href="{% url 'carga-horaria:switch-periodo' 2020 %}">
+                                <i class="uil-refresh"></i> 2020 </a>
+                            <a class="dropdown-item" href="{% url 'carga-horaria:switch-periodo' 2021 %}">
+                                <i class="uil-refresh"></i> 2021 </a>
+                            <a class="dropdown-item" href="{% url 'carga-horaria:switch-periodo' 2022 %}">
+                                <i class="uil-refresh"></i> 2022 </a>
+                        </div>
+                    </li>
+                {% endif %}
+                {% if request.user.is_authenticated %}
+                    <li class="dropdown notification-list">
+                        <a class="dropdown-toggle nav-user arrow-none mr-0 nav-link" data-toggle="dropdown"
+                           id="topbar-userdrop" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            <span class="account-user-avatar">
+                                <img src="
+                                    {% if request.user.persona %}
+                                        {{ request.user.persona.foto.url }}
+                                    {% else %}
+                                        {% static 'base/img/user.png' %}
+                                    {% endif %}
+                                " alt="{{ request.user.username }}" class="rounded-circle">
+                            </span>
+                            <span>
+                                <span class="account-user-name">
+                                    {% if request.user.persona %}
+                                        {{ request.user.persona.get_short_name }}
+                                    {% else %}
+                                        {{ request.user.username }}
+                                    {% endif %}
+                                </span>
+                                <span class="account-position">
+                                    {% if request.user.is_staff %}
+                                        Administrador (STAFF)
+                                    {% else %}
+                                        Cargo
+                                    {% endif %}
+                                </span>
+                            </span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated topbar-dropdown-menu profile-dropdown" aria-labelledby="topbar-userdrop">
+                            <!-- item-->
+                            <div class=" dropdown-header noti-title">
+                                <h6 class="text-overflow m-0">Bienvenido !</h6>
+                            </div>
+
+                            <!-- item-->
+                            {% if request.user.persona %}
+                                <a href="{% url 'rrhh:persona' request.user.persona.pk %}" class="dropdown-item notify-item">
+                                    <i class="mdi mdi-account-circle mr-1"></i>
+                                    <span>Mi Cuenta</span>
+                                </a>
+                            {% else %}
+                                <a href="#" class="dropdown-item notify-item">
+                                    <i class="mdi mdi-account-circle mr-1"></i>
+                                    <span>Sin información de cuenta</span>
+                                </a>
+                            {% endif %}
+
+
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                <i class="mdi mdi-lifebuoy mr-1"></i>
+                                <span>Soporte</span>
+                            </a>
+
+                            <!-- item-->
+                            {#                            <a href="javascript:void(0);" class="dropdown-item notify-item">#}
+                            {#                                <i class="mdi mdi-lock-outline mr-1"></i>#}
+                            {#                                <span>Bloquear Pantalla</span>#}
+                            {#                            </a>#}
+
+                            <!-- item-->
+                            {% if request.user.is_staff %}
+                                <a href="/admin/" class="dropdown-item notify-item">
+                                    <i class="mdi mdi-cogs mr-1"></i>
+                                    <span>Sitio de Administración</span>
+                                </a>
+                            {% endif %}
+
+                            <!-- item-->
+                            <a href="{% url 'logout' %}" class="dropdown-item notify-item">
+                                <i class="mdi mdi-logout mr-1"></i>
+                                <span>Cerrar Sesión</span>
+                            </a>
+
+                        </div>
+
+                    </li>
+                {% else %}
+                    <li class="notification-list">
+                        <a href="{% url 'login' %}" class="nav-link right-bar-toggle">
+                            <i class="uil-sign-in-alt"></i> Iniciar Sesión
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>

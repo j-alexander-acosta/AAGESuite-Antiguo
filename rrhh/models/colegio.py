@@ -3,8 +3,7 @@ from django.contrib.auth.models import User
 from django.template.defaultfilters import truncatewords
 from django.contrib.humanize.templatetags import humanize
 from rrhh.models.base import *
-from rrhh.models.persona import Funcionario, Persona
-from datetime import datetime, date
+from datetime import date
 
 
 CATEGORIAS = (
@@ -60,11 +59,12 @@ class ContratoColegio(models.Model):
     horas_total = models.PositiveIntegerField(verbose_name='Horas contratadas')
     vigente = models.BooleanField(default=False)
 
-    def __str__(self):
-        return '{} - {}'.format(
-            self.funcionario,
-            self.colegio.abrev
-        )
+    @property
+    def documento_name(self):
+        if self.documento:
+            return self.documento.name.split('/')[-1]
+        else:
+            return '-'
 
     @property
     def periodo_contrato(self):
@@ -95,6 +95,12 @@ class ContratoColegio(models.Model):
 
         return estado
 
+    def __str__(self):
+        return '{} - {}'.format(
+            self.funcionario,
+            self.colegio.abrev
+        )
+
     class Meta:
         verbose_name = u'Contrato de colegio'
         verbose_name_plural = u'Contratos de colegios'
@@ -122,7 +128,14 @@ class DocumentoPersonal(models.Model):
     contrato = models.ForeignKey('ContratoColegio', on_delete=models.CASCADE)
     tipo_documento = models.PositiveSmallIntegerField(choices=DOCUMENTO)
     fecha_carga = models.DateTimeField(auto_now=True)
-    documento = models.FileField(upload_to="rrhh/DocumentoDePersonal", verbose_name='Documento')
+    documento = models.FileField(upload_to="rrhh/documentosPersonal", verbose_name='Documento')
+
+    @property
+    def documento_name(self):
+        if self.documento:
+            return self.documento.name.split('/')[-1]
+        else:
+            return '-'
 
     def __str__(self):
         return '{}, {}'.format(
@@ -174,19 +187,25 @@ class FiniquitoColegio(models.Model):
 
 class VacacionFuncionarioColegio(models.Model):
     contrato = models.ForeignKey('ContratoColegio', on_delete=models.CASCADE)
+    anio_vacacion = models.PositiveIntegerField(default=0)
     total_dias = models.IntegerField(verbose_name='Total de días de vacaciones')
     fecha_inicio = models.DateField(verbose_name='Fecha de inicio')
     total_feriados = models.IntegerField(default=0, verbose_name='Total de feriados en el periodo de vacaciones')
     fecha_termino = models.DateField(null=True, blank=True, verbose_name='Fecha de término')
     fecha_retorno = models.DateField(null=True, blank=True, verbose_name='Fecha de retorno')
-    dias_pendiente = models.IntegerField(default=0, verbose_name='Días pendientes')
     es_pendiente = models.BooleanField(default=False, verbose_name='Corresponde a vacaciones pendientes')
 
-    def __str__(self):
-        return '{}, {}'.format(
-            self.contrato,
-            self.fecha_inicio
-        )
+    @property
+    def dias_correspondientes(self):
+        # TODO crear funcion dias correspondientes, apartir de la antiguedad del funcionario
+        dias = 0
+        return dias
+
+    @property
+    def dias_pendientes(self):
+        dias = 0
+
+        return dias
 
     @property
     def periodo(self):
@@ -195,15 +214,32 @@ class VacacionFuncionarioColegio(models.Model):
             humanize.naturalday(self.fecha_termino)
         )
 
+    def __str__(self):
+        return '{}, {}'.format(
+            self.contrato,
+            self.fecha_inicio
+        )
+
     class Meta:
         verbose_name = u'Vacación de empleado de colegio'
         verbose_name_plural = u'Vacaciones de empleados de colegios'
 
-    @property
-    def dias_correspondientes(self):
-        # TODO crear funcion dias correspondientes, apartir de la antiguedad del funcionario
-        dias = 0
-        return dias
+
+class DiasPendientesVacacion(models.Model):
+    anio_vacacion = models.PositiveIntegerField()
+    vacacion_funcionario = models.ForeignKey("VacacionFuncionarioColegio", on_delete=models.CASCADE)
+    dias_pendientes = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return '{} / {} / {}'.format(
+            self.anio_vacacion,
+            self.vacacion_funcionario,
+            self.dias_pendientes
+        )
+
+    class Meta:
+        verbose_name = u'Dias pendientes de vacación'
+        verbose_name_plural = u'Dias pendinetes de vacaciones'
 
 
 class LicenciaFuncionarioColegio(models.Model):
@@ -300,7 +336,7 @@ class Solicitud(models.Model):
     fecha_inicio = models.DateField()
     fecha_termino = models.DateField(null=True, blank=True)
     justificacion = models.CharField(max_length=255, verbose_name='Justificación')
-    postulantes = models.ManyToManyField(Persona, blank=True)
+    postulantes = models.ManyToManyField('Persona', blank=True)
 
     def __str__(self):
         return '{}, {}'.format(

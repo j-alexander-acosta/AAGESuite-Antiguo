@@ -17,7 +17,7 @@ from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.views.generic import RedirectView
-from . import views
+from carga import views
 
 admin.site.site_header = 'Carga Académica - Back Office'
 
@@ -27,7 +27,7 @@ urlpatterns = [
     url(r'^carga/', include('carga_horaria.urls')),
     url(r'^rrhh/', include('rrhh.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'^$', RedirectView.as_view(url='/carga/', permanent=False)),
+    url(r'^$', views.home, name='home'),
 ]
 
 # add static

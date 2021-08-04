@@ -6,10 +6,21 @@
     Asignaturas Base
 {% endblock %}
 
+{% block title %}
+    Asignatura Base
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:home' %}">Carga Horaria</a></li>
+    <li class="breadcrumb-item active">Asignatura Base</li>
+{% endblock %}
+
 {% block content %}
-<div class="card" style="margin-top: 80px;">
+<div class="card">
     <div class="card-header">
         <h4 class="card-title">Listado de Asignaturas Base
+            <div class="btn-group float-right" role="group">
             <a class="btn btn-outline-primary" href="{% url 'carga-horaria:asignaturabase__nuevo'%}" role="button">
                 Crear Asignatura Base<i class="uil-plus"></i>
             </a>

@@ -1,36 +1,42 @@
-from django.db import models
-from .base import *
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
+from rrhh.models.base import *
+from rrhh.models.colegio import Colegio, ContratoColegio
 
 
 class Persona(models.Model):
+    GENERO = (
+        ('femenino', 'Femenino'),
+        ('masculino', 'Masculino')
+    )
+    NACIONALIDAD = (
+        ('chilena', 'Chilena'),
+        ('extranjera', 'Extranjera')
+    )
+    ESTADO_CIVIL = (
+        ('soltero', 'Soltero'),
+        ('casado', 'Casado'),
+        ('divorsiado', 'Divorsiado'),
+        ('viudo', 'Viudo')
+    )
+
     rut = models.CharField(max_length=16, unique=True)
     nombres = models.CharField(max_length=255)
     apellido_paterno = models.CharField(max_length=255)
     apellido_materno = models.CharField(max_length=255)
-    genero = models.CharField(max_length=255)
+    genero = models.CharField(max_length=100, default='masculino', choices=GENERO, verbose_name='Género')
     fecha_nacimiento = models.DateField(verbose_name='Fecha de nacimiento')
-    nacionalidad = models.CharField(max_length=255, null=True, blank=True)
-    estado_civil = models.CharField(max_length=255, null=True, blank=True)
-    religion = models.CharField(max_length=255, verbose_name='Religión', null=True, blank=True)
+    nacionalidad = models.CharField(max_length=100, default='chilena', choices=NACIONALIDAD)
+    estado_civil = models.CharField(max_length=100, default='soltero', choices=ESTADO_CIVIL)
+    religion = models.BooleanField(default=True, verbose_name='Adventista del Séptimo día')
     direccion = models.CharField(max_length=255, verbose_name='Dirección')
-    comuna = models.CharField(max_length=255, default='')
-    ciudad = models.CharField(max_length=255, default='')
-    telefono = models.CharField(max_length=15, verbose_name='Teléfono')
+    ciudad = models.ForeignKey('Ciudad', on_delete=models.SET_NULL, null=True, blank=True)
+    telefono = models.PositiveIntegerField(verbose_name='Teléfono', help_text='Número de 9 dígitos')
     email = models.EmailField()
     titulado = models.BooleanField(default=False)
-    profesion = models.CharField(max_length=255, null=True, blank=True, verbose_name='Profesión', default='')
-
-    def __str__(self):
-        return '{} {} {} ({})'.format(
-            self.nombres,
-            self.apellido_paterno,
-            self.apellido_materno,
-            self.rut
-        )
-
-    class Meta:
-        verbose_name = u'Persona'
-        verbose_name_plural = u'Personas'
+    profesion = models.CharField(max_length=255, null=True, blank=True, verbose_name='Título profesional', default='')
+    usuario = models.OneToOneField(User, null=True, blank=True)
+    foto = models.FileField(null=True, blank=True, upload_to="rrhh/fotos", verbose_name='Foto de perfil')
 
     @property
     def get_full_name(self):
@@ -41,12 +47,19 @@ class Persona(models.Model):
         )
 
     @property
+    def get_short_name(self):
+        return '{} {}'.format(
+            self.nombres.split(' ')[0],
+            self.apellido_paterno
+        )
+
+    @property
     def clasificacion(self):
         clasificacion = 'Postulante'
         try:
-            if self.funcionario.contrato_set.all():
+            if self.funcionario.contratocolegio_set.all():
                 clasificacion = 'Postulante SEA'
-            if self.funcionario.contrato_set.filter(vigente=True):
+            if self.funcionario.contratocolegio_set.filter(vigente=True):
                 clasificacion = 'Funcionario'
         except:
             pass
@@ -60,14 +73,39 @@ class Persona(models.Model):
             'colegio': self.funcionario.contratocolegio_set.all()
         }
 
+    def save(self, *args, **kwargs):
+        self.nombres = self.nombres.title()
+        self.apellido_paterno = self.apellido_paterno.capitalize()
+        self.apellido_materno = self.apellido_materno.capitalize()
+        self.direccion = self.direccion.title()
+        self.profesion = self.profesion.title() if self.profesion else None
+        self.email = self.email.lower()
+        return super(Persona, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return '{} {} {} ({})'.format(
+            self.nombres,
+            self.apellido_paterno,
+            self.apellido_materno,
+            self.rut
+        )
+
+    class Meta:
+        verbose_name = u'Persona'
+        verbose_name_plural = u'Personas'
+
 
 class Perfeccionamiento(models.Model):
     persona = models.ForeignKey('Persona', on_delete=models.CASCADE)
-    casa_formadora = models.CharField(max_length=255)
-    titulo = models.CharField(max_length=255, verbose_name='Título')
+    titulo = models.CharField(max_length=255, verbose_name='Nombre del título')
+    es_educacion = models.BooleanField(default=True, verbose_name="Títulado en educación")
+    area_titulo = models.ForeignKey("AreaTitulo", on_delete=models.CASCADE, null=True, blank=True, verbose_name="Área del título")
+    especialidad = models.ForeignKey("Especialidad", on_delete=models.CASCADE, null=True, blank=True)
+    mencion = models.ForeignKey("Mencion", on_delete=models.CASCADE, null=True, blank=True, verbose_name="Mención")
     grado_academico = models.CharField(max_length=255, verbose_name='Grado académico')
-    fecha_titulacion = models.DateField()
-    documento_respaldo = models.FileField(verbose_name='Documento de respaldo')
+    fecha_titulacion = models.DateField(verbose_name="Fecha de titulación")
+    casa_formadora = models.CharField(max_length=255)
+    documento_respaldo = models.FileField(upload_to="rrhh/perfeccionamientos", verbose_name='Documento de respaldo')
 
     def __str__(self):
         return '{}, {}'.format(
@@ -112,7 +150,7 @@ class DocumentoFuncionario(models.Model):
     funcionario = models.ForeignKey('Funcionario', on_delete=models.CASCADE)
     tipo_documento = models.ForeignKey(TipoDocumento, null=True, blank=True, on_delete=models.SET_NULL)
     descripcion = models.CharField(max_length=255)
-    documento = models.FileField()
+    documento = models.FileField(upload_to="rrhh/documentosFuncionarios", verbose_name='Contrato')
 
     def __str__(self):
         return '{}, {}'.format(

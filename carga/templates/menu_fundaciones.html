@@ -1,0 +1,88 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+
+{% block title_page %}
+    Fundaciones
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-md-4 text-center">
+                </div>
+                <div class="col-md-4 text-center">
+                    <a href="https://aage.cl" target="blank">
+                        <img src="/static/base/img/AAGE300.png" width="300" height="200">
+                    </a>
+                    <h5 class="font-black-normal text-center">Suite AAGE</h5>
+                </div>
+                <div class="col-md-4 text-center">
+                </div>
+            </div>
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'carga-horaria:colegios' %}" style="background-color: #FF0000">
+                        <h2><i class=" uil-bus-school"></i> {{ total_unidades_directivas }} </h2>
+                    </a>
+                    <h5 class="font-black-normal text-center">Fundación Educacional Julian Ocampo</h5>
+                </div>
+        
+                <div class="col-md-4 text-center">
+                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'carga-horaria:colegios' %}" style="background-color: #FF0000">
+                        <h2><i class=" uil-bus-school"></i> {{ total_unidades_directivas }} </h2>
+                    </a>
+                    <h5 class="font-black-normal text-center">Fundación Educacional Mario Veloso</h5>
+                </div>
+        
+                <div class="col-md-4 text-center">
+                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'carga-horaria:colegios' %}" style="background-color: #FF0000">
+                        <h2><i class=" uil-bus-school"></i> {{ total_unidades_directivas }} </h2>
+                    </a>
+                    <h5 class="font-black-normal text-center">Fundación Educacional José Torres</h5>
+                </div>
+            </div>
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'carga-horaria:colegios' %}" style="background-color: #FF0000">
+                        <h2><i class=" uil-bus-school"></i> {{ total_unidades_directivas }} </h2>
+                    </a>
+                    <h5 class="font-black-normal text-center">Fundación Educacional Graciela Carvajal</h5>
+                </div>
+        
+                <div class="col-md-4 text-center">
+                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'carga-horaria:colegios' %}" style="background-color: #FF0000">
+                        <h2><i class=" uil-bus-school"></i> {{ total_unidades_directivas }} </h2>
+                    </a>
+                    <h5 class="font-black-normal text-center">Fundación Educacional Francisco Westphal</h5>
+                </div>
+        
+                <div class="col-md-4 text-center">
+                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'carga-horaria:colegios' %}" style="background-color: #FF0000">
+                        <h2><i class=" uil-bus-school"></i> {{ total_unidades_directivas }} </h2>
+                    </a>
+                    <h5 class="font-black-normal text-center">Fundación Educacional Sanders de Groot</h5>
+                </div>
+            </div>
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-md-4 text-center">
+                </div>
+
+                <div class="col-md-4 text-center">
+                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'carga-horaria:colegios' %}" style="background-color: #FF0000">
+                        <h2><i class=" uil-bus-school"></i> {{ total_unidades_directivas }} </h2>
+                    </a>
+                    <h5 class="font-black-normal text-center">	Fundación Educacional Arnaldo Salamanca</h5>
+                </div>
+
+                <div class="col-md-4 text-center">
+                </div>
+        </div>
+    </div>
+{% endblock %}

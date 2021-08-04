@@ -13,7 +13,7 @@
                     <div class="p-relative">
                         <a href="">
                             {% if object.foto %}
-                                <img class="img-responsive" src="{{ object.foto}}" alt="{{ object.username }}">
+                                <img class="img-responsive" src="{{ object.foto }}" alt="{{ object.username }}">
                             {% else %}
                                 <img class="img-responsive" src="{% static 'base/img/user.png' %}" alt="{{ object.username }}">
                             {% endif %}
@@ -47,12 +47,12 @@
                 <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" id="perfil-tab" data-toggle="tab" href="#perfil"
-                        role="tab" aria-controls="perfil" aria-selected="true">Perfil</a>
+                           role="tab" aria-controls="perfil" aria-selected="true">Perfil</a>
                     </li>
                     {% if object.funcionario %}
                         <li class="nav-item" role="presentation">
                             <a class="nav-link" id="profesional-tab" data-toggle="tab" href="#profesional"
-                            role="tab" aria-controls="profesional" aria-selected="false">Inf. Funcionario</a>
+                               role="tab" aria-controls="profesional" aria-selected="false">Inf. Funcionario</a>
                         </li>
                     {% else %}
                         <li class="nav-item" role="link">
@@ -64,7 +64,7 @@
                     {% if object.historial.union or object.historial.fundacion or object.historial.colegio %}
                         <li class="nav-item" role="presentation">
                             <a class="nav-link" id="historial-contrato-tab" data-toggle="tab" href="#historial-contrato"
-                            role="tab" aria-controls="ihstorial-contrato" aria-selected="false">Hitorial</a>
+                               role="tab" aria-controls="ihstorial-contrato" aria-selected="false">Hitorial</a>
                         </li>
                     {% endif %}
                 </ul>
@@ -75,38 +75,38 @@
                                 <div class="pmbb-view">
                                     <table class="table table-responsive">
                                         <body>
-                                            <tr>
-                                                <th>Fecha de Nacimiento</th>
-                                                <td>{{ object.fecha_nacimiento }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Genero</th>
-                                                <td>{{ object.genero }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Nacionalidad</th>
-                                                <td>{{ object.nacionalidad|beauty_none }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Estado Civil</th>
-                                                <td>{{ object.estado_civil|beauty_none }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Religión</th>
-                                                <td>{{ object.religion|beauty_none }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Dirección</th>
-                                                <td>{{ object.direccion }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Teléfono</th>
-                                                <td>{{ object.telefono }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Correo Electrónico</th>
-                                                <td>{{ object.email }}</td>
-                                            </tr>
+                                        <tr>
+                                            <th>Fecha de Nacimiento</th>
+                                            <td>{{ object.fecha_nacimiento }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Genero</th>
+                                            <td>{{ object.genero }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Nacionalidad</th>
+                                            <td>{{ object.nacionalidad|beauty_none }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Estado Civil</th>
+                                            <td>{{ object.estado_civil|beauty_none }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Religión</th>
+                                            <td>{{ object.religion|beauty_none }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Dirección</th>
+                                            <td>{{ object.direccion }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Teléfono</th>
+                                            <td>{{ object.telefono }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Correo Electrónico</th>
+                                            <td>{{ object.email }}</td>
+                                        </tr>
                                         </body>
                                     </table>
                                 </div>
@@ -120,42 +120,42 @@
                                     <div class="pmbb-view">
                                         <table class="table table-responsive">
                                             <body>
+                                            <tr>
+                                                <th>AFP</th>
+                                                <td>{{ object.funcionario.afp|beauty_none }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Salud</th>
+                                                <td>{{ object.funcionario.get_salud_display|beauty_none }}</td>
+                                            </tr>
+                                            {% if object.funcionario.salud == 2 %}
                                                 <tr>
-                                                    <th>AFP</th>
-                                                    <td>{{ object.funcionario.afp|beauty_none }}</td>
+                                                    <th>Isapre</th>
+                                                    <td>{{ object.funcionario.isapre|beauty_none }}</td>
+                                                </tr>
+                                            {% endif %}
+                                            <tr>
+                                                <th>Fecha de ingreso de Docente</th>
+                                                <td>{{ object.funcionario.fecha_ingreso_docente|beauty_none }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Fecha de ingreso al SEA</th>
+                                                <td>{{ object.funcionario.fecha_ingreso_sea|beauty_none }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Estado del Funcionario</th>
+                                                <td>{{ object.funcionario.get_estado_display }}</td>
+                                            </tr>
+                                            {% if object.estado == 2 %}
+                                                <tr>
+                                                    <th>Tipo de misionero</th>
+                                                    <td>{{ object.funcionario.get_tipo_misionero_display }}</td>
                                                 </tr>
                                                 <tr>
-                                                    <th>Salud</th>
-                                                    <td>{{ object.funcionario.get_salud_display|beauty_none }}</td>
+                                                    <th>Puntos</th>
+                                                    <td>{{ object.funcionario.puntos }}</td>
                                                 </tr>
-                                                {% if object.funcionario.salud == 2 %}
-                                                    <tr>
-                                                        <th>Isapre</th>
-                                                        <td>{{ object.funcionario.isapre|beauty_none }}</td>
-                                                    </tr>
-                                                {% endif %}
-                                                <tr>
-                                                    <th>Fecha de ingreso de Docente</th>
-                                                    <td>{{ object.funcionario.fecha_ingreso_docente|beauty_none }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Fecha de ingreso al SEA</th>
-                                                    <td>{{ object.funcionario.fecha_ingreso_sea|beauty_none }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Estado del Funcionario</th>
-                                                    <td>{{ object.funcionario.get_estado_display }}</td>
-                                                </tr>
-                                                {% if object.estado == 2 %}
-                                                    <tr>
-                                                        <th>Tipo de misionero</th>
-                                                        <td>{{ object.funcionario.get_tipo_misionero_display }}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Puntos</th>
-                                                        <td>{{ object.funcionario.puntos }}</td>
-                                                    </tr>
-                                                {% endif %}
+                                            {% endif %}
                                             </body>
                                         </table>
                                         <a role="button" class="btn btn-outline-info text-right" href="{% url 'rrhh:funcionario__editar' object.funcionario.pk %}"><i class="uil-edit"></i> Editar</a>
@@ -181,43 +181,43 @@
                                                 <div class="card-body">
                                                     <table class="table table-responsive">
                                                         <tbody>
-                                                            <tr>
-                                                                <th> Tipo de contrato </th>
-                                                                <td> {{ contrato.get_tipo_contrato_display }} </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th> Horas contratadas </th>
-                                                                <td> {{ contrato.horas }} hrs. ({{ contrato.get_tipo_horas_display }}) </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th> Periodo </th>
-                                                                <td>  {{ contrato.periodo_contrato }}
-                                                                </td>
-                                                            </tr>
-                                                            {% if contrato.reemplazando %}
+                                                        <tr>
+                                                            <th> Tipo de contrato </th>
+                                                            <td> {{ contrato.get_tipo_contrato_display }} </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th> Horas contratadas </th>
+                                                            <td> {{ contrato.horas }} hrs. ({{ contrato.get_tipo_horas_display }}) </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th> Periodo </th>
+                                                            <td>  {{ contrato.periodo_contrato }}
+                                                            </td>
+                                                        </tr>
+                                                        {% if contrato.reemplazando %}
                                                             <tr>
                                                                 <th> En reemplazo de</th>
                                                                 <td> {{ contrato.reemplazando }} </td>
                                                             </tr>
+                                                        {% endif %}
+                                                        <tr>
+                                                            <th> Categoria </th>
+                                                            <td> {{ contrato.get_categoria_display }} </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th> Función principal </th>
+                                                            <td> {{ contrato.funcion_principal }} </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th> Estado Trabajador </th>
+                                                            <td> {% if contrato.vigente %}
+                                                                <i class="text-success">Contratado</i>
+                                                            {% else %}
+                                                                <i class="text-danger">Desvinculado</i>
                                                             {% endif %}
-                                                            <tr>
-                                                                <th> Categoria </th>
-                                                                <td> {{ contrato.get_categoria_display }} </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th> Función principal </th>
-                                                                <td> {{ contrato.funcion_principal }} </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th> Estado Trabajador </th>
-                                                                <td> {% if contrato.vigente %}
-                                                                        <i class="text-success">Contratado</i>
-                                                                    {% else %}
-                                                                        <i class="text-danger">Desvinculado</i>
-                                                                    {% endif %}
-                                                                </td>
-                                                            </tr>
-                                                            {% if not contrato.vigente %}
+                                                            </td>
+                                                        </tr>
+                                                        {% if not contrato.vigente %}
                                                             <tr>
                                                                 <th> Razón de baja </th>
                                                                 <td> {{ contrato.finiquito.get_razon_baja_display }} </td>
@@ -226,7 +226,7 @@
                                                                 <th> Fecha de finiquito </th>
                                                                 <td> {{ contrato.fecha }} </td>
                                                             </tr>
-                                                            {% endif %}
+                                                        {% endif %}
                                                         </tbody>
                                                     </table>
                                                 </div>

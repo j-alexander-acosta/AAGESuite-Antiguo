@@ -2,196 +2,205 @@
 {% load staticfiles %}
 
 {% block title_page %}
-    Inicio
+    Recursos Humanos
+{% endblock %}
+
+{% block title %}
+    Recursos Humanos
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item active">Recursos Humanos</li>
 {% endblock %}
 
 {% block content %}
-{% if contratos_contratar or contratos_expirar or solicitudes_pendientes or contrataos_finiquitar %}
-    <div class="row">
+    {% if contratos_contratar or contratos_expirar or solicitudes_pendientes or contrataos_finiquitar %}
+        <div class="row">
         <div class="col-md-8">
-{% endif %}
-            <div class="row" style="margin-top: 80px;">
-                <div class="tab-content col-md-12">
-                    <div class="tab-pane show active" id="justified-tabs-preview">
-                        <ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
-                            <li class="nav-item">
-                                <a href="#adminstracion" data-toggle="tab" aria-expanded="false" class="nav-link rounded-0 active">
-                                    <i class="mdi mdi-home-variant d-md-none d-block"></i>
-                                    <span class="d-none d-md-block">Administración</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#funcionarios" data-toggle="tab" aria-expanded="true" class="nav-link rounded-0">
-                                    <i class="mdi mdi-account-circle d-md-none d-block"></i>
-                                    <span class="d-none d-md-block">Funcionarios</span>
-                                </a>
-                            </li>
-                        </ul>
+    {% endif %}
+<div class="row">
+    <div class="tab-content col-md-12">
+        <div class="tab-pane show active" id="justified-tabs-preview">
+            <ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
+                <li class="nav-item">
+                    <a href="#adminstracion" data-toggle="tab" aria-expanded="false" class="nav-link rounded-0 active">
+                        <i class="mdi mdi-home-variant d-md-none d-block"></i>
+                        <span class="d-none d-md-block">Administración</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#funcionarios" data-toggle="tab" aria-expanded="true" class="nav-link rounded-0">
+                        <i class="mdi mdi-account-circle d-md-none d-block"></i>
+                        <span class="d-none d-md-block">Colaboradores</span>
+                    </a>
+                </li>
+            </ul>
 
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="adminstracion">
-                                <p>
-                                    <ul>
-                                        <a class="text-muted font-black-normal" href="{% url 'rrhh:uniones' %}"><li>Uniones</li></a>
-                                        <a class="text-muted font-black-normal" href="{% url 'rrhh:fundaciones' %}"><li>Fundaciones</li></a>
-                                        <a class="text-muted font-black-normal" href="{% url 'rrhh:colegios' %}"><li>Colegios</li></a>
-                                    </ul>
-                                </p>
-                            </div>
-                            <div class="tab-pane show" id="funcionarios">
-                                <p>
-                                    <ul>
-                                        <a class="text-muted font-black-normal" href="{% url 'rrhh:personas' %}"><li>Personas</li></a>
-                                        <a class="text-muted font-black-normal" href="{% url 'rrhh:contratos' %}"><li>Personal</li></a>
-                                        <a class="text-muted font-black-normal" href="{% url 'rrhh:postulantes' %}"><li>Postulantes</li></a>
-                                    </ul>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+            <div class="tab-content">
+                <div class="tab-pane active" id="adminstracion">
+                    <p>
+                    <ul>
+                        <a class="text-muted font-black-normal" href="{% url 'rrhh:uniones' %}"><li>Uniones</li></a>
+                        <a class="text-muted font-black-normal" href="{% url 'rrhh:fundaciones' %}"><li>Fundaciones</li></a>
+                        <a class="text-muted font-black-normal" href="{% url 'rrhh:colegios' %}"><li>Colegios</li></a>
+                    </ul>
+                    </p>
                 </div>
-
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-md-4 text-center">
-                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:permisos' %}" style="background-color: blue">
-                        <h2><i class="uil uil-unlock-alt "></i> {{ total_unidades_directivas }} </h2>
-                    </a>
-                    <h5 class="font-black-normal text-center">Permiso</h5>
-                </div>
-                <div class="col-md-4 text-center">
-                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:vacaciones' %}" style="background-color: indigo">
-                        <h2><i class="dripicons-photo-group"></i> {{ total_unidades_directivas }} </h2>
-                    </a>
-                    <h5 class="font-black-normal text-center">Vacaciones</h5>
-                </div>
-                <div class="col-md-4 text-center">
-                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:licencias' %}" style="background-color: purple">
-                        <h2><i class="mdi mdi-license"></i> {{ total_unidades_directivas }} </h2>
-                    </a>
-                    <h5 class="font-black-normal text-center">Licencias</h5>
+                <div class="tab-pane show" id="funcionarios">
+                    <p>
+                    <ul>
+                        <a class="text-muted font-black-normal" href="{% url 'rrhh:personas' %}"><li>Personas</li></a>
+                        <a class="text-muted font-black-normal" href="{% url 'rrhh:postulantes' %}"><li>Postulantes</li></a>
+                        <a class="text-muted font-black-normal" href="{% url 'rrhh:contratos' %}"><li>Funcionarios</li></a>
+                    </ul>
+                    </p>
                 </div>
             </div>
-            <br>
-            <div class="row">
-                <div class="col-md-4 text-center">
-                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:solicitudes' %}" style="background-color: red">
-                        <h2><i class="mdi mdi-pencil"></i> {{ total_unidades_directivas }} </h2>
-                    </a>
-                    <h5 class="font-black-normal text-center">Solicitudes</h5>
-                </div>
-                <div class="col-md-4 text-center">
-                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:documentos' %}" style="background-color: teal">
-                        <h2><i class="mdi mdi-file-document"></i> {{ total_unidades_directivas }} </h2>
-                    </a>
-                    <h5 class="font-black-normal text-center">Documentación Funcionarios</h5>
-                </div>
-                <div class="col-md-4 text-center">
-                    <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:entrevistas' %}" style="background-color: lightgreen">
-                        <h2><i class="mdi mdi-account-group-outline"></i> {{ total_unidades_directivas }} </h2>
-                    </a>
-                    <h5 class="font-black-normal text-center">Entrevistas</h5> 
-            {% if contratos_contratar or contratos_expirar or solicitudes_pendientes or contrataos_finiquitar %}
-                </div>
-            </div>
-            {% endif %}
-            <br>
         </div>
+    </div>
+
+</div>
+<br>
+<div class="row">
+    <div class="col-md-4 text-center">
+        <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:permisos' %}" style="background-color: blue">
+            <h2><i class="uil uil-unlock-alt "></i></h2>
+        </a>
+        <h5 class="font-black-normal text-center">Permiso</h5>
+    </div>
+    <div class="col-md-4 text-center">
+        <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:vacaciones' %}" style="background-color: indigo">
+            <h2><i class="dripicons-photo-group"></i></h2>
+        </a>
+        <h5 class="font-black-normal text-center">Vacaciones</h5>
+    </div>
+    <div class="col-md-4 text-center">
+        <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:licencias' %}" style="background-color: purple">
+            <h2><i class="mdi mdi-license"></i></h2>
+        </a>
+        <h5 class="font-black-normal text-center">Licencias</h5>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-4 text-center">
+        <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:solicitudes' %}" style="background-color: red">
+            <h2><i class="mdi mdi-pencil"></i></h2>
+        </a>
+        <h5 class="font-black-normal text-center">Solicitudes</h5>
+    </div>
+    <div class="col-md-4 text-center">
+        <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:documentos' %}" style="background-color: teal">
+            <h2><i class="mdi mdi-file-document"></i></h2>
+        </a>
+        <h5 class="font-black-normal text-center">Documentación Funcionarios</h5>
+    </div>
+    <div class="col-md-4 text-center">
+        <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:entrevistas' %}" style="background-color: lightgreen">
+            <h2><i class="mdi mdi-account-group-outline"></i></h2>
+        </a>
+        <h5 class="font-black-normal text-center">Entrevistas</h5>
         {% if contratos_contratar or contratos_expirar or solicitudes_pendientes or contrataos_finiquitar %}
-            <div class="col-md-4" style="margin-top: 80px;">
-                <div class="card" style="cursor: pointer">
-                    {% if contratos_contratar %}
-                        <div class="card bg-danger">
-                            <a class="text-muted font-black-normal text-left" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                <div class="card-header" id="headingOne">
-                                    En proceso de contratación
-                                    <span class="badge badge-warning float-right">{{ contratos_contratar|length }}</span>
-                                </div>
-                            </a>
-                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne">
-                                <ul class="list-group list-group-flush">
-                                    {% for c in contratos_contratar %}
-                                        <a href="{% url 'rrhh:contrato' c.pk %}">
-                                            <li class="list-group-item list-group-item-warning">
-                                                {{ c }}
-                                                <span class="badge badge-danger badge-sm float-right"> {{ c.estado }}</span>
-                                            </li>
-                                        </a>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        </div>
-                    {% endif %}
-                    {% if contratos_expirar %}
-                        <div class="card bg-danger">
-                            <a class="text-muted font-black-normal text-left" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                <div class="card-header" id="headingOne">
-                                    Contratos apunto de expirar
-                                    <span class="badge badge-warning float-right">{{ contratos_expirar|length }}</span>
-                                </div>
-                            </a>
-                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne">
-                                <ul class="list-group list-group-flush">
-                                    {% for c in contratos_expirar|dictsort:'dias_termino_contrato' %}
-                                        <a href="{% url 'rrhh:contrato' c.pk %}">
-                                            <li class="list-group-item list-group-item-warning">
-                                                {{ c }}
-                                                <span class="badge badge-danger badge-sm float-right"> {{ c.dias_termino_contrato }} dias</span>
-                                            </li>
-                                        </a>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        </div>
-                    {% endif %}
-                    {% if contratos_finiquitar %}
-                        <div class="card bg-danger">
-                            <a class="text-muted font-black-normal text-left collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                <div class="card-header" id="headingTwo">
-                                    Contratos que se deben finiquitar
-                                    <span class="badge badge-warning float-right">{{ contratos_finiquitar|length }}</span>
-                                </div>
-                            </a>
-                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo">
-                                <ul class="list-group list-group-flush">
-                                    {% for c in contratos_finiquitar|dictsort:'dias_termino_contrato' %}
-                                        <a href="{% url 'rrhh:contrato' c.pk %}">
-                                            <li class="list-group-item list-group-item-warning">
-                                                {{ c }}
-                                                <span class="badge badge-danger badge-sm float-right"> {{ c.solicitud_set.all.0.get_tipo_display }} en {{ c.dias_termino_contrato }} dias</span>
-                                            </li>
-                                        </a>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        </div>
-                    {% endif %}
-                    {% if solicitudes_pendientes %}
-                        <div class="card bg-danger">
-                              <a class="text-muted font-black-normal text-left collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                <div class="card-header" id="headingThree">
-                                    Solicitudes que requieren atención
-                                    <span class="badge badge-warning float-right">{{ solicitudes_pendientes|length }}</span>
-                                </div>
-                            </a>
-                            <div id="collapseThree" class="collapse" aria-labelledby="headingThree">
-                                <ul class="list-group list-group-flush">
-                                    {% for s in solicitudes_pendientes %}
-                                        <a href="{% url 'rrhh:solicitud' s.pk %}">
-                                            <li class="list-group-item list-group-item-warning">
-                                                {{ s }}
-                                                <span class="badge badge-danger badge-sm float-right"> {{ s.estado }}</span>
-                                            </li>
-                                        </a>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        </div>
-                    {% endif %}
-                </div>
+            </div>
             </div>
         {% endif %}
+<br>
+</div>
+{% if contratos_contratar or contratos_expirar or solicitudes_pendientes or contrataos_finiquitar %}
+    <div class="col-md-4">
+        <div class="card" style="cursor: pointer">
+            {% if contratos_contratar %}
+                <div class="card mb-1">
+                    <a class="text-muted font-black-normal text-left" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <div class="card-header" id="headingOne">
+                            En proceso de contratación
+                            <span class="badge badge-warning pull-right">{{ contratos_contratar|length }}</span>
+                        </div>
+                    </a>
+                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne">
+                        <ul class="list-group list-group-flush">
+                            {% for c in contratos_contratar %}
+                                <a href="{% url 'rrhh:contrato' c.pk %}">
+                                    <li class="list-group-item list-group-item-warning">
+                                        {{ c }}
+                                        <span class="badge badge-danger badge-sm pull-right"> {{ c.estado }}</span>
+                                    </li>
+                                </a>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+            {% if contratos_expirar %}
+                <div class="card bg-danger">
+                    <a class="text-muted font-black-normal text-left" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <div class="card-header" id="headingOne">
+                            Contratos apunto de expirar
+                            <span class="badge badge-warning pull-right">{{ contratos_expirar|length }}</span>
+                        </div>
+                    </a>
+                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne">
+                        <ul class="list-group list-group-flush">
+                            {% for c in contratos_expirar|dictsort:'dias_termino_contrato' %}
+                                <a href="{% url 'rrhh:contrato' c.pk %}">
+                                    <li class="list-group-item list-group-item-warning">
+                                        {{ c }}
+                                        <span class="badge badge-danger badge-sm pull-right"> {{ c.dias_termino_contrato }} dias</span>
+                                    </li>
+                                </a>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+            {% if contratos_finiquitar %}
+                <div class="card bg-danger">
+                    <a class="text-muted font-black-normal text-left collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        <div class="card-header" id="headingTwo">
+                            Contratos que se deben finiquitar
+                            <span class="badge badge-warning pull-right">{{ contratos_finiquitar|length }}</span>
+                        </div>
+                    </a>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo">
+                        <ul class="list-group list-group-flush">
+                            {% for c in contratos_finiquitar|dictsort:'dias_termino_contrato' %}
+                                <a href="{% url 'rrhh:contrato' c.pk %}">
+                                    <li class="list-group-item list-group-item-warning">
+                                        {{ c }}
+                                        <span class="badge badge-danger badge-sm pull-right"> {{ c.solicitud_set.all.0.get_tipo_display }} en {{ c.dias_termino_contrato }} dias</span>
+                                    </li>
+                                </a>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+            {% if solicitudes_pendientes %}
+                <div class="card bg-danger">
+                    <a class="text-muted font-black-normal text-left collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        <div class="card-header" id="headingThree">
+                            Solicitudes que requieren atención
+                            <span class="badge badge-warning pull-right">{{ solicitudes_pendientes|length }}</span>
+                        </div>
+                    </a>
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree">
+                        <ul class="list-group list-group-flush">
+                            {% for s in solicitudes_pendientes %}
+                                <a href="{% url 'rrhh:solicitud' s.pk %}">
+                                    <li class="list-group-item list-group-item-warning">
+                                        {{ s }}
+                                        <span class="badge badge-danger badge-sm pull-right"> {{ s.estado }}</span>
+                                    </li>
+                                </a>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
     </div>
+{% endif %}
+</div>
 
 {% endblock content %}

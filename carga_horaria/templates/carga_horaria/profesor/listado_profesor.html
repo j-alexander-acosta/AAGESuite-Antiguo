@@ -6,62 +6,121 @@
     Profesores
 {% endblock %}
 
+{% block title %}
+    Profesores
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:home' %}">Carga Horaria</a></li>
+    <li class="breadcrumb-item active">Profesor</li>
+{% endblock %}
+
 {% block content %}
-<div class="card" style="margin-top: 80px;">
+<div class="card">
     <div class="card-header">
         <h4 class="card-title">Profesores
-          <a class="btn btn-outline-primary pull-right" href="{% url 'carga-horaria:profesor__nuevo'%}" role="button">
+          <a class="btn btn-outline-primary float-right" href="{% url 'carga-horaria:profesor__nuevo'%}" role="button">
 	    <span>
 	      Crear Profesor
               <i class="uil-plus"></i>
 	    </span>
             </a>
         </h4>
-        <h6 class="card-subtitle mb-2 text-muted">
+        <br>
+        <class class="card-subtitle mb-2 text-muted">
           <a class="btn btn-outline-default" href="{% url 'carga-horaria:profesores-info' %}"><i class="uil-cloud-download"></i> Descargar información Profesores</a>
-        </h6>
-    </div>
-    <div class="card-body">
-        <div class="row" style="padding-bottom: 10px;">
-            <div class="col-md-8 pull-left">
-                <form action="." method="GET">
-                <i class="uil-search"></i> <input name="q" placeholder="Buscar por nombre" value="{{ request.GET.q }}">{% if 'q' in request.GET %} <a href="{% url 'carga-horaria:profesores' %}" class="text-muted">limpiar</a>{% endif %}
-                </form>
-            </div>
-            <div class="col-sm-4 pull-right">
+        </class>
+        <span style="float: right;">
+            <class style="text-align: right;" class="card-subtitle mb-2 text-muted">
                 <a class="btn btn-outline-default" href="{% url 'carga-horaria:profesor__anexos' %}"><i class="uil-file-upload-alt"></i> Generar Anexo 1 Masivo</a>
                 <a class="btn btn-outline-default" href="{% url 'carga-horaria:profesores-pdf' %}"><i class="uil-print"></i> Imprimir</a>
-            </div>
-            <div class="col-md-8 pull-left">
-                <form action="." method="GET">
-                <i class="uil-search"></i> <input cargo="r" placeholder="Buscar por cargo" value="{{ request.GET.r }}">{% if 'r' in request.GET %} <a href="{% url 'carga-horaria:profesores' %}" class="text-muted">limpiar</a>{% endif %}
-                </form>
-            </div>
+            </class>
+        </span>
+    </div>
+    <div class="row">
+      <div class="col-2">
+        <form action="." method="GET">
+          <i class="uil-search"></i> <input name="q" placeholder="Buscar" value="{{ request.GET.q }}">{% if 'q' in request.GET %} <a href="{% url 'carga-horaria:profesores' %}" class="text-muted">limpiar</a>{% endif %}
+        </form>
+      </div>
+      <div class="col-1">
+          <div class="btn-group">
+            <label><input type="checkbox" id="cbox1" value="profesor_jefe"> Profesor jefe</label>
         </div>
+      </div>
+      <div class="col-1">
+        <label><input type="checkbox" id="cbox2" value="adventista"> Adventista</label>
+      </div>  
+      <div class="col-2">
+        <form action=".">Título: 
+            <select name="titulo">
+                <option value="1">Licenciado Sociales</option>
+                <option value="2">Licenciado Ciencias</option>
+                <option value="3">Licenciado Español</option>
+                <option value="4">Licenciado Artes</option>
+                <option value="5">Licenciado Matemáticas</option>
+            </select>
+        </form>
+      </div>
+      <div class="col-2">
+        <form action=".">Tipo de Contrato: 
+            <select name="tipo">
+                <option value="1">Todos</option>
+                <option value="2">Indefinido</option>
+                <option value="3">Plazo fijo</option>
+                <option value="3">Reemplazo</option>
+            </select>
+        </form>
+      </div>
+      <div class="col-2">
+        <form action=".">Carga: 
+            <select name="titulo">
+                <option value="1">Todos</option>
+                <option value="2">100% = que contrato</option>
+                <option value="3">> que contrato</option>
+                <option value="4">> menor que contrato</option>
+            </select>
+        </form>
+      </div>
+      <div class="col-2">
+        <form action=".">Dif. año anterior: 
+            <select name="titulo">
+                <option value="1">Todos</option>
+                <option value="2">Iguales</option>
+                <option value="3">Aumenta</option>
+                <option value="4">Disminuye</option>
+            </select>
+        </form>
+      </div>
+    </div>
         <div class="table-responsive">
         <table class="table table-striped">
             <thead>
-            <tr>
-                <th style="text-align: center;"><i class="uil-user"></i> Nombre </th>
-                <th style="text-align: center;"><i class="uil-user-circle"></i> Cargo </th>
-                <th style="text-align: center;"><i class="uil-clock-seven"></i> Hrs contrato</th>
-                <th style="text-align: center;"><i class="uil-clock-eight"></i> Hrs docentes </th>
-                <th style="text-align: center;"><i class="uil-clock-two"></i> Hrs disp. docentes </th>
-                <th style="text-align: center;"><i class="uil-clock-five"></i> Hrs no aula </th>
-                <th style="text-align: center;"><i class="uil-clock-seven"></i> Hrs disp. no aula </th>
-                <th style="text-align: center;"><i class="uil-cog"></i> Acciones </th>
+            <tr style="text-align: center;">
+                <th><i class="uil-user"></i> Nombre </th>
+                <!--<th><i class="uil-user"></i> Cargo </th>-->
+                <th><i class="uil-clock-seven"></i> Hrs. contrato</th>
+                <th><i class="uil-clock-eight"></i> Hrs. S.G.</th>
+                <th><i class="uil-clock-two"></i> Hrs. S.E.P.</th>
+                <th><i class="uil-clock-five"></i> Hrs. P.I.E.</th>
+                <th>Total Actual</th>
+                <th>Total Año Ant.</th>
+                <th>Diferencias</th>
             </tr>
             </thead>
             <tbody>
             {% for p in object_list %}
-                <tr text-align: center>
+                <tr style="text-align: center;">
                     <td><a href="{% url 'carga-horaria:profesor' p.pk %}"> {{ p.nombre }} </a></td>
-                    <td> {{ p.get_cargo_display }} </td>
-                    <td style="text-align: center;"> {{ p.horas_contratadas }} </td>
-                    <td style="text-align: center;"> {{ p.horas_docentes }} </td>
-                    <td style="text-align: center;"> {{ p.horas_disponibles }} </td>
-                    <td style="text-align: center;"> {{ p.horas_no_aula }} </td>
-                    <td style="text-align: center;"> {{ p.horas_no_aula_disponibles }} </td>
+                    <!--<td> {{ p.cargo }} </td>-->
+                    <td> {{ p.horas_contratadas }} </td>
+                    <td> {{ p.horas_docentes }} </td>
+                    <td> {{ p.horas_sg }} </td>
+                    <td> {{ p.horas_sep }} </td>
+                    <td> {{ p.horas_pie }} </td>
+                    <td> {{ p.horas_total}} </td>
+                    <td> {{ p.horas_total_anterior }} </td>
                     <td>
                         <a class="btn btn-outline-success" href="{% url 'carga-horaria:profesor__anexo' p.pk %}" data-toggle="tooltip" data-placement="top" title="Generar Anexo 1"><i class="uil-file-upload-alt"></i></a>
                         <a class="btn btn-outline-primary" href="{% url 'carga-horaria:profesor__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
