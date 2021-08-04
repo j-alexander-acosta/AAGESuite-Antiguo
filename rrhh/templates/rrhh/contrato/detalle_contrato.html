@@ -5,28 +5,10 @@
     Contrato - Detalle
 {% endblock %}
 
-{% block title %}
-    Detalle del Trabajador
-    <span class="badge badge-pill
-        {% if object.estado_id <= 3 %}
-            badge-warning
-        {% else %}
-            badge-success
-        {% endif %}"> {{ object.estado }}
-    </span>
-{% endblock %}
-
-{% block breadcrumb %}
-    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
-    <li class="breadcrumb-item"><a href="{% url 'rrhh:home_rrhh' %}">Recursos Humanos</a></li>
-    <li class="breadcrumb-item"><a href="{% url 'rrhh:contratos' %}">Contratos</a></li>
-    <li class="breadcrumb-item active">Detalle del trabajador</li>
-{% endblock %}
-
 {% block content %}
 
-    <div class="card">
-        <div class="card-header
+<div class="card" style="margin-top: 80px;">
+    <div class="card-header
         {% if object.vigente %}
             {% if object.dias_termino_contrato <= 120 and object.categoria == 2 %}
                 alert-warning
@@ -38,227 +20,240 @@
         {% else %}
             alert-danger
         {% endif%}">
-            <!-- {% if object.vigente and object.dias_termino_contrato < 50 %}
+        <!-- {% if object.vigente and object.dias_termino_contrato < 50 %}
             alert-warning
         {% elif not object.vigente %}
             alert-danger
         {% endif %}"> -->
-            <h5>{{ object }}</h5>
-            {% if object.vigente %}
-                <p class="text-danger">
-                    {% if object.solicitudrenovacion.estado == 4 %}
-                        El contrato continúa vigente aún cuando la renovación ya se ha realizado
-                    {% elif object.dias_termino_contrato <= 120 and object.categoria == 2 %}
-                        El contrato expirará en {{ object.dias_termino_contrato }} días
-                    {% elif object.dias_termino_contrato <= 60 %}
-                        El contrato expirará en {{ object.dias_termino_contrato }} días
-                    {% endif %}
-                </p>
+      <h4 class="card-title">
+          <strong>Detalle del Trabajador
+              <small> <span class="badge badge-pill
+                  {% if object.estado_id <= 3 %}
+                      badge-warning
+                  {% else %}
+                      badge-success
+                  {% endif %}"> {{ object.estado }}
+              </span></small>
+          </strong>
+      </h4>
+        {% block buttons %}
+        <div class="btn-group float-right" style="margin-bottom: 10px;">
+            <a href="{% url 'rrhh:contratos' %}" type="button" class="btn btn-outline-info">
+                <i class="uil-arrow-left"></i> Volver
+            </a>
+            {% if not object.solicitud.set.all %}
+                {% if object.dias_termino_contrato <= 120 and object.categoria == 2 %}
+                    <a href="{% url 'rrhh:contrato__renovar' object.pk %}" type="button" class="btn btn-outline-success">
+                        <i class="mdi mdi-star"></i> Renovar Contrato
+                    </a>
+                {% elif object.dias_termino_contrato <= 60 %}
+                    <a href="{% url 'rrhh:contrato__renovar' object.pk %}" type="button" class="btn btn-outline-success">
+                        <i class="mdi mdi-star"></i> Renovar Contrato
+                    </a>
+                {% endif %}
             {% endif %}
-            {% block buttons %}
-                <div class="btn-group float-right" style="margin-bottom: 10px;">
-                    {% if not object.solicitud.set.all %}
-                        {% if object.dias_termino_contrato <= 120 and object.categoria == 2 %}
-                            <a href="{% url 'rrhh:contrato__renovar' object.pk %}" type="button" class="btn btn-outline-success">
-                                <i class="mdi mdi-star"></i> Renovar Contrato
-                            </a>
-                        {% elif object.dias_termino_contrato <= 60 %}
-                            <a href="{% url 'rrhh:contrato__renovar' object.pk %}" type="button" class="btn btn-outline-success">
-                                <i class="mdi mdi-star"></i> Renovar Contrato
-                            </a>
-                        {% endif %}
-                    {% endif %}
 
-                </div>
-            {% endblock %}
         </div>
-        <div class="card-body">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item" role="contrato">
-                    <a class="nav-link active" id="contrato-tab" data-toggle="tab" href="#contrato" role="tab" aria-controls="contrato" aria-selected="true">Contrato</a>
+        {% endblock %}
+        <h6 class="card-subtitle mb-2 text-muted">{{ object }}</h6>
+        {% if object.vigente %}
+            <p class="text-danger">
+            {% if object.solicitudrenovacion.estado == 4 %}
+                El contrato continúa vigente aún cuando la renovación ya se ha realizado
+            {% elif object.dias_termino_contrato <= 120 and object.categoria == 2 %}
+                El contrato expirará en {{ object.dias_termino_contrato }} días
+            {% elif object.dias_termino_contrato <= 60 %}
+                El contrato expirará en {{ object.dias_termino_contrato }} días
+            {% endif %}
+            </p>
+        {% endif %}
+
+    </div>
+    <div class="card-body">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="contrato">
+                <a class="nav-link active" id="contrato-tab" data-toggle="tab" href="#contrato" role="tab" aria-controls="contrato" aria-selected="true">Contrato</a>
+            </li>
+            <li class="nav-item" role="historial">
+                <a class="nav-link" id="historial-tab" data-toggle="tab" href="#historial" role="tab" aria-controls="historial" aria-selected="false">Historial de contratación</a>
+            </li>
+            {% if object.estado_id != 4 %}
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Cambiar estado"></a>
+                <div class="dropdown-menu">
+                    {% if object.estado_id == 2 %}<a class="dropdown-item text-warning" id="cec" name="3" href="#"><i class="uil-eye"></i> En revisión</a> {% endif %}
+                    {% if object.estado_id == 3 or object.estado_id == 1 %}<a class="dropdown-item text-warning" id="cec" name="2" href="#"><i class="uil-check-square"></i> Listo para firmar</a> {% endif %}
+                    {% if object.estado_id == 2 %}<a class="dropdown-item text-success" id="cec" name="4" href="#"><i class="uil-check"></i> Cargar contrato firmado</a> {% endif %}
+                </div>
+            {% endif %}
+            <li class="nav-item" role="documento">
+                <a class="nav-link" id="documento-tab" data-toggle="tab" href="#documento" role="tab" aria-controls="documento" aria-selected="false">Documentos</a>
+            </li>
+            <li class="nav-item" role="permiso">
+                <a class="nav-link" id="permiso-tab" data-toggle="tab" href="#permiso" role="tab" aria-controls="permiso" aria-selected="false">Permisos</a>
+            </li>
+            <li class="nav-item" role="licencia">
+                <a class="nav-link" id="licencia-tab" data-toggle="tab" href="#licencia" role="tab" aria-controls="licencia" aria-selected="false">Licencias</a>
+            </li>
+            <li class="nav-item" role="vacacion">
+                <a class="nav-link" id="vacacion-tab" data-toggle="tab" href="#vacacion" role="tab" aria-controls="vacacion" aria-selected="false">Vacaciones</a>
+            </li>
+            {% if object.solicitud_set.all %}
+                <li class="nav-item" role="solicitud">
+                    <a class="nav-link" id="solicitud-tab" data-toggle="tab" href="#solicitud" role="tab" aria-controls="solicitud" aria-selected="false">Solicitudes</a>
                 </li>
-                <li class="nav-item" role="historial">
-                    <a class="nav-link" id="historial-tab" data-toggle="tab" href="#historial" role="tab" aria-controls="historial" aria-selected="false">Historial de contratación</a>
-                </li>
-                {% if object.estado_id != 4 %}
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Cambiar estado"></a>
-                    <div class="dropdown-menu">
-                        {% if object.estado_id == 2 %}<a class="dropdown-item text-warning" id="cec" name="3" href="#"><i class="uil-eye"></i> En revisión</a> {% endif %}
-                        {% if object.estado_id == 3 or object.estado_id == 1 %}<a class="dropdown-item text-warning" id="cec" name="2" href="#"><i class="uil-check-square"></i> Listo para firmar</a> {% endif %}
-                        {% if object.estado_id == 2 %}<a class="dropdown-item text-success" id="cec" name="4" href="#"><i class="uil-check"></i> Cargar contrato firmado</a> {% endif %}
-                    </div>
-                {% endif %}
-                <li class="nav-item" role="documento">
-                    <a class="nav-link" id="documento-tab" data-toggle="tab" href="#documento" role="tab" aria-controls="documento" aria-selected="false">Documentos</a>
-                </li>
-                <li class="nav-item" role="permiso">
-                    <a class="nav-link" id="permiso-tab" data-toggle="tab" href="#permiso" role="tab" aria-controls="permiso" aria-selected="false">Permisos</a>
-                </li>
-                <li class="nav-item" role="licencia">
-                    <a class="nav-link" id="licencia-tab" data-toggle="tab" href="#licencia" role="tab" aria-controls="licencia" aria-selected="false">Licencias</a>
-                </li>
-                <li class="nav-item" role="vacacion">
-                    <a class="nav-link" id="vacacion-tab" data-toggle="tab" href="#vacacion" role="tab" aria-controls="vacacion" aria-selected="false">Vacaciones</a>
-                </li>
-                {% if object.solicitud_set.all %}
-                    <li class="nav-item" role="solicitud">
-                        <a class="nav-link" id="solicitud-tab" data-toggle="tab" href="#solicitud" role="tab" aria-controls="solicitud" aria-selected="false">Solicitudes</a>
-                    </li>
-                {% endif %}
-            </ul>
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="contrato" role="tabpanel" aria-labelledby="contrato-tab">
-                    <br>
-                    <div class="pmb-block">
-                        <div class="pmbb-body">
-                            Información del contrato y finiquito, en caso de existencia, del trabajador
-                            <div class="btn-group float-right" role="group">
-                                <a href="{% url 'rrhh:contrato__editar' object.pk %}" type="button" class="btn btn-outline-primary">
-                                    <i class="uil-edit"></i> Editar
-                                </a>
-                                <button name="eliminar_contrato" type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#eliminar_contrato_{{object.pk}}" style="cursor: pointer">
-                                    <i class="uil-trash-alt"></i> Eliminar
-                                </button>
-                            </div>
-                            </br>
-                            </br>
-                            <div class="pmbb-view">
-                                <table class="table table-hover table-sm">
-                                    <tbody>
+            {% endif %}
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="contrato" role="tabpanel" aria-labelledby="contrato-tab">
+                <br>
+                <div class="pmb-block">
+                    <div class="pmbb-body">
+                        Información del contrato y finiquito, en caso de existencia, del trabajador
+                        <div class="btn-group float-right" role="group">
+                            <a href="{% url 'rrhh:contrato__editar' object.pk %}" type="button" class="btn btn-outline-primary">
+                                <i class="uil-edit"></i> Editar
+                            </a>
+                            <button name="eliminar_contrato" type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#eliminar_contrato_{{object.pk}}" style="cursor: pointer">
+                                <i class="uil-trash-alt"></i> Eliminar
+                            </button>
+                        </div>
+                        </br>
+                        </br>
+                        <div class="pmbb-view">
+                            <table class="table table-hover table-sm">
+                                <tbody>
+                                <tr>
+                                    <th> Persona </th>
+                                    <td><a href="{% url 'rrhh:persona' object.funcionario.persona.pk %}" data-toggle="tooltip" data-placement="top" title="Ver información de la Persona">
+                                        {{ object.funcionario }}</a></td>
+                                </tr>
+                                <tr>
+                                    <th> Establecimiento </th>
+                                    <td>  {{ object.colegio }} - {{ object.colegio.fundacion|beauty_none }} </td>
+                                </tr>
+                                <tr>
+                                    <th> Tipo de contrato </th>
+                                    <td>  {{ object.get_tipo_contrato_display }}  </td>
+                                </tr>
+                                <tr>
+                                    <th> Horas contratadas </th>
+                                    <td>  {{ object.horas_total }}  </td>
+                                </tr>
+                                <tr>
+                                    <th> Periodo de contrato </th>
+                                    <td>  {{ object.periodo_contrato }}
+                                    </td>
+                                </tr>
+                                {% if object.tipo_contrato == 3 %}
                                     <tr>
-                                        <th> Persona </th>
-                                        <td><a href="{% url 'rrhh:persona' object.funcionario.persona.pk %}" data-toggle="tooltip" data-placement="top" title="Ver información de la Persona">
-                                            {{ object.funcionario }}</a></td>
+                                        <th> En reemplazo de</th>
+                                        <td> {{ object.reemplazando }} </td>
                                     </tr>
-                                    <tr>
-                                        <th> Establecimiento </th>
-                                        <td>  {{ object.colegio }} - {{ object.colegio.fundacion|beauty_none }} </td>
-                                    </tr>
-                                    <tr>
-                                        <th> Tipo de contrato </th>
-                                        <td>  {{ object.get_tipo_contrato_display }}  </td>
-                                    </tr>
-                                    <tr>
-                                        <th> Horas contratadas </th>
-                                        <td>  {{ object.horas_total }}  </td>
-                                    </tr>
-                                    <tr>
-                                        <th> Periodo de contrato </th>
-                                        <td>  {{ object.periodo_contrato }}
-                                        </td>
-                                    </tr>
-                                    {% if object.tipo_contrato == 3 %}
-                                        <tr>
-                                            <th> En reemplazo de</th>
-                                            <td> {{ object.reemplazando }} </td>
-                                        </tr>
-                                    {% endif %}
-                                    <tr>
-                                        <th>Estado Trabajador</th>
-                                        <td> {% if object.vigente %}
+                                {% endif %}
+                                <tr>
+                                    <th>Estado Trabajador</th>
+                                    <td> {% if object.vigente %}
                                             <i class="text-success">Contratado</i>
                                         {% elif estado_id == 4 %}
                                             <i class="text-danger">Desvinculado</i>
                                         {% else %}
                                             <i class="text-warning">En proceso de contratación</i>
                                         {% endif %}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th> Categoria </th>
-                                        <td>  {{ object.get_categoria_display }}  </td>
-                                    </tr>
-                                    <tr>
-                                        <th> Función principal </th>
-                                        <td>  {{ object.funcion_principal }}  </td>
-                                    </tr>
-                                    <tr>
-                                        <th> Función secundaria </th>
-                                        <td>  {{ object.funcion_secundaria }}  </td>
-                                    </tr>
-                                    <tr>
-                                        <th> Jornada de trabajo </th>
-                                        <td>  {{ object.get_jornada_trabajo_display }}  </td>
-                                    </tr>
-                                    <tr>
-                                        <th> Horiario de trabajo </th>
-                                        <td>  {{ object.hora_inicio_jornada }} - {{ object.hora_termino_jornada }} </td>
-                                    </tr>
-                                    <tr>
-                                        <th> Sistema de Salud </th>
-                                        <td>  {{ object.funcionario.get_salud_display }}
-                                            {% if object.salud == 2 %}
-                                                , {{ object.funcionario.isapre|beauty_none }}
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th> AFP </th>
-                                        <td> {{ object.funcionario.afp|beauty_none }} </td>
-                                    </tr>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th> Categoria </th>
+                                    <td>  {{ object.get_categoria_display }}  </td>
+                                </tr>
+                                <tr>
+                                    <th> Función principal </th>
+                                    <td>  {{ object.funcion_principal }}  </td>
+                                </tr>
+                                <tr>
+                                    <th> Función secundaria </th>
+                                    <td>  {{ object.funcion_secundaria }}  </td>
+                                </tr>
+                                <tr>
+                                    <th> Jornada de trabajo </th>
+                                    <td>  {{ object.get_jornada_trabajo_display }}  </td>
+                                </tr>
+                                <tr>
+                                    <th> Horiario de trabajo </th>
+                                    <td>  {{ object.hora_inicio_jornada }} - {{ object.hora_termino_jornada }} </td>
+                                </tr>
+                                <tr>
+                                    <th> Sistema de Salud </th>
+                                    <td>  {{ object.funcionario.get_salud_display }}
+                                        {% if object.salud == 2 %}
+                                            , {{ object.funcionario.isapre|beauty_none }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th> AFP </th>
+                                    <td> {{ object.funcionario.afp|beauty_none }} </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <br>
+                            {% if object.finiquitocolegio %}
+                                <h5 class="card-title">Finiquito</h5>
+                                <table class="table table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th>Razón de Baja</th>
+                                            <th>Descripción</th>
+                                            <th>Opciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{ object.finiquitocolegio.get_razon_baja_display }}</td>
+                                            <td>{{ object.finiquitocolegio.descripcion }}</td>
+                                            <td>
+                                                {% if object.finiquitocolegio.archivo %}
+                                                    <a class="btn btn-outline-info" href="{{ MEDIA_URL }}{{ object.finiquitocolegio.archivo.url }}" target="_blank">
+                                                        <i class="uil-download-alt"></i> Descargar</a>
+                                                {% endif %}
+                                                <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#eliminar_finiquito_{{object.finiquitocolegio.pk}}">
+                                                    <i class="uil-trash-alt"></i> Eliminar</a>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
-                                <br>
-                                {% if object.finiquitocolegio %}
-                                    <h5 class="card-title">Finiquito</h5>
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead>
-                                            <tr>
-                                                <th>Razón de Baja</th>
-                                                <th>Descripción</th>
-                                                <th>Opciones</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr>
-                                                <td>{{ object.finiquitocolegio.get_razon_baja_display }}</td>
-                                                <td>{{ object.finiquitocolegio.descripcion }}</td>
-                                                <td>
-                                                    {% if object.finiquitocolegio.archivo %}
-                                                        <a class="btn btn-outline-info" href="{{ MEDIA_URL }}{{ object.finiquitocolegio.archivo.url }}" target="_blank">
-                                                            <i class="uil-download-alt"></i> Descargar</a>
-                                                    {% endif %}
-                                                    <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#eliminar_finiquito_{{object.finiquitocolegio.pk}}">
-                                                        <i class="uil-trash-alt"></i> Eliminar</a>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="modal" tabindex="-1" role="dialog" id="eliminar_finiquito_{{object.finiquitocolegio.pk}}">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title alert alert-warning bg-white text-warning" role="alert"><strong>¡Alerta!</strong> Está a punto de eliminar El Finiquito de {{ object }}</h5>
-                                                    <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p>Está seguro que desea eliminar el Finiquito de "{{ object }}"?.</p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <a role="button" class="btn btn-danger" href="{% url 'rrhh:finiquito__eliminar' object.finiquitocolegio.pk %}">Eliminar</a>
-                                                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
-                                                </div>
+                                <div class="modal" tabindex="-1" role="dialog" id="eliminar_finiquito_{{object.finiquitocolegio.pk}}">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title alert alert-warning bg-white text-warning" role="alert"><strong>¡Alerta!</strong> Está a punto de eliminar El Finiquito de {{ object }}</h5>
+                                                <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Está seguro que desea eliminar el Finiquito de "{{ object }}"?.</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a role="button" class="btn btn-danger" href="{% url 'rrhh:finiquito__eliminar' object.finiquitocolegio.pk %}">Eliminar</a>
+                                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                                             </div>
                                         </div>
                                     </div>
-                                {% endif %}
-                            </div>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="historial" role="tabpanel" aria-labelledby="historial-tab">
-                    <table class="table table-hover">
-                        <thead>
+            </div>
+            <div class="tab-pane fade" id="historial" role="tabpanel" aria-labelledby="historial-tab">
+                <table class="table table-hover">
+                    <thead>
                         <th>Estado</th>
                         <th>Ejecutor</th>
                         <th>Fecha</th>
                         <th>Observaciones</th>
-                        </thead>
-                        <tbody>
+                    </thead>
+                    <tbody>
                         {% for e in object.estadocontratacion_set.all|dictsortreversed:'id' %}
                             <tr>
                                 <td><span class="badge badge-pill
@@ -273,21 +268,21 @@
                                 <td> {{ e.observaciones|safe|escape }} </td>
                             </tr>
                         {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                <div class="tab-pane fade" id="vacacion" role="tabpanel" aria-labelledby="vacacion-tab">
-                    <br>
-                    <div class="pmb-block">
-                        <div class="pmbb-body">
-                            <p>Listado de Vacaciones del funcionario, ordenado del mas reciente al mas antiguo.
-                                <button name="agregar_vacacion" type="button" class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#crear_vacacion">
-                                    <span><i class="uil-plus"></i> Agregar vacación</span>
-                                </button>
-                            </p>
-                            <div class="table-responsive">
-                                <table id="vacaciones" class="table">
-                                    <thead>
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane fade" id="vacacion" role="tabpanel" aria-labelledby="vacacion-tab">
+                <br>
+                <div class="pmb-block">
+                    <div class="pmbb-body">
+                        <p>Listado de Vacaciones del funcionario, ordenado del mas reciente al mas antiguo.
+                            <button name="agregar_vacacion" type="button" class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#crear_vacacion">
+                                <span><i class="uil-plus"></i> Agregar vacación</span>
+                            </button>
+                        </p>
+                        <div class="pmbb-view">
+                            <table id="vacaciones" class="table table-responsive">
+                                <thead>
                                     <tr>
                                         <th>Periodo</th>
                                         <th>Fecha de retorno</th>
@@ -295,8 +290,8 @@
                                         <th>Total feriados</th>
                                         <th>Es pendiente</th>
                                     </tr>
-                                    </thead>
-                                    <tbody>
+                                </thead>
+                                <tbody>
                                     {% for v in object.vacacionfuncionariocolegio_set.all|dictsortreversed:"fecha_inicio" %}
                                         <tr>
                                             <td>{{ v.periodo }}</td>
@@ -310,27 +305,27 @@
                                             <td>No existen registros de licencias</td>
                                         </tr>
                                     {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="documento" role="tabpanel" aria-labelledby="documento-tab">
-                    <br>
-                    <div class="pmb-block">
-                        <div class="pmbb-body">
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
+            </div>
+            <div class="tab-pane fade" id="documento" role="tabpanel" aria-labelledby="documento-tab">
+                <br>
+                <div class="pmb-block">
+                    <div class="pmbb-body">
+                        <div class="pmbb-view">
+                            <table class="table table-responsive">
+                                <thead>
                                     <th>Nombre</th>
                                     <th>Documento</th>
                                     <th>Opciones</th>
-                                    </thead>
-                                    <tbody>
+                                </thead>
+                                <tbody>
                                     <tr class="{% if not object.documento %}alert-danger{% endif %}">
                                         <td>Contrato</td>
-                                        <td>{{ object.documento_name }}</td>
+                                        <td>{{ object.documento }}</td>
                                         <td>
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi mdi-file-pdf"></i></button>
@@ -382,24 +377,24 @@
                                             </tr>
                                         {% endfor %}
                                     {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="permiso" role="tabpanel" aria-labelledby="permiso-tab">
-                    <br>
-                    <div class="pmb-block">
-                        <div class="pmbb-body">
-                            <p>Listado de los Permisos del funcionario, ordenado del mas reciente al mas antiguo.
-                                <button name="agregar_permiso" type="button" class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#crear_permiso">
-                                    <i class="uil-plus"></i> Agregar Permiso
-                                </button>
-                            </p>
-                            <div class="table-responsive">
-                                <table id="permisos" class="table">
-                                    <thead>
+            </div>
+            <div class="tab-pane fade" id="permiso" role="tabpanel" aria-labelledby="permiso-tab">
+                <br>
+                <div class="pmb-block">
+                    <div class="pmbb-body">
+                        <p>Listado de los Permisos del funcionario, ordenado del mas reciente al mas antiguo.
+                            <button name="agregar_permiso" type="button" class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#crear_permiso">
+                                <i class="uil-plus"></i> Agregar Permiso
+                            </button>
+                        </p>
+                        <div class="pmbb-view">
+                            <table id="permisos" class="table table-responsive">
+                                <thead>
                                     <tr>
                                         <th>Observaciones</th>
                                         <th>Periodo</th>
@@ -409,8 +404,8 @@
                                         <th>Son días hábiles</th>
                                         <th>Goce d esueldo</th>
                                     </tr>
-                                    </thead>
-                                    <tbody>
+                                </thead>
+                                <tbody>
                                     {% for l in object.permisofuncionariocolegio_set.all|dictsortreversed:"fecha_inicio" %}
                                         <tr>
                                             <td>{{ l.observaciones }}</td>
@@ -426,24 +421,24 @@
                                             <td>No existen registros de permisos</td>
                                         </tr>
                                     {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="licencia" role="tabpanel" aria-labelledby="licencia-tab">
-                    <br>
-                    <div class="pmb-block">
-                        <div class="pmbb-body">
-                            <p>Listado de Licencias del funcionario, ordenado del mas reciente al mas antiguo.
-                                <button name="agregar_licencia" type="button" class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#crear_licencia">
-                                    <span><i class="uil-plus"></i> Agregar licencia</span>
-                                </button>
-                            </p>
-                            <div class="table-responsive">
-                                <table id="licencias" class="table">
-                                    <thead>
+            </div>
+            <div class="tab-pane fade" id="licencia" role="tabpanel" aria-labelledby="licencia-tab">
+                <br>
+                <div class="pmb-block">
+                    <div class="pmbb-body">
+                        <p>Listado de Licencias del funcionario, ordenado del mas reciente al mas antiguo.
+                            <button name="agregar_licencia" type="button" class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#crear_licencia">
+                                <span><i class="uil-plus"></i> Agregar licencia</span>
+                            </button>
+                        </p>
+                        <div class="pmbb-view">
+                            <table id="licencias" class="table table-responsive">
+                                <thead>
                                     <tr>
                                         <th>Tipo de Licencia</th>
                                         <th>Folio de Licencia</th>
@@ -453,8 +448,8 @@
                                         <th>Total feriados</th>
                                         <th>Son días hábiles</th>
                                     </tr>
-                                    </thead>
-                                    <tbody>
+                                </thead>
+                                <tbody>
                                     {% for l in object.licenciafuncionariocolegio_set.all|dictsortreversed:"fecha_inicio" %}
                                         <tr>
                                             <td>{% if l.tipo_licencia %} {{ l.tipo_licencia }} {% else %} {{ l.tipo_licencia_descripcion }} {% endif %}</td>
@@ -471,27 +466,27 @@
                                             <td>No existen registros de licencias</td>
                                         </tr>
                                     {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="solicitud" role="tabpanel" aria-labelledby="solicitud-tab">
-                    <br>
-                    <div class="pmb-block">
-                        <div class="pmbb-body">
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
+            </div>
+            <div class="tab-pane fade" id="solicitud" role="tabpanel" aria-labelledby="solicitud-tab">
+                <br>
+                <div class="pmb-block">
+                    <div class="pmbb-body">
+                        <div class="pmbb-view">
+                            <table class="table table-responsive">
+                                <thead>
                                     <tr>
                                         <th>Tipo</th>
                                         <th>Cargo</th>
                                         <th>Horas</th>
                                         <th>Estado</th>
                                     </tr>
-                                    </thead>
-                                    <tbody>
+                                </thead>
+                                <tbody>
                                     {% for solicitud in object.solicitud_set.all %}
 
                                         <tr>
@@ -502,197 +497,197 @@
                                         </tr>
 
                                     {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="modal" tabindex="-1" role="dialog" id="eliminar_contrato_{{object.pk}}">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar el registro de Contraton</h5>
-                    <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Está seguro que desea eliminar el contrato "{{ object }}"?.</p>
-                    <p class="text-muted">Recuerde que eliminará todos los registros asociados a este contrato.</p>
+<div class="modal" tabindex="-1" role="dialog" id="eliminar_contrato_{{object.pk}}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar el registro de Contraton</h5>
+                <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Está seguro que desea eliminar el contrato "{{ object }}"?.</p>
+                <p class="text-muted">Recuerde que eliminará todos los registros asociados a este contrato.</p>
+            </div>
+            <div class="modal-footer">
+                <a role="button" class="btn btn-outline-danger" href="{% url 'rrhh:contrato__eliminar' object.pk %}">Eliminar</a>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="crear_permiso" tabindex="-1" role="dialog" aria-labelledby="crear_permisoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar permiso a {{ object }} </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="permisoForm" class="form-horizontal" action="{% url 'rrhh:permiso_funcionario__nuevo' %}" method="post" enctype="multipart/form-data">
+                <div class="modal-body m-10">
+                    {% csrf_token %}
+                    {% crispy pf_form %}
                 </div>
                 <div class="modal-footer">
-                    <a role="button" class="btn btn-outline-danger" href="{% url 'rrhh:contrato__eliminar' object.pk %}">Eliminar</a>
+                    <button type="submit" class="btn btn-outline-primary">Guardar</button>
                     <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
+</div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="crear_permiso" tabindex="-1" role="dialog" aria-labelledby="crear_permisoLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Agregar permiso a {{ object }} </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form id="permisoForm" class="form-horizontal" action="{% url 'rrhh:permiso_funcionario__nuevo' %}" method="post" enctype="multipart/form-data">
-                    <div class="modal-body m-10">
-                        {% csrf_token %}
-                        {% crispy pf_form %}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-outline-primary">Guardar</button>
-                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
-                    </div>
-                </form>
+<!-- Modal -->
+<div class="modal fade" id="crear_licencia" tabindex="-1" role="dialog" aria-labelledby="crear_licenciaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar licencia a {{ object }} </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
+            <form id="licenciaForm" class="form-horizontal" action="{% url 'rrhh:licencia_funcionario__nuevo' %}" method="post">
+                <div class="modal-body m-10">
+                    <div class="checkbox float-right">
+                        <label for="id_licencia_tipo">
+                            <input type="checkbox" name="licencia_tipo" class="checkboxinput" id="id_licencia_tipo">
+                            Utilizar licencias tipo
+                        </label>
+                    </div>
+                    {% csrf_token %}
+                    {% crispy lf_form %}
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-outline-primary">Guardar</button>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="crear_licencia" tabindex="-1" role="dialog" aria-labelledby="crear_licenciaLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Agregar licencia a {{ object }} </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form id="licenciaForm" class="form-horizontal" action="{% url 'rrhh:licencia_funcionario__nuevo' %}" method="post">
-                    <div class="modal-body m-10">
-                        <div class="checkbox pull-right">
-                            <label for="id_licencia_tipo">
-                                <input type="checkbox" name="licencia_tipo" class="checkboxinput" id="id_licencia_tipo">
-                                Utilizar licencias tipo
-                            </label>
-                        </div>
-                        {% csrf_token %}
-                        {% crispy lf_form %}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-outline-primary">Guardar</button>
-                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
-                    </div>
-                </form>
+<!-- Modal -->
+<div class="modal fade" id="crear_vacacion" tabindex="-1" role="dialog" aria-labelledby="crear_vacacionLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="crear_vacacionLabel">Agregar vacación a {{ object }} </h5>
+                <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
+            <form id="vacacionForm" class="form-horizontal" action="{% url 'rrhh:vacacion_funcionario__nuevo' %}" method="post">
+                <div class="modal-body m-10">
+                    {% csrf_token %}
+                    {% crispy vf_form %}
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-outline-primary">Guardar</button>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="crear_vacacion" tabindex="-1" role="dialog" aria-labelledby="crear_vacacionLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="crear_vacacionLabel">Agregar vacación a {{ object }} </h5>
-                    <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form id="vacacionForm" class="form-horizontal" action="{% url 'rrhh:vacacion_funcionario__nuevo' %}" method="post">
-                    <div class="modal-body m-10">
-                        {% csrf_token %}
-                        {% crispy vf_form %}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-outline-primary">Guardar</button>
-                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
-                    </div>
-                </form>
+<!-- Modal -->
+<div class="modal fade" id="cambiar_estado_renovacion" tabindex="-1" role="dialog" aria-labelledby="cambiar_estado_renovacionLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cambiar_estado_renovacionLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
+            <form id="cambiar_estado_renovacion_form" class="form-horizontal">
+                <div class="modal-body m-10">
+                    <input type="hidden" name="contrato" value="{{ object.id }}"></input>
+                    <input type="hidden" name="estado" value=""></input>
+                    <div id="div_id_observaciones">
+                        <label for="observaciones">Observaciones</label>
+                        <textarea class="form-control" id="observaciones" rows="4"></textarea>
+                    </div>
+                    <div id="div_id_voto">
+                        <label for="voto">Voto</label>
+                        <input type="number" min="1" class="form-control" id="voto">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-outline-primary">Guardar</button>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="cambiar_estado_renovacion" tabindex="-1" role="dialog" aria-labelledby="cambiar_estado_renovacionLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="cambiar_estado_renovacionLabel"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form id="cambiar_estado_renovacion_form" class="form-horizontal">
-                    <div class="modal-body m-10">
-                        <input type="hidden" name="contrato" value="{{ object.id }}"></input>
-                        <input type="hidden" name="estado" value=""></input>
-                        <div id="div_id_observaciones">
-                            <label for="observaciones">Observaciones</label>
-                            <textarea class="form-control" id="observaciones" rows="4"></textarea>
-                        </div>
-                        <div id="div_id_voto">
-                            <label for="voto">Voto</label>
-                            <input type="number" min="1" class="form-control" id="voto">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-outline-primary">Guardar</button>
-                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
-                    </div>
-                </form>
+<div class="modal" tabindex="-1" role="dialog" id="cambiar_estado_contratacion">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
+            <form class="form-horizontal" method="post" action="{% url 'rrhh:estado_contratacion__cambiar' %}" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <input type="hidden" name="contrato" value="{{ object.pk }}">
+                    {% crispy ec_form %}
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-outline-success">Guardar</button>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
-    <div class="modal" tabindex="-1" role="dialog" id="cambiar_estado_contratacion">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title"></h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form class="form-horizontal" method="post" action="{% url 'rrhh:estado_contratacion__cambiar' %}" enctype="multipart/form-data">
-                    <div class="modal-body">
-                        <input type="hidden" name="contrato" value="{{ object.pk }}">
-                        {% crispy ec_form %}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-outline-success">Guardar</a>
-                            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
-                    </div>
-                </form>
+<div class="modal" tabindex="-1" role="dialog" id="cargar_documento_personal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title page-title">Cargar documento de funcionario</h4>
+                <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
+            <form id="cargar_documento_form" class="form-horizontal" method="post" action="{% url 'rrhh:personal__cargar_documento' %}" enctype="multipart/form-data">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    {% crispy doc_form %}
+                    <!-- <input type="hidden" name="contrato" value="{{ object.pk }}"> -->
+                    <!-- <div id="div_id_documento">
+                        <label for="documento">Dcoumento</label>
+                        <input type="file" class="form-control" id="documento">
+                    </div> -->
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-outline-success">Guardar</a>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
         </div>
     </div>
-
-    <div class="modal" tabindex="-1" role="dialog" id="cargar_documento_personal">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title page-title">Cargar documento de funcionario</h4>
-                    <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form id="cargar_documento_form" class="form-horizontal" method="post" action="{% url 'rrhh:personal__cargar_documento' %}" enctype="multipart/form-data">
-                    <div class="modal-body">
-                        {% csrf_token %}
-                        {% crispy doc_form %}
-                        <!-- <input type="hidden" name="contrato" value="{{ object.pk }}"> -->
-                        <!-- <div id="div_id_documento">
-                            <label for="documento">Dcoumento</label>
-                            <input type="file" class="form-control" id="documento">
-                        </div> -->
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-outline-success">Guardar</a>
-                            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+</div>
 
 {% endblock content %}
 

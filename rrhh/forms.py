@@ -484,6 +484,7 @@ class PermisoFuncionarioColegioForm(forms.ModelForm):
         self.fields['fecha_termino'].widget.attrs['class'] = 'datepicker'
         self.fields['fecha_retorno'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_retorno'].widget.attrs['class'] = 'datepicker'
+        self.fields['voto'].widget.attrs['required'] = 'required'
         self.helper = FormHelper()
         self.helper.form_tag = False
 

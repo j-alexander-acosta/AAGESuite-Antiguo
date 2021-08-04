@@ -518,7 +518,7 @@ def nuevo_vacacion_funcionario(request):
         fecha_termino = request.GET.get('fecha_termino', None)
         fecha_retorno = request.GET.get('fecha_retorno', None)
         total_feriados = request.GET.get('total_feriados', None)
-        dias_pendiente = request.GET.get('dias_pendiente', None)
+        # dias_pendiente = request.GET.get('dias_pendiente', None)
         es_pendiente = request.GET.get('es_pendiente', None)
 
         vacacion = VacacionFuncionarioColegio.objects.create(
@@ -528,17 +528,17 @@ def nuevo_vacacion_funcionario(request):
             fecha_termino=fecha_termino,
             fecha_retorno=fecha_retorno,
             total_feriados=total_feriados,
-            dias_pendiente=dias_pendiente,
+            # dias_pendiente=dias_pendiente,
             es_pendiente=es_pendiente
         )
         data['success'] = True
         data['message'] = u"la licencia fue agregada exitosamente"
         data['periodo'] = vacacion.periodo
         data['total_dias'] = vacacion.total_dias
-        data['dias_pendiente'] = vacacion.dias_pendiente
+        # data['dias_pendiente'] = vacacion.dias_pendiente
         data['fecha_retorno'] = naturalday(vacacion.fecha_retorno)
         data['total_feriados'] = vacacion.total_feriados
-        data['es_pendiente'] = yesno(vacacion.es_pendiente)
+        data['es_pendiente'] = yesno(not vacacion.es_pendiente)
     else:
         data['message'] = u"La solicitud debe ser GET"
 
@@ -783,7 +783,7 @@ def nuevo_permiso_tipo_funcionario(request):
             total_feriados=total_feriados,
             goce_sueldo=goce_sueldo,
             dias_habiles=dias_habiles,
-            voto=voto,
+            voto=voto if voto else 0,
             documento=documento
         )
         data['success'] = True
@@ -794,7 +794,7 @@ def nuevo_permiso_tipo_funcionario(request):
         data['fecha_retorno'] = naturalday(permiso.fecha_retorno)
         data['total_feriados'] = permiso.total_feriados
         data['dias_habiles'] = yesno(permiso.dias_habiles)
-        data['goce_sueldo'] = yesno(permiso.goce_sueldo)
+        data['goce_sueldo'] = yesno(not permiso.goce_sueldo)
     else:
         data['message'] = u"La solicitud debe ser GET"
 
