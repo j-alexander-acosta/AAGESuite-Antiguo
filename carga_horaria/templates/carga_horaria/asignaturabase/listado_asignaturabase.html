@@ -37,16 +37,16 @@
             <thead>
             <tr>
                 <th><i class="uil-user"></i> Nombre </th>
-                <th><i class="uil-book-open"></i> Plan </th>
-                <th><i class="uil-cog"></i> Acciones </th>
+                <th style="text-align: center;"><i class="uil-book-open"></i> Plan </th>
+                <th style="text-align: center;"><i class="uil-cog"></i> Acciones </th>
             </tr>
             </thead>
             <tbody>
             {% for ab in object_list %}
                 <tr>
                     <td><a href="{% url 'carga-horaria:asignaturabase' ab.pk %}"> {{ ab.nombre }} </a></td>
-                    <td> {{ ab.plan }} </td>
-                    <td>
+                    <td style="text-align: center;"> {{ ab.plan }} </td>
+                    <td style="text-align: center;">
                         <a class="btn btn-outline-primary" href="{% url 'carga-horaria:asignaturabase__editar' ab.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
                         <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_asignaturabase_{{ab.pk}}"><i class="uil-trash"></i></a>
                     </td>

@@ -62,17 +62,13 @@
 
                             <h4 class="page-title">{% block title %}{% endblock %}</h4>
 
-                            {% block content %}
-                            {% endblock %}
-
-                        </div>
-                    </div>
-                </div>
-
-            </div> <!-- /container -->
-        </div>
-    </div>
-</div>
+{% block suma_presupuesto %}{% endblock %}
+<div {% block container %}class="container" style="max-width:1300px !important"{% endblock %} id="contenidoApp">
+    {% block breadcrumb %}
+    {% endblock %}
+    {% block content %}
+    {% endblock %}
+</div> <!-- /container -->
 
 <br><br><br>
 

@@ -733,31 +733,127 @@
             }
         }
 
-        function diasHabiles(form){
-            {#alert("diasHabiles");#}
-            var isChecked = document.getElementById('id_dias_habiles').checked;
-            {#alert("diasHabiles: "+isChecked);#}
-            if(isChecked){
-                $('#id_fecha_termino').val(fechaTerminoHabil);
-                $('#id_fecha_retorno').val(fechaRetornoHabil);
-            }
-            if(!isChecked){
-                $('#id_fecha_termino').val(fechaTerminoNoHabil);
-                $('#id_fecha_retorno').val(fechaRetornoNoHabil);
-            }
-        }
-
         function calculo_fechas(form){
+            //alert("calculo fecha");
             let fecha_inicio = form.find('#id_fecha_inicio').val();
             let total_dias = form.find('#id_total_dias').val();
-            {#alert("fecha_inicio: "+fecha_inicio+"/ total_dias:"+total_dias);#}
-            if($('#id_fecha_inicio').val() != null && $('#id_fecha_inicio').val() != ''
-                && $('#id_total_dias').val() != null && $('#id_total_dias').val() != '') {
+            //alert("fecha_inicio: "+fecha_inicio+"/ total_dias:"+total_dias);
 
+            if(form.find('#id_fecha_inicio').val() != null && form.find('#id_fecha_inicio').val() != ''
+                && form.find('#id_total_dias').val() != null && form.find('#id_total_dias').val() != '') {
+            
+                var noOfDaysToAdd = parseInt(form.find('#id_total_dias').val())-1;
+                var noOfHolidays = 0;
+                if(form.find('#id_total_feriados').val() !== null && form.find('#id_total_feriados').val() !== ""){
+                    noOfHolidays = parseInt(form.find('#id_total_feriados').val());
+                }
+                var dia = form.find('#id_fecha_inicio').val().substring(8, 10);
+                var mes = form.find('#id_fecha_inicio').val().substring(5, 7);
+                var anno = form.find('#id_fecha_inicio').val().substring(0, 4);
+                //alert("fecha inicio: "+dia+"-"+mes+"-"+anno);
 
+                //suma habiles
+                var startDate = new Date(anno+"/"+mes+"/"+dia);
+                var endDate = "", count = 0;
+                
+                while(count < noOfDaysToAdd+noOfHolidays){
+                    endDate = new Date(startDate.setDate(startDate.getDate() + 1));
+                    if(endDate.getDay() != 0 && endDate.getDay() != 6){
+                        count++;
+                    }
+                }
+                
+                var ftermino = new Date(endDate);
+                let year = ftermino.getFullYear();
+                let month = (1 + ftermino.getMonth()).toString().padStart(2, '0');
+                let day = ftermino.getDate().toString().padStart(2, '0');
+                //alert("fecha termino: "+year+"-"+month+"-"+day);
+                form.find('#id_fecha_termino').val(year+"-"+month+"-"+day);
+                fechaTerminoHabil=year+"-"+month+"-"+day;
+
+                //fecha de retorno
+                startDate = new Date(anno+"/"+mes+"/"+dia);
+                endDate = "", count = 0;
+                while(count < (noOfDaysToAdd+1+noOfHolidays)){
+                    endDate = new Date(startDate.setDate(startDate.getDate() + 1));
+                    if(endDate.getDay() != 0 && endDate.getDay() != 6){
+                        count++;
+                    }
+                }
+                
+                ftermino = new Date(endDate);
+                year = ftermino.getFullYear();
+                month = (1 + ftermino.getMonth()).toString().padStart(2, '0');
+                day = ftermino.getDate().toString().padStart(2, '0');
+                
+                form.find('#id_fecha_retorno').val(year+"-"+month+"-"+day);
+                fechaRetornoHabil=year+"-"+month+"-"+day;
+
+                //sumano no habiles
+                startDate = new Date(anno+"/"+mes+"/"+dia);
+                endDate = new Date(startDate.setDate(startDate.getDate() + noOfDaysToAdd+noOfHolidays));
+                ftermino = new Date(endDate);
+                year = ftermino.getFullYear();
+                month = (1 + ftermino.getMonth()).toString().padStart(2, '0');
+                day = ftermino.getDate().toString().padStart(2, '0');
+                fechaTerminoNoHabil=year+"-"+month+"-"+day;
+
+                //fecha de retorno
+                startDate = new Date(anno+"/"+mes+"/"+dia);
+                endDate = new Date(startDate.setDate(startDate.getDate() + noOfDaysToAdd+1+noOfHolidays));
+                ftermino = new Date(endDate);
+                year = ftermino.getFullYear();
+                month = (1 + ftermino.getMonth()).toString().padStart(2, '0');
+                day = ftermino.getDate().toString().padStart(2, '0');
+                fechaRetornoNoHabil=year+"-"+month+"-"+day;
+                
+                var isChecked = form.find('#id_dias_habiles').is(':checked');
+                var isOn = form.find('#id_dias_habiles').length;
+                //alert("diasHabiles: "+isChecked+"-"+isOn);
+                if(isChecked && isOn > 0 ){
+                    form.find('#id_fecha_termino').val(fechaTerminoHabil);
+                    form.find('#id_fecha_retorno').val(fechaRetornoHabil);
+                    //alert("1er: "+fechaTerminoHabil+"/"+fechaRetornoHabil);
+                }
+                if(!isChecked  && isOn > 0 ){
+                    form.find('#id_fecha_termino').val(fechaTerminoNoHabil);
+                    form.find('#id_fecha_retorno').val(fechaRetornoNoHabil);
+                    //alert("2do: "+fechaTerminoNoHabil+"-"+fechaRetornoNoHabil);
+                }
+                if(!isChecked  && isOn == 0 ){
+                    form.find('#id_fecha_termino').val(fechaTerminoHabil);
+                    form.find('#id_fecha_retorno').val(fechaRetornoHabil);
+                    //alert("3er: "+fechaTerminoHabil+"-"+fechaRetornoHabil);
+                }
             }
         }
 
+        function limpiar_form(form){
+            form.find("#id_tipo_licencia_descripcion").val('');
+            form.find("#id_folio_licencia").val('');
+            form.find("#id_total_dias").val('');
+            form.find("#id_dias_habiles").val('');
+            form.find("#id_fecha_inicio").val('');
+            form.find("#id_total_feriados").val('');
+            form.find("#id_fecha_termino").val('');
+            form.find("#id_fecha_retorno").val('');
+            form.find("#id_fecha_solicitud").val('');
+            form.find("#id_observaciones").val('');
+            form.find("#id_documento").val('');
+            
+        }
+
+        //--------------------VACACIONES--------------------------
+        function limpiar_form_vacacion(form){
+            form.find("#id_total_dias").val('');
+            form.find("#id_es_pendiente").val('');
+            form.find("#id_fecha_inicio").val('');
+            form.find("#id_total_feriados").val('');
+            form.find("#id_fecha_termino").val('');
+            form.find("#id_fecha_retorno").val('');
+            form.find("#id_dias_pendiente").val('');
+        } 
+        
         function formatear_fecha(fecha){
             fecha_desgloce = fecha.split('/');
             return fecha_desgloce[2] + '-' + fecha_desgloce[1] + '-' + fecha_desgloce[0]
@@ -800,14 +896,10 @@
 
             $(document).on('change', '[id^="id_"]', function() {
                 console.log("Calcular Fecha");
-                {#alert("change");#}
-                diasHabiles($(this).closest('form'));
                 calculo_fechas($(this).closest('form'));
-
             });
 
             $(document).on('keyup', '[id^="id_"]', function() {
-                {#alert("keyup");#}
                 calculo_fechas($(this).closest('form'));
                 let fecha_inicio = $(this).closest('form').find('#id_fecha_retorno').val();
                 console.log(fecha_inicio);
@@ -818,7 +910,6 @@
             //--------------------LICENCIAS--------------------------
 
             $(document).on('submit', '#licenciaForm', function (e) {
-                {#alert("licencia form");#}
                 e.preventDefault();
                 let form = $(this);
                 let url = form.attr('action');
@@ -853,13 +944,13 @@
                     descripcion: descripcion,
                     folio_licencia: folio_licencia,
                     total_dias: total_dias,
-                    fecha_inicio: formatear_fecha(fecha_inicio),
-                    fecha_termino: formatear_fecha(fecha_termino),
-                    fecha_retorno: formatear_fecha(fecha_retorno),
+                    fecha_inicio: fecha_inicio,
+                    fecha_termino: fecha_termino,
+                    fecha_retorno: fecha_retorno,
                     total_feriados: total_feriados,
                     dias_habiles: dias_habiles
                 }
-
+                
                 if(fecha_inicio) {
                     $.get(url, datos, function(data) {
                         if (!(data['success'])) {
@@ -894,7 +985,6 @@
 
             //--------------------PERMISOS--------------------------
             $(document).on('submit', '#permisoForm', function (e) {
-                {#alert("permiso form");#}
                 e.preventDefault();
                 let form = $(this);
                 let url = form.attr('action');
@@ -921,16 +1011,16 @@
                     contrato: contrato,
                     total_dias: total_dias,
                     observaciones: observaciones,
-                    fecha_solicitud: formatear_fecha(fecha_solicitud),
-                    fecha_inicio: formatear_fecha(fecha_inicio),
-                    fecha_termino: formatear_fecha(fecha_termino),
-                    fecha_retorno: formatear_fecha(fecha_retorno),
+                    fecha_solicitud: fecha_solicitud,
+                    fecha_inicio: fecha_inicio,
+                    fecha_termino: fecha_termino,
+                    fecha_retorno: fecha_retorno,
                     total_feriados: total_feriados,
                     goce_sueldo: goce_sueldo,
                     dias_habiles: dias_habiles,
                     voto: voto,
                     documento: documento
-                }
+                }   
 
                 if (fecha_inicio) {
                     $.get(url, datos, function(data) {
@@ -950,7 +1040,7 @@
                                 <td>${data.fecha_retorno}</td>
                                 <td>${data.total_feriados}</td>
                                 <td>${data.dias_habiles}</td>
-                                <td>${data.goce_sueldo}}</td>
+                                <td>${data.goce_sueldo}</td>
                                 </tr>`;
                             tbody.html(nuevo_permiso + tbody.html());
                             // alertify.success(data['message']);
@@ -967,7 +1057,6 @@
             //--------------------VACACIONES--------------------------
 
             $(document).on('submit', '#vacacionForm', function (e) {
-                {#alert("vacaiones form");#}
                 e.preventDefault();
                 let form = $(this);
                 let url = form.attr('action');
@@ -986,9 +1075,9 @@
                 datos = {
                     contrato: contrato,
                     total_dias: total_dias,
-                    fecha_inicio: formatear_fecha(fecha_inicio),
-                    fecha_termino: formatear_fecha(fecha_termino),
-                    fecha_retorno: formatear_fecha(fecha_retorno),
+                    fecha_inicio: fecha_inicio,
+                    fecha_termino: fecha_termino,
+                    fecha_retorno: fecha_retorno,
                     total_feriados: total_feriados,
                     dias_pendiente: dias_pendiente,
                     es_pendiente: es_pendiente
@@ -1015,7 +1104,7 @@
                             tbody.html(nueva_vacacion + tbody.html());
                             // alertify.success(data['message']);
                             $(document).find("#crear_vacacion").modal('hide');
-                            // limpiar_form_vacacion(form);
+                            limpiar_form_vacacion(form);
                         }
                     }).fail(function(e){
                         console.log(e);
@@ -1111,374 +1200,8 @@
                 $(document).find('#cargar_documento_personal').find('button[type="submit"]').attr('name', $(this).attr('name'));
             });
         });
+
     </script>
 {% endblock %}
 
-{% comment %}
-function cambio_licencia_descripcion(){
-    setTimeout(function(){
-        $(document).find('#div_id_tipo_licencia_descripcion').fadeIn();
-    }, 500);
-    $(document).find('#id_tipo_licencia_descripcion').prop('disabled', false);
-    $(document).find('#div_id_tipo_licencia').fadeOut();
-    $(document).find('#id_tipo_licencia').attr('disabled', true);
-    $(document).find('#id_total_dias').attr('readonly', false);
-    $(document).find('#id_dias_habiles').prop('checked', false);
-    $(document).find('#id_licencia_tipo').prop('checked', false);
-}
-function cambio_tipo_licencia(){
-    $(document).find('#div_id_tipo_licencia_descripcion').fadeOut();
-    $(document).find('#id_tipo_licencia_descripcion').attr('disabled', true);
-    setTimeout(function(){
-        $(document).find('#div_id_tipo_licencia').fadeIn();
-    }, 500);
-    $(document).find('#id_tipo_licencia').prop('disabled', false);
-    $(document).find('#id_total_dias').attr('readonly', 'true');
-    $(document).find('#id_fecha_termino').attr('readonly', 'true');
-    $(document).find('#id_fecha_retorno').attr('readonly', 'true');
-    $(document).find('#id_dias_habiles').attr('checked', false);
-}
 
-function revision_campos_obligatorios(form){
-    let fecha_inicio = form.find('#id_fecha_inicio').val();
-    let fecha_termino = form.find('#id_fecha_termino').val();
-    let fecha_retorno = form.find('#id_fecha_retorno').val();
-    let total_dias = form.find('#id_total_dias').val();
-    let opcion = form.find('#id_tipo_licencia_chosen').find('a.chosen-single').find('span').html();
-
-    console.log(opcion);
-    if (fecha_inicio !== '' && fecha_termino !== '' && fecha_retorno !== '' && total_dias !== ''){
-        return true;
-    }
-
-    return false;
-}
-
-function calculo_fechas(form){
-    let fecha_inicio = form.find('#id_fecha_inicio').val();
-    let total_dias = form.find('#id_total_dias').val();
-    console.log(total_dias);
-    if (fecha_inicio !== '' && total_dias !== ''){
-        let total_feriados = form.find('#id_total_feriados').val();
-        if (total_feriados == ''){
-            total_feriados = 0;
-        }
-        let fecha_inicio_part = fecha_inicio.split('/');
-        let fecha = new Date(fecha_inicio_part[2] + '/' + fecha_inicio_part[1] + '/' + fecha_inicio_part[0]);
-
-        //let fecha_termino = new Date(fecha_inicial.getFullYear() + '/' + fecha_inicial.getMonth() + '/' + (fecha_inicial.getDate() + parseInt(total_dias) - 1 + parseInt(total_feriados)));
-        fecha.setDate(fecha.getDate() + parseInt(total_dias) - 1 + parseInt(total_feriados));
-        let fecha_string = fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear();
-        form.find('#id_fecha_termino').val((fecha_string));
-
-        //let fecha_retorno = new Date((fecha_termino.getFullYear()) + '/' + fecha_termino.getMonth() + '/' + (fecha_termino.getDate() + 1 ));
-        fecha.setDate(fecha.getDate() + 1);
-        fecha_string = fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear();
-        form.find('#id_fecha_retorno').val(fecha_string);
-    }
-}
-
-function limpiar_form(form){
-    form.find("#id_tipo_licencia_descripcion").val('');
-    form.find("#id_folio_licencia").val('');
-    form.find("#id_total_dias").val('');
-    form.find("#id_dias_habiles").val('');
-    form.find("#id_fecha_inicio").val('');
-    form.find("#id_total_feriados").val('');
-    form.find("#id_fecha_termino").val('');
-    form.find("#id_fecha_retorno").val('');
-}
-
-//--------------------VACACIONES--------------------------
-function limpiar_form_vacacion(form){
-    form.find("#id_total_dias").val('');
-    form.find("#id_es_pendiente").val('');
-    form.find("#id_fecha_inicio").val('');
-    form.find("#id_total_feriados").val('');
-    form.find("#id_fecha_termino").val('');
-    form.find("#id_fecha_retorno").val('');
-}
-
-function revision_campos_obligatorios_vacacion(form){
-    let fecha_inicio = form.find('#id_fecha_inicio').val();
-    let fecha_termino = form.find('#id_fecha_termino').val();
-    let fecha_retorno = form.find('#id_fecha_retorno').val();
-    let total_dias = form.find('#id_total_dias').val();
-
-    if (fecha_inicio !== '' && fecha_termino !== '' && fecha_retorno !== '' && total_dias !== ''){
-        return true;
-    }
-
-    return false;
-}
-
-$(function() {
-    let total_dias = 0, dias_habiles = 0
-
-    cambio_tipo_licencia();
-
-    $('.modal').on('hidden.bs.modal', function () {
-        console.log("SE CIERRA EL MODAL");
-        limpiar_form($(this).find('form'));
-        limpiar_form_vacacion($(this).find('form'));
-        cambio_licencia_descripcion();
-    });
-
-    $(document).find('#id_licencia_tipo').on('change', function() {
-        let checkbox = $(this);
-        if (checkbox.is(":checked")) {
-            cambio_tipo_licencia();
-        }else{
-            cambio_licencia_descripcion();
-        }
-    });
-
-    $(document).on('change', '#id_tipo_licencia', function() {
-        let opcion = $(document).find('#id_tipo_licencia_chosen').find('a.chosen-single').find('span').html();
-        console.log();
-        try {
-            total_dias = opcion.split('(')[1].split(')')[0].split('-')[0];
-            dias_habiles = opcion.split('(')[1].split(')')[0].split('-')[1];
-        }catch(err){
-            console.log(err.message);
-            total_dias = 0;
-            dias_habiles = 0;
-        }
-        if (dias_habiles == '1') {
-            $(document).find('#id_dias_habiles').attr('checked', true);
-        }else {
-            $(document).find('#id_dias_habiles').attr('checked', false);
-        }
-        $(document).find('#id_total_dias').val(total_dias);
-    });
-
-    $(document).on('change', '[id^="id_"]', function() {
-        calculo_fechas($(this).closest('form'));
-    });
-
-    $(document).on('keyup', '[id^="id_"]', function() {
-        calculo_fechas($(this).closest('form'));
-    });
-
-    $(document).on('submit', '#licenciaForm', function (e) {
-        e.preventDefault();
-        let form = $(this);
-        if(revision_campos_obligatorios(form)) {
-            $.ajax({
-                type: form.attr('method'),
-                url: form.attr('action'),
-                data: form.serialize(),
-                dataType: 'json',
-                success: function(data) {
-                    if (!(data['success'])) {
-                        if(data['form_html'] !== null){
-                            // console.log(data['form_html']);
-                            form.find('.modal-body').html(data['form_html']);
-                            // ocultar_inicial();
-                            // alertify.warning(data['message']);
-                        }
-                    } else {
-                        let tbody = $(document).find("table[id='licencias']").find('tbody');
-                        let nueva_licencia = `<tr>
-                            <td>${data.tipo_licencia}</td>
-                            <td><i>${data.folio}</i></td>
-                            <td>${data.periodo}</td>
-                            <td>${data.fecha_retorno}</td>
-                            <td>${data.total_dias}</td>
-                            <td>${data.total_feriados}</td>
-                            <td>${data.dias_habiles}</td>
-                            </tr>`;
-                        tbody.html(nueva_licencia + tbody.html());
-                        // alertify.success(data['message']);
-                        $(document).find("div[class='modal fade show']").modal('hide');
-                        limpiar_form(form);
-                    }
-                },
-                error: function (err) {
-                    console.log(err);
-                    // alertify.warning("Ocurrio un error inesperado..");
-                }
-            });
-        }else{
-            console.log('Se deben completar todos los campos requeridos');
-            // alertify.warning("Se deben completar todos los campos requeridos..");
-        }
-    });
-
-    //--------------------PERMISOS--------------------------
-
-    $(document).on('submit', '#permisoForm', function (e) {
-        e.preventDefault();
-        let form = $(this);
-        if(revision_campos_obligatorios(form)) {
-            $.ajax({
-                type: form.attr('method'),
-                url: form.attr('action'),
-                data: form.serialize(),
-                dataType: 'json',
-                success: function(data) {
-                    if (!(data['success'])) {
-                        if(data['form_html'] !== null){
-                            // console.log(data['form_html']);
-                            form.find('.modal-body').html(data['form_html']);
-                            // ocultar_inicial();
-                            // alertify.warning(data['message']);
-                        }
-                    } else {
-                        let tbody = $(document).find("table[id='permisos']").find('tbody');
-                        let nuevo_permiso = `<tr>
-                            <td>${data.observaciones}</td>
-                            <td><i>${data.periodo}</i></td>
-                            <td>${data.total_dias}</td>
-                            <td>${data.fecha_retorno}</td>
-                            <td>${data.total_feriados}</td>
-                            <td>${data.dias_habiles}</td>
-                            <td>${data.goce_sueldo}}</td>
-                            </tr>`;
-                        tbody.html(nuevo_permiso + tbody.html());
-                        // alertify.success(data['message']);
-                        $(document).find("div[class='modal fade show']").modal('hide');
-                        limpiar_form(form);
-                    }
-                },
-                error: function (err) {
-                    console.log(err);
-                    // alertify.warning("Ocurrio un error inesperado..");
-                }
-            });
-        }else{
-            console.log('Se deben completar todos los campos requeridos');
-            // alertify.warning("Se deben completar todos los campos requeridos..");
-        }
-    });
-
-    //--------------------VACACIONES--------------------------
-
-    $(document).on('submit', '#vacacionForm', function (e) {
-        console.log('Si apreta');
-        e.preventDefault();
-        let form = $(this);
-        if(revision_campos_obligatorios_vacacion(form)) {
-            $.ajax({
-                type: form.attr('method'),
-                url: form.attr('action'),
-                data: form.serialize(),
-                dataType: 'json',
-                success: function(data) {
-                    console.log('si paso');
-                    if (!(data['success'])) {
-                        if(data['form_html'] !== null){
-                            // console.log(data['form_html']);
-                            form.find('.modal-body').html(data['form_html']);
-                            // ocultar_inicial();
-                            // alertify.warning(data['message']);
-                        }
-                    } else {
-                        console.log('acaaaaaa');
-                        let tbody = $(document).find("table[id='vacaciones']").find('tbody');
-                        let nueva_vacacion = `<tr>
-                            <td>${data.periodo}</td>
-                            <td>${data.fecha_retorno}</td>
-                            <td>${data.total_dias}</td>
-                            <td>${data.total_feriados}</td>
-                            <td>${data.es_pendiente}</td>
-                            </tr>`;
-                        tbody.html(nueva_vacacion + tbody.html());
-                        // alertify.success(data['message']);
-                        $(document).find("#vacacionform").modal('hide');
-                        limpiar_form_vacacion(form);
-                    }
-                },
-                error: function (err) {
-                    console.log(err);
-                    // alertify.warning("Ocurrio un error inesperado..");
-                }
-            });
-        }else{
-            console.log('Se deben completar todos los campos requeridos');
-            // alertify.warning("Se deben completar todos los campos requeridos..");
-        }
-    });
-
-    $(document).on('click', '#ces', function(){
-        let opciones = [,
-            'Marcar la solicitud como pendiente',
-            'Aceptar la solicitud de renovación',
-            'Rechazar la solicitud de renovación',
-            'Pasar a Contrato'
-        ];
-        let modal = $(document).find('#cambiar_estado_renovacion');
-        let opcion = $(this).attr('name');
-        let titulo = opciones[opcion];
-        modal.find('input[name="estado"]').val(opcion);
-        modal.find('.modal-title').html(titulo);
-        if (opcion !== 2) {
-            modal.find('#div_id_voto').fadeOut();
-        }
-        if (opcion == 4) {
-            modal.find("#cambiar_estado_renovacion_form").submit();
-        }else{
-            setTimeout(function(){
-                modal.find('#div_id_observaciones').fadeIn();
-            }, 500);
-        }
-        if (opcion == 2) {
-            setTimeout(function(){
-                modal.find('#div_id_voto').fadeIn();
-            }, 500);
-        }
-        if (opcion != 4) {
-            modal.modal('show');
-        }
-    });
-
-    $(document).on('submit', '#cambiar_estado_renovacion_form', function (e) {
-        e.preventDefault();
-        let form = $(this);
-        let id_contrato = form.find('input[name="contrato"]').val();
-        let estado = form.find('input[name="estado"]').val();
-        let observaciones = form.find('#observaciones').val();
-        let voto = form.find('#voto').val();
-        let url = '/rrhh/contratos/id_contrato/renovar/'.replace('id_contrato', id_contrato);
-
-        $.get(url, {estado: estado, observaciones: observaciones, voto: voto}, function() {
-            let success_url = '/rrhh/contratos/id_contrato/'.replace('id_contrato', id_contrato);
-            if (estado == 4){
-                success_url = '/rrhh/contratos/id_contrato/renovacion/contratar'.replace('id_contrato', id_contrato);
-            }
-            setTimeout(function(){
-                document.location.replace(success_url);
-            }, 500);
-        }).fail(function(e){
-            console.log(e);
-        });
-
-    });
-
-    $(document).on('click', '#cec', function(){
-        let opciones = [,,
-            'Listo para ser firmado',
-            'Devolver para revisión',
-            'Cargar contrato firmado'
-        ];
-        let modal = $(document).find('#cambiar_estado_contratacion');
-        let opcion = $(this).attr('name');
-        let titulo = opciones[opcion];
-        modal.find('#id_estado').val(opcion);
-        modal.find('.modal-title').html(titulo);
-        modal.modal('show');
-        if (opcion == '4') {
-            setTimeout(function(){
-                modal.find('#div_id_documento').fadeIn();
-                modal.find('#id_documento').attr('required', true);
-            }, 500);
-        }else{
-            setTimeout(function(){
-                modal.find('#div_id_documento').fadeOut();
-                modal.find('#id_documento').attr('required', false);
-            }, 500);
-        }
-    });
-
-});
-{% endcomment %}

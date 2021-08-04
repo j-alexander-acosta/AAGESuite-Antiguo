@@ -82,8 +82,6 @@ class AsignacionUpdateForm(AsignacionForm):
 class AsignacionFUAForm(forms.ModelForm):
     """
         Formulario para asignar lo que se proyecta hacia el universo
-
-        https://youtu.be/SWOz-kIwDuU?t=81
     """
 
     class Meta:

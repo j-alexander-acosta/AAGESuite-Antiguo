@@ -34,17 +34,17 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th><i class="uil-user"></i> Curso </th>
-                <th><i class="uil-clock"></i> Periodo </th>
-                <th><i class="uil-cog"></i> Acciones </th>
+                <th style="text-align: center;"><i class="uil-user"></i> Curso </th>
+                <th style="text-align: center;"><i class="uil-clock"></i> Periodo </th>
+                <th style="text-align: center;"><i class="uil-cog"></i> Acciones </th>
             </tr>
             </thead>
             <tbody>
             {% for c in object_list %}
                 <tr>
                     <td><a href="{% url 'carga-horaria:curso' c.pk %}"> {{ c.periodo.plan.get_nivel_display }} - {{ c.letra }} </a></td>
-                    <td> {{ c.periodo.nombre }} </td>
-                    <td>
+                    <td style="text-align: center;"> {{ c.periodo.nombre }} </td>
+                    <td style="text-align: center;">
                         <a class="btn btn-outline-primary" href="{% url 'carga-horaria:curso__editar' c.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
                         <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_curso_{{c.pk}}"><i class="uil-trash"></i></a>
                     </td>
