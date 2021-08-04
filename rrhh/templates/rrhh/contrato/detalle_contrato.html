@@ -741,7 +741,7 @@
 
             if(form.find('#id_fecha_inicio').val() != null && form.find('#id_fecha_inicio').val() != ''
                 && form.find('#id_total_dias').val() != null && form.find('#id_total_dias').val() != '') {
-            
+
                 var noOfDaysToAdd = parseInt(form.find('#id_total_dias').val())-1;
                 var noOfHolidays = 0;
                 if(form.find('#id_total_feriados').val() !== null && form.find('#id_total_feriados').val() !== ""){
@@ -755,14 +755,14 @@
                 //suma habiles
                 var startDate = new Date(anno+"/"+mes+"/"+dia);
                 var endDate = "", count = 0;
-                
+
                 while(count < noOfDaysToAdd+noOfHolidays){
                     endDate = new Date(startDate.setDate(startDate.getDate() + 1));
                     if(endDate.getDay() != 0 && endDate.getDay() != 6){
                         count++;
                     }
                 }
-                
+
                 var ftermino = new Date(endDate);
                 let year = ftermino.getFullYear();
                 let month = (1 + ftermino.getMonth()).toString().padStart(2, '0');
@@ -780,12 +780,12 @@
                         count++;
                     }
                 }
-                
+
                 ftermino = new Date(endDate);
                 year = ftermino.getFullYear();
                 month = (1 + ftermino.getMonth()).toString().padStart(2, '0');
                 day = ftermino.getDate().toString().padStart(2, '0');
-                
+
                 form.find('#id_fecha_retorno').val(year+"-"+month+"-"+day);
                 fechaRetornoHabil=year+"-"+month+"-"+day;
 
@@ -806,7 +806,7 @@
                 month = (1 + ftermino.getMonth()).toString().padStart(2, '0');
                 day = ftermino.getDate().toString().padStart(2, '0');
                 fechaRetornoNoHabil=year+"-"+month+"-"+day;
-                
+
                 var isChecked = form.find('#id_dias_habiles').is(':checked');
                 var isOn = form.find('#id_dias_habiles').length;
                 //alert("diasHabiles: "+isChecked+"-"+isOn);
@@ -840,7 +840,7 @@
             form.find("#id_fecha_solicitud").val('');
             form.find("#id_observaciones").val('');
             form.find("#id_documento").val('');
-            
+
         }
 
         //--------------------VACACIONES--------------------------
@@ -852,8 +852,8 @@
             form.find("#id_fecha_termino").val('');
             form.find("#id_fecha_retorno").val('');
             form.find("#id_dias_pendiente").val('');
-        } 
-        
+        }
+
         function formatear_fecha(fecha){
             fecha_desgloce = fecha.split('/');
             return fecha_desgloce[2] + '-' + fecha_desgloce[1] + '-' + fecha_desgloce[0]
@@ -950,7 +950,7 @@
                     total_feriados: total_feriados,
                     dias_habiles: dias_habiles
                 }
-                
+
                 if(fecha_inicio) {
                     $.get(url, datos, function(data) {
                         if (!(data['success'])) {
@@ -1020,7 +1020,7 @@
                     dias_habiles: dias_habiles,
                     voto: voto,
                     documento: documento
-                }   
+                }
 
                 if (fecha_inicio) {
                     $.get(url, datos, function(data) {
@@ -1203,5 +1203,3 @@
 
     </script>
 {% endblock %}
-
-
