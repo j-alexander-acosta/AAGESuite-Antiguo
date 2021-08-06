@@ -26,13 +26,13 @@
                 <li class="nav-item">
                     <a href="#adminstracion" data-toggle="tab" aria-expanded="false" class="nav-link rounded-0 active">
                         <i class="mdi mdi-home-variant d-md-none d-block"></i>
-                        <span class="d-none d-md-block">Administración</span>
+                        <h3 class="font-black-normal text-center">Administración</h3>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="#funcionarios" data-toggle="tab" aria-expanded="true" class="nav-link rounded-0">
                         <i class="mdi mdi-account-circle d-md-none d-block"></i>
-                        <span class="d-none d-md-block">Colaboradores</span>
+                        <h3 class="font-black-normal text-center">Colaboradores</h3>
                     </a>
                 </li>
             </ul>
@@ -41,18 +41,30 @@
                 <div class="tab-pane active" id="adminstracion">
                     <p>
                     <ul>
-                        <a class="text-muted font-black-normal" href="{% url 'rrhh:uniones' %}"><li>Uniones</li></a>
-                        <a class="text-muted font-black-normal" href="{% url 'rrhh:fundaciones' %}"><li>Fundaciones</li></a>
-                        <a class="text-muted font-black-normal" href="{% url 'rrhh:colegios' %}"><li>Colegios</li></a>
+                        <a class="text-muted font-black-normal" href="{% url 'rrhh:uniones' %}">
+                            <li><h3>Uniones</h3></li>
+                        </a>
+                        <a class="text-muted font-black-normal" href="{% url 'rrhh:fundaciones' %}">
+                            <li><h3>Fundaciones</h3></li>
+                        </a>
+                        <a class="text-muted font-black-normal" href="{% url 'rrhh:colegios' %}">
+                            <li><h3>Colegios</h3></li>
+                        </a>
                     </ul>
                     </p>
                 </div>
                 <div class="tab-pane show" id="funcionarios">
                     <p>
                     <ul>
-                        <a class="text-muted font-black-normal" href="{% url 'rrhh:personas' %}"><li>Personas</li></a>
-                        <a class="text-muted font-black-normal" href="{% url 'rrhh:postulantes' %}"><li>Postulantes</li></a>
-                        <a class="text-muted font-black-normal" href="{% url 'rrhh:contratos' %}"><li>Funcionarios</li></a>
+                        <a class="text-muted font-black-normal" href="{% url 'rrhh:personas' %}">
+                            <li><h3>Personas</h3></li>
+                        </a>
+                        <a class="text-muted font-black-normal" href="{% url 'rrhh:postulantes' %}">
+                            <li><h3>Postulantes</h3></li>
+                        </a>
+                        <a class="text-muted font-black-normal" href="{% url 'rrhh:contratos' %}">
+                            <li><h3>Funcionarios</h3></li>
+                        </a>
                     </ul>
                     </p>
                 </div>
@@ -67,19 +79,19 @@
         <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:permisos' %}" style="background-color: blue">
             <h2><i class="uil uil-unlock-alt "></i></h2>
         </a>
-        <h5 class="font-black-normal text-center">Permiso</h5>
+        <h3 class="font-black-normal text-center">Permiso</h3>
     </div>
     <div class="col-md-4 text-center">
         <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:vacaciones' %}" style="background-color: indigo">
             <h2><i class="dripicons-photo-group"></i></h2>
         </a>
-        <h5 class="font-black-normal text-center">Vacaciones</h5>
+        <h3 class="font-black-normal text-center">Vacaciones</h3>
     </div>
     <div class="col-md-4 text-center">
         <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:licencias' %}" style="background-color: purple">
             <h2><i class="mdi mdi-license"></i></h2>
         </a>
-        <h5 class="font-black-normal text-center">Licencias</h5>
+        <h3 class="font-black-normal text-center">Licencias</h3>
     </div>
 </div>
 <br>
@@ -88,19 +100,19 @@
         <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:solicitudes' %}" style="background-color: red">
             <h2><i class="mdi mdi-pencil"></i></h2>
         </a>
-        <h5 class="font-black-normal text-center">Solicitudes</h5>
+        <h3 class="font-black-normal text-center">Solicitudes</h3>
     </div>
     <div class="col-md-4 text-center">
         <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:documentos' %}" style="background-color: teal">
             <h2><i class="mdi mdi-file-document"></i></h2>
         </a>
-        <h5 class="font-black-normal text-center">Documentación Funcionarios</h5>
+        <h3 class="font-black-normal text-center">Documentación Funcionarios</h3>
     </div>
     <div class="col-md-4 text-center">
         <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:entrevistas' %}" style="background-color: lightgreen">
             <h2><i class="mdi mdi-account-group-outline"></i></h2>
         </a>
-        <h5 class="font-black-normal text-center">Entrevistas</h5>
+        <h3 class="font-black-normal text-center">Entrevistas</h3>
         {% if contratos_contratar or contratos_expirar or solicitudes_pendientes or contrataos_finiquitar %}
             </div>
             </div>
