@@ -34,7 +34,7 @@ class Colegio(models.Model):
     indice_vulnerabilidad = models.CharField(max_length=25, null=True, blank=True, verbose_name="Índice de vulnerabilidad")
 
     def __str__(self):
-        return u"{}@{}".format(
+        return u"{} @ {}".format(
             self.nombre,
             self.abrev
         )

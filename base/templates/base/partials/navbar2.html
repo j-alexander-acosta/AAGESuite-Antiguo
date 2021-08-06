@@ -44,6 +44,66 @@
                             <a href="https://www.unach.cl/" target="_blank" class="dropdown-item">UnACh</a>
                         </div>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-admin" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="uil-cog mr-1"></i> Administracion <div class="arrow-down"></div>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="topnav-admin">
+                            <div class="dropdown">
+                                <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-entidades" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Entidades <div class="arrow-down"></div>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="topnav-entidades">
+                                    <a href="{% url 'rrhh:uniones' %}" class="dropdown-item">Uniones</a>
+                                    <a href="{% url 'rrhh:fundaciones' %}" class="dropdown-item">Fundaciones</a>
+                                    <a href="{% url 'rrhh:colegios' %}" class="dropdown-item">Colegios</a>
+                                </div>
+                            </div>
+                            <div class="dropdown">
+                                <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-persona" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Personas <div class="arrow-down"></div>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="topnav-persona">
+                                    <a href="#" class="dropdown-item">Usuarios</a>
+                                    <a href="#" class="dropdown-item">Perfiles</a>
+                                    <a href="#" class="dropdown-item">Regiones</a>
+                                    <a href="#" class="dropdown-item">Comunas</a>
+                                    <a href="#" class="dropdown-item">Ciudades</a>
+                                </div>
+                            </div>
+                            <div class="dropdown">
+                                <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-funcionario" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Funcionarios <div class="arrow-down"></div>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="topnav-persona">
+                                    <a href="#" class="dropdown-item">Bancos</a>
+                                    <a href="#" class="dropdown-item">AFPs</a>
+                                    <a href="#" class="dropdown-item">Isapres</a>
+                                </div>
+                            </div>
+                            <div class="dropdown">
+                                <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-colaboradores" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Colaboradores <div class="arrow-down"></div>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="topnav-colaboradores">
+                                    <a href="#" class="dropdown-item">Funciones</a>
+                                    <a href="#" class="dropdown-item">Tipos de Licencia</a>
+                                    <a href="#" class="dropdown-item">Tipos de Documento</a>
+                                </div>
+                            </div>
+                            <div class="dropdown">
+                                <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-titulo" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Títulos Profesionales <div class="arrow-down"></div>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="topnav-titulo">
+                                    <a href="#" class="dropdown-item">Tipos de Título</a>
+                                    <a href="#" class="dropdown-item">Areas de Título</a>
+                                    <a href="#" class="dropdown-item">Especialidades</a>
+                                    <a href="#" class="dropdown-item">Menciones</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
                 </ul>
             </div>
             <ul class="navbar-nav list-unstyled topbar-right-menu float-right mb-0">

@@ -19,93 +19,154 @@
         <div class="row">
         <div class="col-md-8">
     {% endif %}
-<div class="row">
-    <div class="tab-content col-md-12">
-        <div class="tab-pane show active" id="justified-tabs-preview">
-            <ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
-                <li class="nav-item">
-                    <a href="#adminstracion" data-toggle="tab" aria-expanded="false" class="nav-link rounded-0 active">
-                        <i class="mdi mdi-home-variant d-md-none d-block"></i>
-                        <span class="d-none d-md-block">Administración</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#funcionarios" data-toggle="tab" aria-expanded="true" class="nav-link rounded-0">
-                        <i class="mdi mdi-account-circle d-md-none d-block"></i>
-                        <span class="d-none d-md-block">Colaboradores</span>
-                    </a>
-                </li>
-            </ul>
-
-            <div class="tab-content">
-                <div class="tab-pane active" id="adminstracion">
-                    <p>
-                    <ul>
-                        <a class="text-muted font-black-normal" href="{% url 'rrhh:uniones' %}"><li>Uniones</li></a>
-                        <a class="text-muted font-black-normal" href="{% url 'rrhh:fundaciones' %}"><li>Fundaciones</li></a>
-                        <a class="text-muted font-black-normal" href="{% url 'rrhh:colegios' %}"><li>Colegios</li></a>
-                    </ul>
-                    </p>
-                </div>
-                <div class="tab-pane show" id="funcionarios">
-                    <p>
-                    <ul>
-                        <a class="text-muted font-black-normal" href="{% url 'rrhh:personas' %}"><li>Personas</li></a>
-                        <a class="text-muted font-black-normal" href="{% url 'rrhh:postulantes' %}"><li>Postulantes</li></a>
-                        <a class="text-muted font-black-normal" href="{% url 'rrhh:contratos' %}"><li>Funcionarios</li></a>
-                    </ul>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
-<br>
-<div class="row">
-    <div class="col-md-4 text-center">
-        <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:permisos' %}" style="background-color: blue">
-            <h2><i class="uil uil-unlock-alt "></i></h2>
+<div class="row text-center">
+    <div class="col-md-3 text-center my-2">
+        <a href="{% url 'rrhh:personas' %}" class="black">
+            <i class="mdi mdi-account" style="font-size: 80px"></i>
+            <h4 class="text-black-50 text-center">Personas</h4>
         </a>
-        <h5 class="font-black-normal text-center">Permiso</h5>
     </div>
-    <div class="col-md-4 text-center">
-        <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:vacaciones' %}" style="background-color: indigo">
-            <h2><i class="dripicons-photo-group"></i></h2>
+    <div class="col-md-3 text-center my-2">
+        <a href="{% url 'rrhh:postulantes' %}">
+            <i class="mdi mdi-account-check-outline" style="font-size: 80px"></i>
+            <h4 class="text-black-50 text-center">Postulantes</h4>
         </a>
-        <h5 class="font-black-normal text-center">Vacaciones</h5>
     </div>
-    <div class="col-md-4 text-center">
-        <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:licencias' %}" style="background-color: purple">
-            <h2><i class="mdi mdi-license"></i></h2>
+    <div class="col-md-3 text-center my-2">
+        <a href="{% url 'rrhh:contratos' %}">
+            <i class="mdi mdi-account-group" style="font-size: 80px"></i>
+            <h4 class="text-black-50 text-center">Colaboradores</h4>
         </a>
-        <h5 class="font-black-normal text-center">Licencias</h5>
     </div>
-</div>
-<br>
-<div class="row">
-    <div class="col-md-4 text-center">
-        <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:solicitudes' %}" style="background-color: red">
-            <h2><i class="mdi mdi-pencil"></i></h2>
+    <div class="col-md-3 text-center my-2">
+        <a href="{% url 'rrhh:permisos' %}">
+            <i class="mdi mdi-certificate-outline" style="font-size: 80px"></i>
+            <h4 class="text-black-50 text-center">Permisos</h4>
         </a>
-        <h5 class="font-black-normal text-center">Solicitudes</h5>
     </div>
-    <div class="col-md-4 text-center">
-        <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:documentos' %}" style="background-color: teal">
-            <h2><i class="mdi mdi-file-document"></i></h2>
+    <div class="col-md-3 text-center my-2">
+        <a href="{% url 'rrhh:vacaciones' %}">
+            <i class="dripicons-photo-group" style="font-size: 80px"></i>
+            <h4 class="text-black-50 text-center">Vacaciones</h4>
         </a>
-        <h5 class="font-black-normal text-center">Documentación Funcionarios</h5>
     </div>
-    <div class="col-md-4 text-center">
-        <a class="btn btn-rounded btn-lg text-white" href="{% url 'rrhh:entrevistas' %}" style="background-color: lightgreen">
-            <h2><i class="mdi mdi-account-group-outline"></i></h2>
+    <div class="col-md-3 text-center my-2">
+        <a href="{% url 'rrhh:licencias' %}">
+            <i class="mdi mdi-license" style="font-size: 80px"></i>
+            <h4 class="text-black-50 text-center">Licencias</h4>
         </a>
-        <h5 class="font-black-normal text-center">Entrevistas</h5>
+    </div>
+    <div class="col-md-3 text-center my-2">
+        <a href="{% url 'rrhh:solicitudes' %}">
+            <i class="mdi mdi-pencil" style="font-size: 80px"></i>
+            <h4 class="text-black-50 text-center">Solicitudes</h4>
+        </a>
+    </div>
+    <div class="col-md-3 text-center my-2">
+        <a href="{% url 'rrhh:documentos' %}">
+            <i class="mdi mdi-file-document" style="font-size: 80px"></i>
+            <h4 class="text-black-50 text-center">Documentación Funcionarios</h4>
+        </a>
+    </div>
+    <div class="col-md-3 text-center my-2">
+        <a href="{% url 'rrhh:entrevistas' %}">
+            <i class="mdi mdi-clipboard-account-outline" style="font-size: 80px"></i>
+            <h4 class="text-black-50 text-center">Entrevistas</h4>
+        </a>
+        {#    <div class="col-md-3">#}
+        {#        <div class="card mx-md-4">#}
+        {#            <a href="{% url 'rrhh:personas' %}">#}
+        {#                <div class="card-body">#}
+        {#                    <i class="mdi mdi-account" style="font-size: 80px"></i>#}
+        {#                    <h5 class="text-muted font-weight-normal mt-0" title="New Leads">Personas</h5>#}
+        {#                </div> <!-- end card-body -->#}
+        {#            </a>#}
+        {#        </div>#}
+        {#    </div>#}
+        {#    <div class="col-md-3">#}
+        {#        <div class="card mx-md-4">#}
+        {#            <a href="{% url 'rrhh:postulantes' %}">#}
+        {#                <div class="card-body">#}
+        {#                    <i class="mdi  mdi-account-check-outline" style="font-size: 80px"></i>#}
+        {#                    <h5 class="text-muted font-weight-normal mt-0" title="New Leads">Postulantes</h5>#}
+        {#                </div> <!-- end card-body -->#}
+        {#            </a>#}
+        {#        </div>#}
+        {#    </div>#}
+        {#    <div class="col-md-3">#}
+        {#        <div class="card mx-md-4">#}
+        {#            <a href="{% url 'rrhh:contratos' %}">#}
+        {#                <div class="card-body">#}
+        {#                    <i class="mdi mdi-account-group" style="font-size: 80px"></i>#}
+        {#                    <h5 class="text-muted font-weight-normal mt-0" title="New Leads">Colaboradores</h5>#}
+        {#                </div> <!-- end card-body -->#}
+        {#            </a>#}
+        {#        </div>#}
+        {#    </div>#}
+        {#    <div class="col-md-3">#}
+        {#        <div class="card mx-md-4">#}
+        {#            <a href="{% url 'rrhh:permisos' %}">#}
+        {#                <div class="card-body">#}
+        {#                    <i class="mdi mdi-certificate-outline" style="font-size: 80px"></i>#}
+        {#                    <h5 class="text-muted font-weight-normal mt-0" title="New Leads">Permisos</h5>#}
+        {#                </div> <!-- end card-body -->#}
+        {#            </a>#}
+        {#        </div>#}
+        {#    </div>#}
+        {#    <div class="col-md-3">#}
+        {#        <div class="card mx-md-4">#}
+        {#            <a href="{% url 'rrhh:vacaciones' %}">#}
+        {#                <div class="card-body">#}
+        {#                    <i class="dripicons-photo-group" style="font-size: 80px"></i>#}
+        {#                    <h5 class="text-muted font-weight-normal mt-0" title="New Leads">Vacaciones</h5>#}
+        {#                </div> <!-- end card-body -->#}
+        {#            </a>#}
+        {#        </div>#}
+        {#    </div>#}
+        {#    <div class="col-md-3">#}
+        {#        <div class="card mx-md-4">#}
+        {#            <a href="{% url 'rrhh:documentos' %}">#}
+        {#                <div class="card-body">#}
+        {#                    <i class="mdi mdi-asterisk" style="font-size: 80px"></i>#}
+        {#                    <h5 class="text-muted font-weight-normal mt-0" title="New Leads">Licencias</h5>#}
+        {#                </div> <!-- end card-body -->#}
+        {#            </a>#}
+        {#        </div>#}
+        {#    </div>#}
+        {#    <div class="col-md-3">#}
+        {#        <div class="card mx-md-4">#}
+        {#            <a href="{% url 'rrhh:documentos' %}">#}
+        {#                <div class="card-body">#}
+        {#                    <i class="mdi mdi-file-document" style="font-size: 80px"></i>#}
+        {#                    <h6 class="text-muted font-weight-normal mt-0" title="New Leads">Documentos de Colaboradores</h6>#}
+        {#                </div> <!-- end card-body -->#}
+        {#            </a>#}
+        {#        </div>#}
+        {#    </div>#}
+        {#    <div class="col-md-3">#}
+        {#        <div class="card mx-md-4">#}
+        {#            <a href="{% url 'rrhh:documentos' %}">#}
+        {#                <div class="card-body">#}
+        {#                    <i class="mdi mdi-pencil" style="font-size: 80px"></i>#}
+        {#                    <h5 class="text-muted font-weight-normal mt-0" title="New Leads">Solicitudes</h5>#}
+        {#                </div> <!-- end card-body -->#}
+        {#            </a>#}
+        {#        </div>#}
+        {#    </div>#}
+        {#    <div class="col-md-3">#}
+        {#        <div class="card mx-md-4">#}
+        {#            <a href="{% url 'rrhh:entrevistas' %}">#}
+        {#                <div class="card-body">#}
+        {#                    <i class="mdi mdi-clipboard-account-outline" style="font-size: 80px"></i>#}
+        {#                    <h5 class="text-muted font-weight-normal mt-0" title="New Leads">Entrevistas</h5>#}
+        {#                </div> <!-- end card-body -->#}
+        {#            </a>#}
+        {#        </div>#}
+        {#    </div>#}
         {% if contratos_contratar or contratos_expirar or solicitudes_pendientes or contrataos_finiquitar %}
             </div>
             </div>
         {% endif %}
-<br>
 </div>
 {% if contratos_contratar or contratos_expirar or solicitudes_pendientes or contrataos_finiquitar %}
     <div class="col-md-4">

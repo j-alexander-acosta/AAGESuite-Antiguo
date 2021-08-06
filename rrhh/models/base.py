@@ -101,23 +101,6 @@ class Perfil(models.Model):
         verbose_name_plural = u'Perfiles'
 
 
-class PerfilUsuario(models.Model):
-    usuario = models.OneToOneField(User)
-    perfil = models.ForeignKey("Perfil", on_delete=models.CASCADE)
-    nivel_acceso = models.PositiveSmallIntegerField(default=1, choices=NIVEL_ACCESO, verbose_name='Nivel de acceso')
-
-    def __str__(self):
-        return '{}, {} ({})'.format(
-            self.usuario,
-            self.perfil,
-            self.nivel_acceso
-        )
-
-    class Meta:
-        verbose_name = u'Perfil de usuario'
-        verbose_name_plural = u'Perfiles de usuarios'
-
-
 class Funcion(models.Model):
     TIPO_FUNCION = (
         (1, 'Funcion principal'),

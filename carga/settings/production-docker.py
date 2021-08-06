@@ -26,12 +26,6 @@ DATABASES = {
     }
 }
 
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',
-)
-
 COMPRESS_ENABLED = False
 COMPRESS_OFFLINE = False
 COMPRESS_CSS_HASHING_METHOD = 'content'
