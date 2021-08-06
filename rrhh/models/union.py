@@ -9,7 +9,7 @@ class Union(models.Model):
     descripcion = models.TextField(max_length=2500, null=True, blank=True, verbose_name='Descripción')
 
     def __str__(self):
-        return '{}@{}'.format(
+        return '{} @ {}'.format(
             self.nombre,
             self.abrev
         )
