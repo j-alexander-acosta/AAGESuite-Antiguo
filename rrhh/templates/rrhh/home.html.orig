@@ -19,42 +19,96 @@
         <div class="row">
         <div class="col-md-8">
     {% endif %}
-<div class="row text-center">
-    <div class="col-md-3 text-center my-2">
-        <a href="{% url 'rrhh:personas' %}" class="black">
-            <i class="mdi mdi-account" style="font-size: 80px"></i>
-            <h4 class="text-black-50 text-center">Personas</h4>
-        </a>
+<<<<<<< HEAD
+<div class="row">
+    <div class="tab-content col-md-12">
+        <div class="tab-pane show active" id="justified-tabs-preview">
+            <ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
+                <li class="nav-item">
+                    <a href="#adminstracion" data-toggle="tab" aria-expanded="false" class="nav-link rounded-0 active">
+                        <i class="mdi mdi-home-variant d-md-none d-block"></i>
+                        <h3 class="font-black-normal text-center">Administración</h3>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#funcionarios" data-toggle="tab" aria-expanded="true" class="nav-link rounded-0">
+                        <i class="mdi mdi-account-circle d-md-none d-block"></i>
+                        <h3 class="font-black-normal text-center">Colaboradores</h3>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="adminstracion">
+                    <p>
+                    <ul>
+                        <a class="text-muted font-black-normal" href="{% url 'rrhh:uniones' %}">
+                            <li><h3>Uniones</h3></li>
+                        </a>
                         <a class="text-muted font-black-normal" href="{% url 'rrhh:fundaciones' %}">
                             <li><h3>Fundaciones</h3></li>
                         </a>
                         <a class="text-muted font-black-normal" href="{% url 'rrhh:colegios' %}">
                             <li><h3>Colegios</h3></li>
                         </a>
-    </div>
-    <div class="col-md-3 text-center my-2">
-        <a href="{% url 'rrhh:postulantes' %}">
-            <i class="mdi mdi-account-check-outline" style="font-size: 80px"></i>
-            <h4 class="text-black-50 text-center">Postulantes</h4>
-        </a>
+                    </ul>
+                    </p>
+                </div>
+                <div class="tab-pane show" id="funcionarios">
+                    <p>
+                    <ul>
+                        <a class="text-muted font-black-normal" href="{% url 'rrhh:personas' %}">
+                            <li><h3>Personas</h3></li>
+                        </a>
                         <a class="text-muted font-black-normal" href="{% url 'rrhh:postulantes' %}">
                             <li><h3>Postulantes</h3></li>
                         </a>
                         <a class="text-muted font-black-normal" href="{% url 'rrhh:contratos' %}">
                             <li><h3>Funcionarios</h3></li>
                         </a>
+                    </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+=======
+<div class="row text-center">
+    <div class="col-md-3 text-center my-2">
+        <a href="{% url 'rrhh:personas' %}" class="black">
+            <i class="mdi mdi-account" style="font-size: 80px"></i>
+            <h4 class="text-black-50 text-center">Personas</h4>
+        </a>
+>>>>>>> origin/feature/dockerizacion
+    </div>
+    <div class="col-md-3 text-center my-2">
+        <a href="{% url 'rrhh:postulantes' %}">
+            <i class="mdi mdi-account-check-outline" style="font-size: 80px"></i>
+            <h4 class="text-black-50 text-center">Postulantes</h4>
+        </a>
+<<<<<<< HEAD
+        <h3 class="font-black-normal text-center">Permiso</h3>
+=======
+>>>>>>> origin/feature/dockerizacion
     </div>
     <div class="col-md-3 text-center my-2">
         <a href="{% url 'rrhh:contratos' %}">
             <i class="mdi mdi-account-group" style="font-size: 80px"></i>
             <h4 class="text-black-50 text-center">Colaboradores</h4>
         </a>
+<<<<<<< HEAD
+        <h3 class="font-black-normal text-center">Vacaciones</h3>
+=======
+>>>>>>> origin/feature/dockerizacion
     </div>
     <div class="col-md-3 text-center my-2">
         <a href="{% url 'rrhh:permisos' %}">
             <i class="mdi mdi-certificate-outline" style="font-size: 80px"></i>
             <h4 class="text-black-50 text-center">Permisos</h4>
         </a>
+<<<<<<< HEAD
+        <h3 class="font-black-normal text-center">Licencias</h3>
+=======
+>>>>>>> origin/feature/dockerizacion
     </div>
     <div class="col-md-3 text-center my-2">
         <a href="{% url 'rrhh:vacaciones' %}">
@@ -73,18 +127,29 @@
             <i class="mdi mdi-pencil" style="font-size: 80px"></i>
             <h4 class="text-black-50 text-center">Solicitudes</h4>
         </a>
+<<<<<<< HEAD
+        <h3 class="font-black-normal text-center">Solicitudes</h3>
+=======
+>>>>>>> origin/feature/dockerizacion
     </div>
     <div class="col-md-3 text-center my-2">
         <a href="{% url 'rrhh:documentos' %}">
             <i class="mdi mdi-file-document" style="font-size: 80px"></i>
             <h4 class="text-black-50 text-center">Documentación Funcionarios</h4>
         </a>
+<<<<<<< HEAD
+        <h3 class="font-black-normal text-center">Documentación Funcionarios</h3>
+=======
+>>>>>>> origin/feature/dockerizacion
     </div>
     <div class="col-md-3 text-center my-2">
         <a href="{% url 'rrhh:entrevistas' %}">
             <i class="mdi mdi-clipboard-account-outline" style="font-size: 80px"></i>
             <h4 class="text-black-50 text-center">Entrevistas</h4>
         </a>
+<<<<<<< HEAD
+        <h3 class="font-black-normal text-center">Entrevistas</h3>
+=======
         {#    <div class="col-md-3">#}
         {#        <div class="card mx-md-4">#}
         {#            <a href="{% url 'rrhh:personas' %}">#}
@@ -175,6 +240,7 @@
         {#            </a>#}
         {#        </div>#}
         {#    </div>#}
+>>>>>>> origin/feature/dockerizacion
         {% if contratos_contratar or contratos_expirar or solicitudes_pendientes or contrataos_finiquitar %}
             </div>
             </div>
