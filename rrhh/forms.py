@@ -592,9 +592,8 @@ class ContratoColegioForm(forms.ModelForm):
         self.fields['funcionario'].widget.attrs['class'] = 'chosen'
         self.fields['colegio'].widget.attrs['class'] = 'chosen'
         self.fields['categoria'].widget.attrs['class'] = 'chosen'
-        self.fields['funcion_principal'].queryset = id_tipo=1
-
-        self.fields['funcion_secundaria'].widget.attrs['class'] = 'chosen'
+        self.fields['funcion_principal'].queryset = Funcion.objects.filter(tipo=1) 
+        self.fields['funcion_secundaria'].queryset = Funcion.objects.filter(tipo=2) 
         self.fields['tipo_contrato'].widget.attrs['class'] = 'chosen'
         self.fields['reemplazando_licencia'].widget.attrs['class'] = 'chosen'
         self.fields['fecha_inicio'] = forms.DateField(
