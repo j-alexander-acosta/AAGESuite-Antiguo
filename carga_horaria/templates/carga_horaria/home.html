@@ -17,7 +17,7 @@
         <div class="col-md-4 text-center"></div>
         <div class="col-md-4 text-center">
             <a class="btn btn-rounded btn-lg text-white" href="{% url 'carga-horaria:periodos' %}" style="background-color: #3688FC">
-                <h2><i class="mdi mdi-pencil"></i> {{ total_unidades_directivas }} </h2>
+                <h1><i class="mdi mdi-pencil"></i> {{ total_unidades_directivas }} </h1>
             </a>
             <h3 class="font-black-normal text-center">Confección Carga Horaria</h3>
         </div>
@@ -29,21 +29,21 @@
     <div class="row">
         <div class="col-md-4 text-center">
             <a class="btn btn-rounded btn-lg text-white" href="{% url 'carga-horaria:colegios' %}" style="background-color: #FF0000">
-                <h2><i class=" uil-bus-school"></i> {{ total_unidades_directivas }} </h2>
+                <h1><i class=" uil-bus-school"></i> {{ total_unidades_directivas }} </h1>
             </a>
             <h3 class="font-black-normal text-center">Colegios</h3>
         </div>
 
         <div class="col-md-4 text-center">
             <a class="btn btn-rounded btn-lg text-white" href="{% if request.user.is_superuser %}{% url 'carga-horaria:planes' %}{% else %}#{% endif %}" style="background-color: #4B0082">
-                <h2><i class="uil-book-open"></i> {{ total_unidades_directivas }} </h2>
+                <h1><i class="uil-book-open"></i> {{ total_unidades_directivas }} </h1>
             </a>
             <h3 class="font-black-normal text-center">Planes de Estudio</h3>
         </div>
 
         <div class="col-md-4 text-center">
             <a class="btn btn-rounded btn-lg text-white" href="{% if request.user.is_superuser %}{% url 'carga-horaria:asignaturasbase' %}{% else %}#{% endif %}" style="background-color: #800080">
-                <h2><i class="uil-presentation-edit"></i> {{ total_unidades_directivas }} </h2>
+                <h1><i class="uil-presentation-edit"></i> {{ total_unidades_directivas }} </h1>
             </a>
             <h3 class="font-black-normal text-center">Asignatura Base</h3>
         </div>
@@ -60,21 +60,21 @@
     <div class="row" style="margin-top: 80px;">
         <div class="col-md-4 text-center">
             <a class="btn btn-rounded btn-lg text-white" href="{% url 'carga-horaria:profesores' %}" style="background-color: #008080">
-                <h2><i class="uil-user"></i> {{ total_unidades_directivas }} </h2>
+                <h1><i class="uil-user-plus"></i> {{ total_unidades_directivas }} </h1>
             </a>
             <h3 class="font-black-normal text-center">Profesores</h3>
         </div>
 
         <div class="col-md-4 text-center">
             <a class="btn btn-rounded btn-lg text-white" href="{% url 'carga-horaria:asistentes' %}" style="background-color: #90EE90">
-                <h2><i class="uil-users-alt"></i> {{ total_unidades_directivas }} </h2>
+                <h1><i class="uil-users-alt"></i> {{ total_unidades_directivas }} </h1>
             </a>
             <h3 class="font-black-normal text-center">Asistentes</h3>
         </div>
 
         <div class="col-md-4 text-center">
             <a class="btn btn-rounded btn-lg text-white" href="https://app.powerbi.com/" style="background-color: #3688FC">
-                <h2><i class="uil-notes"></i> {{ total_unidades_directivas }} </h2>
+                <h1><i class="uil-notes"></i> {{ total_unidades_directivas }} </h1>
             </a>
             <h3 class="font-black-normal text-center">Reportes</h3>
         </div>
