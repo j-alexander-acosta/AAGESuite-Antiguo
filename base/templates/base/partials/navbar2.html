@@ -54,9 +54,9 @@
                                     Entidades <div class="arrow-down"></div>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="topnav-entidades">
-                                    <a href="{% url 'rrhh:uniones' %}" class="dropdown-item">Uniones</a>
-                                    <a href="{% url 'rrhh:fundaciones' %}" class="dropdown-item">Fundaciones</a>
-                                    <a href="{% url 'rrhh:colegios' %}" class="dropdown-item">Colegios</a>
+                                    <a href="{% url 'gestion:uniones' %}" class="dropdown-item">Uniones</a>
+                                    <a href="{% url 'gestion:fundaciones' %}" class="dropdown-item">Fundaciones</a>
+                                    <a href="{% url 'gestion:colegios' %}" class="dropdown-item">Colegios</a>
                                 </div>
                             </div>
                             <div class="dropdown">
@@ -64,8 +64,8 @@
                                     Personas <div class="arrow-down"></div>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="topnav-persona">
-                                    <a href="#" class="dropdown-item">Usuarios</a>
-                                    <a href="#" class="dropdown-item">Perfiles</a>
+                                    <a href="{% url 'gestion:usuarios' %}" class="dropdown-item">Usuarios</a>
+                                    <a href="{% url 'gestion:perfiles' %}" class="dropdown-item">Perfiles</a>
                                     <a href="#" class="dropdown-item">Regiones</a>
                                     <a href="#" class="dropdown-item">Comunas</a>
                                     <a href="#" class="dropdown-item">Ciudades</a>
@@ -77,8 +77,8 @@
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="topnav-persona">
                                     <a href="#" class="dropdown-item">Bancos</a>
-                                    <a href="#" class="dropdown-item">AFPs</a>
-                                    <a href="#" class="dropdown-item">Isapres</a>
+                                    <a href="{% url 'gestion:afps' %}" class="dropdown-item">AFPs</a>
+                                    <a href="{% url 'gestion:isapres' %}" class="dropdown-item">Isapres</a>
                                 </div>
                             </div>
                             <div class="dropdown">

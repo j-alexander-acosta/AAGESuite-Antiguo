@@ -33,6 +33,10 @@ class Colegio(models.Model):
     total_alumnos_pie = models.PositiveIntegerField(null=True, blank=True, verbose_name="Total de alumnos en PIE")
     indice_vulnerabilidad = models.CharField(max_length=25, null=True, blank=True, verbose_name="Índice de vulnerabilidad")
 
+    @property
+    def colaboradores(self):
+        return ContratoColegio.objects.filter(colegio=self, vigente=True)
+
     def __str__(self):
         return u"{} @ {}".format(
             self.nombre,
@@ -94,6 +98,13 @@ class ContratoColegio(models.Model):
             estado = 1
 
         return estado
+
+    @property
+    def colaborador(self):
+        return '{} - {}'.format(
+            self.funcionario.persona.get_name,
+            self.funcion_principal
+        )
 
     def __str__(self):
         return '{} - {}'.format(

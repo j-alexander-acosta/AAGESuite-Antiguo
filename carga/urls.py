@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^logout/', views.logout_view, name='logout'),
     url(r'^carga/', include('carga_horaria.urls')),
     url(r'^rrhh/', include('rrhh.urls')),
+    url(r'^gestion/', include('gestion.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.home, name='home'),
 ]

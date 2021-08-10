@@ -8,81 +8,6 @@ urlpatterns = [
     url(r'^$', views.home, name='home_rrhh'),
     url(r'^hyper_index/$', views.hyper_index, name='hyper_index'),
     url(
-        r'^uniones/$',
-        views.UnionListView.as_view(),
-        name='uniones'
-    ),
-    url(
-        r'^uniones/nuevo/$',
-        views.UnionCreateView.as_view(),
-        name='union__nuevo'
-    ),
-    url(
-        r'^uniones/(?P<pk>\d+)/$',
-        views.UnionDetailView.as_view(),
-        name='union'
-    ),
-    url(
-        r'^uniones/(?P<pk>\d+)/editar/$',
-        views.UnionUpdateView.as_view(),
-        name='union__editar'
-    ),
-    url(
-        r'^uniones/(?P<pk>\d+)/eliminar/$',
-        views.UnionDeleteView.as_view(),
-        name='union__eliminar'
-    ),
-    url(
-        r'^fundaciones/$',
-        views.FundacionListView.as_view(),
-        name='fundaciones'
-    ),
-    url(
-        r'^fundaciones/nuevo/$',
-        views.FundacionCreateView.as_view(),
-        name='fundacion__nuevo'
-    ),
-    url(
-        r'^fundaciones/(?P<pk>\d+)/$',
-        views.FundacionDetailView.as_view(),
-        name='fundacion'
-    ),
-    url(
-        r'^fundaciones/(?P<pk>\d+)/editar/$',
-        views.FundacionUpdateView.as_view(),
-        name='fundacion__editar'
-    ),
-    url(
-        r'^fundaciones/(?P<pk>\d+)/eliminar/$',
-        views.FundacionDeleteView.as_view(),
-        name='fundacion__eliminar'
-    ),
-    url(
-        r'^colegios/$',
-        views.ColegioListView.as_view(),
-        name='colegios'
-    ),
-    url(
-        r'^colegios/nuevo/$',
-        views.ColegioCreateView.as_view(),
-        name='colegio__nuevo'
-    ),
-    url(
-        r'^colegios/(?P<pk>\d+)/$',
-        views.ColegioDetailView.as_view(),
-        name='colegio'
-    ),
-    url(
-        r'^colegios/(?P<pk>\d+)/editar/$',
-        views.ColegioUpdateView.as_view(),
-        name='colegio__editar'
-    ),
-    url(
-        r'^colegios/(?P<pk>\d+)/eliminar/$',
-        views.ColegioDeleteView.as_view(),
-        name='colegio__eliminar'
-    ),
-    url(
         r'^personas/$',
         views.PersonaListView.as_view(),
         name='personas'
@@ -223,31 +148,6 @@ urlpatterns = [
         name='vacacion__eliminar'
     ),
     url(
-        r'^tiposlicencia/$',
-        views.TipoLicenciaListView.as_view(),
-        name='tiposlicencia'
-    ),
-    url(
-        r'^tiposlicencia/nuevo/$',
-        views.TipoLicenciaCreateView.as_view(),
-        name='tipolicencia__nuevo'
-    ),
-    url(
-        r'^tiposlicencia/(?P<pk>\d+)/$',
-        views.TipoLicenciaDetailView.as_view(),
-        name='tipolicencia'
-    ),
-    url(
-        r'^tiposlicencia/(?P<pk>\d+)/editar/$',
-        views.TipoLicenciaUpdateView.as_view(),
-        name='tipolicencia__editar'
-    ),
-    url(
-        r'^tiposlicencia/(?P<pk>\d+)/eliminar/$',
-        views.TipoLicenciaDeleteView.as_view(),
-        name='tipolicencia__eliminar'
-    ),
-    url(
         r'^licencias/$',
         views.LicenciaListView.as_view(),
         name='licencias'
@@ -346,81 +246,6 @@ urlpatterns = [
         r'^estado-contratacion/cambiar/$',
         views.cambiar_estado_contratacion,
         name='estado_contratacion__cambiar'
-    ),
-    url(
-        r'^funciones/$',
-        views.FuncionListView.as_view(),
-        name='funciones'
-    ),
-    url(
-        r'^funciones/nuevo/$',
-        views.FuncionCreateView.as_view(),
-        name='funcion__nuevo'
-    ),
-    url(
-        r'^funciones/(?P<pk>\d+)/$',
-        views.FuncionDetailView.as_view(),
-        name='funcion'
-    ),
-    url(
-        r'^funciones/(?P<pk>\d+)/editar/$',
-        views.FuncionUpdateView.as_view(),
-        name='funcion__editar'
-    ),
-    url(
-        r'^funciones/(?P<pk>\d+)/eliminar/$',
-        views.FuncionDeleteView.as_view(),
-        name='funcion__eliminar'
-    ),
-    url(
-        r'^afps/$',
-        views.AFPListView.as_view(),
-        name='afps'
-    ),
-    url(
-        r'^afps/nuevo/$',
-        views.AFPCreateView.as_view(),
-        name='afp__nuevo'
-    ),
-    url(
-        r'^afps/(?P<pk>\d+)/$',
-        views.AFPDetailView.as_view(),
-        name='afp'
-    ),
-    url(
-        r'^afps/(?P<pk>\d+)/editar/$',
-        views.AFPUpdateView.as_view(),
-        name='afp__editar'
-    ),
-    url(
-        r'^afps/(?P<pk>\d+)/eliminar/$',
-        views.AFPDeleteView.as_view(),
-        name='afp__eliminar'
-    ),
-    url(
-        r'^isapres/$',
-        views.IsapreListView.as_view(),
-        name='isapres'
-    ),
-    url(
-        r'^isapres/nuevo/$',
-        views.IsapreCreateView.as_view(),
-        name='isapre__nuevo'
-    ),
-    url(
-        r'^isapres/(?P<pk>\d+)/$',
-        views.IsapreDetailView.as_view(),
-        name='isapre'
-    ),
-    url(
-        r'^isapres/(?P<pk>\d+)/editar/$',
-        views.IsapreUpdateView.as_view(),
-        name='isapre__editar'
-    ),
-    url(
-        r'^isapres/(?P<pk>\d+)/eliminar/$',
-        views.IsapreDeleteView.as_view(),
-        name='isapre__eliminar'
     ),
     url(
         r'^finiquito/(?P<id_contrato>\d+)/$',
