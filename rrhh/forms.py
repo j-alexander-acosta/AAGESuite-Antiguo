@@ -3,6 +3,7 @@ from django.db.models import Sum
 from localflavor.cl.forms import CLRutField
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Field, HTML
+from rrhh.models.base import Funcion
 from rrhh.models.persona import Persona, Funcionario, DocumentoFuncionario
 from rrhh.models.colegio import Colegio, Entrevista, VacacionFuncionarioColegio, DocumentoPersonal
 from rrhh.models.colegio import ContratoColegio, LicenciaFuncionarioColegio, PermisoFuncionarioColegio
