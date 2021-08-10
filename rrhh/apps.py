@@ -2,7 +2,7 @@ from django.apps import AppConfig
 
 
 class RrhhConfig(AppConfig):
-    name = 'recursos_humanos'
+    name = 'rrhh'
     verbose_name = 'Recursos humanos'
 
     # def ready(self):

@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-
 TIPO_SUBVENCION = {
     ('particular', 'Particular'),
     ('particular_subvencionado', 'Particular Subvencionado'),
@@ -72,9 +71,14 @@ DOCUMENTO = (
     (3, 'Autorización de uso de imagen'),
 )
 TIPO_PERFIL = (
-    (1, ''),
-    (2, ''),
-    (3, ''),
+    (1, 'Docente'),
+    (2, 'Capellán'),
+    (3, 'Jefe de UTP'),
+    (4, 'Inspector General'),
+    (5, 'Director'),
+    (6, 'Departamental'),
+    (7, 'Asesor'),
+    (8, 'Administrador'),
 )
 NIVEL_ACCESO = (
     (1, 'Invitado'),
@@ -127,10 +131,10 @@ class TipoLicencia(models.Model):
 
     def __str__(self):
         return '{} ({}-{})'.format(
-                self.nombre,
-                self.total_dias,
-                '1' if self.dias_habiles else '0'
-            )
+            self.nombre,
+            self.total_dias,
+            '1' if self.dias_habiles else '0'
+        )
 
     class Meta:
         verbose_name = u'Tipo de licencia'
