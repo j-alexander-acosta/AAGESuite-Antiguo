@@ -45,7 +45,7 @@
                             <td>
                                 <a class="btn btn-sm btn-outline-primary" href="{% url 'gestion:change_password' u.pk %}" data-toggle="tooltip" data-placement="top" title="Cambiar contraseña"><i class="uil-key-skeleton"></i></a>
                                 <a class="btn btn-sm btn-outline-info" href="{% url 'gestion:usuario__editar' u.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
-                                <a class="btn btn-sm btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_usuario_{{f.pk}}"><i class="uil-trash" data-toggle="tooltip" data-placement="top" title="Eliminar"></i></a>
+{#                                <a class="btn btn-sm btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_usuario_{{f.pk}}"><i class="uil-trash" data-toggle="tooltip" data-placement="top" title="Eliminar"></i></a>#}
                             </td>
                         </tr>
                         <div class="modal" tabindex="-1" role="dialog" id="eliminar_usuario_{{u.pk}}">

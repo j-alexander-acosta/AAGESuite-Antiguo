@@ -37,7 +37,7 @@
                     {% for f in object_list %}
                         <tr>
                             <td><a href="{% url 'gestion:perfil' f.pk %}"> {{ f.nombre }} </a></td>
-                            <td> {% if f.descripcion %}{{ f.descripcion|truncatewords:"7" }}{% else %}No específicado{% endif %} </td>
+                            <td> {% if f.descripcion %}{{ f.descripcion|truncatewords:"10" }}{% else %}No específicado{% endif %} </td>
                             <td>
                                 <a class="btn btn-sm btn-outline-info" href="{% url 'gestion:perfil__editar' f.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
                                 <a class="btn btn-sm btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_perfil_{{f.pk}}"><i class="uil-trash" data-toggle="tooltip" data-placement="top" title="Eliminar"></i></a>
