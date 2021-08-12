@@ -148,7 +148,12 @@
                                     {% if object.tipo_contrato == 3 %}
                                         <tr>
                                             <th> En reemplazo de</th>
-                                            <td> {{ object.reemplazando }} </td>
+                                            {% if object.reemplazando_licencia != None %}
+                                                <td> {{ object.reemplazando_licencia }} </td>
+                                            {% endif %} 
+                                            {% if object.reemplazando_permiso != None %}
+                                                <td> {{ object.reemplazando_permiso }} </td>
+                                            {% endif %}
                                         </tr>
                                     {% endif %}
                                     <tr>

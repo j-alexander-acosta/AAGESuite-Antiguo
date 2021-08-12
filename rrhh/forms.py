@@ -584,7 +584,9 @@ class ContratoColegioForm(forms.ModelForm):
             'fecha_inicio',
             'fecha_termino',
             'reemplazando_licencia',
-            'horas_total'
+            'reemplazando_permiso',
+            'horas_total',
+            'documento'
         ]
 
     def __init__(self, *args, **kwargs):
@@ -596,6 +598,8 @@ class ContratoColegioForm(forms.ModelForm):
         self.fields['funcion_secundaria'].queryset = Funcion.objects.filter(tipo=2) 
         self.fields['tipo_contrato'].widget.attrs['class'] = 'chosen'
         self.fields['reemplazando_licencia'].widget.attrs['class'] = 'chosen'
+        self.fields['reemplazando_permiso'].widget.attrs['class'] = 'chosen'
+        self.fields['documento'].widget.attrs['required'] = ''
         self.fields['fecha_inicio'] = forms.DateField(
             widget=forms.widgets.DateInput(attrs={'type': 'date'}),
             input_formats=['%Y-%m-%d']
@@ -659,11 +663,22 @@ class ContratoColegioForm(forms.ModelForm):
                 ),
                 Div(
                     Div(
-                        Field('horas_total'),
+                        Field('reemplazando_permiso'),
                         css_class='col-md-6'
                     ),
                     Div(
                         Field('reemplazando_licencia'),
+                        css_class='col-md-6'
+                    ),
+                    css_class='row'
+                ),
+                Div(
+                    Div(
+                        Field('horas_total'),
+                        css_class='col-md-6'
+                    ),
+                    Div(
+                        Field('documento'),
                         css_class='col-md-6'
                     ),
                     css_class='row'
