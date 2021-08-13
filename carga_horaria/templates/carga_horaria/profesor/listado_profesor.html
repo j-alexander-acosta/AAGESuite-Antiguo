@@ -16,6 +16,75 @@
     <li class="breadcrumb-item active">Profesor</li>
 {% endblock %}
 
+{% block extra_js %}
+    <script type="text/javascript">
+        
+        function filtrotabla(){
+            let prjefe = $(document).find('#cbox1').is(":checked");
+            let advent = $(document).find('#cbox2').is(":checked");
+            let tipocont = $(document).find('#tipo_contrato').val();
+            let tituloprof = $(document).find('#especialidad_titulo').val();
+            let funcargo = $(document).find('#funcion').val();
+
+            //alert("entro:"+prjefe+"/"+advent+"/"+tipocont);
+
+            $(document).find('#listprofesor tr').each(function () {
+                var value_prjefe = $(this).find("#prjefe").html();
+                var value_adv = $(this).find("#adv").html();
+                var value_tpc = $(this).find("#tp_ct").html() ;
+                var value_tpr = $(this).find("#tt_pr").html() ;
+                var value_fc = $(this).find("#car_fun").html() ;
+                //alert("value: "+value_adv);
+                //$(this).show();  $(this).hide();
+
+                if( prjefe ) {
+                    if( value_adv === 'False'){
+                        $(this).hide();
+                    }
+                }
+                if( advent ) {
+                    if( value_adv === 'False'){
+                        $(this).hide();
+                    }
+                }
+                if(tipocont != 0){
+                    //alert("value: "+value_tpc);
+                    if(value_tpc != tipocont){
+                        $(this).hide();
+                    }
+                }
+                if(tituloprof != 0){
+                    //alert("value: "+value_tpc);
+                    if(value_tpr != tituloprof){
+                        $(this).hide();
+                    }
+                }
+                if(funcargo != 0){
+                    //alert("value: "+value_tpc);
+                    if(value_fc != funcargo){
+                        $(this).hide();
+                    }
+                }
+            });
+
+            
+        }
+        function limpiar(){
+            $(document).find('#listprofesor tr').each(function () {
+                $(this).show();
+            });
+        }
+
+        $(function(){
+            document.getElementById("btn_buscar").addEventListener("click", filtrotabla);
+            document.getElementById("btn_limpiar").addEventListener("click", limpiar);
+            
+        });
+    </script>
+{% endblock %}
+
+
+
 {% block content %}
 <div class="card">
     <div class="card-header">
@@ -39,43 +108,62 @@
         </span>
     </div>
     <div class="row">
-      <div class="col-2">
+      <div class="col-3">
         <form action="." method="GET">
           <i class="uil-search"></i> <input name="q" placeholder="Buscar" value="{{ request.GET.q }}">{% if 'q' in request.GET %} <a href="{% url 'carga-horaria:profesores' %}" class="text-muted">limpiar</a>{% endif %}
         </form>
       </div>
+    </div>
+    <div class="row">
       <div class="col-1">
           <div class="btn-group">
-            <label><input type="checkbox" id="cbox1" value="profesor_jefe"> Profesor jefe</label>
+            <label><input type="checkbox" id="cbox1" value="true"> Profesor jefe</label>
         </div>
       </div>
       <div class="col-1">
-        <label><input type="checkbox" id="cbox2" value="adventista"> Adventista</label>
+        <label><input type="checkbox" id="cbox2" value="true"> Adventista</label>
       </div>  
       <div class="col-2">
         <form action=".">Título: 
-            <select name="titulo">
-                <option value="1">Licenciado Sociales</option>
-                <option value="2">Licenciado Ciencias</option>
-                <option value="3">Licenciado Español</option>
-                <option value="4">Licenciado Artes</option>
-                <option value="5">Licenciado Matemáticas</option>
+            <select name="especialidad" id="especialidad_titulo">
+                <option value="0">Todos</option>
+                <option value="1">Ingeniero de Sistemas</option>
+                <option value="2">Licenciado en Educación</option>
+                <option value="3">Licenciado Matemáticas</option>
+                <option value="4">Licenciado Español</option>
+                <option value="5">Licenciado Música</option>
             </select>
         </form>
       </div>
       <div class="col-2">
         <form action=".">Tipo de Contrato: 
-            <select name="tipo">
-                <option value="1">Todos</option>
-                <option value="2">Indefinido</option>
-                <option value="3">Plazo fijo</option>
+            <select name="tipo" id="tipo_contrato">
+                <option value="0">Todos</option>
+                <option value="1">Indefinido</option>
+                <option value="2">Plazo fijo</option>
                 <option value="3">Reemplazo</option>
+            </select>
+        </form>
+      </div>
+      <div class="col-1">
+        <form action=".">Cargo: 
+            <select name="cargo" id="funcion">
+                <option value="0">Todos</option>
+                <option value="1">Docente</option>
+                <option value="2">Rector</option>
+                <option value="3">Director</option>
+                <option value="4">Subdirector</option>
+                <option value="5">Inspector</option>
+                <option value="6">UTP</option>
+                <option value="7">Capellán</option>
+                <option value="8">Financiero</option>
+                <option value="9">Orientador</option>
             </select>
         </form>
       </div>
       <div class="col-2">
         <form action=".">Carga: 
-            <select name="titulo">
+            <select name="carga">
                 <option value="1">Todos</option>
                 <option value="2">100% = que contrato</option>
                 <option value="3">> que contrato</option>
@@ -85,7 +173,7 @@
       </div>
       <div class="col-2">
         <form action=".">Dif. año anterior: 
-            <select name="titulo">
+            <select name="diferencia">
                 <option value="1">Todos</option>
                 <option value="2">Iguales</option>
                 <option value="3">Aumenta</option>
@@ -93,42 +181,46 @@
             </select>
         </form>
       </div>
+      <div class="col-1">
+        <a class="btn btn-outline-success" data-toggle="tooltip" data-placement="top" id="btn_buscar" title="Buscar"><i class="uil-file-upload-alt"></i></a>
+        <a class="btn btn-outline-primary" data-toggle="tooltip" data-placement="top" id="btn_limpiar" title="Limpiar"><i class="uil-edit"></i></a>
+      </div>
     </div>
         <div class="table-responsive">
-        <table class="table table-striped">
+        <table class="table table-striped" id="titleprofesor">
             <thead>
             <tr style="text-align: center;">
+                <!--<th><i class="uil-clock-seven"></i>Profesor Jefe</th>-->
+                <!--<th><i class="uil-clock-seven"></i>Adventista</th>-->
                 <th><i class="uil-user"></i> Nombre </th>
                 <th><i class="uil-user"></i> Cargo </th>
-                <!--<th><i class="uil-clock-seven"></i> Hrs. contrato</th>-->
-                <th><i class="uil-clock-seven"></i> Adventista</th>
                 <th><i class="uil-clock-seven"></i>Titulo</th>
-                <th><i class="uil-clock-seven"></i>Tipo Contrato</th>
-                <th><i class="uil-clock-seven"></i>Profesor Jefe</th>
-                <!--<th><i class="uil-clock-eight"></i> Hrs. S.G.</th>
+                <th><i class="uil-clock-seven"></i> Hrs. contrato</th>
+                <!--<th><i class="uil-clock-seven"></i>Contrato</th>-->
+                <th><i class="uil-clock-eight"></i> Hrs. S.G.</th>
                 <th><i class="uil-clock-two"></i> Hrs. S.E.P.</th>
                 <th><i class="uil-clock-five"></i> Hrs. P.I.E.</th>
                 <th>Total Actual</th>
                 <th>Total Año Ant.</th>
-                <th>Diferencias</th>-->
+                <th>Diferencias</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="listprofesor">
             {% for p in object_list %}
                 <tr style="text-align: center;">
+                    <td style="display:none;" id="profesorjefe">{{ p.periodo_set.first }}</td>
+                    <td style="display:none;" id="adv">{{ p.adventista }}</td>
                     <td><a href="{% url 'carga-horaria:profesor' p.pk %}"> {{ p.nombre }} </a></td>
-                    <td> {{ p.cargo }} </td>
-                    <!--<td> {{ p.horas_contratadas }} </td>-->
-                    <td> {{ p.adventista }} </td>
-                    <td> {{ p.especialidad }} </td>
-                    <td> {{ p.tipo }} </td>
-                    <td> {{ p.profesor_jefe }} </td>
-                    <!--<td> {{ p.horas_docentes }} </td>
+                    <td id="car_fun">{{ p.cargo }}</td>
+                    <td id="tt_pr">{{ p.especialidad }}</td>
+                    <td style="display:none;" id="tp_ct">{{ p.tipo }}</td>
+                    <td> {{ p.horas_contratadas }} </td>
+                    <td> {{ p.horas_docentes }} </td>
                     <td> {{ p.horas_sg }} </td>
                     <td> {{ p.horas_sep }} </td>
                     <td> {{ p.horas_pie }} </td>
                     <td> {{ p.horas_total}} </td>
-                    <td> {{ p.horas_total_anterior }} </td>-->
+                    <td> {{ p.horas_total_anterior }} </td>
                     <td>
                         <a class="btn btn-outline-success" href="{% url 'carga-horaria:profesor__anexo' p.pk %}" data-toggle="tooltip" data-placement="top" title="Generar Anexo 1"><i class="uil-file-upload-alt"></i></a>
                         <a class="btn btn-outline-primary" href="{% url 'carga-horaria:profesor__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
@@ -162,11 +254,9 @@
 
     </div>
 
-                    <div class="card-footer">
-                    <div align="center">
-                        {% bootstrap_paginate page_obj range=5 %}
-                    </div>
-                </div>
+    <div class="card-footer">
+        {% bootstrap_paginate page_obj range=5 %}
+    </div>
 
 </div>
 
