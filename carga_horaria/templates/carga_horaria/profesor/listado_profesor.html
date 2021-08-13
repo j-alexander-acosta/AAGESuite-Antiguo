@@ -190,37 +190,37 @@
         <table class="table table-striped" id="titleprofesor">
             <thead>
             <tr style="text-align: center;">
-                <!--<th><i class="uil-clock-seven"></i>Profesor Jefe</th>-->
-                <!--<th><i class="uil-clock-seven"></i>Adventista</th>-->
+                <th><i class="uil-clock-seven"></i>Profesor Jefe</th>
+                <th><i class="uil-clock-seven"></i>Adventista</th>
                 <th><i class="uil-user"></i> Nombre </th>
                 <th><i class="uil-user"></i> Cargo </th>
                 <th><i class="uil-clock-seven"></i>Titulo</th>
-                <th><i class="uil-clock-seven"></i> Hrs. contrato</th>
-                <!--<th><i class="uil-clock-seven"></i>Contrato</th>-->
-                <th><i class="uil-clock-eight"></i> Hrs. S.G.</th>
+                <!--<th><i class="uil-clock-seven"></i> Hrs. contrato</th>-->
+                <th><i class="uil-clock-seven"></i>Contrato</th>
+                <!--<th><i class="uil-clock-eight"></i> Hrs. S.G.</th>
                 <th><i class="uil-clock-two"></i> Hrs. S.E.P.</th>
                 <th><i class="uil-clock-five"></i> Hrs. P.I.E.</th>
                 <th>Total Actual</th>
                 <th>Total Año Ant.</th>
-                <th>Diferencias</th>
+                <th>Diferencias</th>-->
             </tr>
             </thead>
             <tbody id="listprofesor">
             {% for p in object_list %}
                 <tr style="text-align: center;">
-                    <td style="display:none;" id="profesorjefe">{{ p.periodo_set.first }}</td>
-                    <td style="display:none;" id="adv">{{ p.adventista }}</td>
+                    <td id="profesorjefe">{{ p.periodo_set.first }}</td>
+                    <td id="adv">{{ p.adventista }}</td>
                     <td><a href="{% url 'carga-horaria:profesor' p.pk %}"> {{ p.nombre }} </a></td>
                     <td id="car_fun">{{ p.cargo }}</td>
-                    <td id="tt_pr">{{ p.especialidad }}</td>
-                    <td style="display:none;" id="tp_ct">{{ p.tipo }}</td>
-                    <td> {{ p.horas_contratadas }} </td>
-                    <td> {{ p.horas_docentes }} </td>
-                    <td> {{ p.horas_sg }} </td>
-                    <td> {{ p.horas_sep }} </td>
-                    <td> {{ p.horas_pie }} </td>
-                    <td> {{ p.horas_total}} </td>
-                    <td> {{ p.horas_total_anterior }} </td>
+                    <td id="tt_pr">{{ p.especialidad.id }}</td>
+                    <td  id="tp_ct">{{ p.tipo }}</td>
+                    <td style="display:none;"> {{ p.horas_contratadas }} </td>
+                    <td style="display:none;"> {{ p.horas_docentes }} </td>
+                    <td style="display:none;"> {{ p.horas_sg }} </td>
+                    <td style="display:none;"> {{ p.horas_sep }} </td>
+                    <td style="display:none;"> {{ p.horas_pie }} </td>
+                    <td style="display:none;"> {{ p.horas_total}} </td>
+                    <td style="display:none;"> {{ p.horas_total_anterior }} </td>
                     <td>
                         <a class="btn btn-outline-success" href="{% url 'carga-horaria:profesor__anexo' p.pk %}" data-toggle="tooltip" data-placement="top" title="Generar Anexo 1"><i class="uil-file-upload-alt"></i></a>
                         <a class="btn btn-outline-primary" href="{% url 'carga-horaria:profesor__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
