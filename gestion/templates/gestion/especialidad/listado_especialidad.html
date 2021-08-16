@@ -2,64 +2,64 @@
 {% load staticfiles bootstrap_pagination %}
 
 {% block title_page %}
-    Tipos de licencia
+    Especialidades
 {% endblock %}
 
 {% block title %}
-    Tipos de Licencia
+    Especialidades
 {% endblock %}
 
 {% block breadcrumb %}
     <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
-    <li class="breadcrumb-item active">Administración de Tipos de Licencia</li>
+    <li class="breadcrumb-item active">Administración de Especialidades</li>
 {% endblock %}
 
 {% block content %}
     <div class="card">
         <div class="card-header">
-            <h5>Tabla para configuración de tipo de licencia
-                <a class="btn btn-sm btn-outline-primary float-right" href="{% url 'gestion:tipolicencia__nuevo'%}" role="button">
-                    <span><i class="uil-plus"></i> Crear Tipo de Licencia</span>
+            <h5>Tabla para configuración de Especialidades
+                <a class="btn btn-sm btn-outline-primary float-right" href="{% url 'gestion:especialidad__nuevo'%}" role="button">
+                    <span><i class="uil-plus"></i> Crear Especialidad</span>
                 </a>
             </h5>
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-hover table-sm">
+                <table class="table table-hover table-centered mb-0">
                     <thead>
                     <tr>
                         <th><i class="uil-user-exclamation"></i> Nombre </th>
-                        <th><i class="uil-calendar-alt"></i> Total de días </th>
-                        <th><i class="uil-check-circle"></i> Corresponde a días hábiles </th>
+                        <th><i class="uil-document-layout-left"></i> Descripción </th>
+                        <th><i class="uil-medal"></i> Tipo de Título </th>
                         <th><i class="mdi mdi-cogs"></i> Opciones </th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for tl in object_list %}
+                    {% for f in object_list %}
                         <tr>
-                            <td><a href="{% url 'gestion:tipolicencia' tl.pk %}"> {{ tl.nombre }} </a></td>
-                            <td> {{ tl.total_dias }} </td>
-                            <td> {{ tl.dias_habiles|yesno }} </td>
+                            <td><a href="{% url 'gestion:especialidad' f.pk %}"> {{ f.nombre }} </a></td>
+                            <td> {% if f.descripcion %}{{ f.descripcion|truncatewords:"10" }}{% else %}No específicado{% endif %} </td>
+                            <td> {{ f.tipo_titulo }} </td>
                             <td>
-                                <a class="btn btn-outline-primary" href="{% url 'gestion:tipolicencia__editar' tl.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
-                                <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_tipolicencia_{{tl.pk}}"><i class="uil-trash" data-toggle="tooltip" data-placement="top" title="Eliminar"></i></a>
+                                <a class="btn btn-sm btn-outline-info" href="{% url 'gestion:especialidad__editar' f.pk %}" data-toggle="tooltip" title="Editar"><i class="uil-edit"></i></a>
+                                <a class="btn btn-sm btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_especialidad_{{f.pk}}"><i class="uil-trash" data-toggle="tooltip" data-placement="top" title="Eliminar"></i></a>
                             </td>
                         </tr>
-                        <div class="modal" tabindex="-1" role="dialog" id="eliminar_tipolicencia_{{tl.pk}}">
+                        <div class="modal" tabindex="-1" role="dialog" id="eliminar_especialidad_{{f.pk}}">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title alert alert-warning bg-white text-warning"><strong>¡Alerta!</strong> Está a punto de eliminar un tipo de licencia</h5>
+                                        <h5 class="modal-title alert alert-warning bg-white text-warning"><strong>¡Alerta!</strong> Está a punto de eliminar una Especialidad</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <p>Está seguro que desea eliminar el Tipo de Licencia "{{ tl }}"?.</p>
-                                        <p class="text-muted">Recuerde que eliminará todos los registros asociados a este Tipo de Licencia.</p>
+                                        <p>Está seguro que desea eliminar la Especialidad "{{ f }}"?.</p>
+                                        <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta Especialidad.</p>
                                     </div>
                                     <div class="modal-footer">
-                                        <a role="button" class="btn btn-outline-danger" href="{% url 'gestion:tipolicencia__eliminar' tl.pk %}">Eliminar</a>
+                                        <a role="button" class="btn btn-outline-danger" href="{% url 'gestion:especialidad__eliminar' f.pk %}">Eliminar</a>
                                         <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                                     </div>
                                 </div>
@@ -69,7 +69,6 @@
                     </tbody>
                 </table>
             </div>
-
         </div>
 
         <div class="card-footer">

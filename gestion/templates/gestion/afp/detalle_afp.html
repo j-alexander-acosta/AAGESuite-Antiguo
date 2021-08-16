@@ -5,16 +5,23 @@
     AFP - Detalle
 {% endblock %}
 
+{% block title %}
+    Detalle de AFP
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'gestion:afps' %}">AFPs</a></li>
+    <li class="breadcrumb-item active">Detalle AFP</li>
+{% endblock %}
+
 {% block content %}
 
 <div class="card">
     <div class="card-header">
-      <h4 class="card-title"><strong>Detalle de AFP</strong>
+      <h5>{{ object }}
           {% block buttons %}
-              <div class="btn-group float-right">
-                  <a href="{% url 'gestion:afps' %}" type="button" class="btn btn-outline-info">
-                      <i class="uil-arrow-left"></i>
-                  </a>
+              <div class="btn-group btn-group-sm float-right">
                   <a href="{% url 'gestion:afp__editar' object.pk %}" type="button" class="btn btn-outline-primary">
                       <i class="uil-edit"></i>
                   </a>
@@ -23,9 +30,7 @@
                   </a>
               </div>
           {% endblock %}
-        </h4>
-        <h6 class="card-subtitle mb-2 text-muted">{{ object }}</h6>
-
+        </h5>
     </div>
     <div class="card-body">
         <table class="table table-hover table-sm">
@@ -47,7 +52,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title alert alert-danger bg-white text-danger">¡Alerta!</strong> Está a punto de eliminar la AFP</h5>
+                <h5 class="modal-title alert alert-danger bg-white text-danger">¡Alerta! Está a punto de eliminar la AFP</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

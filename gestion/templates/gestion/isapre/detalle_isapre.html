@@ -5,31 +5,36 @@
     Isapre - Detalle
 {% endblock %}
 
+{% block title %}
+    Detalle de Isapre
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'gestion:isapres' %}">Isapres</a></li>
+    <li class="breadcrumb-item active">Detalle Isapre</li>
+{% endblock %}
+
 {% block content %}
 
-<div class="card">
-    <div class="card-header">
-      <h4 class="card-title page-title"><strong>Detalle de Isapre</strong>
-          {% block buttons %}
-              <div class="btn-group float-right">
-                  <a href="{% url 'rrhh:isapres' %}" type="button" class="btn btn-outline-dark">
-                      <i class="uil-arrow-left"></i>
-                  </a>
-                  <a href="{% url 'rrhh:isapre__editar' object.pk %}" type="button" class="btn btn-outline-primary">
-                      <i class="uil-edit"></i>
-                  </a>
-                  <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_isapre_{{object.pk}}">
-                      <i class="uil-trash-alt"></i>
-                  </a>
-              </div>
-          {% endblock %}
-        </h4>
-        <h6 class="card-subtitle mb-2 text-muted">{{ object }}</h6>
-
-    </div>
-    <div class="card-body">
-        <table class="table table-hover table-sm">
-            <tbody>
+    <div class="card">
+        <div class="card-header">
+            <h5>{{ object }}
+                {% block buttons %}
+                    <div class="btn-group btn-group-sm float-right">
+                        <a href="{% url 'gestion:isapre__editar' object.pk %}" type="button" class="btn btn-outline-primary">
+                            <i class="uil-edit"></i>
+                        </a>
+                        <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_isapre_{{object.pk}}">
+                            <i class="uil-trash-alt"></i>
+                        </a>
+                    </div>
+                {% endblock %}
+            </h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover table-sm">
+                <tbody>
                 <tr>
                     <th> Nombre </th>
                     <td>  {{ object.nombre }}  </td>
@@ -38,30 +43,30 @@
                     <th> Descripcion </th>
                     <td>  {% if object.descripcion %} {{ object.descripcion }} {% else %} No hay datos {% endif %}  </td>
                 </tr>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
- </div>
 
-<div class="modal" tabindex="-1" role="dialog" id="eliminar_isapre_{{object.pk}}">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title alert alert-warning bg-white text-warning" role="alert"><strong>¡Alerta!</strong> Está a punto de eliminar la Isapre</h5>
-                <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Está seguro que desea eliminar la Isapre "{{ object }}"?.</p>
-                <p class="text-muted">Recuerde que eliminará todos los registros asociados a la Isapre.</p>
-            </div>
-            <div class="modal-footer">
-                <a role="button" class="btn btn-outline-danger" href="{% url 'rrhh:isapre__eliminar' object.pk %}">Eliminar</a>
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+    <div class="modal" tabindex="-1" role="dialog" id="eliminar_isapre_{{object.pk}}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title alert alert-warning bg-white text-warning"><strong>¡Alerta!</strong> Está a punto de eliminar la Isapre</h5>
+                    <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Está seguro que desea eliminar la Isapre "{{ object }}"?.</p>
+                    <p class="text-muted">Recuerde que eliminará todos los registros asociados a la Isapre.</p>
+                </div>
+                <div class="modal-footer">
+                    <a role="button" class="btn btn-outline-danger" href="{% url 'gestion:isapre__eliminar' object.pk %}">Eliminar</a>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 {% endblock content %}
