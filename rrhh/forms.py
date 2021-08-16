@@ -586,7 +586,7 @@ class ContratoColegioForm(forms.ModelForm):
             'reemplazando_licencia',
             'reemplazando_permiso',
             'horas_total',
-            'documento'
+            # 'documento'
         ]
 
     def __init__(self, *args, **kwargs):
@@ -599,7 +599,7 @@ class ContratoColegioForm(forms.ModelForm):
         self.fields['tipo_contrato'].widget.attrs['class'] = 'chosen'
         self.fields['reemplazando_licencia'].widget.attrs['class'] = 'chosen'
         self.fields['reemplazando_permiso'].widget.attrs['class'] = 'chosen'
-        self.fields['documento'].widget.attrs['required'] = ''
+        # self.fields['documento'].widget.attrs['required'] = ''
         self.fields['fecha_inicio'] = forms.DateField(
             widget=forms.widgets.DateInput(attrs={'type': 'date'}),
             input_formats=['%Y-%m-%d']
@@ -677,10 +677,10 @@ class ContratoColegioForm(forms.ModelForm):
                         Field('horas_total'),
                         css_class='col-md-6'
                     ),
-                    Div(
-                        Field('documento'),
-                        css_class='col-md-6'
-                    ),
+                    # Div(
+                    #     Field('documento'),
+                    #     css_class='col-md-6'
+                    # ),
                     css_class='row'
                 ),
             )
