@@ -182,8 +182,8 @@
         </form>
       </div>
       <div class="col-1">
-        <a class="btn btn-outline-success" data-toggle="tooltip" data-placement="top" id="btn_buscar" title="Buscar"><i class="uil-file-upload-alt"></i></a>
-        <a class="btn btn-outline-primary" data-toggle="tooltip" data-placement="top" id="btn_limpiar" title="Limpiar"><i class="uil-edit"></i></a>
+        <a class="btn btn-outline-success" data-toggle="tooltip" data-placement="top" id="btn_buscar" title="Buscar">Buscar</a>
+        <a class="btn btn-outline-primary" data-toggle="tooltip" data-placement="top" id="btn_limpiar" title="Limpiar">Limpiar</a>
       </div>
     </div>
         <div class="table-responsive">
@@ -193,10 +193,10 @@
                 <th><i class="uil-clock-seven"></i>Profesor Jefe</th>
                 <th><i class="uil-clock-seven"></i>Adventista</th>
                 <th><i class="uil-user"></i> Nombre </th>
-                <th><i class="uil-user"></i> Cargo </th>
                 <th><i class="uil-clock-seven"></i>Titulo</th>
                 <!--<th><i class="uil-clock-seven"></i> Hrs. contrato</th>-->
                 <th><i class="uil-clock-seven"></i>Contrato</th>
+                <th><i class="uil-user"></i> Cargo </th>
                 <!--<th><i class="uil-clock-eight"></i> Hrs. S.G.</th>
                 <th><i class="uil-clock-two"></i> Hrs. S.E.P.</th>
                 <th><i class="uil-clock-five"></i> Hrs. P.I.E.</th>
@@ -211,9 +211,9 @@
                     <td id="profesorjefe">{{ p.periodo_set.first }}</td>
                     <td id="adv">{{ p.adventista }}</td>
                     <td><a href="{% url 'carga-horaria:profesor' p.pk %}"> {{ p.nombre }} </a></td>
-                    <td id="car_fun">{{ p.cargo }}</td>
                     <td id="tt_pr">{{ p.especialidad.id }}</td>
                     <td  id="tp_ct">{{ p.tipo }}</td>
+                    <td id="car_fun">{{ p.cargo }}</td>
                     <td style="display:none;"> {{ p.horas_contratadas }} </td>
                     <td style="display:none;"> {{ p.horas_docentes }} </td>
                     <td style="display:none;"> {{ p.horas_sg }} </td>
