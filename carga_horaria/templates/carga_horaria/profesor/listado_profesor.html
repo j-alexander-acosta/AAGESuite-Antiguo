@@ -18,7 +18,7 @@
 
 {% block extra_js %}
     <script type="text/javascript">
-        
+
         function filtrotabla(){
             let prjefe = $(document).find('#cbox1').is(":checked");
             let advent = $(document).find('#cbox2').is(":checked");
@@ -67,7 +67,6 @@
                 }
             });
 
-            
         }
         function limpiar(){
             $(document).find('#listprofesor tr').each(function () {
@@ -78,7 +77,7 @@
         $(function(){
             document.getElementById("btn_buscar").addEventListener("click", filtrotabla);
             document.getElementById("btn_limpiar").addEventListener("click", limpiar);
-            
+
         });
     </script>
 {% endblock %}
@@ -89,16 +88,16 @@
 <div class="card">
     <div class="card-header">
         <h4 class="card-title">Profesores
-          <a class="btn btn-outline-primary float-right" href="{% url 'carga-horaria:profesor__nuevo'%}" role="button">
-	    <span>
-	      Crear Profesor
-              <i class="uil-plus"></i>
-	    </span>
+            <a class="btn btn-outline-primary float-right" href="{% url 'carga-horaria:profesor__nuevo'%}" role="button">
+            <span>
+                Crear Profesor
+                    <i class="uil-plus"></i>
+            </span>
             </a>
         </h4>
         <br>
         <class class="card-subtitle mb-2 text-muted">
-          <a class="btn btn-outline-default" href="{% url 'carga-horaria:profesores-info' %}"><i class="uil-cloud-download"></i> Descargar información Profesores</a>
+            <a class="btn btn-outline-default" href="{% url 'carga-horaria:profesores-info' %}"><i class="uil-cloud-download"></i> Descargar información Profesores</a>
         </class>
         <span style="float: right;">
             <class style="text-align: right;" class="card-subtitle mb-2 text-muted">
@@ -108,61 +107,59 @@
         </span>
     </div>
     <div class="row">
-      <div class="col-3">
-        <form action="." method="GET">
-          <i class="uil-search"></i> <input name="q" placeholder="Buscar" value="{{ request.GET.q }}">{% if 'q' in request.GET %} <a href="{% url 'carga-horaria:profesores' %}" class="text-muted">limpiar</a>{% endif %}
-        </form>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-1">
-          <div class="btn-group">
-            <label><input type="checkbox" id="cbox1" value="true"> Profesor jefe</label>
+        <div class="col-3" style="text-align:center">
+            <form action="." method="GET">
+                <i class="uil-search"></i> <input name="q" placeholder="Buscar" value="{{ request.GET.q }}">{% if 'q' in request.GET %} <a href="{% url 'carga-horaria:profesores' %}" class="text-muted">limpiar</a>{% endif %}
+            </form>
         </div>
-      </div>
-      <div class="col-1">
-        <label><input type="checkbox" id="cbox2" value="true"> Adventista</label>
-      </div>  
-      <div class="col-2">
-        <form action=".">Título: 
-            <select name="especialidad" id="especialidad_titulo">
-                <option value="0">Todos</option>
-                <option value="1">Ingeniero de Sistemas</option>
-                <option value="2">Licenciado en Educación</option>
-                <option value="3">Licenciado Matemáticas</option>
-                <option value="4">Licenciado Español</option>
-                <option value="5">Licenciado Música</option>
-            </select>
-        </form>
-      </div>
-      <div class="col-2">
-        <form action=".">Tipo de Contrato: 
-            <select name="tipo" id="tipo_contrato">
-                <option value="0">Todos</option>
-                <option value="1">Indefinido</option>
-                <option value="2">Plazo fijo</option>
-                <option value="3">Reemplazo</option>
-            </select>
-        </form>
-      </div>
-      <div class="col-1">
-        <form action=".">Cargo: 
-            <select name="cargo" id="funcion">
-                <option value="0">Todos</option>
-                <option value="1">Docente</option>
-                <option value="2">Rector</option>
-                <option value="3">Director</option>
-                <option value="4">Subdirector</option>
-                <option value="5">Inspector</option>
-                <option value="6">UTP</option>
-                <option value="7">Capellán</option>
-                <option value="8">Financiero</option>
-                <option value="9">Orientador</option>
-            </select>
-        </form>
-      </div>
-      <div class="col-2">
-        <form action=".">Carga: 
+        <div class="col-1" style="text-align:center">
+            <div class="btn-group">
+                <label><input type="checkbox" id="cbox1" value="true"> Profesor jefe</label>
+            </div>
+        </div>
+        <div class="col-1" style="text-align:center">
+            <label><input type="checkbox" id="cbox2" value="true"> Adventista</label>
+        </div>
+        <div class="col-3" style="text-align:center">
+            <form action=".">Título:
+                <select name="especialidad" id="especialidad_titulo">
+                    <option value="0">Todos</option>
+                    <option value="1">Ingeniero de Sistemas</option>
+                    <option value="2">Licenciado en Educación</option>
+                    <option value="3">Licenciado Matemáticas</option>
+                    <option value="4">Licenciado Español</option>
+                    <option value="5">Licenciado Música</option>
+                </select>
+            </form>
+        </div>
+        <div class="col-2" style="text-align:center">
+            <form action=".">Tipo de Contrato:
+                <select name="tipo" id="tipo_contrato">
+                    <option value="0">Todos</option>
+                    <option value="1">Indefinido</option>
+                    <option value="2">Plazo fijo</option>
+                    <option value="3">Reemplazo</option>
+                </select>
+            </form>
+        </div>
+        <div class="col-2" style="text-align:center">
+            <form action=".">Cargo:
+                <select name="cargo" id="funcion">
+                    <option value="0">Todos</option>
+                    <option value="1">Docente</option>
+                    <option value="2">Rector</option>
+                    <option value="3">Director</option>
+                    <option value="4">Subdirector</option>
+                    <option value="5">Inspector</option>
+                    <option value="6">UTP</option>
+                    <option value="7">Capellán</option>
+                    <option value="8">Financiero</option>
+                    <option value="9">Orientador</option>
+                </select>
+            </form>
+        </div>
+        <!--<div class="col-2">
+        <form action=".">Carga:
             <select name="carga">
                 <option value="1">Todos</option>
                 <option value="2">100% = que contrato</option>
@@ -170,57 +167,59 @@
                 <option value="4">> menor que contrato</option>
             </select>
         </form>
-      </div>
-      <div class="col-2">
-        <form action=".">Dif. año anterior: 
-            <select name="diferencia">
-                <option value="1">Todos</option>
-                <option value="2">Iguales</option>
-                <option value="3">Aumenta</option>
-                <option value="4">Disminuye</option>
-            </select>
-        </form>
-      </div>
-      <div class="col-1">
-        <a class="btn btn-outline-success" data-toggle="tooltip" data-placement="top" id="btn_buscar" title="Buscar">Buscar</a>
-        <a class="btn btn-outline-primary" data-toggle="tooltip" data-placement="top" id="btn_limpiar" title="Limpiar">Limpiar</a>
-      </div>
+        </div>
+        <div class="col-2">
+            <form action=".">Dif. año anterior:
+                <select name="diferencia">
+                    <option value="1">Todos</option>
+                    <option value="2">Iguales</option>
+                    <option value="3">Aumenta</option>
+                    <option value="4">Disminuye</option>
+                </select>
+            </form>
+        </div>-->
+    </div>
+    <div class="row">
+        <div class="col-12" style="text-align:center">
+            <a class="btn btn-outline-success" data-toggle="tooltip" data-placement="top" id="btn_buscar" title="Buscar">Buscar</a>
+            <a class="btn btn-outline-primary" data-toggle="tooltip" data-placement="top" id="btn_limpiar" title="Limpiar">Limpiar</a>
+        </div>
     </div>
         <div class="table-responsive">
         <table class="table table-striped" id="titleprofesor">
             <thead>
             <tr style="text-align: center;">
-                <th><i class="uil-clock-seven"></i>Profesor Jefe</th>
-                <th><i class="uil-clock-seven"></i>Adventista</th>
+                <!--<th><i class="uil-clock-seven"></i>Profesor Jefe</th>-->
+                <!--<th><i class="uil-clock-seven"></i>Adventista</th>-->
                 <th><i class="uil-user"></i> Nombre </th>
-                <th><i class="uil-clock-seven"></i>Titulo</th>
-                <!--<th><i class="uil-clock-seven"></i> Hrs. contrato</th>-->
-                <th><i class="uil-clock-seven"></i>Contrato</th>
-                <th><i class="uil-user"></i> Cargo </th>
-                <!--<th><i class="uil-clock-eight"></i> Hrs. S.G.</th>
+                <!--<th><i class="uil-clock-seven"></i>Titulo</th>-->
+                <th><i class="uil-clock-seven"></i> Hrs. contrato</th>
+                <!--<th><i class="uil-clock-seven"></i>Contrato</th>-->
+                <!--<th><i class="uil-user"></i> Cargo </th>-->
+                <th><i class="uil-clock-eight"></i> Hrs. S.G.</th>
                 <th><i class="uil-clock-two"></i> Hrs. S.E.P.</th>
                 <th><i class="uil-clock-five"></i> Hrs. P.I.E.</th>
-                <th>Total Actual</th>
-                <th>Total Año Ant.</th>
-                <th>Diferencias</th>-->
+                <!--<th>Total Actual</th>-->
+                <!--<th>Total Año Ant.</th>-->
+                <!--<th>Diferencias</th>-->
             </tr>
             </thead>
             <tbody id="listprofesor">
             {% for p in object_list %}
                 <tr style="text-align: center;">
-                    <td id="profesorjefe">{{ p.periodo_set.first }}</td>
-                    <td id="adv">{{ p.adventista }}</td>
+                    <td id="profesorjefe" style="display:none;">{{ p.periodo_set.first }}</td>
+                    <td id="adv" style="display:none;">{{ p.adventista }}</td>
                     <td><a href="{% url 'carga-horaria:profesor' p.pk %}"> {{ p.nombre }} </a></td>
-                    <td id="tt_pr">{{ p.especialidad.id }}</td>
-                    <td  id="tp_ct">{{ p.tipo }}</td>
-                    <td id="car_fun">{{ p.cargo }}</td>
-                    <td style="display:none;"> {{ p.horas_contratadas }} </td>
-                    <td style="display:none;"> {{ p.horas_docentes }} </td>
-                    <td style="display:none;"> {{ p.horas_sg }} </td>
-                    <td style="display:none;"> {{ p.horas_sep }} </td>
-                    <td style="display:none;"> {{ p.horas_pie }} </td>
-                    <td style="display:none;"> {{ p.horas_total}} </td>
-                    <td style="display:none;"> {{ p.horas_total_anterior }} </td>
+                    <td id="tt_pr" style="display:none;">{{ p.especialidad.id }}</td>
+                    <td  id="tp_ct" style="display:none;">{{ p.tipo }}</td>
+                    <td id="car_fun" style="display:none;">{{ p.cargo }}</td>
+                    <td> {{ p.horas_contratadas }} </td>
+                    <td> {{ p.horas_docentes }} </td>
+                    <td> {{ p.horas_sg }} </td>
+                    <td> {{ p.horas_sep }} </td>
+                    <td> {{ p.horas_pie }} </td>
+                    <!--<td> {{ p.horas_total}} </td>-->
+                    <!--<td> {{ p.horas_total_anterior }} </td>-->
                     <td>
                         <a class="btn btn-outline-success" href="{% url 'carga-horaria:profesor__anexo' p.pk %}" data-toggle="tooltip" data-placement="top" title="Generar Anexo 1"><i class="uil-file-upload-alt"></i></a>
                         <a class="btn btn-outline-primary" href="{% url 'carga-horaria:profesor__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
