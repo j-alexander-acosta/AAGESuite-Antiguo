@@ -2,17 +2,17 @@
 {% load staticfiles %}
 
 {% block title_page %}
-    Tipo de Licencia - Detalle
+    Tipo de Título - Detalle
 {% endblock %}
 
 {% block title %}
-    Detalle Tipo de Licencia
+    Detalle Tipo de Título
 {% endblock %}
 
 {% block breadcrumb %}
     <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
-    <li class="breadcrumb-item"><a href="{% url 'gestion:tiposlicencia' %}">Tipos de Licencia</a></li>
-    <li class="breadcrumb-item active">{% if object %}Editar{% else %}Crear{% endif %} Tipo de Licencia</li>
+    <li class="breadcrumb-item"><a href="{% url 'gestion:tipostitulo' %}">Tipos de Título</a></li>
+    <li class="breadcrumb-item active">{% if object %}Editar{% else %}Crear{% endif %} Tipo de Título</li>
 {% endblock %}
 
 {% block content %}
@@ -21,10 +21,10 @@
       <h5>{{ object}}
           {% block buttons %}
               <div class="btn-group btn-group-sm float-right">
-                  <a href="{% url 'gestion:tipolicencia__editar' object.pk %}" type="button" class="btn btn-outline-primary">
+                  <a href="{% url 'gestion:tipotitulo__editar' object.pk %}" type="button" class="btn btn-outline-primary">
                       <i class="uil-edit"></i>
                   </a>
-                  <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_tipolicencia_{{object.pk}}">
+                  <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_tipotitulo_{{object.pk}}">
                       <i class="uil-trash"></i>
                   </a>
               </div>
@@ -39,14 +39,6 @@
                     <td>  {{ object.nombre }}  </td>
                 </tr>
                 <tr>
-                    <th> Total días </th>
-                    <td> {{ object.total_dias }} </td>
-                </tr>
-                <tr>
-                    <th> Corresponde a días hábiles </th>
-                    <td> {{ object.dias_habiles|yesno }} </td>
-                </tr>
-                <tr>
                     <th> Descripción </th>
                     <td> {{ object.descripcion }} </td>
                 </tr>
@@ -56,21 +48,21 @@
   </div>
 </div>
 
-<div class="modal" tabindex="-1" role="dialog" id="eliminar_tipolicencia_{{object.pk}}">
+<div class="modal" tabindex="-1" role="dialog" id="eliminar_tipotitulo_{{object.pk}}">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title alert alert-warning bg-white text-warning"><strong>¡Alerta!</strong> Está a punto de eliminar el tipo de licencia</h5>
+                <h5 class="modal-title alert alert-warning bg-white text-warning"><strong>¡Alerta!</strong> Está a punto de eliminar el Tipo de Título</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Está seguro que desea eliminar el Tipo de Licencia "{{ object }}"?.</p>
-                <p class="text-muted">Recuerde que eliminará todos los registros asociados al Tipo de Licencia.</p>
+                <p>Está seguro que desea eliminar el Tipo de Título "{{ object }}"?.</p>
+                <p class="text-muted">Recuerde que eliminará todos los registros asociados al Tipo de Título.</p>
             </div>
             <div class="modal-footer">
-                <a role="button" class="btn btn-outline-danger" href="{% url 'gestion:tipolicencia__eliminar' object.pk %}">Eliminar</a>
+                <a role="button" class="btn btn-outline-danger" href="{% url 'gestion:tipotitulo__eliminar' object.pk %}">Eliminar</a>
                 <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
             </div>
         </div>

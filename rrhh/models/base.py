@@ -105,94 +105,6 @@ class Perfil(models.Model):
         verbose_name_plural = u'Perfiles'
 
 
-class Funcion(models.Model):
-    TIPO_FUNCION = (
-        (1, 'Funcion principal'),
-        (2, 'Función secundaria')
-    )
-
-    nombre = models.CharField(max_length=150)
-    descripcion = models.CharField(max_length=250, null=True, blank=True, verbose_name="Descripción")
-    tipo = models.PositiveSmallIntegerField(default=1, choices=TIPO_FUNCION, verbose_name='Tipo de función')
-
-    def __str__(self):
-        return self.nombre
-
-    class Meta:
-        verbose_name = u'Función de empleado'
-        verbose_name_plural = u'Funciones de empleados'
-
-
-class TipoLicencia(models.Model):
-    nombre = models.CharField(max_length=150)
-    descripcion = models.TextField(max_length=500, verbose_name='Descripción')
-    total_dias = models.IntegerField(verbose_name='Total de días correspondientes')
-    dias_habiles = models.BooleanField(default=True, verbose_name='Corresponde a días hábiles')
-
-    def __str__(self):
-        return '{} ({}-{})'.format(
-            self.nombre,
-            self.total_dias,
-            '1' if self.dias_habiles else '0'
-        )
-
-    class Meta:
-        verbose_name = u'Tipo de licencia'
-        verbose_name_plural = u'Tipos de licencia'
-
-
-class TipoDocumento(models.Model):
-    nombre = models.CharField(max_length=200)
-    indicaciones = models.TextField(max_length=2500)
-
-    def __str__(self):
-        return '{}'.format(
-            self.nombre
-        )
-
-    class Meta:
-        verbose_name = u'Tipo de documento'
-        verbose_name_plural = u'Tipos de documento'
-
-
-class Banco(models.Model):
-    nombre = models.CharField(max_length=250)
-    descripcion = models.TextField(max_length=2500, verbose_name='Descripción')
-
-    def __str__(self):
-        return '{}'.format(
-            self.nombre
-        )
-
-    class Meta:
-        verbose_name = u'Banco'
-        verbose_name_plural = u'Bancos'
-
-
-class AFP(models.Model):
-    nombre = models.CharField(max_length=150)
-    descripcion = models.CharField(max_length=250, null=True, blank=True, verbose_name="Descripción")
-
-    def __str__(self):
-        return self.nombre
-
-    class Meta:
-        verbose_name = u'AFP'
-        verbose_name_plural = u'AFPs'
-
-
-class Isapre(models.Model):
-    nombre = models.CharField(max_length=150)
-    descripcion = models.CharField(max_length=250, null=True, blank=True, verbose_name="Descripción")
-
-    def __str__(self):
-        return self.nombre
-
-    class Meta:
-        verbose_name = u'Isapre'
-        verbose_name_plural = u'Isapres'
-
-
 class Region(models.Model):
     nombre = models.CharField(max_length=150)
     numero = models.PositiveSmallIntegerField(default=0)
@@ -246,9 +158,97 @@ class Ciudad(models.Model):
         verbose_name_plural = u'Ciudades'
 
 
+class Banco(models.Model):
+    nombre = models.CharField(max_length=250)
+    descripcion = models.TextField(max_length=2500, verbose_name='Descripción')
+
+    def __str__(self):
+        return '{}'.format(
+            self.nombre
+        )
+
+    class Meta:
+        verbose_name = u'Banco'
+        verbose_name_plural = u'Bancos'
+
+
+class AFP(models.Model):
+    nombre = models.CharField(max_length=250)
+    descripcion = models.TextField(max_length=2500, verbose_name='Descripción')
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        verbose_name = u'AFP'
+        verbose_name_plural = u'AFPs'
+
+
+class Isapre(models.Model):
+    nombre = models.CharField(max_length=250)
+    descripcion = models.TextField(max_length=2500, verbose_name='Descripción')
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        verbose_name = u'Isapre'
+        verbose_name_plural = u'Isapres'
+
+
+class Funcion(models.Model):
+    TIPO_FUNCION = (
+        (1, 'Funcion principal'),
+        (2, 'Función secundaria')
+    )
+
+    nombre = models.CharField(max_length=250)
+    descripcion = models.TextField(max_length=2500, verbose_name='Descripción')
+    tipo = models.PositiveSmallIntegerField(default=1, choices=TIPO_FUNCION, verbose_name='Tipo de función')
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        verbose_name = u'Función de empleado'
+        verbose_name_plural = u'Funciones de empleados'
+
+
+class TipoLicencia(models.Model):
+    nombre = models.CharField(max_length=250)
+    descripcion = models.TextField(max_length=2500, verbose_name='Descripción')
+    total_dias = models.IntegerField(verbose_name='Total de días correspondientes')
+    dias_habiles = models.BooleanField(default=True, verbose_name='Corresponde a días hábiles')
+
+    def __str__(self):
+        return '{} ({}-{})'.format(
+            self.nombre,
+            self.total_dias,
+            '1' if self.dias_habiles else '0'
+        )
+
+    class Meta:
+        verbose_name = u'Tipo de licencia'
+        verbose_name_plural = u'Tipos de licencia'
+
+
+class TipoDocumento(models.Model):
+    nombre = models.CharField(max_length=250)
+    descripcion = models.TextField(max_length=2500, verbose_name='Descripción')
+
+    def __str__(self):
+        return '{}'.format(
+            self.nombre
+        )
+
+    class Meta:
+        verbose_name = u'Tipo de documento'
+        verbose_name_plural = u'Tipos de documento'
+
+
 class TipoTitulo(models.Model):
-    nombre = models.CharField(max_length=150)
-    descripcion = models.TextField(max_length=550, verbose_name="Descripción")
+    nombre = models.CharField(max_length=250)
+    descripcion = models.TextField(max_length=2500, verbose_name='Descripción')
 
     def __str__(self):
         return self.nombre
@@ -259,8 +259,8 @@ class TipoTitulo(models.Model):
 
 
 class AreaTitulo(models.Model):
-    nombre = models.CharField(max_length=150)
-    descripcion = models.TextField(max_length=550, verbose_name="Descripción")
+    nombre = models.CharField(max_length=250)
+    descripcion = models.TextField(max_length=2500, verbose_name='Descripción')
 
     def __str__(self):
         return self.nombre
@@ -271,8 +271,8 @@ class AreaTitulo(models.Model):
 
 
 class Especialidad(models.Model):
-    nombre = models.CharField(max_length=150)
-    descripcion = models.TextField(max_length=550, verbose_name="Descripción")
+    nombre = models.CharField(max_length=250)
+    descripcion = models.TextField(max_length=2500, verbose_name='Descripción')
     tipo_titulo = models.ForeignKey("TipoTitulo", on_delete=models.CASCADE, verbose_name="Tipo de título")
 
     def __str__(self):
@@ -284,8 +284,8 @@ class Especialidad(models.Model):
 
 
 class Mencion(models.Model):
-    nombre = models.CharField(max_length=150)
-    descripcion = models.TextField(max_length=550, verbose_name="Descripción")
+    nombre = models.CharField(max_length=250)
+    descripcion = models.TextField(max_length=2500, verbose_name='Descripción')
     tipo_titulo = models.ForeignKey("TipoTitulo", on_delete=models.CASCADE, verbose_name="Tipo de título")
 
     def __str__(self):

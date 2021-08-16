@@ -201,7 +201,7 @@ class DatosBancarios(models.Model):
 
     def __str__(self):
         return '{}, {} - {}'.format(
-            self.funcionario.persona.get_full_name,
+            self.funcionario.persona,
             self.tipo_cuenta,
             self.banco
         )
