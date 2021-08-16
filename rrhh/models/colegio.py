@@ -59,7 +59,7 @@ class ContratoColegio(models.Model):
     fecha_termino = models.DateField(null=True, blank=True, verbose_name='Fecha de Término')
     reemplazando_licencia = models.ForeignKey('LicenciaFuncionarioColegio', on_delete=models.SET_NULL, null=True, blank=True, verbose_name='En reemplazo de (licencia)')
     reemplazando_permiso = models.ForeignKey('PermisoFuncionarioColegio', on_delete=models.SET_NULL, null=True, blank=True, verbose_name='En reemplazo de (permiso)')
-    documento = models.FileField(null=True, blank=True, upload_to="rrhh/contratos", verbose_name='Contrato')
+    documento = models.FileField(null=False, blank=True, upload_to="rrhh/contratos", verbose_name='Contrato')
     horas_total = models.PositiveIntegerField(verbose_name='Horas contratadas')
     vigente = models.BooleanField(default=False)
 
