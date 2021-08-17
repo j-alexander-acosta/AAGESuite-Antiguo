@@ -56,9 +56,9 @@ class Persona(models.Model):
     foto = models.FileField(null=True, blank=True, upload_to="rrhh/fotos", verbose_name='Foto de perfil')
 
     @property
-    def get_full_name(self):
+    def get_name(self):
         return '{} {} {}'.format(
-            self.nombres,
+            self.nombres.split(' ')[0],
             self.apellido_paterno,
             self.apellido_materno
         )
@@ -68,6 +68,14 @@ class Persona(models.Model):
         return '{} {}'.format(
             self.nombres.split(' ')[0],
             self.apellido_paterno
+        )
+
+    @property
+    def get_full_name(self):
+        return '{} {} {}'.format(
+            self.nombres,
+            self.apellido_paterno,
+            self.apellido_materno
         )
 
     @property
@@ -193,7 +201,7 @@ class DatosBancarios(models.Model):
 
     def __str__(self):
         return '{}, {} - {}'.format(
-            self.funcionario.persona.get_full_name,
+            self.funcionario.persona,
             self.tipo_cuenta,
             self.banco
         )

@@ -32,15 +32,6 @@ class VacacionFuncionarioColegioAdmin(admin.ModelAdmin):
     search_fields = ['contrato__persona__rut', 'contrato__persona__get_full_name']
 
 
-@admin.register(base.TipoLicencia)
-class TipoLicenciaAdmin(admin.ModelAdmin):
-    list_display = (
-        'nombre',
-        'total_dias',
-    )
-    search_fields = ['nombre']
-
-
 @admin.register(colegio.LicenciaFuncionarioColegio)
 class LicenciaFuncionarioColegioAdmin(admin.ModelAdmin):
     list_display = (
@@ -90,65 +81,6 @@ class ContratoColegioAdmin(admin.ModelAdmin):
         'categoria',
         'tipo_contrato'
     ]
-
-
-@admin.register(base.Funcion)
-class FuncionAdmin(admin.ModelAdmin):
-    list_display = (
-        'nombre',
-        'tipo',
-        'descripcion'
-    )
-    search_fields = ['nombre']
-    list_filter = ['tipo']
-
-
-@admin.register(base.AFP)
-class AFPAdmin(admin.ModelAdmin):
-    list_display = (
-        'nombre',
-        'descripcion',
-    )
-    search_fields = ['nombre']
-
-
-@admin.register(base.Isapre)
-class IsapreAdmin(admin.ModelAdmin):
-    list_display = (
-        'nombre',
-        'descripcion',
-    )
-    search_fields = ['nombre']
-
-
-@admin.register(base.Region)
-class RegionAdmin(admin.ModelAdmin):
-    list_display = (
-        'numero',
-        'numero_romano',
-        'nombre',
-    )
-    search_fields = ['nombre']
-
-
-@admin.register(base.Comuna)
-class ComunaAdmin(admin.ModelAdmin):
-    list_display = (
-        'nombre',
-        'region',
-    )
-    search_fields = ['nombre', 'region']
-    list_filter = ['region']
-
-
-@admin.register(base.Ciudad)
-class CiudadAdmin(admin.ModelAdmin):
-    list_display = (
-        'nombre',
-        'comuna',
-    )
-    search_fields = ['nombre']
-    list_filter = ['comuna', 'comuna__region']
 
 
 @admin.register(colegio.FiniquitoColegio)
@@ -207,12 +139,3 @@ class DocumentoPersonalAdmin(admin.ModelAdmin):
     )
     search_fields = ['contrato', 'contrato__colegio', 'contrato__funcionario']
     list_filter = ['contrato__colegio', 'tipo_documento']
-
-
-@admin.register(colegio.TipoDocumento)
-class TipoDocumentoAdmin(admin.ModelAdmin):
-    list_display = (
-        'nombre',
-        'indicaciones',
-    )
-    search_fields = ['nombre']

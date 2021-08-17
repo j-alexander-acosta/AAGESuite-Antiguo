@@ -80,3 +80,4 @@ media/
 docker-compose.yml
 carga/static
 .vscode
+.env

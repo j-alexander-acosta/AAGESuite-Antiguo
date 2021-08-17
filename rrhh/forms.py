@@ -1,49 +1,13 @@
 from django import forms
-from django.db.models import Sum, Count
+from django.db.models import Sum
 from localflavor.cl.forms import CLRutField
-from django.core.urlresolvers import reverse
-from django.shortcuts import get_object_or_404
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Field, HTML
-from rrhh.models.base import TipoLicencia, Funcion, AFP, Isapre
+from rrhh.models.base import Funcion
 from rrhh.models.persona import Persona, Funcionario, DocumentoFuncionario
-from rrhh.models.union import Union
-from rrhh.models.fundacion import Fundacion
-from rrhh.models.colegio import Colegio, Entrevista, VacacionFuncionarioColegio, EstadoContratacion, DocumentoPersonal
-from rrhh.models.colegio import ContratoColegio, LicenciaFuncionarioColegio, PermisoFuncionarioColegio, FiniquitoColegio, Solicitud, EstadoSolicitud
-
-
-class UnionForm(forms.ModelForm):
-    class Meta:
-        model = Union
-        fields = '__all__'
-
-    def __init__(self, *args, **kwargs):
-        super(UnionForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_tag = False
-
-
-class FundacionForm(forms.ModelForm):
-    class Meta:
-        model = Fundacion
-        fields = '__all__'
-
-    def __init__(self, *args, **kwargs):
-        super(FundacionForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_tag = False
-
-
-class ColegioForm(forms.ModelForm):
-    class Meta:
-        model = Colegio
-        fields = '__all__'
-
-    def __init__(self, *args, **kwargs):
-        super(ColegioForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_tag = False
+from rrhh.models.colegio import Colegio, Entrevista, VacacionFuncionarioColegio, DocumentoPersonal
+from rrhh.models.colegio import ContratoColegio, LicenciaFuncionarioColegio, PermisoFuncionarioColegio
+from rrhh.models.colegio import FiniquitoColegio, Solicitud, EstadoSolicitud
 
 
 class PersonaForm(forms.ModelForm):
@@ -344,17 +308,6 @@ class VacacionTipoFuncionarioColegioForm(forms.ModelForm):
         )
 
 
-class TipoLicenciaForm(forms.ModelForm):
-    class Meta:
-        model = TipoLicencia
-        fields = '__all__'
-
-    def __init__(self, *args, **kwargs):
-        super(TipoLicenciaForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_tag = False
-
-
 class LicenciaFuncionarioColegioForm(forms.ModelForm):
     class Meta:
         model = LicenciaFuncionarioColegio
@@ -584,9 +537,7 @@ class ContratoColegioForm(forms.ModelForm):
             'fecha_inicio',
             'fecha_termino',
             'reemplazando_licencia',
-            'reemplazando_permiso',
-            'horas_total',
-            # 'documento'
+            'horas_total'
         ]
 
     def __init__(self, *args, **kwargs):
@@ -598,8 +549,6 @@ class ContratoColegioForm(forms.ModelForm):
         self.fields['funcion_secundaria'].queryset = Funcion.objects.filter(tipo=2) 
         self.fields['tipo_contrato'].widget.attrs['class'] = 'chosen'
         self.fields['reemplazando_licencia'].widget.attrs['class'] = 'chosen'
-        self.fields['reemplazando_permiso'].widget.attrs['class'] = 'chosen'
-        # self.fields['documento'].widget.attrs['required'] = ''
         self.fields['fecha_inicio'] = forms.DateField(
             widget=forms.widgets.DateInput(attrs={'type': 'date'}),
             input_formats=['%Y-%m-%d']
@@ -663,24 +612,13 @@ class ContratoColegioForm(forms.ModelForm):
                 ),
                 Div(
                     Div(
-                        Field('reemplazando_permiso'),
+                        Field('horas_total'),
                         css_class='col-md-6'
                     ),
                     Div(
                         Field('reemplazando_licencia'),
                         css_class='col-md-6'
                     ),
-                    css_class='row'
-                ),
-                Div(
-                    Div(
-                        Field('horas_total'),
-                        css_class='col-md-6'
-                    ),
-                    # Div(
-                    #     Field('documento'),
-                    #     css_class='col-md-6'
-                    # ),
                     css_class='row'
                 ),
             )
@@ -729,49 +667,6 @@ class ContratoColegioForm(forms.ModelForm):
                 self.add_error('tipo_contrato', msg)
 
         return cleaned_data
-
-
-class FuncionForm(forms.ModelForm):
-    class Meta:
-        model = Funcion
-        fields = [
-            'nombre',
-            'descripcion',
-            'tipo',
-        ]
-
-    def __init__(self, *args, **kwargs):
-        super(FuncionForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_tag = False
-
-
-class AFPForm(forms.ModelForm):
-    class Meta:
-        model = AFP
-        fields = [
-            'nombre',
-            'descripcion',
-        ]
-
-    def __init__(self, *args, **kwargs):
-        super(AFPForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_tag = False
-
-
-class IsapreForm(forms.ModelForm):
-    class Meta:
-        model = Isapre
-        fields = [
-            'nombre',
-            'descripcion',
-        ]
-
-    def __init__(self, *args, **kwargs):
-        super(IsapreForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_tag = False
 
 
 class FiniquitoColegioForm(forms.ModelForm):

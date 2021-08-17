@@ -1,30 +1,11 @@
 from .base import *  # noqa
 import raven
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'EKBtun0hsgtjTjViBGJpD5/54Pd7wC51sHDHUGZsbpM='
-
-DEBUG = False
-
 PRODUCTION_APPS = ['raven.contrib.django.raven_compat']
 
 INSTALLED_APPS = PREREQ_APPS + PROJECT_APPS + PRODUCTION_APPS
 
 ALLOWED_HOSTS = ['aagesuite.unach.cl', 'aagesuite2.unach.cl']
-
-# Database
-# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('POSTGRES_DB'),
-        'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT'),
-    }
-}
 
 COMPRESS_ENABLED = False
 COMPRESS_OFFLINE = False

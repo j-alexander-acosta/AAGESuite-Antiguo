@@ -1,0 +1,82 @@
+{% extends 'base/base.html' %}
+{% load staticfiles bootstrap_pagination %}
+
+{% block title_page %}
+    Tipos de Título
+{% endblock %}
+
+{% block title %}
+    Tipos de Título
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item active">Administración de Tipos de Título</li>
+{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h5>Tabla para configuración de Tipo de Título
+                <a class="btn btn-sm btn-outline-primary float-right" href="{% url 'gestion:tipotitulo__nuevo'%}" role="button">
+                    <span><i class="uil-plus"></i> Crear Tipo de Título</span>
+                </a>
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-sm">
+                    <thead>
+                    <tr>
+                        <th><i class="uil-user-exclamation"></i> Nombre </th>
+                        <th><i class="uil-document-layout-left"></i> Descripción </th>
+                        <th><i class="mdi mdi-cogs"></i> Opciones </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for tl in object_list %}
+                        <tr>
+                            <td><a href="{% url 'gestion:tipotitulo' tl.pk %}"> {{ tl.nombre }} </a></td>
+                            <td> {{ tl.descripcion }} </td>
+                            <td>
+                                <a class="btn btn-outline-primary" href="{% url 'gestion:tipotitulo__editar' tl.pk %}" data-toggle="tooltip" title="Editar"><i class="uil-edit"></i></a>
+                                <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_tipotitulo_{{tl.pk}}">
+                                    <i class="uil-trash" data-toggle="tooltip" title="Eliminar"></i></a>
+                            </td>
+                        </tr>
+                        <div class="modal" tabindex="-1" role="dialog" id="eliminar_tipotitulo_{{tl.pk}}">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title alert alert-warning bg-white text-warning"><strong>¡Alerta!</strong> Está a punto de eliminar un Tipo de Título</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Está seguro que desea eliminar el Tipo de Título "{{ tl }}"?.</p>
+                                        <p class="text-muted">Recuerde que eliminará todos los registros asociados a este Tipo de Título.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a role="button" class="btn btn-outline-danger" href="{% url 'gestion:tipotitulo__eliminar' tl.pk %}">Eliminar</a>
+                                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <div class="card-footer">
+            <div>
+                {% bootstrap_paginate page_obj range=5 %}
+            </div>
+        </div>
+
+    </div>
+
+{% endblock content  %}

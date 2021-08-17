@@ -54,9 +54,9 @@
                                     Entidades <div class="arrow-down"></div>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="topnav-entidades">
-                                    <a href="{% url 'rrhh:uniones' %}" class="dropdown-item">Uniones</a>
-                                    <a href="{% url 'rrhh:fundaciones' %}" class="dropdown-item">Fundaciones</a>
-                                    <a href="{% url 'rrhh:colegios' %}" class="dropdown-item">Colegios</a>
+                                    <a href="{% url 'gestion:uniones' %}" class="dropdown-item">Uniones</a>
+                                    <a href="{% url 'gestion:fundaciones' %}" class="dropdown-item">Fundaciones</a>
+                                    <a href="{% url 'gestion:colegios' %}" class="dropdown-item">Colegios</a>
                                 </div>
                             </div>
                             <div class="dropdown">
@@ -64,10 +64,10 @@
                                     Personas <div class="arrow-down"></div>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="topnav-persona">
-                                    <a href="#" class="dropdown-item">Usuarios</a>
-                                    <a href="#" class="dropdown-item">Perfiles</a>
-                                    <a href="#" class="dropdown-item">Regiones</a>
-                                    <a href="#" class="dropdown-item">Comunas</a>
+                                    <a href="{% url 'gestion:usuarios' %}" class="dropdown-item">Usuarios</a>
+                                    <a href="{% url 'gestion:perfiles' %}" class="dropdown-item">Perfiles</a>
+{#                                    <a href="#" class="dropdown-item">Regiones</a>#}
+{#                                    <a href="#" class="dropdown-item">Comunas</a>#}
                                     <a href="#" class="dropdown-item">Ciudades</a>
                                 </div>
                             </div>
@@ -76,9 +76,9 @@
                                     Funcionarios <div class="arrow-down"></div>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="topnav-persona">
-                                    <a href="#" class="dropdown-item">Bancos</a>
-                                    <a href="#" class="dropdown-item">AFPs</a>
-                                    <a href="#" class="dropdown-item">Isapres</a>
+                                    <a href="{% url 'gestion:bancos' %}" class="dropdown-item">Bancos</a>
+                                    <a href="{% url 'gestion:afps' %}" class="dropdown-item">AFPs</a>
+                                    <a href="{% url 'gestion:isapres' %}" class="dropdown-item">Isapres</a>
                                 </div>
                             </div>
                             <div class="dropdown">
@@ -86,9 +86,9 @@
                                     Colaboradores <div class="arrow-down"></div>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="topnav-colaboradores">
-                                    <a href="#" class="dropdown-item">Funciones</a>
-                                    <a href="#" class="dropdown-item">Tipos de Licencia</a>
-                                    <a href="#" class="dropdown-item">Tipos de Documento</a>
+                                    <a href="{% url 'gestion:funciones' %}" class="dropdown-item">Funciones</a>
+                                    <a href="{% url 'gestion:tiposlicencia' %}" class="dropdown-item">Tipos de Licencia</a>
+                                    <a href="{% url 'gestion:tiposdocumento' %}" class="dropdown-item">Tipos de Documento</a>
                                 </div>
                             </div>
                             <div class="dropdown">
@@ -96,10 +96,10 @@
                                     Títulos Profesionales <div class="arrow-down"></div>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="topnav-titulo">
-                                    <a href="#" class="dropdown-item">Tipos de Título</a>
-                                    <a href="#" class="dropdown-item">Areas de Título</a>
-                                    <a href="#" class="dropdown-item">Especialidades</a>
-                                    <a href="#" class="dropdown-item">Menciones</a>
+                                    <a href="{% url 'gestion:tipostitulo' %}" class="dropdown-item">Tipos de Título</a>
+                                    <a href="{% url 'gestion:areastitulo' %}" class="dropdown-item">Areas de Título</a>
+                                    <a href="{% url 'gestion:especialidades' %}" class="dropdown-item">Especialidades</a>
+                                    <a href="{% url 'gestion:menciones' %}" class="dropdown-item">Menciones</a>
                                 </div>
                             </div>
                         </div>

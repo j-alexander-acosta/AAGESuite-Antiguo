@@ -19,7 +19,7 @@
 {% block breadcrumb %}
     <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
     <li class="breadcrumb-item"><a href="{% url 'rrhh:home_rrhh' %}">Recursos Humanos</a></li>
-    <li class="breadcrumb-item"><a href="{% url 'rrhh:contratos' %}">Funcionarios</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'rrhh:contratos' %}">Colaboradores</a></li>
     <li class="breadcrumb-item active">Detalle del trabajador</li>
 {% endblock %}
 
@@ -55,7 +55,7 @@
                 {% endif %}
             {% endif %}
             {% block buttons %}
-                <div class="btn-group float-right" style="margin-bottom: 10px;">
+                <div class="btn-group btn-group-sm float-right" style="margin-bottom: 10px;">
                     {% if not object.solicitud.set.all %}
                         {% if object.dias_termino_contrato <= 120 and object.categoria == 2 %}
                             <a href="{% url 'rrhh:contrato__renovar' object.pk %}" type="button" class="btn btn-outline-success">
@@ -110,7 +110,7 @@
                     <div class="pmb-block">
                         <div class="pmbb-body">
                             Información del contrato y finiquito, en caso de existencia, del trabajador
-                            <div class="btn-group float-right" role="group">
+                            <div class="btn-group btn-group-sm float-right" role="group">
                                 <a href="{% url 'rrhh:contrato__editar' object.pk %}" type="button" class="btn btn-outline-primary">
                                     <i class="uil-edit"></i> Editar
                                 </a>
@@ -118,9 +118,7 @@
                                     <i class="uil-trash-alt"></i> Eliminar
                                 </button>
                             </div>
-                            </br>
-                            </br>
-                            <div class="pmbb-view">
+                            <div class="table-responsive">
                                 <table class="table table-hover table-sm">
                                     <tbody>
                                     <tr>
@@ -148,12 +146,7 @@
                                     {% if object.tipo_contrato == 3 %}
                                         <tr>
                                             <th> En reemplazo de</th>
-                                            {% if object.reemplazando_licencia != None %}
-                                                <td> {{ object.reemplazando_licencia }} </td>
-                                            {% endif %} 
-                                            {% if object.reemplazando_permiso != None %}
-                                                <td> {{ object.reemplazando_permiso }} </td>
-                                            {% endif %}
+                                            <td> {{ object.reemplazando }} </td>
                                         </tr>
                                     {% endif %}
                                     <tr>
@@ -256,42 +249,44 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="historial" role="tabpanel" aria-labelledby="historial-tab">
-                    <table class="table table-hover">
-                        <thead>
-                        <th>Estado</th>
-                        <th>Ejecutor</th>
-                        <th>Fecha</th>
-                        <th>Observaciones</th>
-                        </thead>
-                        <tbody>
-                        {% for e in object.estadocontratacion_set.all|dictsortreversed:'id' %}
-                            <tr>
-                                <td><span class="badge badge-pill
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                            <th>Estado</th>
+                            <th>Ejecutor</th>
+                            <th>Fecha</th>
+                            <th>Observaciones</th>
+                            </thead>
+                            <tbody>
+                            {% for e in object.estadocontratacion_set.all|dictsortreversed:'id' %}
+                                <tr>
+                                    <td><span class="badge badge-pill
                                     {% if e.estado <= 3 %}
                                         badge-warning
                                     {% else %}
                                         badge-success
                                     {% endif %}"> {{ e.get_estado_display }} </span>
-                                </td>
-                                <td> {{ e.autor }} </td>
-                                <td> {{ e.fecha }} </td>
-                                <td> {{ e.observaciones|safe|escape }} </td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
+                                    </td>
+                                    <td> {{ e.autor }} </td>
+                                    <td> {{ e.fecha }} </td>
+                                    <td> {{ e.observaciones|safe|escape }} </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="tab-pane fade" id="vacacion" role="tabpanel" aria-labelledby="vacacion-tab">
                     <br>
                     <div class="pmb-block">
                         <div class="pmbb-body">
                             <p>Listado de Vacaciones del funcionario, ordenado del mas reciente al mas antiguo.
-                                <button name="agregar_vacacion" type="button" class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#crear_vacacion">
+                                <button name="agregar_vacacion" type="button" class="btn btn-sm btn-outline-primary float-right" data-toggle="modal" data-target="#crear_vacacion">
                                     <span><i class="uil-plus"></i> Agregar vacación</span>
                                 </button>
                             </p>
-                            <div class="pmbb-view">
-                                <table id="vacaciones" class="table table-responsive">
+                            <div class="table-responsive">
+                                <table id="vacaciones" class="table table-hover table-sm">
                                     <thead>
                                     <tr>
                                         <th>Periodo</th>
@@ -322,75 +317,70 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="documento" role="tabpanel" aria-labelledby="documento-tab">
-                    <br>
-                    <div class="pmb-block">
-                        <div class="pmbb-body">
-                            <div class="pmbb-view">
-                                <table class="table table-responsive">
-                                    <thead>
-                                    <th>Nombre</th>
-                                    <th>Documento</th>
-                                    <th>Opciones</th>
-                                    </thead>
-                                    <tbody>
-                                    <tr class="{% if not object.documento %}alert-danger{% endif %}">
-                                        <td>Contrato</td>
-                                        <td>{{ object.documento }}</td>
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm">
+                            <thead>
+                            <th>Nombre</th>
+                            <th>Documento</th>
+                            <th>Opciones</th>
+                            </thead>
+                            <tbody>
+                            <tr class="{% if not object.documento %}alert-danger{% endif %}">
+                                <td>Contrato</td>
+                                <td>{{ object.documento }}</td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi mdi-file-pdf"></i></button>
+                                        {% if object.estado_id == 4 %}<button type="button" id="cec" class="btn btn-outline-success" name="4" title="Actualizar documento" data-toggle="tooltip" data-placement="top"><i class="uil-upload-alt"></i></button> {% endif %}
+                                        {% if object.documento %}
+                                            <a role="button" class="btn btn-outline-primary" href="{{ media_url }}{{ object.documento }}" name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="right" download><i class="uil-download-alt"></i></a>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% for d in documentos %}
+                                {% for dp in object.documentopersonal_set.all %}
+                                    {% if d.0 == dp.tipo_documento %}
+                                        <tr>
+                                            <td>{{ dp.get_tipo_documento_display }}</td>
+                                            <td>{{ dp.documento }}</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi mdi-file-pdf"></i></button>
+                                                    <button type="button" class="btn btn-outline-success" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>
+                                                    <a role="button" class="btn btn-outline-primary" href="{{ media_url }}{{ dp.documento }}" download name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="right"><i class="mdi mdi-file-pdf"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% else %}
+                                        <tr class="alert-danger">
+                                            <td>{{ d.1 }}</td>
+                                            <td>No cargado</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi mdi-file-pdf"></i></button>
+                                                    <button type="button" class="btn btn-outline-success" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>
+                                                    <button type="button" class="btn btn-outline-primary disabled" name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="down"><i class="mdi mdi-file-pdf"></i></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                {% empty %}
+                                    <tr class="alert-danger">
+                                        <td>{{ d.1 }}</td>
+                                        <td>No cargado</td>
                                         <td>
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi mdi-file-pdf"></i></button>
-                                                {% if object.estado_id == 4 %}<button type="button" id="cec" class="btn btn-outline-success" name="4" title="Actualizar documento" data-toggle="tooltip" data-placement="top"><i class="uil-upload-alt"></i></button> {% endif %}
-                                                {% if object.documento %}
-                                                    <a role="button" class="btn btn-outline-primary" href="{{ media_url }}{{ object.documento }}" name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="right" download><i class="uil-download-alt"></i></a>
-                                                {% endif %}
+                                                <button type="button" class="btn btn-outline-success" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>
+                                                <button type="button" class="btn btn-outline-primary disabled" name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="down"><i class="mdi mdi-file-pdf"></i></button>
                                             </div>
                                         </td>
                                     </tr>
-                                    {% for d in documentos %}
-                                        {% for dp in object.documentopersonal_set.all %}
-                                            {% if d.0 == dp.tipo_documento %}
-                                                <tr>
-                                                    <td>{{ dp.get_tipo_documento_display }}</td>
-                                                    <td>{{ dp.documento }}</td>
-                                                    <td>
-                                                        <div class="btn-group">
-                                                            <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi mdi-file-pdf"></i></button>
-                                                            <button type="button" class="btn btn-outline-success" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>
-                                                            <a role="button" class="btn btn-outline-primary" href="{{ media_url }}{{ dp.documento }}" download name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="right"><i class="mdi mdi-file-pdf"></i></a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            {% else %}
-                                                <tr class="alert-danger">
-                                                    <td>{{ d.1 }}</td>
-                                                    <td>No cargado</td>
-                                                    <td>
-                                                        <div class="btn-group">
-                                                            <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi mdi-file-pdf"></i></button>
-                                                            <button type="button" class="btn btn-outline-success" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>
-                                                            <button type="button" class="btn btn-outline-primary disabled" name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="down"><i class="mdi mdi-file-pdf"></i></button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            {% endif %}
-                                        {% empty %}
-                                            <tr class="alert-danger">
-                                                <td>{{ d.1 }}</td>
-                                                <td>No cargado</td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi mdi-file-pdf"></i></button>
-                                                        <button type="button" class="btn btn-outline-success" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>
-                                                        <button type="button" class="btn btn-outline-primary disabled" name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="down"><i class="mdi mdi-file-pdf"></i></button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                                {% endfor %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="permiso" role="tabpanel" aria-labelledby="permiso-tab">
@@ -398,12 +388,12 @@
                     <div class="pmb-block">
                         <div class="pmbb-body">
                             <p>Listado de los Permisos del funcionario, ordenado del mas reciente al mas antiguo.
-                                <button name="agregar_permiso" type="button" class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#crear_permiso">
+                                <button name="agregar_permiso" type="button" class="btn btn-sm btn-outline-primary float-right" data-toggle="modal" data-target="#crear_permiso">
                                     <i class="uil-plus"></i> Agregar Permiso
                                 </button>
                             </p>
-                            <div class="pmbb-view">
-                                <table id="permisos" class="table table-responsive">
+                            <div class="table-responsive">
+                                <table id="permisos" class="table table-hover table-sm">
                                     <thead>
                                     <tr>
                                         <th>Observaciones</th>
@@ -412,7 +402,7 @@
                                         <th>Fecha de retorno</th>
                                         <th>Total feriados</th>
                                         <th>Son días hábiles</th>
-                                        <th>Goce d esueldo</th>
+                                        <th>Goce de sueldo</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -442,12 +432,12 @@
                     <div class="pmb-block">
                         <div class="pmbb-body">
                             <p>Listado de Licencias del funcionario, ordenado del mas reciente al mas antiguo.
-                                <button name="agregar_licencia" type="button" class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#crear_licencia">
+                                <button name="agregar_licencia" type="button" class="btn btn-sm btn-outline-primary float-right" data-toggle="modal" data-target="#crear_licencia">
                                     <span><i class="uil-plus"></i> Agregar licencia</span>
                                 </button>
                             </p>
-                            <div class="pmbb-view">
-                                <table id="licencias" class="table table-responsive">
+                            <div class="table-responsive">
+                                <table id="licencias" class="table table-hover table-sm">
                                     <thead>
                                     <tr>
                                         <th>Tipo de Licencia</th>
@@ -483,34 +473,29 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="solicitud" role="tabpanel" aria-labelledby="solicitud-tab">
-                    <br>
-                    <div class="pmb-block">
-                        <div class="pmbb-body">
-                            <div class="pmbb-view">
-                                <table class="table table-responsive">
-                                    <thead>
-                                    <tr>
-                                        <th>Tipo</th>
-                                        <th>Cargo</th>
-                                        <th>Horas</th>
-                                        <th>Estado</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for solicitud in object.solicitud_set.all %}
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm">
+                            <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Cargo</th>
+                                <th>Horas</th>
+                                <th>Estado</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for solicitud in object.solicitud_set.all %}
 
-                                        <tr>
-                                            <td><a href="{% url 'rrhh:solicitud' solicitud.id %}">{{ solicitud.get_tipo_display }}</a></td>
-                                            <td>{{ solicitud.cargo }}</td>
-                                            <td>{{ solicitud.horas }}</td>
-                                            <td>{{ solicitud.estado }}</td>
-                                        </tr>
+                                <tr>
+                                    <td><a href="{% url 'rrhh:solicitud' solicitud.id %}">{{ solicitud.get_tipo_display }}</a></td>
+                                    <td>{{ solicitud.cargo }}</td>
+                                    <td>{{ solicitud.horas }}</td>
+                                    <td>{{ solicitud.estado }}</td>
+                                </tr>
 
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -628,8 +613,8 @@
                 </div>
                 <form id="cambiar_estado_renovacion_form" class="form-horizontal">
                     <div class="modal-body m-10">
-                        <input type="hidden" name="contrato" value="{{ object.id }}"></input>
-                        <input type="hidden" name="estado" value=""></input>
+                        <input type="hidden" name="contrato" value="{{ object.id }}"/>
+                        <input type="hidden" name="estado" value=""/>
                         <div id="div_id_observaciones">
                             <label for="observaciones">Observaciones</label>
                             <textarea class="form-control" id="observaciones" rows="4"></textarea>

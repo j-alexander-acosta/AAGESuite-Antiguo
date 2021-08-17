@@ -1,0 +1,76 @@
+{% extends 'base/base.html' %}
+{% load staticfiles humanize %}
+
+{% block title_page %}
+    Función - Detalle
+{% endblock %}
+
+{% block title %}
+    Detalle Función
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'gestion:funciones' %}">Funciones</a></li>
+    <li class="breadcrumb-item active">{% if object %}Editar{% else %}Crear{% endif %} Función</li>
+{% endblock %}
+
+{% block content %}
+
+    <div class="card">
+        <div class="card-header">
+            <h5>{{ object }}
+                {% block buttons %}
+                    <div class="btn-group btn-group-sm float-right">
+                        <a href="{% url 'gestion:funcion__editar' object.pk %}" type="button" class="btn btn-outline-primary">
+                            <i class="uil-edit"></i>
+                        </a>
+                        <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_funcion_{{object.pk}}">
+                            <i class="uil-trash"></i>
+                        </a>
+                    </div>
+                {% endblock %}
+            </h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover table-sm">
+                <tbody>
+                <tr>
+                    <th> Nombre </th>
+                    <td>  {{ object.nombre }}  </td>
+                </tr>
+                <tr>
+                    <th> Descripcion </th>
+                    <td>  {% if object.descripcion %} {{ object.descripcion }} {% else %} No hay datos {% endif %}  </td>
+                </tr>
+                <tr>
+                    <th> Tipo de función </th>
+                    <td>  {{ object.get_tipo_display }}  </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" role="dialog" id="eliminar_funcion_{{object.pk}}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title alert alert-warning bg-white text-warning"><strong>¡Alerta!</strong> Está a punto de eliminar la Función</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Está seguro que desea eliminar la Función "{{ object }}"?.</p>
+                    <p class="text-muted">Recuerde que eliminará todos los registros asociados a la Función.</p>
+                </div>
+                <div class="modal-footer">
+                    <a role="button" class="btn btn-outline-danger" href="{% url 'gestion:funcion__eliminar' object.pk %}">Eliminar</a>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

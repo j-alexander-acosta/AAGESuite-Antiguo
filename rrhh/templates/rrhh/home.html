@@ -25,24 +25,12 @@
             <i class="mdi mdi-account" style="font-size: 80px"></i>
             <h4 class="text-black-50 text-center">Personas</h4>
         </a>
-                        <a class="text-muted font-black-normal" href="{% url 'rrhh:fundaciones' %}">
-                            <li><h3>Fundaciones</h3></li>
-                        </a>
-                        <a class="text-muted font-black-normal" href="{% url 'rrhh:colegios' %}">
-                            <li><h3>Colegios</h3></li>
-                        </a>
     </div>
     <div class="col-md-3 text-center my-2">
         <a href="{% url 'rrhh:postulantes' %}">
             <i class="mdi mdi-account-check-outline" style="font-size: 80px"></i>
             <h4 class="text-black-50 text-center">Postulantes</h4>
         </a>
-                        <a class="text-muted font-black-normal" href="{% url 'rrhh:postulantes' %}">
-                            <li><h3>Postulantes</h3></li>
-                        </a>
-                        <a class="text-muted font-black-normal" href="{% url 'rrhh:contratos' %}">
-                            <li><h3>Funcionarios</h3></li>
-                        </a>
     </div>
     <div class="col-md-3 text-center my-2">
         <a href="{% url 'rrhh:contratos' %}">
@@ -64,7 +52,7 @@
     </div>
     <div class="col-md-3 text-center my-2">
         <a href="{% url 'rrhh:licencias' %}">
-            <i class="mdi mdi-license" style="font-size: 80px"></i>
+            <i class="mdi mdi-asterisk" style="font-size: 80px"></i>
             <h4 class="text-black-50 text-center">Licencias</h4>
         </a>
     </div>
@@ -85,6 +73,7 @@
             <i class="mdi mdi-clipboard-account-outline" style="font-size: 80px"></i>
             <h4 class="text-black-50 text-center">Entrevistas</h4>
         </a>
+    </div>
         {#    <div class="col-md-3">#}
         {#        <div class="card mx-md-4">#}
         {#            <a href="{% url 'rrhh:personas' %}">#}
@@ -179,7 +168,6 @@
             </div>
             </div>
         {% endif %}
-</div>
 {% if contratos_contratar or contratos_expirar or solicitudes_pendientes or contrataos_finiquitar %}
     <div class="col-md-4">
         <div class="card" style="cursor: pointer">
