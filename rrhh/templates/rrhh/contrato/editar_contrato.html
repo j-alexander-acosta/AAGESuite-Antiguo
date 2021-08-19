@@ -28,3 +28,85 @@
     </div>
 </div>
 {% endblock %}
+
+{% block extra_js %}
+    <script type="text/javascript">
+        function tipo_contrato(){
+            let tipo  = document.getElementById("id_tipo_contrato").value;
+            //$(document).find('#id_label').val("Horas contratadas");
+            if(tipo === '1'){//(1, 'Indefinido'),
+                $(document).find('#id_fecha_termino').removeAttr('required');
+                $(document).find('#div_id_fecha_termino').fadeOut();
+                $(document).find('#id_fecha_termino').attr('disabled', true);
+                
+                $(document).find('#div_id_reemplazando_permiso').fadeOut();
+                $(document).find('#id_reemplazando_permiso').attr('disabled', true);
+                $(document).find('#id_reemplazando_permiso').val('');
+
+                $(document).find('#div_id_reemplazando_licencia').fadeOut();
+                $(document).find('#id_reemplazando_licencia').attr('disabled', true);
+                $(document).find('#id_reemplazando_licencia').val('');
+            }
+            if(tipo === '2'){//(2, 'A plazo'),
+                $(document).find('#id_fecha_termino').attr('required', '');
+                $(document).find('#div_id_fecha_termino').fadeIn();
+                $(document).find('#id_fecha_termino').prop('disabled', false);
+
+                $(document).find('#div_id_reemplazando_permiso').fadeOut();
+                $(document).find('#id_reemplazando_permiso').attr('disabled', true);
+                $(document).find('#id_reemplazando_permiso').val('');
+
+                $(document).find('#div_id_reemplazando_licencia').fadeOut();
+                $(document).find('#id_reemplazando_licencia').attr('disabled', true);
+                $(document).find('#id_reemplazando_licencia').val('');
+            }
+            if(tipo === '3'){//(3, 'Reemplazo'),
+                //$(document).find('#id_label').val("Horas contratadas de remplazo");
+                $(document).find('#id_fecha_termino').attr('required', '');
+                $(document).find('#div_id_fecha_termino').fadeIn();
+                $(document).find('#id_fecha_termino').prop('disabled', false);
+
+                $(document).find('#div_id_reemplazando_permiso').fadeIn();
+                $(document).find('#id_reemplazando_permiso').attr('disabled', false);
+
+                $(document).find('#div_id_reemplazando_licencia').fadeIn();
+                $(document).find('#id_reemplazando_licencia').attr('disabled', false);
+            }
+        }
+
+        function remplazo(){
+            let permiso = $(document).find('#id_reemplazando_permiso').val();
+            let licencia = $(document).find('#id_reemplazando_licencia').val();
+            if(permiso === ''){
+                $(document).find('#id_reemplazando_licencia').attr('disabled', false);
+            } else {
+                $(document).find('#id_reemplazando_licencia').attr('disabled', true);
+            }
+            if(licencia === ''){
+                $(document).find('#id_reemplazando_permiso').attr('disabled', false);
+             } else {
+                $(document).find('#id_reemplazando_permiso').attr('disabled', true);
+             }
+         }
+
+        $(function(){
+            $(document).find('#div_id_fecha_termino').fadeOut();
+            $(document).find('#id_fecha_termino').attr('disabled', true);
+            $(document).find('#div_id_reemplazando_licencia').fadeOut();
+            $(document).find('#id_reemplazando').attr('disabled', true);
+            
+            setTimeout(function(){
+                tipo_contrato();
+            }, 500);
+            $(document).change('#id_tipo_contrato', function() {
+                tipo_contrato();
+            });
+            $(document).change('#id_reemplazando_permiso', function() {
+                remplazo();
+            });
+            $(document).change('#id_reemplazando_licencia', function() {
+                remplazo();
+            });
+        });
+    </script>
+{% endblock %}
