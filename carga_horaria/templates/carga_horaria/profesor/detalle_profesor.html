@@ -2,6 +2,8 @@
 {% load humanize %}
 {% load staticfiles %}
 {% load carga_filters %}
+{% load inline_static_tags %}
+
 
 {% block title_page %}
 Profesor - Detalle
@@ -242,8 +244,7 @@ Profesor - Detalle
                         {% endfor %}
                         <tr>
                             <td colspan="2" style="text-align: right;"><strong>Total</strong></td>
-                            <td colspan="2" style="text-align: left;"><strong>{{ object.horas_asignadas_sep|decimal_maybe }}</strong>
-                            </td>
+                            <td colspan="2" style="text-align: left;"><strong>{{ object.horas_asignadas_sep|decimal_maybe }}</strong></td>
                         </tr>
                         {% endif %}
 
@@ -312,8 +313,7 @@ Profesor - Detalle
                         {% endfor %}
                         <tr>
                             <td colspan="2" style="text-align: right;"><strong>Total</strong></td>
-                            <td colspan="2" style="text-align: left;"><strong>{{ object.horas_asignadas_pie|decimal_maybe }}</strong>
-                            </td>
+                            <td colspan="2" style="text-align: left;"><strong>{{ object.horas_asignadas_pie|decimal_maybe }}</strong></td>
                         </tr>
                         {% endif %}
 
@@ -389,6 +389,7 @@ Profesor - Detalle
             <div class="col-md-6">
                 <table class="table table-hover table-sm">
                     <thead>
+                        <!-- primera tabla -->
                         <tr>
                             <th colspan="4" class="table-info">
                                 <span>
@@ -521,7 +522,7 @@ Profesor - Detalle
                         {% endfor %}
                         <tr>
                             <td colspan="2" style="text-align: right;"><strong>Total</strong></td>
-                            <td> {{ asignacionnoaula_sep }} </td>
+                            <td colspan="2" style="text-align: left;"><strong>{{ object.horas_no_aula_asignadas_sep|hhmm }}</strong></td>
                         </tr>
                         {% endif %}
 
@@ -588,7 +589,7 @@ Profesor - Detalle
                         {% endfor %}
                         <tr>
                             <td colspan="2" style="text-align: right;"><strong>Total</strong></td>
-                            <td colspan="2" style="text-align: left;"><strong>{{ profesor.total_pie|hhmm }}</strong></td>
+                            <td colspan="2" style="text-align: left;"><strong>{{ object.horas_no_aula_asignadas_pie|hhmm }}</strong></td>
                         </tr>
                         {% endif %}
 
@@ -654,7 +655,7 @@ Profesor - Detalle
                         {% endfor %}
                         <tr>
                             <td colspan="2" style="text-align: right;"><strong>Total</strong></td>
-                            <td colspan="2" style="text-align: left;"><strong></strong></td>
+                            <td colspan="2" style="text-align: left;"><strong>{{ object.horas_no_aula_asignadas_ordinaria|hhmm }}</strong></td>
                         </tr>
                     </tbody>
                 </table>

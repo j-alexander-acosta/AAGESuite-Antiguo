@@ -1,4 +1,5 @@
 {% load inline_static_tags %}
+{% load carga_filters %}
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -25,13 +26,14 @@
       <thead>
         <tr>
           <th>Nombre</th>
-          <th>Hrs contrato</th>
+          <th>Hrs. contrato</th>
           <th>HA</th>
-          <th>Hrs. S.E.P.</th>
-          <th>Hrs. P.I.E.</th>
-          <th>Total Actual</th>
-          <th>Total Año Ant.</th>
-          <th>Diferencias</th>
+          <th>HA S.E.P.</th>
+          <th>HA P.I.E.</th>
+          <th>HA SOST.</th>
+          <th>H S.E.P.</th>
+          <th>H P.I.E.</th>
+          <th>H SOST.</th>
         </tr>
       </thead>
       <tbody>
@@ -39,10 +41,13 @@
 	<tr>
 	  <td>{{ p.nombre }}</td>
 	  <td>{{ p.horas_contratadas }}</td>
-	  <td>{{ p.horas_docentes }}</td>
-	  <td>{{ p.horas_no_aula }}</td>
-	  <td>{{ p.horas_disponibles }}</td>
-	  <td>{{ p.horas_no_aula_disponibles }}</td>
+	  <td>{{ p.horas_asignadas_plan|add:p.horas_asignadas_plan_vulnerables }}</td>
+	  <td>{{ p.horas_asignadas_sep }}</td>
+	  <td>{{ p.horas_asignadas_pie }}</td>
+	  <td>{{ p.horas_asignadas_sostenedor }}</td>
+    <td>{{ p.horas_no_aula_asignadas_sep|hhmm }}</td>
+    <td>{{ p.horas_no_aula_asignadas_pie|hhmm }}</td>
+    <td>{{ p.horas_no_aula_asignadas_ordinaria|hhmm }}</td>
 	</tr>
         {% endfor %}
       </tbody>

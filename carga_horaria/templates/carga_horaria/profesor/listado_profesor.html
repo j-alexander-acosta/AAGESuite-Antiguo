@@ -1,6 +1,8 @@
 {% extends 'base/base.html' %}
 {% load staticfiles %}
 {% load bootstrap_pagination %}
+{% load carga_filters %}
+
 
 {% block title_page %}
 Profesores
@@ -203,13 +205,13 @@ Profesores
                     <th><i class="uil-clock-seven"></i> Hrs. contrato</th>
                     <!--<th><i class="uil-clock-seven"></i>Contrato</th>-->
                     <!--<th><i class="uil-user"></i> Cargo </th>-->
-                    <th><i class="uil-clock-eight"></i> HA</th>
-                    <th><i class="uil-clock-two"></i> HA-SEP</th>
-                    <th><i class="uil-clock-five"></i> HA-PIE</th>
-                    <th><i class="uil-clock-five"></i>HA-SOST</th>
-                    <th><i class="uil-clock-five"></i>H-SEP</th>
-                    <th><i class="uil-clock-five"></i>H-PIE</th>
-                    <th><i class="uil-clock-five"></i>H-SOST</th>
+                    <th style="background-color:#CBECF5"><i class="uil-clock-eight"></i> HA</th>
+                    <th style="background-color:#CBECF5"><i class="uil-clock-two"></i> HA-SEP</th>
+                    <th style="background-color:#CBECF5"><i class="uil-clock-five"></i> HA-PIE</th>
+                    <th style="background-color:#CBECF5"><i class="uil-clock-five"></i>HA-SOST</th>
+                    <th style="background-color:#FDECBB"><i class="uil-clock-five"></i>H-SEP</th>
+                    <th style="background-color:#FDECBB"><i class="uil-clock-five"></i>H-PIE</th>
+                    <th style="background-color:#FDECBB"><i class="uil-clock-five"></i>H-SOST</th>
                     <!--<th>Total Actual</th>-->
                     <!--<th>Total Año Ant.</th>-->
                     <!--<th>Diferencias</th>-->
@@ -224,14 +226,14 @@ Profesores
                     <td id="tt_pr" style="display:none;">{{ p.especialidad.id }}</td>
                     <td id="tp_ct" style="display:none;">{{ p.tipo }}</td>
                     <td id="car_fun" style="display:none;">{{ p.cargo }}</td>
-                    <td> {{ p.horas_contratadas }} </td>
-                    <td> {{ p.horas_docentes }} </td>
-                    <td> {{ profesor.total_sep }} </td>
-                    <td> {{ p.horas_sep }} </td>
-                    <td> {{ p.horas_pie }} </td>
-                    <td> </td>
-                    <td> </td>
-                    <td> </td>
+                    <td><strong> {{ p.horas_contratadas }} </strong></td>
+                    <td style="background-color:#CBECF5"> {{ p.horas_asignadas_plan|add:p.horas_asignadas_plan_vulnerables }} </td>
+                    <td style="background-color:#CBECF5"> {{ p.horas_asignadas_sep }} </td>
+                    <td style="background-color:#CBECF5"> {{ p.horas_asignadas_pie }} </td>
+                    <td style="background-color:#CBECF5"> {{ p.horas_asignadas_sostenedor }} </td>
+                    <td style="background-color:#FDECBB"> {{ p.horas_no_aula_asignadas_sep|hhmm }} </td>
+                    <td style="background-color:#FDECBB"> {{ p.horas_no_aula_asignadas_pie|hhmm }} </td>
+                    <td style="background-color:#FDECBB"> {{ p.horas_no_aula_asignadas_ordinaria|hhmm }} </td>
                     <td> </td>
                     <!--<td> {{ p.horas_total}} </td>-->
                     <!--<td> {{ p.horas_total_anterior }} </td>-->
