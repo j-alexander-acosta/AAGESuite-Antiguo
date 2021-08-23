@@ -1,4 +1,6 @@
 {% load inline_static_tags %}
+{% load carga_filters %}
+
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -27,6 +29,9 @@
           <th>Nombre</th>
           <th>Función</th>
           <th>Horas Contrato</th>
+          <th>H-SEP</th>
+          <th>H-PIE</th>
+          <th>H-SOST</th>
         </tr>
       </thead>
       <tbody>
@@ -35,6 +40,9 @@
 	  <td>{{ a.nombre }}</td>
 	  <td>{{ a.funcion }}</td>
 	  <td>{{ a.horas }}</td>
+    <td>{{ a.horas_sep }}</td>
+    <td>{{ a.horas_pie }}</td>
+    <td>{{ a.horas_sostenedor }}</td>
 	</tr>
         {% endfor %}
       </tbody>
