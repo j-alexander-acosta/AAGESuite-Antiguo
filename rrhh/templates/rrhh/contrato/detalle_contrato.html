@@ -229,7 +229,7 @@
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title alert alert-warning bg-white text-warning" role="alert"><strong>¡Alerta!</strong> Está a punto de eliminar El Finiquito de {{ object }}</h5>
-                                                    <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
@@ -248,33 +248,37 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="historial" role="tabpanel" aria-labelledby="historial-tab">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                            <th>Estado</th>
-                            <th>Ejecutor</th>
-                            <th>Fecha</th>
-                            <th>Observaciones</th>
-                            </thead>
-                            <tbody>
-                            {% for e in object.estadocontratacion_set.all|dictsortreversed:'id' %}
-                                <tr>
-                                    <td><span class="badge badge-pill
-                                    {% if e.estado <= 3 %}
-                                        badge-warning
-                                    {% else %}
-                                        badge-success
-                                    {% endif %}"> {{ e.get_estado_display }} </span>
-                                    </td>
-                                    <td> {{ e.autor }} </td>
-                                    <td> {{ e.fecha }} </td>
-                                    <td> {{ e.observaciones|safe|escape }} </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
+                <div class="tab-pane fade row" id="historial" role="tabpanel" aria-labelledby="historial-tab">
+                    <div class="timeline-alt pt-3">
+                        {% for e in object.estadocontratacion_set.all|dictsortreversed:'id' %}
+                            <div class="timeline-item">
+                                <i class="mdi mdi-circle
+                                 {% if e.estado == 4 %}
+                                    bg-success-lighten text-success
+                                {% else %}
+                                    bg-warning-lighten text-warning
+                                {% endif %} timeline-icon"></i>
+                                <div class="timeline-item-info">
+                                    <h5 class="mt-0 mb-1
+                                        {% if e.estado == 4 %}
+                                            text-success
+                                        {% else %}
+                                            text-warning
+                                        {% endif %}">{{ e.get_estado_display }}</h5>
+                                    <div class="media">
+                                        <img src="{{ e.autor.persona.foto.url }}" alt="" class="rounded-circle mr-2" height="24">
+                                        <div class="media-body">
+                                            <p class="mt-1 font-14 mb-0">
+                                                {{ e.autor.persona.get_name }} <small>- {{ e.autor }}, </small><span class="font-12">{{ e.fecha|naturalday }}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <p class="text-muted mt-2 mb-0 pb-3">{{ e.observaciones|safe|escape }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
+                    <!-- end timeline -->
                 </div>
                 <div class="tab-pane fade" id="vacacion" role="tabpanel" aria-labelledby="vacacion-tab">
                     <br>
@@ -320,34 +324,23 @@
                     <div class="table-responsive">
                         <table class="table table-hover table-sm">
                             <thead>
-                            <th>Nombre</th>
                             <th>Documento</th>
+                            <th>Nombre</th>
+                            <th>Fecha de carga</th>
                             <th>Opciones</th>
                             </thead>
                             <tbody>
-                            <tr class="{% if not object.documento %}alert-danger{% endif %}">
-                                <td>Contrato</td>
-                                <td>{{ object.documento }}</td>
-                                <td>
-                                    <div class="btn-group btn-group-sm">
-                                        <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi mdi-file-pdf"></i></button>
-                                        {% if object.estado_id == 4 %}<button type="button" id="cec" class="btn btn-outline-success" name="4" title="Actualizar documento" data-toggle="tooltip" data-placement="top"><i class="uil-upload-alt"></i></button> {% endif %}
-                                        {% if object.documento %}
-                                            <a role="button" class="btn btn-outline-primary" href="{{ media_url }}{{ object.documento }}" name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="right" download><i class="uil-download-alt"></i></a>
-                                        {% endif %}
-                                    </div>
-                                </td>
-                            </tr>
                             {% for d in documentos %}
-                                {% for dp in object.documentopersonal_set.all %}
+                                {% for dp in object.documento_set.all %}
                                     {% if d.0 == dp.tipo_documento %}
                                         <tr>
                                             <td>{{ dp.get_tipo_documento_display }}</td>
-                                            <td>{{ dp.documento }}</td>
+                                            <td>{{ dp.get_document_name }}</td>
+                                            <td>{{ dp.fecha_carga|naturalday }}</td>
                                             <td>
                                                 <div class="btn-group">
                                                     <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi mdi-file-pdf"></i></button>
-                                                    <button type="button" class="btn btn-outline-success" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>
+{#                                                    <button type="button" class="btn btn-outline-success" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>#}
                                                     <a role="button" class="btn btn-outline-primary" href="{{ media_url }}{{ dp.documento }}" download name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="right"><i class="mdi mdi-file-pdf"></i></a>
                                                 </div>
                                             </td>
@@ -356,10 +349,11 @@
                                         <tr class="alert-danger">
                                             <td>{{ d.1 }}</td>
                                             <td>No cargado</td>
+                                            <td></td>
                                             <td>
                                                 <div class="btn-group">
                                                     <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi mdi-file-pdf"></i></button>
-                                                    <button type="button" class="btn btn-outline-success" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>
+{#                                                    <button type="button" class="btn btn-outline-success" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>#}
                                                     <button type="button" class="btn btn-outline-primary disabled" name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="down"><i class="mdi mdi-file-pdf"></i></button>
                                                 </div>
                                             </td>
@@ -507,7 +501,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar el registro de Contraton</h5>
-                    <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -583,7 +577,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="crear_vacacionLabel">Agregar vacación a {{ object }} </h5>
-                    <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -661,7 +655,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title page-title">Cargar documento de funcionario</h4>
-                    <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>

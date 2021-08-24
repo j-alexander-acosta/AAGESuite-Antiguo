@@ -1,10 +1,8 @@
-from django.db import models
 from django.contrib.auth.models import User
 from django.template.defaultfilters import truncatewords
 from django.contrib.humanize.templatetags import humanize
 from rrhh.models.base import *
 from datetime import date
-
 
 CATEGORIAS = (
     (1, 'Docente Directivo'),
@@ -19,19 +17,26 @@ class Colegio(models.Model):
         Modelo de descripcion del colegio
     """
     nombre = models.CharField(max_length=250)
-    abrev = models.CharField(max_length=50,verbose_name="Abreviación")
+    abrev = models.CharField(max_length=50, verbose_name="Abreviación")
     fundacion = models.ForeignKey('Fundacion', on_delete=models.CASCADE, verbose_name='Fundación')
     rbd = models.CharField(max_length=50, null=True, blank=True, verbose_name="Rol de base de datos (RBD)")
     estado = models.CharField(max_length=25, default='particular_subvencionado', choices=TIPO_SUBVENCION)
-    tipo_jornada = models.CharField(max_length=25, default='completa', choices=TIPO_JORNADA, verbose_name='Tipo de jornada')
+    tipo_jornada = models.CharField(max_length=25, default='completa', choices=TIPO_JORNADA,
+                                    verbose_name='Tipo de jornada')
     total_salas = models.PositiveIntegerField(null=True, blank=True, verbose_name="Total de salas")
-    capacidad_promedio_salas = models.PositiveIntegerField(null=True, blank=True, verbose_name="Capacidad promedio de las salas")
-    total_matricula_ultimo_anio = models.PositiveIntegerField(null=True, blank=True, verbose_name="Total de matricula el último año")
-    total_profesores_aula = models.PositiveIntegerField(null=True, blank=True, verbose_name="Total de profesores de aula")
-    total_profesionales_educacion = models.PositiveIntegerField(null=True, blank=True, verbose_name="Total de profesionales de la educación")
-    total_asistentes_educacion = models.PositiveIntegerField(null=True, blank=True, verbose_name="Total de asistentes de la educación")
+    capacidad_promedio_salas = models.PositiveIntegerField(null=True, blank=True,
+                                                           verbose_name="Capacidad promedio de las salas")
+    total_matricula_ultimo_anio = models.PositiveIntegerField(null=True, blank=True,
+                                                              verbose_name="Total de matricula el último año")
+    total_profesores_aula = models.PositiveIntegerField(null=True, blank=True,
+                                                        verbose_name="Total de profesores de aula")
+    total_profesionales_educacion = models.PositiveIntegerField(null=True, blank=True,
+                                                                verbose_name="Total de profesionales de la educación")
+    total_asistentes_educacion = models.PositiveIntegerField(null=True, blank=True,
+                                                             verbose_name="Total de asistentes de la educación")
     total_alumnos_pie = models.PositiveIntegerField(null=True, blank=True, verbose_name="Total de alumnos en PIE")
-    indice_vulnerabilidad = models.CharField(max_length=25, null=True, blank=True, verbose_name="Índice de vulnerabilidad")
+    indice_vulnerabilidad = models.CharField(max_length=25, null=True, blank=True,
+                                             verbose_name="Índice de vulnerabilidad")
 
     @property
     def colaboradores(self):
@@ -52,23 +57,27 @@ class ContratoColegio(models.Model):
     funcionario = models.ForeignKey('Funcionario', on_delete=models.CASCADE)
     colegio = models.ForeignKey('Colegio', on_delete=models.CASCADE)
     categoria = models.PositiveSmallIntegerField(choices=CATEGORIAS, verbose_name='Categoría')
-    funcion_principal = models.ForeignKey('Funcion', on_delete=models.CASCADE, related_name='funcion_principal', verbose_name='Función principal')
-    funcion_secundaria = models.ForeignKey('Funcion', on_delete=models.CASCADE, related_name='funcion_secundaria', verbose_name='Función secundaria')
+    funcion_principal = models.ForeignKey(
+        'Funcion',
+        on_delete=models.CASCADE,
+        related_name='funcion_principal',
+        verbose_name='Función principal'
+    )
+    funcion_secundaria = models.ForeignKey(
+        'Funcion',
+        on_delete=models.CASCADE,
+        related_name='funcion_secundaria',
+        verbose_name='Función secundaria'
+    )
     tipo_contrato = models.PositiveSmallIntegerField(default=1, choices=TIPO_CONTRATO, verbose_name='Tipo de contrato')
     fecha_inicio = models.DateField(verbose_name='Fecha de Inicio')
     fecha_termino = models.DateField(null=True, blank=True, verbose_name='Fecha de Término')
-    reemplazando_licencia = models.ForeignKey('LicenciaFuncionarioColegio', on_delete=models.SET_NULL, null=True, blank=True, verbose_name='En reemplazo de (licencia)')
-    reemplazando_permiso = models.ForeignKey('PermisoFuncionarioColegio', on_delete=models.SET_NULL, null=True, blank=True, verbose_name='En reemplazo de (permiso)')
-    documento = models.FileField(null=True, blank=True, upload_to="rrhh/contratos", verbose_name='Contrato')
+    reemplazando_licencia = models.ForeignKey('LicenciaFuncionarioColegio', on_delete=models.SET_NULL, null=True,
+                                              blank=True, verbose_name='En reemplazo de (licencia)')
+    reemplazando_permiso = models.ForeignKey('PermisoFuncionarioColegio', on_delete=models.SET_NULL, null=True,
+                                             blank=True, verbose_name='En reemplazo de (permiso)')
     horas_total = models.PositiveIntegerField(verbose_name='Horas contratadas')
     vigente = models.BooleanField(default=False)
-
-    @property
-    def documento_name(self):
-        if self.documento:
-            return self.documento.name.split('/')[-1]
-        else:
-            return '-'
 
     @property
     def periodo_contrato(self):
@@ -135,35 +144,15 @@ class EstadoContratacion(models.Model):
         verbose_name_plural = u'Estados de contrataciones'
 
 
-class DocumentoPersonal(models.Model):
-    contrato = models.ForeignKey('ContratoColegio', on_delete=models.CASCADE)
-    tipo_documento = models.PositiveSmallIntegerField(choices=DOCUMENTO)
-    fecha_carga = models.DateTimeField(auto_now=True)
-    documento = models.FileField(upload_to="rrhh/documentosPersonal", verbose_name='Documento')
-
-    @property
-    def documento_name(self):
-        if self.documento:
-            return self.documento.name.split('/')[-1]
-        else:
-            return '-'
-
-    def __str__(self):
-        return '{}, {}'.format(
-            self.contrato,
-            self.documento
-        )
-
-    class Meta:
-        verbose_name = u'Docmuento del personal'
-        verbose_name_plural = u'Documentos del personal'
-
-
 class DistribucionHoras(models.Model):
     contrato = models.ForeignKey('ContratoColegio', on_delete=models.CASCADE)
     horas = models.PositiveIntegerField(verbose_name='Horas')
     tipo_horas = models.PositiveSmallIntegerField(default=1, choices=TIPO_HORA, verbose_name='Tipo de horas')
-    jornada_trabajo = models.PositiveSmallIntegerField(default=1, choices=TIPO_JORNADA, verbose_name='Jornada de trabajo')
+    jornada_trabajo = models.PositiveSmallIntegerField(
+        default=1,
+        choices=TIPO_JORNADA,
+        verbose_name='Jornada de trabajo'
+    )
     hora_inicio_jornada = models.TimeField(verbose_name='Inicio de jornada')
     hora_termino_jornada = models.TimeField(verbose_name='Término de jornada')
 
@@ -183,7 +172,6 @@ class FiniquitoColegio(models.Model):
     razon_baja = models.PositiveSmallIntegerField(default=1, choices=RAZON_FINIQUITO, verbose_name='Razón de baja')
     descripcion = models.TextField(max_length=1500, verbose_name='Descripción')
     voto_traslado = models.PositiveIntegerField(null=True, blank=True, verbose_name='Voto de autorización de traslado')
-    archivo = models.FileField(upload_to="rrhh/finiquitos", verbose_name='Finiquito')
 
     def __str__(self):
         return '{}, {}'.format(
@@ -255,7 +243,12 @@ class DiasPendientesVacacion(models.Model):
 
 class LicenciaFuncionarioColegio(models.Model):
     contrato = models.ForeignKey('ContratoColegio', on_delete=models.CASCADE)
-    tipo_licencia = models.ForeignKey('TipoLicencia', on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Tipo de licencia')
+    tipo_licencia = models.ForeignKey(
+        'TipoLicencia',
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        verbose_name='Tipo de licencia'
+    )
     tipo_licencia_descripcion = models.TextField(max_length=500, null=True, blank=True, verbose_name='Tipo de licencia')
     folio_licencia = models.CharField(max_length=30, null=True, blank=True, verbose_name='Folio de la licencia')
     total_dias = models.IntegerField(verbose_name='Total de días de licencia')
@@ -268,7 +261,7 @@ class LicenciaFuncionarioColegio(models.Model):
     def __str__(self):
         return '{}, {}'.format(
             self.contrato,
-            self.tipo_licencia
+            self.tipo_licencia if self.tipo_licencia else 'Personalizada'
         )
 
     @property
@@ -295,7 +288,6 @@ class PermisoFuncionarioColegio(models.Model):
     goce_sueldo = models.BooleanField(default=False, verbose_name="Con goce de sueldo")
     dias_habiles = models.BooleanField(default=True, verbose_name='Corresponde a días hábiles')
     voto = models.PositiveIntegerField(null=True, blank=True)
-    documento = models.FileField(null=True, blank=True, upload_to="rrhh/permisos", verbose_name='Permiso')
 
     def __str__(self):
         return '{}, {}'.format(
@@ -342,8 +334,18 @@ class Solicitud(models.Model):
     cargo = models.CharField(max_length=250)
     horas = models.PositiveIntegerField(verbose_name='Horas de contrato')
     tipo_contrato = models.PositiveSmallIntegerField(default=1, choices=TIPO_CONTRATO)
-    reemplazando_licencia = models.ForeignKey('LicenciaFuncionarioColegio', on_delete=models.SET_NULL, null=True, blank=True, verbose_name='En reemplazo de (licencia)')
-    reemplazando_permiso = models.ForeignKey('PermisoFuncionarioColegio', on_delete=models.SET_NULL, null=True, blank=True, verbose_name='En reemplazo de (permiso)')
+    reemplazando_licencia = models.ForeignKey(
+        'LicenciaFuncionarioColegio',
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        verbose_name='En reemplazo de (licencia)'
+    )
+    reemplazando_permiso = models.ForeignKey(
+        'PermisoFuncionarioColegio',
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        verbose_name='En reemplazo de (permiso)'
+    )
     fecha_inicio = models.DateField()
     fecha_termino = models.DateField(null=True, blank=True)
     justificacion = models.CharField(max_length=255, verbose_name='Justificación')

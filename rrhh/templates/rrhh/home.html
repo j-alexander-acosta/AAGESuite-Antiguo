@@ -74,189 +74,161 @@
             <h4 class="text-black-50 text-center">Entrevistas</h4>
         </a>
     </div>
-        {#    <div class="col-md-3">#}
-        {#        <div class="card mx-md-4">#}
-        {#            <a href="{% url 'rrhh:personas' %}">#}
-        {#                <div class="card-body">#}
-        {#                    <i class="mdi mdi-account" style="font-size: 80px"></i>#}
-        {#                    <h5 class="text-muted font-weight-normal mt-0" title="New Leads">Personas</h5>#}
-        {#                </div> <!-- end card-body -->#}
-        {#            </a>#}
-        {#        </div>#}
-        {#    </div>#}
-        {#    <div class="col-md-3">#}
-        {#        <div class="card mx-md-4">#}
-        {#            <a href="{% url 'rrhh:postulantes' %}">#}
-        {#                <div class="card-body">#}
-        {#                    <i class="mdi  mdi-account-check-outline" style="font-size: 80px"></i>#}
-        {#                    <h5 class="text-muted font-weight-normal mt-0" title="New Leads">Postulantes</h5>#}
-        {#                </div> <!-- end card-body -->#}
-        {#            </a>#}
-        {#        </div>#}
-        {#    </div>#}
-        {#    <div class="col-md-3">#}
-        {#        <div class="card mx-md-4">#}
-        {#            <a href="{% url 'rrhh:contratos' %}">#}
-        {#                <div class="card-body">#}
-        {#                    <i class="mdi mdi-account-group" style="font-size: 80px"></i>#}
-        {#                    <h5 class="text-muted font-weight-normal mt-0" title="New Leads">Colaboradores</h5>#}
-        {#                </div> <!-- end card-body -->#}
-        {#            </a>#}
-        {#        </div>#}
-        {#    </div>#}
-        {#    <div class="col-md-3">#}
-        {#        <div class="card mx-md-4">#}
-        {#            <a href="{% url 'rrhh:permisos' %}">#}
-        {#                <div class="card-body">#}
-        {#                    <i class="mdi mdi-certificate-outline" style="font-size: 80px"></i>#}
-        {#                    <h5 class="text-muted font-weight-normal mt-0" title="New Leads">Permisos</h5>#}
-        {#                </div> <!-- end card-body -->#}
-        {#            </a>#}
-        {#        </div>#}
-        {#    </div>#}
-        {#    <div class="col-md-3">#}
-        {#        <div class="card mx-md-4">#}
-        {#            <a href="{% url 'rrhh:vacaciones' %}">#}
-        {#                <div class="card-body">#}
-        {#                    <i class="dripicons-photo-group" style="font-size: 80px"></i>#}
-        {#                    <h5 class="text-muted font-weight-normal mt-0" title="New Leads">Vacaciones</h5>#}
-        {#                </div> <!-- end card-body -->#}
-        {#            </a>#}
-        {#        </div>#}
-        {#    </div>#}
-        {#    <div class="col-md-3">#}
-        {#        <div class="card mx-md-4">#}
-        {#            <a href="{% url 'rrhh:documentos' %}">#}
-        {#                <div class="card-body">#}
-        {#                    <i class="mdi mdi-asterisk" style="font-size: 80px"></i>#}
-        {#                    <h5 class="text-muted font-weight-normal mt-0" title="New Leads">Licencias</h5>#}
-        {#                </div> <!-- end card-body -->#}
-        {#            </a>#}
-        {#        </div>#}
-        {#    </div>#}
-        {#    <div class="col-md-3">#}
-        {#        <div class="card mx-md-4">#}
-        {#            <a href="{% url 'rrhh:documentos' %}">#}
-        {#                <div class="card-body">#}
-        {#                    <i class="mdi mdi-file-document" style="font-size: 80px"></i>#}
-        {#                    <h6 class="text-muted font-weight-normal mt-0" title="New Leads">Documentos de Colaboradores</h6>#}
-        {#                </div> <!-- end card-body -->#}
-        {#            </a>#}
-        {#        </div>#}
-        {#    </div>#}
-        {#    <div class="col-md-3">#}
-        {#        <div class="card mx-md-4">#}
-        {#            <a href="{% url 'rrhh:documentos' %}">#}
-        {#                <div class="card-body">#}
-        {#                    <i class="mdi mdi-pencil" style="font-size: 80px"></i>#}
-        {#                    <h5 class="text-muted font-weight-normal mt-0" title="New Leads">Solicitudes</h5>#}
-        {#                </div> <!-- end card-body -->#}
-        {#            </a>#}
-        {#        </div>#}
-        {#    </div>#}
-        {#    <div class="col-md-3">#}
-        {#        <div class="card mx-md-4">#}
-        {#            <a href="{% url 'rrhh:entrevistas' %}">#}
-        {#                <div class="card-body">#}
-        {#                    <i class="mdi mdi-clipboard-account-outline" style="font-size: 80px"></i>#}
-        {#                    <h5 class="text-muted font-weight-normal mt-0" title="New Leads">Entrevistas</h5>#}
-        {#                </div> <!-- end card-body -->#}
-        {#            </a>#}
-        {#        </div>#}
-        {#    </div>#}
-        {% if contratos_contratar or contratos_expirar or solicitudes_pendientes or contrataos_finiquitar %}
-            </div>
-            </div>
-        {% endif %}
+    {#    <div class="col-md-3">#}
+    {#        <div class="card mx-md-4">#}
+    {#            <a href="{% url 'rrhh:personas' %}">#}
+    {#                <div class="card-body">#}
+    {#                    <i class="mdi mdi-account" style="font-size: 80px"></i>#}
+    {#                    <h5 class="text-muted font-weight-normal mt-0" title="New Leads">Personas</h5>#}
+    {#                </div> <!-- end card-body -->#}
+    {#            </a>#}
+    {#        </div>#}
+    {#    </div>#}
+    {#    <div class="col-md-3">#}
+    {#        <div class="card mx-md-4">#}
+    {#            <a href="{% url 'rrhh:postulantes' %}">#}
+    {#                <div class="card-body">#}
+    {#                    <i class="mdi  mdi-account-check-outline" style="font-size: 80px"></i>#}
+    {#                    <h5 class="text-muted font-weight-normal mt-0" title="New Leads">Postulantes</h5>#}
+    {#                </div> <!-- end card-body -->#}
+    {#            </a>#}
+    {#        </div>#}
+    {#    </div>#}
+    {#    <div class="col-md-3">#}
+    {#        <div class="card mx-md-4">#}
+    {#            <a href="{% url 'rrhh:contratos' %}">#}
+    {#                <div class="card-body">#}
+    {#                    <i class="mdi mdi-account-group" style="font-size: 80px"></i>#}
+    {#                    <h5 class="text-muted font-weight-normal mt-0" title="New Leads">Colaboradores</h5>#}
+    {#                </div> <!-- end card-body -->#}
+    {#            </a>#}
+    {#        </div>#}
+    {#    </div>#}
+    {#    <div class="col-md-3">#}
+    {#        <div class="card mx-md-4">#}
+    {#            <a href="{% url 'rrhh:permisos' %}">#}
+    {#                <div class="card-body">#}
+    {#                    <i class="mdi mdi-certificate-outline" style="font-size: 80px"></i>#}
+    {#                    <h5 class="text-muted font-weight-normal mt-0" title="New Leads">Permisos</h5>#}
+    {#                </div> <!-- end card-body -->#}
+    {#            </a>#}
+    {#        </div>#}
+    {#    </div>#}
+    {#    <div class="col-md-3">#}
+    {#        <div class="card mx-md-4">#}
+    {#            <a href="{% url 'rrhh:vacaciones' %}">#}
+    {#                <div class="card-body">#}
+    {#                    <i class="dripicons-photo-group" style="font-size: 80px"></i>#}
+    {#                    <h5 class="text-muted font-weight-normal mt-0" title="New Leads">Vacaciones</h5>#}
+    {#                </div> <!-- end card-body -->#}
+    {#            </a>#}
+    {#        </div>#}
+    {#    </div>#}
+    {#    <div class="col-md-3">#}
+    {#        <div class="card mx-md-4">#}
+    {#            <a href="{% url 'rrhh:documentos' %}">#}
+    {#                <div class="card-body">#}
+    {#                    <i class="mdi mdi-asterisk" style="font-size: 80px"></i>#}
+    {#                    <h5 class="text-muted font-weight-normal mt-0" title="New Leads">Licencias</h5>#}
+    {#                </div> <!-- end card-body -->#}
+    {#            </a>#}
+    {#        </div>#}
+    {#    </div>#}
+    {#    <div class="col-md-3">#}
+    {#        <div class="card mx-md-4">#}
+    {#            <a href="{% url 'rrhh:documentos' %}">#}
+    {#                <div class="card-body">#}
+    {#                    <i class="mdi mdi-file-document" style="font-size: 80px"></i>#}
+    {#                    <h6 class="text-muted font-weight-normal mt-0" title="New Leads">Documentos de Colaboradores</h6>#}
+    {#                </div> <!-- end card-body -->#}
+    {#            </a>#}
+    {#        </div>#}
+    {#    </div>#}
+    {#    <div class="col-md-3">#}
+    {#        <div class="card mx-md-4">#}
+    {#            <a href="{% url 'rrhh:documentos' %}">#}
+    {#                <div class="card-body">#}
+    {#                    <i class="mdi mdi-pencil" style="font-size: 80px"></i>#}
+    {#                    <h5 class="text-muted font-weight-normal mt-0" title="New Leads">Solicitudes</h5>#}
+    {#                </div> <!-- end card-body -->#}
+    {#            </a>#}
+    {#        </div>#}
+    {#    </div>#}
+    {#    <div class="col-md-3">#}
+    {#        <div class="card mx-md-4">#}
+    {#            <a href="{% url 'rrhh:entrevistas' %}">#}
+    {#                <div class="card-body">#}
+    {#                    <i class="mdi mdi-clipboard-account-outline" style="font-size: 80px"></i>#}
+    {#                    <h5 class="text-muted font-weight-normal mt-0" title="New Leads">Entrevistas</h5>#}
+    {#                </div> <!-- end card-body -->#}
+    {#            </a>#}
+    {#        </div>#}
+    {#    </div>#}
+    {% if contratos_contratar or contratos_expirar or solicitudes_pendientes or contrataos_finiquitar %}
+        </div>
+        </div>
+    {% endif %}
 {% if contratos_contratar or contratos_expirar or solicitudes_pendientes or contrataos_finiquitar %}
     <div class="col-md-4">
-        <div class="card" style="cursor: pointer">
+        <div class="list-group" style="cursor: pointer">
             {% if contratos_contratar %}
-                <div class="card mb-1">
-                    <a class="text-muted font-black-normal text-left" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        <div class="card-header" id="headingOne">
-                            En proceso de contratación
-                            <span class="badge badge-warning pull-right">{{ contratos_contratar|length }}</span>
-                        </div>
-                    </a>
-                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne">
-                        <ul class="list-group list-group-flush">
-                            {% for c in contratos_contratar %}
-                                <a href="{% url 'rrhh:contrato' c.pk %}">
-                                    <li class="list-group-item list-group-item-warning">
-                                        {{ c }}
-                                        <span class="badge badge-danger badge-sm pull-right"> {{ c.estado }}</span>
-                                    </li>
-                                </a>
-                            {% endfor %}
-                        </ul>
-                    </div>
+                <a class="list-group-item list-group-item-action list-group-item-primary" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    En proceso de contratación
+                    <span class="badge badge-warning float-right">{{ contratos_contratar|length }}</span>
+                </a>
+                <div id="collapseOne" class="collapse" aria-labelledby="headingOne">
+                    <ul class="list-group list-group-flush">
+                        {% for c in contratos_contratar %}
+                            <a href="{% url 'rrhh:contrato' c.pk %}" class="list-group-item list-group-item-action">
+                                {{ c }} <span class="badge badge-danger badge-sm float-right"> {{ c.estado }}</span>
+                            </a>
+                        {% endfor %}
+                    </ul>
                 </div>
             {% endif %}
             {% if contratos_expirar %}
-                <div class="card bg-danger">
-                    <a class="text-muted font-black-normal text-left" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        <div class="card-header" id="headingOne">
-                            Contratos apunto de expirar
-                            <span class="badge badge-warning pull-right">{{ contratos_expirar|length }}</span>
-                        </div>
-                    </a>
-                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne">
-                        <ul class="list-group list-group-flush">
-                            {% for c in contratos_expirar|dictsort:'dias_termino_contrato' %}
-                                <a href="{% url 'rrhh:contrato' c.pk %}">
-                                    <li class="list-group-item list-group-item-warning">
-                                        {{ c }}
-                                        <span class="badge badge-danger badge-sm pull-right"> {{ c.dias_termino_contrato }} dias</span>
-                                    </li>
-                                </a>
-                            {% endfor %}
-                        </ul>
-                    </div>
+                <a class="list-group-item list-group-item-action list-group-item-warning" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Contratos apunto de expirar
+                    <span class="badge badge-warning float-right">{{ contratos_expirar|length }}</span>
+                </a>
+                <div id="collapseOne" class="collapse" aria-labelledby="headingOne">
+                    <ul class="list-group list-group-flush">
+                        {% for c in contratos_expirar|dictsort:'dias_termino_contrato' %}
+                            <a href="{% url 'rrhh:contrato' c.pk %}" class="list-group-item list-group-item-action">
+                                {{ c }} <span class="badge badge-danger badge-sm float-right"> {{ c.dias_termino_contrato }} dias</span>
+                            </a>
+                        {% endfor %}
+                    </ul>
                 </div>
             {% endif %}
             {% if contratos_finiquitar %}
-                <div class="card bg-danger">
-                    <a class="text-muted font-black-normal text-left collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        <div class="card-header" id="headingTwo">
-                            Contratos que se deben finiquitar
-                            <span class="badge badge-warning pull-right">{{ contratos_finiquitar|length }}</span>
-                        </div>
-                    </a>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo">
-                        <ul class="list-group list-group-flush">
-                            {% for c in contratos_finiquitar|dictsort:'dias_termino_contrato' %}
-                                <a href="{% url 'rrhh:contrato' c.pk %}">
-                                    <li class="list-group-item list-group-item-warning">
-                                        {{ c }}
-                                        <span class="badge badge-danger badge-sm pull-right"> {{ c.solicitud_set.all.0.get_tipo_display }} en {{ c.dias_termino_contrato }} dias</span>
-                                    </li>
-                                </a>
-                            {% endfor %}
-                        </ul>
-                    </div>
+                <a class="list-group-item list-group-item-action list-group-item-danger" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Contratos que se deben finiquitar
+                    <span class="badge badge-warning float-right">{{ contratos_finiquitar|length }}</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo">
+                    <ul class="list-group list-group-flush">
+                        {% for c in contratos_finiquitar|dictsort:'dias_termino_contrato' %}
+                            <a href="{% url 'rrhh:contrato' c.pk %}" class="list-group-item list-group-item-action">
+                                {{ c }} <span class="badge badge-danger badge-sm float-right"> {{ c.solicitud_set.all.0.get_tipo_display }} en {{ c.dias_termino_contrato }} dias</span>
+                            </a>
+                        {% endfor %}
+                    </ul>
                 </div>
             {% endif %}
             {% if solicitudes_pendientes %}
-                <div class="card bg-danger">
-                    <a class="text-muted font-black-normal text-left collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        <div class="card-header" id="headingThree">
-                            Solicitudes que requieren atención
-                            <span class="badge badge-warning pull-right">{{ solicitudes_pendientes|length }}</span>
-                        </div>
-                    </a>
-                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree">
-                        <ul class="list-group list-group-flush">
-                            {% for s in solicitudes_pendientes %}
-                                <a href="{% url 'rrhh:solicitud' s.pk %}">
-                                    <li class="list-group-item list-group-item-warning">
-                                        {{ s }}
-                                        <span class="badge badge-danger badge-sm pull-right"> {{ s.estado }}</span>
-                                    </li>
-                                </a>
-                            {% endfor %}
-                        </ul>
-                    </div>
+                <a class="list-group-item list-group-item-action list-group-item-warning" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Solicitudes que requieren atención
+                    <span class="badge badge-warning float-right">{{ solicitudes_pendientes|length }}</span>
+                </a>
+                <div id="collapseThree" class="collapse" aria-labelledby="headingThree">
+                    <ul class="list-group list-group-flush">
+                        {% for s in solicitudes_pendientes %}
+                            <a href="{% url 'rrhh:solicitud' s.pk %}" class="list-group-item list-group-item-action">
+                                {{ s }} <span class="badge badge-danger badge-sm float-right"> {{ s.estado }}</span>
+                            </a>
+                        {% endfor %}
+                    </ul>
                 </div>
             {% endif %}
         </div>

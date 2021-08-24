@@ -131,11 +131,23 @@ class EstadoContratacionAdmin(admin.ModelAdmin):
     list_filter = ['contrato__colegio', 'estado']
 
 
-@admin.register(colegio.DocumentoPersonal)
-class DocumentoPersonalAdmin(admin.ModelAdmin):
+@admin.register(colegio.Documento)
+class DocumentoAdmin(admin.ModelAdmin):
     list_display = (
-        'contrato',
         'tipo_documento',
+        'fecha_carga',
     )
-    search_fields = ['contrato', 'contrato__colegio', 'contrato__funcionario']
-    list_filter = ['contrato__colegio', 'tipo_documento']
+    search_fields = [
+        'tipo_documento',
+        'contrato__colegio',
+        'contrato__funcionario__persona',
+        'finiquito__contrato__colegio',
+        'finiquito__contrato__funcionario__persona',
+        'permiso__contrato__colegio',
+        'permiso__contrato__funcionario__persona',
+        'licencia__contrato__colegio',
+        'licencia__contrato__funcionario__persona',
+        'perfeccionamiento__persona',
+        'perfeccionamiento__titulo',
+    ]
+    list_filter = ['tipo_documento']
