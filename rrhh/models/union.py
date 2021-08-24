@@ -57,7 +57,6 @@ class FiniquitoUnion(models.Model):
     contrato = models.OneToOneField('ContratoUnion', on_delete=models.CASCADE)
     razon_baja = models.PositiveSmallIntegerField(default=1, choices=RAZON_FINIQUITO, verbose_name='Razón de baja')
     descripcion = models.TextField(max_length=1500, verbose_name='Descripción')
-    archivo = models.FileField(upload_to="rrhh/finiquitos", verbose_name='Finiquito')
 
     def __str__(self):
         return '{}, {}'.format(

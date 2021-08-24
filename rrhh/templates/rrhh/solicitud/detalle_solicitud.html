@@ -73,7 +73,7 @@
                         <a class="dropdown-item text-warning" id="ces" name="2" href="#"><i class="uil-refresh"></i> Pendiente</a>
                         {% if not object.estado_id == 3 %}<a class="dropdown-item text-danger" id="ces" name="3" href="#"><i class="uil-times-circle"></i> Rechazar</a>{% endif %}
                         {% if object.tipo < 3 %}<a class="dropdown-item text-warning" id="ces" name="4" href="#"><i class="mdi mdi-stop"></i> En espera de candidatos</a>{% endif %}
-                        {% if object.estado_id == 5 or object.tipo >= 3 %}<a class="dropdown-item text-warning" id="ces" name="6" href="#"><i class="uil-check"></i> Aprobar, lista para contratar</a>{% endif %}
+                        {% if object.estado_id == 5 or object.tipo >= 3 or object.postulantes and object.estado_id != 6 %}<a class="dropdown-item text-warning" id="ces" name="6" href="#"><i class="uil-check"></i> Aprobar, lista para contratar</a>{% endif %}
                         {% comment %}data-toggle="modal" data-target="#estado_solicitud_{{object.pk}}{% endcomment %}
                     </div>
                 </li>
@@ -177,32 +177,40 @@
                     </div>
                 {% endif %}
                 <div class="tab-pane fade" id="historial" role="tabpanel" aria-labelledby="profile-tab">
-                    <table class="table table-hover">
-                        <thead>
-                        <th>Estado</th>
-                        <th>Ejecutor</th>
-                        <th>Fecha</th>
-                        <th>Observaciones</th>
-                        </thead>
-                        <tbody>
-                        {% for e in object.estadosolicitud_set.all|dictsortreversed:'id' %}
-                            <tr>
-                                <td><span class="badge badge-pill
-                                    {% if e.estado == 2 or e.estado == 4 or e.estado == 5 or e.estado == 6%}
-                                        badge-warning
-                                    {% elif e.estado == 1 or e.estado == 7 %}
-                                        badge-success
-                                    {% else %}
-                                        badge-danger
-                                    {% endif %}"> {{ e.get_estado_display }} </span>
-                                </td>
-                                <td> {{ e.autor }} </td>
-                                <td> {{ e.fecha }} </td>
-                                <td> {{ e.observaciones|safe|escape }} </td>
-                            </tr>
+                    <div class="timeline-alt pt-3">
+                        {% for e in object.estadosolicitud_set.all|dictsortreversed:'fecha' %}
+                            <div class="timeline-item">
+                                <i class="mdi mdi-circle
+                                 {% if e.estado == 1 or e.estado == 7 %}
+                                    bg-success-lighten text-success
+                                {% elif e.estado == 3 %}
+                                    bg-danger-lighten text-danger
+                                {% else %}
+                                    bg-warning-lighten text-warning
+                                {% endif %} timeline-icon"></i>
+                                <div class="timeline-item-info">
+                                    <h5 class="mt-0 mb-1
+                                        {% if e.estado == 1 or e.estado == 7 %}
+                                            text-success
+                                        {% elif e.estado == 3 %}
+                                            text-danger
+                                        {% else %}
+                                            text-warning
+                                        {% endif %}">{{ e.get_estado_display }}</h5>
+                                    <div class="media">
+                                        <img src="{{ e.autor.persona.foto.url }}" alt="" class="rounded-circle mr-2" height="24">
+                                        <div class="media-body">
+                                            <p class="mt-1 font-14 mb-0">
+                                                {{ e.autor.persona.get_name }} <small>- {{ e.autor }}, </small><span class="font-12">{{ e.fecha|naturalday }}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <p class="text-muted mt-2 mb-0 pb-3">{{ e.observaciones|safe|escape }}</p>
+                                </div>
+                            </div>
                         {% endfor %}
-                        </tbody>
-                    </table>
+                    </div>
+                    <!-- end timeline -->
                 </div>
             </div>
         </div>
@@ -213,7 +221,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title alert alert-warning bg-white text-warning" role="alert"><strong>¡Alerta!</strong> Está a punto de eliminar la Solicitud de contratación</h5>
-                    <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -234,7 +242,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title"></h4>
-                    <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>

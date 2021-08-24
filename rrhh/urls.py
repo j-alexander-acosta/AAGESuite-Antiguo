@@ -94,32 +94,32 @@ urlpatterns = [
     ),
     url(
         r'^documentos/$',
-        views.DocumentoFuncionarioListView.as_view(),
+        views.DocumentoListView.as_view(),
         name='documentos'
     ),
     url(
         r'^documentos/nuevo/$',
-        views.DocumentoFuncionarioCreateView.as_view(),
+        views.DocumentoCreateView.as_view(),
         name='documento__nuevo'
     ),
     url(
         r'^documentos/(?P<pk>\d+)/$',
-        views.DocumentoFuncionarioDetailView.as_view(),
+        views.DocumentoDetailView.as_view(),
         name='documento'
     ),
     url(
         r'^documentos/nuevo/$',
-        views.DocumentoFuncionarioCreateView.as_view(),
+        views.DocumentoCreateView.as_view(),
         name='documento__nuevo'
     ),
     url(
         r'^documentos/(?P<pk>\d+)/editar/$',
-        views.DocumentoFuncionarioUpdateView.as_view(),
+        views.DocumentoUpdateView.as_view(),
         name='documento__editar'
     ),
     url(
         r'^documentos/(?P<pk>\d+)/eliminar/$',
-        views.DocumentoFuncionarioDeleteView.as_view(),
+        views.DocumentoDeleteView.as_view(),
         name='documento__eliminar'
     ),
     url(

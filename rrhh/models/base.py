@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.db import models
 
 TIPO_SUBVENCION = {
@@ -66,9 +65,15 @@ ESTADO_CONTRATACION = (
     (4, 'Firmado'),
 )
 DOCUMENTO = (
-    (1, 'Toma de conocimiento del Reglamento Interno'),
-    (2, 'Autorización de descuento de diezmo'),
-    (3, 'Autorización de uso de imagen'),
+    ('contrato', 'Contrato'),
+    ('conocimiento reglamento', 'Toma de conocimiento del Reglamento Interno'),
+    ('autorizacion diezmo', 'Autorización de descuento de diezmo'),
+    ('autorizacion imagen', 'Autorización de uso de imagen'),
+    ('permiso', 'Permiso'),
+    ('licencia', 'Licencia'),
+    ('finiquito', 'Finiquito'),
+    ('perfeccionamiento', 'Perfeccionamiento'),
+    ('otro', 'Otro'),
 )
 TIPO_PERFIL = (
     (1, 'Docente'),
@@ -244,6 +249,33 @@ class TipoDocumento(models.Model):
     class Meta:
         verbose_name = u'Tipo de documento'
         verbose_name_plural = u'Tipos de documento'
+
+
+class Documento(models.Model):
+    perfeccionamiento = models.ForeignKey('Perfeccionamiento', on_delete=models.CASCADE, null=True, blank=True)
+    contrato = models.ForeignKey('ContratoColegio', on_delete=models.CASCADE, null=True, blank=True)
+    licencia = models.ForeignKey('LicenciaFuncionarioColegio', on_delete=models.CASCADE, null=True, blank=True)
+    permiso = models.ForeignKey('PermisoFuncionarioColegio', on_delete=models.CASCADE, null=True, blank=True)
+    finiquito = models.ForeignKey('FiniquitoColegio', on_delete=models.CASCADE, null=True, blank=True)
+    tipo_documento = models.CharField(max_length=150, default='otro', choices=DOCUMENTO)
+    documento = models.FileField(upload_to="rrhh/documentos")
+    fecha_carga = models.DateTimeField(auto_now=True)
+
+    @property
+    def get_document_name(self):
+        if self.documento:
+            return self.documento.name.split('/')[-1]
+        else:
+            return '-'
+
+    def __str__(self):
+        return '{}'.format(
+            self.documento.name
+        )
+
+    class Meta:
+        verbose_name = u'Docmuento'
+        verbose_name_plural = u'Documentos'
 
 
 class TipoTitulo(models.Model):
