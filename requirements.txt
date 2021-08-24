@@ -21,7 +21,7 @@ django-qr-code==0.3.3
 django-simple-history==1.9.0
 django-sass
 django-widget-tweaks==1.4.1
-django-wkhtmltopdf==3.1.0
+django-wkhtmltopdf==3.3.0
 docutils==0.14
 et-xmlfile==1.0.1
 idna==2.8
@@ -63,3 +63,4 @@ Unidecode==1.0.23
 urllib3==1.24.3
 waitress==1.2.1
 XlsxWriter==0.8.9
+wkhtmltopdf==0.12.5

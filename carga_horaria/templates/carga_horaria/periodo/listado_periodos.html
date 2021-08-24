@@ -3,101 +3,111 @@
 {% load bootstrap_pagination %}
 
 {% block title_page %}
-    Cursos
+Cursos
 {% endblock %}
 
 {% block title %}
-    Cursos
+Cursos
 {% endblock %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
-    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:home' %}">Carga Horaria</a></li>
-    <li class="breadcrumb-item active">Cursos</li>
+<li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+<li class="breadcrumb-item"><a href="{% url 'carga-horaria:home' %}">Carga Horaria</a></li>
+<li class="breadcrumb-item active">Cursos</li>
 {% endblock %}
 
 {% block content %}
 <div class="card">
     <div class="card-header">
         <h4 class="card-title">Cursos
-          <div class="btn-group float-right" role="group">
-          <a class="btn btn-outline-primary" href="{% url 'carga-horaria:periodo__nuevo'%}" role="button">
-	        <span>Crear Curso 
-                <i class="uil-plus"></i>
-            </span>
+            <div class="btn-group float-right" role="group">
+                <a class="btn btn-outline-primary" href="{% url 'carga-horaria:periodo__nuevo'%}" role="button">
+                    <span>Crear Curso
+                        <i class="uil-plus"></i>
+                    </span>
                 </a>
             </div>
         </h4>
     </div>
     <div class="card-body">
 
-      <div class="row">
-	<div class="col-md-10">
-        <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th style="text-align: center;"><i class="uil-graduation-hat"></i> Curso </th>
-                <th style="text-align: center;"><i class="uil-check-circle"></i> Progreso </th>
-                <th style="text-align: center;"><i class="uil-edit"></i> Estado </th>
-                <th style="text-align: center;"><i class="uil-cog"></i> Acciones </th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for p in object_list %}
-                <tr{% if p.completion_percentage == 100 %} class="text-success" {% endif %}>
-                    <td><a href="{% url 'carga-horaria:periodo' p.pk %}">{{ p }}</a></td>
-                    <td style="text-align: center;">{{ p.completion_percentage }}%</td>
-                    <td style="text-align: center;">{% if p.completion_percentage >= 100 %}Completo{% else %}Incompleto{% endif %}</td>
-                    <td style="text-align: center;">
-                      <a class="btn btn-outline-primary" href="{% url 'carga-horaria:periodo__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
-                      {% if request.user.is_superuser %}
-                      <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_periodo_{{p.pk}}"><i class="uil-trash"></i></a>
-                      {% endif %}
-                    </td>
-                </tr>
-                {% if request.user.is_superuser %}
-                <div class="modal" tabindex="-1" role="dialog" id="eliminar_periodo_{{p.pk}}">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar un Curso</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <p>Está seguro que desea eliminar el curso "{{ p }}"?.</p>
-                                <p class="text-muted">Recuerde que eliminará todos los registros asociados a este curso.</p>
-                            </div>
-                            <div class="modal-footer">
-                                <a role="button" class="btn btn-outline-danger" href="{% url 'carga-horaria:periodo__eliminar' p.pk %}">Eliminar</a>
-                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
-                            </div>
-                        </div>
-                    </div>    
+        <div class="row">
+            <div class="col-md-10">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;"><i class="uil-graduation-hat"></i> Curso </th>
+                                <th style="text-align: center;"><i class="uil-check-circle"></i> Progreso </th>
+                                <th style="text-align: center;"><i class="uil-edit"></i> Estado </th>
+                                <th style="text-align: center;"><i class="uil-cog"></i> Acciones </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for p in object_list %}
+                            <tr{% if p.completion_percentage == 100 %} class="text-success" {% endif %}>
+                                <td><a href="{% url 'carga-horaria:periodo' p.pk %}">{{ p }}</a></td>
+                                <td style="text-align: center;">{{ p.completion_percentage }}%</td>
+                                <td style="text-align: center;">{% if p.completion_percentage >= 100 %}Completo{% else
+                                    %}Incompleto{% endif %}</td>
+                                <td style="text-align: center;">
+                                    <a class="btn btn-outline-primary"
+                                        href="{% url 'carga-horaria:periodo__editar' p.pk %}" data-toggle="tooltip"
+                                        data-placement="top" title="Editar"><i class="uil-edit"></i></a>
+                                    {% if request.user.is_superuser %}
+                                    <a class="btn btn-outline-danger" href="#" data-toggle="modal"
+                                        data-target="#eliminar_periodo_{{p.pk}}"><i class="uil-trash"></i></a>
+                                    {% endif %}
+                                </td>
+                                </tr>
+                                {% if request.user.is_superuser %}
+                                <div class="modal" tabindex="-1" role="dialog" id="eliminar_periodo_{{p.pk}}">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong>
+                                                    Está a punto de eliminar un Curso</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Está seguro que desea eliminar el curso "{{ p }}"?.</p>
+                                                <p class="text-muted">Recuerde que eliminará todos los registros
+                                                    asociados a este curso.</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a role="button" class="btn btn-outline-danger"
+                                                    href="{% url 'carga-horaria:periodo__eliminar' p.pk %}">Eliminar</a>
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    data-dismiss="modal">Cerrar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
-                {% endif %}
-            {% endfor %}
-            </tbody>
-        </table>
-	</div>
+            </div>
+            <div class="col-md-2">
+                <h5>Nivel</h5>
+                <ul class="nav nav-pills flex-column">
+                    {% for tag, name in levels %}
+                    <li class="nav-item"><a class="nav-link{% if nivel_actual == tag %} active{% endif %}"
+                            href="?nivel={{ tag }}">{{ name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
-	<div class="col-md-2">
-	  <h5>Nivel</h5>
-	  <ul class="nav nav-pills flex-column">
-	    {% for tag, name in levels %}
-	    <li class="nav-item"><a class="nav-link{% if nivel_actual == tag %} active{% endif %}" href="?nivel={{ tag }}">{{ name }}</a></li>
-	    {% endfor %}
-	  </ul>
-	</div>
+        <div class="card-footer">
+            <div align="center">
+                {% bootstrap_paginate page_obj range=5 %}
+            </div>
         </div>
-                    <div class="card-footer">
-                    <div align="center">
-                        {% bootstrap_paginate page_obj range=5 %}
-                    </div>
-                </div>
 
-</div>
+    </div>
 
-{% endblock content  %}
+    {% endblock content %}
