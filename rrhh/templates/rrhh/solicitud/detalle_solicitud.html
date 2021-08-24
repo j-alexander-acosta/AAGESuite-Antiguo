@@ -211,33 +211,6 @@
                         {% endfor %}
                     </div>
                     <!-- end timeline -->
-
-                    <table class="table table-hover">
-                        <thead>
-                        <th>Estado</th>
-                        <th>Ejecutor</th>
-                        <th>Fecha</th>
-                        <th>Observaciones</th>
-                        </thead>
-                        <tbody>
-                        {% for e in object.estadosolicitud_set.all|dictsortreversed:'id' %}
-                            <tr>
-                                <td><span class="badge badge-pill
-                                    {% if e.estado == 2 or e.estado == 4 or e.estado == 5 or e.estado == 6%}
-                                        badge-warning
-                                    {% elif e.estado == 1 or e.estado == 7 %}
-                                        badge-success
-                                    {% else %}
-                                        badge-danger
-                                    {% endif %}"> {{ e.get_estado_display }} </span>
-                                </td>
-                                <td> {{ e.autor }} </td>
-                                <td> {{ e.fecha }} </td>
-                                <td> {{ e.observaciones|safe|escape }} </td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>
