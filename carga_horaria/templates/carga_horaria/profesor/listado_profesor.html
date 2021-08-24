@@ -1,85 +1,87 @@
 {% extends 'base/base.html' %}
 {% load staticfiles %}
 {% load bootstrap_pagination %}
+{% load carga_filters %}
+
 
 {% block title_page %}
-    Profesores
+Profesores
 {% endblock %}
 
 {% block title %}
-    Profesores
+Profesores
 {% endblock %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
-    <li class="breadcrumb-item"><a href="{% url 'carga-horaria:home' %}">Carga Horaria</a></li>
-    <li class="breadcrumb-item active">Profesor</li>
+<li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+<li class="breadcrumb-item"><a href="{% url 'carga-horaria:home' %}">Carga Horaria</a></li>
+<li class="breadcrumb-item active">Profesor</li>
 {% endblock %}
 
 {% block extra_js %}
-    <script type="text/javascript">
+<script type="text/javascript">
 
-        function filtrotabla(){
-            let prjefe = $(document).find('#cbox1').is(":checked");
-            let advent = $(document).find('#cbox2').is(":checked");
-            let tipocont = $(document).find('#tipo_contrato').val();
-            let tituloprof = $(document).find('#especialidad_titulo').val();
-            let funcargo = $(document).find('#funcion').val();
+    function filtrotabla() {
+        let prjefe = $(document).find('#cbox1').is(":checked");
+        let advent = $(document).find('#cbox2').is(":checked");
+        let tipocont = $(document).find('#tipo_contrato').val();
+        let tituloprof = $(document).find('#especialidad_titulo').val();
+        let funcargo = $(document).find('#funcion').val();
 
-            //alert("entro:"+prjefe+"/"+advent+"/"+tipocont);
+        //alert("entro:"+prjefe+"/"+advent+"/"+tipocont);
 
-            $(document).find('#listprofesor tr').each(function () {
-                var value_prjefe = $(this).find("#prjefe").html();
-                var value_adv = $(this).find("#adv").html();
-                var value_tpc = $(this).find("#tp_ct").html() ;
-                var value_tpr = $(this).find("#tt_pr").html() ;
-                var value_fc = $(this).find("#car_fun").html() ;
-                //alert("value: "+value_adv);
-                //$(this).show();  $(this).hide();
+        $(document).find('#listprofesor tr').each(function () {
+            var value_prjefe = $(this).find("#prjefe").html();
+            var value_adv = $(this).find("#adv").html();
+            var value_tpc = $(this).find("#tp_ct").html();
+            var value_tpr = $(this).find("#tt_pr").html();
+            var value_fc = $(this).find("#car_fun").html();
+            //alert("value: "+value_adv);
+            //$(this).show();  $(this).hide();
 
-                if( prjefe ) {
-                    if( value_adv === 'False'){
-                        $(this).hide();
-                    }
+            if (prjefe) {
+                if (value_adv === 'False') {
+                    $(this).hide();
                 }
-                if( advent ) {
-                    if( value_adv === 'False'){
-                        $(this).hide();
-                    }
+            }
+            if (advent) {
+                if (value_adv === 'False') {
+                    $(this).hide();
                 }
-                if(tipocont != 0){
-                    //alert("value: "+value_tpc);
-                    if(value_tpc != tipocont){
-                        $(this).hide();
-                    }
+            }
+            if (tipocont != 0) {
+                //alert("value: "+value_tpc);
+                if (value_tpc != tipocont) {
+                    $(this).hide();
                 }
-                if(tituloprof != 0){
-                    //alert("value: "+value_tpc);
-                    if(value_tpr != tituloprof){
-                        $(this).hide();
-                    }
+            }
+            if (tituloprof != 0) {
+                //alert("value: "+value_tpc);
+                if (value_tpr != tituloprof) {
+                    $(this).hide();
                 }
-                if(funcargo != 0){
-                    //alert("value: "+value_tpc);
-                    if(value_fc != funcargo){
-                        $(this).hide();
-                    }
+            }
+            if (funcargo != 0) {
+                //alert("value: "+value_tpc);
+                if (value_fc != funcargo) {
+                    $(this).hide();
                 }
-            });
-
-        }
-        function limpiar(){
-            $(document).find('#listprofesor tr').each(function () {
-                $(this).show();
-            });
-        }
-
-        $(function(){
-            document.getElementById("btn_buscar").addEventListener("click", filtrotabla);
-            document.getElementById("btn_limpiar").addEventListener("click", limpiar);
-
+            }
         });
-    </script>
+
+    }
+    function limpiar() {
+        $(document).find('#listprofesor tr').each(function () {
+            $(this).show();
+        });
+    }
+
+    $(function () {
+        document.getElementById("btn_buscar").addEventListener("click", filtrotabla);
+        document.getElementById("btn_limpiar").addEventListener("click", limpiar);
+
+    });
+</script>
 {% endblock %}
 
 
@@ -88,28 +90,33 @@
 <div class="card">
     <div class="card-header">
         <h4 class="card-title">Profesores
-            <a class="btn btn-outline-primary float-right" href="{% url 'carga-horaria:profesor__nuevo'%}" role="button">
-            <span>
-                Crear Profesor
+            <a class="btn btn-outline-primary float-right" href="{% url 'carga-horaria:profesor__nuevo'%}"
+                role="button">
+                <span>
+                    Crear Profesor
                     <i class="uil-plus"></i>
-            </span>
+                </span>
             </a>
         </h4>
         <br>
         <class class="card-subtitle mb-2 text-muted">
-            <a class="btn btn-outline-default" href="{% url 'carga-horaria:profesores-info' %}"><i class="uil-cloud-download"></i> Descargar información Profesores</a>
+            <a class="btn btn-outline-default" href="{% url 'carga-horaria:profesores-info' %}"><i
+                    class="uil-cloud-download"></i> Descargar información Profesores</a>
         </class>
         <span style="float: right;">
             <class style="text-align: right;" class="card-subtitle mb-2 text-muted">
-                <a class="btn btn-outline-default" href="{% url 'carga-horaria:profesor__anexos' %}"><i class="uil-file-upload-alt"></i> Generar Anexo 1 Masivo</a>
-                <a class="btn btn-outline-default" href="{% url 'carga-horaria:profesores-pdf' %}"><i class="uil-print"></i> Imprimir</a>
+                <a class="btn btn-outline-default" href="{% url 'carga-horaria:profesor__anexos' %}"><i
+                        class="uil-file-upload-alt"></i> Generar Anexo 1 Masivo</a>
+                <a class="btn btn-outline-default" href="{% url 'carga-horaria:profesores-pdf' %}"><i
+                        class="uil-print"></i> Imprimir</a>
             </class>
         </span>
     </div>
     <div class="row">
         <div class="col-3" style="text-align:center">
             <form action="." method="GET">
-                <i class="uil-search"></i> <input name="q" placeholder="Buscar" value="{{ request.GET.q }}">{% if 'q' in request.GET %} <a href="{% url 'carga-horaria:profesores' %}" class="text-muted">limpiar</a>{% endif %}
+                <i class="uil-search"></i> <input name="q" placeholder="Buscar" value="{{ request.GET.q }}">
+                {% if 'q' in request.GET %} <a href="{% url 'carga-horaria:profesores' %}" class="text-muted">limpiar</a>{% endif %}
             </form>
         </div>
         <div class="col-1" style="text-align:center">
@@ -181,82 +188,100 @@
     </div>
     <div class="row">
         <div class="col-12" style="text-align:center">
-            <a class="btn btn-outline-success" data-toggle="tooltip" data-placement="top" id="btn_buscar" title="Buscar">Buscar</a>
-            <a class="btn btn-outline-primary" data-toggle="tooltip" data-placement="top" id="btn_limpiar" title="Limpiar">Limpiar</a>
+            <a class="btn btn-outline-success" data-toggle="tooltip" data-placement="top" id="btn_buscar"
+                title="Buscar">Buscar</a>
+            <a class="btn btn-outline-primary" data-toggle="tooltip" data-placement="top" id="btn_limpiar"
+                title="Limpiar">Limpiar</a>
         </div>
     </div>
-        <div class="table-responsive">
+    <div class="table-responsive">
         <table class="table table-striped" id="titleprofesor">
             <thead>
-            <tr style="text-align: center;">
-                <!--<th><i class="uil-clock-seven"></i>Profesor Jefe</th>-->
-                <!--<th><i class="uil-clock-seven"></i>Adventista</th>-->
-                <th><i class="uil-user"></i> Nombre </th>
-                <!--<th><i class="uil-clock-seven"></i>Titulo</th>-->
-                <th><i class="uil-clock-seven"></i> Hrs. contrato</th>
-                <!--<th><i class="uil-clock-seven"></i>Contrato</th>-->
-                <!--<th><i class="uil-user"></i> Cargo </th>-->
-                <th><i class="uil-clock-eight"></i> Hrs. S.G.</th>
-                <th><i class="uil-clock-two"></i> Hrs. S.E.P.</th>
-                <th><i class="uil-clock-five"></i> Hrs. P.I.E.</th>
-                <!--<th>Total Actual</th>-->
-                <!--<th>Total Año Ant.</th>-->
-                <!--<th>Diferencias</th>-->
-            </tr>
+                <tr style="text-align: center;">
+                    <!--<th><i class="uil-clock-seven"></i>Profesor Jefe</th>-->
+                    <!--<th><i class="uil-clock-seven"></i>Adventista</th>-->
+                    <th><i class="uil-user"></i> Nombre </th>
+                    <!--<th><i class="uil-clock-seven"></i>Titulo</th>-->
+                    <th><i class="uil-clock-seven"></i> Hrs. contrato</th>
+                    <!--<th><i class="uil-clock-seven"></i>Contrato</th>-->
+                    <!--<th><i class="uil-user"></i> Cargo </th>-->
+                    <th style="background-color:#CBECF5"><i class="uil-clock-eight"></i> HA</th>
+                    <th style="background-color:#CBECF5"><i class="uil-clock-two"></i> HA-SEP</th>
+                    <th style="background-color:#CBECF5"><i class="uil-clock-five"></i> HA-PIE</th>
+                    <th style="background-color:#CBECF5"><i class="uil-clock-five"></i>HA-SOST</th>
+                    <th style="background-color:#FDECBB"><i class="uil-clock-five"></i>H-SEP</th>
+                    <th style="background-color:#FDECBB"><i class="uil-clock-five"></i>H-PIE</th>
+                    <th style="background-color:#FDECBB"><i class="uil-clock-five"></i>H-SOST</th>
+                    <!--<th>Total Actual</th>-->
+                    <!--<th>Total Año Ant.</th>-->
+                    <!--<th>Diferencias</th>-->
+                </tr>
             </thead>
             <tbody id="listprofesor">
-            {% for p in object_list %}
+                {% for p in object_list %}
                 <tr style="text-align: center;">
                     <td id="profesorjefe" style="display:none;">{{ p.periodo_set.first }}</td>
                     <td id="adv" style="display:none;">{{ p.adventista }}</td>
                     <td><a href="{% url 'carga-horaria:profesor' p.pk %}"> {{ p.nombre }} </a></td>
                     <td id="tt_pr" style="display:none;">{{ p.especialidad.id }}</td>
-                    <td  id="tp_ct" style="display:none;">{{ p.tipo }}</td>
+                    <td id="tp_ct" style="display:none;">{{ p.tipo }}</td>
                     <td id="car_fun" style="display:none;">{{ p.cargo }}</td>
-                    <td> {{ p.horas_contratadas }} </td>
-                    <td> {{ p.horas_docentes }} </td>
-                    <td> {{ p.horas_sg }} </td>
-                    <td> {{ p.horas_sep }} </td>
-                    <td> {{ p.horas_pie }} </td>
+                    <td><strong> {{ p.horas_contratadas }} </strong></td>
+                    <td style="background-color:#CBECF5"> {{ p.horas_asignadas_plan|add:p.horas_asignadas_plan_vulnerables }} </td>
+                    <td style="background-color:#CBECF5"> {{ p.horas_asignadas_sep }} </td>
+                    <td style="background-color:#CBECF5"> {{ p.horas_asignadas_pie }} </td>
+                    <td style="background-color:#CBECF5"> {{ p.horas_asignadas_sostenedor }} </td>
+                    <td style="background-color:#FDECBB"> {{ p.horas_no_aula_asignadas_sep|hhmm }} </td>
+                    <td style="background-color:#FDECBB"> {{ p.horas_no_aula_asignadas_pie|hhmm }} </td>
+                    <td style="background-color:#FDECBB"> {{ p.horas_no_aula_asignadas_ordinaria|hhmm }} </td>
+                    <td> </td>
                     <!--<td> {{ p.horas_total}} </td>-->
                     <!--<td> {{ p.horas_total_anterior }} </td>-->
                     <td>
-                        <a class="btn btn-outline-success" href="{% url 'carga-horaria:profesor__anexo' p.pk %}" data-toggle="tooltip" data-placement="top" title="Generar Anexo 1"><i class="uil-file-upload-alt"></i></a>
-                        <a class="btn btn-outline-primary" href="{% url 'carga-horaria:profesor__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
-                        <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_profesor_{{p.pk}}"><i class="uil-trash"></i></a>
+                        <a class="btn btn-outline-success" href="{% url 'carga-horaria:profesor__anexo' p.pk %}"
+                            data-toggle="tooltip" data-placement="top" title="Generar Anexo 1"><i
+                                class="uil-file-upload-alt"></i></a>
+                        <a class="btn btn-outline-primary" href="{% url 'carga-horaria:profesor__editar' p.pk %}"
+                            data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
+                        <a class="btn btn-outline-danger" href="#" data-toggle="modal"
+                            data-target="#eliminar_profesor_{{p.pk}}"><i class="uil-trash"></i></a>
                     </td>
                 </tr>
                 <div class="modal" tabindex="-1" role="dialog" id="eliminar_profesor_{{p.pk}}">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de eliminar un Profesor</h5>
+                                <h5 class="modal-title"><strong style="color:red;">¡Alerta!</strong> Está a punto de
+                                    eliminar un Profesor</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
                                 <p>Está seguro que desea eliminar el profesor "{{ p.nombre }}"?.</p>
-                                <p class="text-muted">Recuerde que eliminará todos los registros asociados a este profesor.</p>
+                                <p class="text-muted">Recuerde que eliminará todos los registros asociados a este
+                                    profesor.</p>
                             </div>
                             <div class="modal-footer">
-                                <a role="button" class="btn btn-outline-danger" href="{% url 'carga-horaria:profesor__eliminar' p.pk %}">Eliminar</a>
-                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+                                <a role="button" class="btn btn-outline-danger"
+                                    href="{% url 'carga-horaria:profesor__eliminar' p.pk %}">Eliminar</a>
+                                <button type="button" class="btn btn-outline-secondary"
+                                    data-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
                     </div>
                 </div>
-            {% endfor %}
+                {% endfor %}
             </tbody>
         </table>
     </div>
 
-    </div>
+</div>
 
-    <div class="card-footer">
-        {% bootstrap_paginate page_obj range=5 %}
-    </div>
+<div class="card-footer">
+    {% bootstrap_paginate page_obj range=5 %}
+</div>
 
 </div>
 
-{% endblock content  %}
+{% endblock content %}

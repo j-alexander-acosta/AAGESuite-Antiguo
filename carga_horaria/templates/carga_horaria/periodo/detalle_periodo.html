@@ -104,7 +104,7 @@
                   <td>  <a href="{% url 'carga-horaria:asignar' a.pk object.pk %}">Asignar</a>{% if not a.base %} | {% endif %}
 
                     {% if a.asignacion_set.count %}<a class="btn btn-outline-warning" href="{% url 'carga-horaria:asignatura__limpiar' a.pk object.pk %}">
-                      <i class="uil-shutter"></i>
+                      <i class="uil-expand-arrows"></i>
                     </a>{% endif %}
                     
                     {% if not a.base %}<a class="btn btn-outline-danger" href="{% url 'carga-horaria:asignatura__eliminar' a.pk object.pk %}" onclick="return confirm('¿Está seguro de eliminar {{ a }}?')">

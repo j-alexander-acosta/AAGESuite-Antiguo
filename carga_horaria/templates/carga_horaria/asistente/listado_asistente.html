@@ -49,6 +49,9 @@
                 <th style="text-align: center;"><i class="uil-user"></i> Nombre </th>
                 <th style="text-align: center;"><i class="uil-suitcase-alt"></i> Función </th>
                 <th style="text-align: center;"><i class="uil-clock-eight"></i> Horas de contrato </th>
+                <th style="text-align: center; background-color:#FDECBB"><i class="uil-calendar-alt"></i> H-SEP </th>
+                <th style="text-align: center; background-color:#FDECBB"><i class="uil-calendar-alt"></i> H-PIE </th>
+                <th style="text-align: center; background-color:#FDECBB"><i class="uil-calendar-alt"></i> H-SOST </th>
                 <th style="text-align: center;"><i class="uil-cog"></i> Acciones </th>
             </tr>
             </thead>
@@ -58,6 +61,9 @@
                     <td><a href="{% url 'carga-horaria:asistente' p.pk %}"> {{ p.nombre }} </a></td>
                     <td style="text-align: center;"> {{ p.funcion }} </td>
                     <td style="text-align: center;"> {{ p.horas }} </td>
+                    <td style="text-align: center; background-color:#FDECBB"> {{ p.horas_sep }} </td>
+                    <td style="text-align: center; background-color:#FDECBB"> {{ p.horas_pie }} </td>
+                    <td style="text-align: center; background-color:#FDECBB"> {{ p.horas_sostenedor }} </td>
                     <td style="text-align: center;">
                       <a class="btn btn-outline-success" href="{% url 'carga-horaria:asistente__anexo' p.pk %}" data-toggle="tooltip" data-placement="top" title="Generar Anexo 1"><i class="uil-file-upload-alt"></i></a>
                         <a class="btn btn-outline-primary" href="{% url 'carga-horaria:asistente__editar' p.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
