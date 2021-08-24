@@ -4,8 +4,8 @@ from localflavor.cl.forms import CLRutField
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Field, HTML
 from rrhh.models.base import Funcion
-from rrhh.models.persona import Persona, Funcionario, DocumentoFuncionario
-from rrhh.models.colegio import Colegio, Entrevista, VacacionFuncionarioColegio, DocumentoPersonal
+from rrhh.models.persona import Persona, Funcionario, Documento
+from rrhh.models.colegio import Colegio, Entrevista, VacacionFuncionarioColegio
 from rrhh.models.colegio import ContratoColegio, LicenciaFuncionarioColegio, PermisoFuncionarioColegio
 from rrhh.models.colegio import FiniquitoColegio, Solicitud, EstadoSolicitud
 
@@ -108,11 +108,15 @@ class PersonaForm(forms.ModelForm):
             Div(
                 Div(
                     Field('religion'),
-                    css_class='col-md-6'
+                    css_class='col-md-4'
                 ),
                 Div(
                     Field('foto'),
-                    css_class='col-md-6'
+                    css_class='col-md-4'
+                ),
+                Div(
+                    Field('curriculum'),
+                    css_class='col-md-4'
                 ),
                 css_class='row'
             )
@@ -197,18 +201,23 @@ class EntrevistaForm(forms.ModelForm):
         self.helper.form_tag = False
 
 
-class DocumentoFuncionarioForm(forms.ModelForm):
+class DocumentoForm(forms.ModelForm):
     class Meta:
-        model = DocumentoFuncionario
-        fields = (
-            'funcionario',
-            'tipo_documento',
-            'descripcion',
-            'documento'
+        model = Documento
+        exclude = (
+            'fecha_carga',
         )
+        widgets = {
+            'perfeccionamiento': forms.HiddenInput,
+            'contrato': forms.HiddenInput,
+            'licencia': forms.HiddenInput,
+            'permiso': forms.HiddenInput,
+            'finiquito': forms.HiddenInput,
+            'tipo_documento': forms.HiddenInput
+        }
 
     def __init__(self, *args, **kwargs):
-        super(DocumentoFuncionarioForm, self).__init__(*args, **kwargs)
+        super(DocumentoForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
 
@@ -418,6 +427,8 @@ class LicenciaTipoFuncionarioColegioForm(forms.ModelForm):
 
 
 class PermisoFuncionarioColegioForm(forms.ModelForm):
+    documento = forms.FileField()
+
     class Meta:
         model = PermisoFuncionarioColegio
         fields = '__all__'
@@ -443,13 +454,14 @@ class PermisoFuncionarioColegioForm(forms.ModelForm):
 
 
 class PermisoTipoFuncionarioColegioForm(forms.ModelForm):
+    documento = forms.FileField()
+
     class Meta:
         model = PermisoFuncionarioColegio
         fields = '__all__'
         help_texts = {
             'dias_habiles': u'Información necesaria para el cálculo de fechas',
-            'goce_sueldo': u'Marque si corresponde',
-            'documento': u'Cargue el permiso firmado por ambas partes'
+            'goce_sueldo': u'Marque si corresponde'
         }
         widgets = {
             'contrato': forms.HiddenInput
@@ -670,21 +682,21 @@ class ContratoColegioForm(forms.ModelForm):
 
 
 class FiniquitoColegioForm(forms.ModelForm):
+    documento = forms.FileField()
+
     class Meta:
         model = FiniquitoColegio
         fields = [
             'contrato',
             'razon_baja',
             'descripcion',
-            'archivo'
         ]
 
-        # widgets = {
-        #     'contrato': forms.HiddenInput
-        # }
+        widgets = {
+            'contrato': forms.HiddenInput
+        }
 
     def __init__(self, *args, **kwargs):
-        id_contrato = kwargs.pop('id_contrato', None)
         super(FiniquitoColegioForm, self).__init__(*args, **kwargs)
         self.fields['razon_baja'].widget.attrs['class'] = 'chosen'
         self.helper = FormHelper()
@@ -800,7 +812,7 @@ class EstadoContratacionForm(forms.Form):
         required=False
     )
     estado = forms.IntegerField(
-        required = True,
+        required=True,
         widget=forms.HiddenInput()
     )
 
@@ -813,20 +825,3 @@ class EstadoContratacionForm(forms.Form):
             'observaciones',
             'documento'
         )
-
-
-class DocumentoPersonalForm(forms.ModelForm):
-    class Meta:
-        model = DocumentoPersonal
-        fields = [
-            'contrato',
-            'documento'
-        ]
-        widgets = {
-            'contrato': forms.HiddenInput()
-        }
-
-    def __init__(self, *args, **kwargs):
-        super(DocumentoPersonalForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_tag = False
