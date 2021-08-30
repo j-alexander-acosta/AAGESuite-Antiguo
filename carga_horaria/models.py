@@ -552,8 +552,16 @@ class Profesor(BaseModel):
         return Ley20903(self.horas_asignadas_sep).horas_semanales + self.horas_no_aula_asignadas_sep
 
     @property
+    def total_sep2(self):
+        return self.horas_asignadas_sep + self.horas_no_aula_asignadas_sep
+
+    @property
     def total_pie(self):
         return Ley20903(self.horas_asignadas_pie).horas_semanales + self.horas_no_aula_asignadas_pie
+
+    @property
+    def total_pie2(self):
+        return self.horas_asignadas_pie + self.horas_no_aula_asignadas_pie
 
     @property
     def horas_no_aula_disponibles(self):
@@ -586,6 +594,10 @@ class Profesor(BaseModel):
     @property
     def horas_semanales_sbvg_vulnerables(self):
         return Ley20903(self.horas_sbvg_vulnerables).horas_semanales_vulnerables
+
+    @property
+    def horas_sbvg_total2(self):
+        return self.horas_asignadas_sostenedor + self.horas_no_aula_asignadas_ordinaria
 
     @property
     def horas_sbvg_total(self):

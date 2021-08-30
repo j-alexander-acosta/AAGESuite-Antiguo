@@ -90,15 +90,17 @@ Profesores
 <div class="card">
     <div class="card-header">
         <h4 class="card-title">Profesores
-            <a class="btn btn-outline-primary float-right" href="{% url 'carga-horaria:profesor__nuevo'%}"
-                role="button">
-                <span>
-                    Crear Profesor
+            <div class="float-right">
+                <!--<a class="btn btn-outline-warning" href="#" data-toggle="modal"
+                    data-target="#comparativo_profesor_{{object.pk}}">
+                    <i class="uil-cog"></i>
+                </a>-->
+                <a class="btn btn-outline-primary   " href="{% url 'carga-horaria:profesor__nuevo'%}"
+                    role="button">Crear Profesor
                     <i class="uil-plus"></i>
-                </span>
-            </a>
+                </a>
+            </div>
         </h4>
-        <br>
         <class class="card-subtitle mb-2 text-muted">
             <a class="btn btn-outline-default" href="{% url 'carga-horaria:profesores-info' %}"><i
                     class="uil-cloud-download"></i> Descargar información Profesores</a>
@@ -282,6 +284,5 @@ Profesores
     {% bootstrap_paginate page_obj range=5 %}
 </div>
 
-</div>
 
 {% endblock content %}

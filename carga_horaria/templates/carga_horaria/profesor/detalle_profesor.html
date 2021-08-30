@@ -27,8 +27,8 @@ Profesor - Detalle
         <h4 class="card-title"><strong> {{ object.nombre }}</strong>
             {% block buttons %}
             <div class="btn-group float-right">
-                <a href="{% url 'carga-horaria:profesores' %}" type="button" class="btn btn-outline-dark"
-                    data-toggle="tooltip" data-placement="top" title="Comparativo">
+                <a class="btn btn-outline-warning" href="#" data-toggle="modal"
+                    data-target="#comparativo_profesor_{{object.pk}}">
                     <i class="uil-cog"></i>
                 </a>
                 <a href="{% url 'carga-horaria:profesores' %}" type="button" class="btn btn-outline-dark"
@@ -777,6 +777,29 @@ Profesor - Detalle
                 <a role="button" class="btn btn-outline-danger"
                     href="{% url 'carga-horaria:profesor__eliminar' object.pk %}">Eliminar</a>
                 <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" tabindex="-1" role="dialog" id="comparativo_profesor_{{object.pk}}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="title-center "><strong>Comparativo de profesor</strong></h5>
+            </div>
+            <div class="modal-body">
+                <p><strong>
+                    S.E.P. = {{ object.total_sep2|hhmm }}
+                </strong></p>
+                <p><strong>
+                    P.I.E. = {{ object.total_pie2|hhmm }}
+                </strong></p>
+                <p><strong>
+                    S.G. = {{ object.horas_sbvg_total2|hhmm }}
+                </strong></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-warning" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
