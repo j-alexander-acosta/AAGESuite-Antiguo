@@ -38,7 +38,21 @@
         {% else %}
             alert-danger
         {% endif%}">
-            <h5>{{ object }}</h5>
+            <h5>{{ object }}
+                <div class="btn-group btn-group-sm float-right" style="margin-bottom: 10px;">
+                    {% if not object.solicitud.set.all %}
+                        {% if object.dias_termino_contrato <= 120 and object.categoria == 2 %}
+                            <a href="{% url 'rrhh:contrato__renovar' object.pk %}" type="button" class="btn btn-outline-success">
+                                <i class="mdi mdi-star"></i> Renovar Contrato
+                            </a>
+                        {% elif object.dias_termino_contrato <= 60 %}
+                            <a href="{% url 'rrhh:contrato__renovar' object.pk %}" type="button" class="btn btn-outline-success">
+                                <i class="mdi mdi-star"></i> Renovar Contrato
+                            </a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </h5>
             {% if object.vigente %}
                 {% if object.solicitudrenovacion.estado == 4 %}
                     <p class="text-danger">
@@ -54,28 +68,13 @@
                     <p class="text-danger">
                 {% endif %}
             {% endif %}
-            {% block buttons %}
-                <div class="btn-group btn-group-sm float-right" style="margin-bottom: 10px;">
-                    {% if not object.solicitud.set.all %}
-                        {% if object.dias_termino_contrato <= 120 and object.categoria == 2 %}
-                            <a href="{% url 'rrhh:contrato__renovar' object.pk %}" type="button" class="btn btn-outline-success">
-                                <i class="mdi mdi-star"></i> Renovar Contrato
-                            </a>
-                        {% elif object.dias_termino_contrato <= 60 %}
-                            <a href="{% url 'rrhh:contrato__renovar' object.pk %}" type="button" class="btn btn-outline-success">
-                                <i class="mdi mdi-star"></i> Renovar Contrato
-                            </a>
-                        {% endif %}
-                    {% endif %}
-                </div>
-            {% endblock %}
         </div>
         <div class="card-body">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item" role="contrato">
+                <li class="nav-item">
                     <a class="nav-link active" id="contrato-tab" data-toggle="tab" href="#contrato" role="tab" aria-controls="contrato" aria-selected="true">Contrato</a>
                 </li>
-                <li class="nav-item" role="historial">
+                <li class="nav-item">
                     <a class="nav-link" id="historial-tab" data-toggle="tab" href="#historial" role="tab" aria-controls="historial" aria-selected="false">Historial de contratación</a>
                 </li>
                 {% if object.estado_id != 4 %}
@@ -86,20 +85,20 @@
                         {% if object.estado_id == 2 %}<a class="dropdown-item text-success" id="cec" name="4" href="#"><i class="uil-check"></i> Cargar contrato firmado</a> {% endif %}
                     </div>
                 {% endif %}
-                <li class="nav-item" role="documento">
+                <li class="nav-item">
                     <a class="nav-link" id="documento-tab" data-toggle="tab" href="#documento" role="tab" aria-controls="documento" aria-selected="false">Documentos</a>
                 </li>
-                <li class="nav-item" role="permiso">
+                <li class="nav-item">
                     <a class="nav-link" id="permiso-tab" data-toggle="tab" href="#permiso" role="tab" aria-controls="permiso" aria-selected="false">Permisos</a>
                 </li>
-                <li class="nav-item" role="licencia">
+                <li class="nav-item">
                     <a class="nav-link" id="licencia-tab" data-toggle="tab" href="#licencia" role="tab" aria-controls="licencia" aria-selected="false">Licencias</a>
                 </li>
-                <li class="nav-item" role="vacacion">
+                <li class="nav-item">
                     <a class="nav-link" id="vacacion-tab" data-toggle="tab" href="#vacacion" role="tab" aria-controls="vacacion" aria-selected="false">Vacaciones</a>
                 </li>
                 {% if object.solicitud_set.all %}
-                    <li class="nav-item" role="solicitud">
+                    <li class="nav-item">
                         <a class="nav-link" id="solicitud-tab" data-toggle="tab" href="#solicitud" role="tab" aria-controls="solicitud" aria-selected="false">Solicitudes</a>
                     </li>
                 {% endif %}
@@ -228,7 +227,7 @@
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title alert alert-warning bg-white text-warning" role="alert"><strong>¡Alerta!</strong> Está a punto de eliminar El Finiquito de {{ object }}</h5>
+                                                    <h5 class="modal-title alert alert-warning bg-white text-warning"><strong>¡Alerta!</strong> Está a punto de eliminar El Finiquito de {{ object }}</h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
@@ -366,7 +365,7 @@
                                         <td>
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi mdi-file-pdf"></i></button>
-                                                <button type="button" class="btn btn-outline-success" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>
+{#                                                <button type="button" class="btn btn-outline-success" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>#}
                                                 <button type="button" class="btn btn-outline-primary disabled" name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="down"><i class="mdi mdi-file-pdf"></i></button>
                                             </div>
                                         </td>
@@ -670,8 +669,8 @@
                         </div> -->
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-outline-success">Guardar</a>
-                            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-outline-success">Guardar</button>
+                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                     </div>
                 </form>
             </div>

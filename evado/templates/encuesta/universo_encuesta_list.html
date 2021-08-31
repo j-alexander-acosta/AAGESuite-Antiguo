@@ -1,0 +1,18 @@
+{% extends 'encuesta/object_list.html' %}
+
+{% block title_page %}
+    Universos de Encuestas
+{% endblock %}
+
+{% block title_panel %}
+    <strong> Universo de Encuestas </strong> <span class="badge"> {{ total_objects }} </span>
+    <a href="{% url 'universo_encuesta_create' %}" class="btn btn-success btn-sm"> <span class="glyphicon glyphicon-plus"></span> Añadir</a>
+{% endblock %}
+
+{% block alert_empty_message %}
+No se encontraron registros..
+{% endblock %}
+
+{% block  placeholder_buscar %}
+Buscar Encuesta...
+{% endblock %}

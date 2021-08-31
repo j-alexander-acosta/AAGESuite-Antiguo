@@ -1,0 +1,14 @@
+{% extends 'encuesta/universo_encuesta_list.html' %}
+{% load crispy_forms_tags %}
+
+{% block object_detail %}
+
+    <div class="page-header">
+        <h1> Nuevo Universo Encuesta <small> {% now "D d M Y" %} </small> </h1>
+    </div>
+
+    <div class="well">
+    {% crispy form %}
+    </div>
+
+{% endblock %}

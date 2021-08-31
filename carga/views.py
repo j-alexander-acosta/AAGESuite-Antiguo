@@ -5,7 +5,6 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout, login, authenticate
 from django.contrib import messages
-from django.contrib.auth.forms import AuthenticationForm
 
 
 @login_required()

@@ -92,7 +92,7 @@ class Nivel(Enum):
 
 class Plan(models.Model):
     nivel = models.CharField(max_length=8, choices=[(tag.name, tag.value) for tag in Nivel])
-    colegio = models.ForeignKey('Colegio', null=True)
+    colegio = models.ForeignKey('Colegio', null=True, on_delete=models.CASCADE)
 
     def refresh_asignaturas(self):
         for periodo in self.periodo_set.all():
@@ -116,7 +116,7 @@ class Plan(models.Model):
 
 class AsignaturaBase(models.Model):
     nombre = models.CharField(max_length=255)
-    plan = models.ForeignKey('Plan')
+    plan = models.ForeignKey('Plan', on_delete=models.CASCADE)
     horas_jec = models.DecimalField(max_digits=4, decimal_places=2)
     horas_nec = models.DecimalField(max_digits=4, decimal_places=2)
 
@@ -147,7 +147,7 @@ class Colegio(models.Model):
     
     nombre = models.CharField(max_length=255)
     abrev = models.CharField(max_length=10, blank=True, null=True)
-    fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
+    fundacion = models.ForeignKey('Fundacion', on_delete=models.CASCADE, blank=True, null=True)
     direccion = models.CharField(max_length=255, blank=True, null=True)
     ciudad = models.CharField(max_length=255, blank=True, null=True)
     comuna = models.CharField(max_length=255, blank=True, null=True)
@@ -181,13 +181,13 @@ class Colegio(models.Model):
 
 
 class Periodo(BaseModel):
-    plan = models.ForeignKey('Plan')
+    plan = models.ForeignKey('Plan', on_delete=models.CASCADE)
     nombre = models.CharField(max_length=255, blank=True, null=True)
     jec = models.BooleanField('JEC', default=True)
     horas = models.DecimalField(max_digits=4, decimal_places=2, default=0)
     horas_dif = models.DecimalField(max_digits=4, decimal_places=2, default=0, validators=[MinValueValidator(0)])
     horas_adicionales = models.DecimalField(max_digits=4, decimal_places=2, default=0)
-    colegio = models.ForeignKey('Colegio')
+    colegio = models.ForeignKey('Colegio', on_delete=models.CASCADE)
     profesor_jefe = models.ForeignKey('Profesor', blank=True, null=True, on_delete=models.SET_NULL)
 
     @property
@@ -315,7 +315,7 @@ class AsignaturaQuerySet(models.QuerySet):
 
 
 class Asignatura(BaseModel):
-    base = models.ForeignKey('AsignaturaBase', null=True, blank=True)
+    base = models.ForeignKey('AsignaturaBase', on_delete=models.CASCADE, null=True, blank=True)
     nombre = models.CharField(max_length=255, null=True, blank=True)
     periodos = models.ManyToManyField('Periodo')
     horas = models.DecimalField(max_digits=4, decimal_places=2)
@@ -418,15 +418,15 @@ class Profesor(BaseModel):
                     (FIJO, 'Plazo fijo'),
                     (REEMPLAZO, 'Reemplazo'))
 
-    persona = models.ForeignKey('Persona')
+    persona = models.ForeignKey('Persona', on_delete=models.CASCADE)
     tipo = models.PositiveSmallIntegerField('Tipo de contrato', default=INDEFINIDO, choices=TIPO_CHOICES)
     fecha_inicio = models.DateField('fecha inicio contrato', null=True)
     horas = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(44)])
     horas_indefinidas = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(44)])
     horas_plazo_fijo = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(44)])
-    especialidad = models.ForeignKey('Especialidad', verbose_name='título', blank=True, null=True)
-    fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
-    colegio = models.ForeignKey('Colegio', null=True)
+    especialidad = models.ForeignKey('Especialidad', verbose_name='título', blank=True, null=True, on_delete=models.SET_NULL)
+    fundacion = models.ForeignKey('Fundacion', blank=True, null=True, on_delete=models.SET_NULL)
+    colegio = models.ForeignKey('Colegio', null=True, on_delete=models.SET_NULL)
     cargo = models.PositiveSmallIntegerField(default=DOCENTE, choices=CARGO_CHOICES)
     observaciones = models.TextField(default='', blank=True)
 
@@ -673,7 +673,7 @@ class AsignacionAsistenteQuerySet(models.QuerySet):
 
 
 class AsignacionAsistenteLog(BaseModel):
-    asistente = models.ForeignKey('Asistente')
+    asistente = models.ForeignKey('Asistente', on_delete=models.CASCADE)
     mensaje = models.TextField()
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
 
@@ -691,8 +691,8 @@ class AsignacionAsistente(BaseModel):
                     (NO_AULA, 'no aula'),
                     (SEP, 'SEP'),
                     (PIE, 'PIE'))
-    asistente = models.ForeignKey('Asistente')
-    curso = models.ForeignKey('Periodo', null=True, blank=True)
+    asistente = models.ForeignKey('Asistente', on_delete=models.CASCADE)
+    curso = models.ForeignKey('Periodo', null=True, blank=True, on_delete=models.SET_NULL)
     descripcion = models.CharField(max_length=255)
     tipo = models.PositiveSmallIntegerField(default=NORMAL)
     horas = models.DecimalField(max_digits=4, decimal_places=2)
@@ -711,13 +711,13 @@ class Asistente(BaseModel):
                     (FIJO, 'Plazo fijo'),
                     (REEMPLAZO, 'Reemplazo'))
 
-    persona = models.ForeignKey('Persona')
+    persona = models.ForeignKey('Persona', on_delete=models.CASCADE)
     horas = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(1), MaxValueValidator(45)])
     funcion = models.CharField(max_length=255)
     tipo = models.PositiveSmallIntegerField('Tipo de contrato', default=INDEFINIDO, choices=TIPO_CHOICES)
     fecha_inicio = models.DateField('fecha inicio contrato', null=True)
-    fundacion = models.ForeignKey('Fundacion', blank=True, null=True)
-    colegio = models.ForeignKey('Colegio', null=True)
+    fundacion = models.ForeignKey('Fundacion', blank=True, null=True, on_delete=models.SET_NULL)
+    colegio = models.ForeignKey('Colegio', null=True, on_delete=models.SET_NULL)
     observaciones = models.TextField(default='', blank=True)
 
     def generar_anexo_1(self):
@@ -801,7 +801,7 @@ class AsignacionQuerySet(models.QuerySet):
 
 
 class AsignacionLog(BaseModel):
-    profesor = models.ForeignKey('Profesor')
+    profesor = models.ForeignKey('Profesor', on_delete=models.CASCADE)
     mensaje = models.TextField()
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
 
@@ -820,9 +820,9 @@ class Asignacion(BaseModel):
                     (PIE, 'PIE'),
                     (SOSTENEDOR, 'Sostenedor'))
 
-    profesor = models.ForeignKey('Profesor')
-    asignatura = models.ForeignKey('Asignatura', null=True, blank=True)
-    curso = models.ForeignKey('Periodo', null=True, blank=True)  # TODO: mark for deletion, this isn't used
+    profesor = models.ForeignKey('Profesor', on_delete=models.CASCADE)
+    asignatura = models.ForeignKey('Asignatura', null=True, blank=True, on_delete=models.SET_NULL)
+    curso = models.ForeignKey('Periodo', null=True, blank=True, on_delete=models.SET_NULL)  # TODO: mark for deletion, this isn't used
     descripcion = models.CharField(max_length=255, null=True, blank=True)
     tipo = models.PositiveSmallIntegerField(default=PLAN)
     horas = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(0.5)])
@@ -849,8 +849,8 @@ class Asignacion(BaseModel):
 
 
 class AsignacionExtra(BaseModel):
-    profesor = models.ForeignKey('Profesor')
-    curso = models.ForeignKey('Periodo', null=True, blank=True)
+    profesor = models.ForeignKey('Profesor', on_delete=models.CASCADE)
+    curso = models.ForeignKey('Periodo', null=True, blank=True, on_delete=models.SET_NULL)
     descripcion = models.CharField(max_length=255)
     horas = models.DecimalField(max_digits=4, decimal_places=2)
 
@@ -881,8 +881,8 @@ class AsignacionNoAula(BaseModel):
                     (SEP, 'SEP'),
                     (PIE, 'PIE'))
 
-    profesor = models.ForeignKey('Profesor')
-    curso = models.ForeignKey('Periodo', null=True, blank=True)
+    profesor = models.ForeignKey('Profesor', on_delete=models.CASCADE)
+    curso = models.ForeignKey('Periodo', null=True, blank=True, on_delete=models.SET_NULL)
     descripcion = models.CharField(max_length=255)
     tipo = models.PositiveSmallIntegerField(default=ORDINARIA)
     horas = models.DecimalField(max_digits=4, decimal_places=2)

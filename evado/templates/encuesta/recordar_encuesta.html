@@ -1,0 +1,13 @@
+{% load i18n %}
+
+<h3> Estimado/a <strong>{{ nombres }} {{apellidos}}</strong></h3>
+
+<p> {{ contenido|safe }}</p>
+
+<h5> Encuesta{{ encuestas|pluralize }} Disponible{{ encuestas|pluralize }}</h5>
+
+<ul>
+     {% for x in encuestas %}
+    <li> <a href="{{ dominio }}/app/encuesta/{{x.hash}}">  {{ x.nombre }}  </a></li>
+    {% endfor %}
+</ul>

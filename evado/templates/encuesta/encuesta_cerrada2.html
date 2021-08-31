@@ -1,0 +1,12 @@
+{% extends 'encuesta/base.html' %}
+
+{% block content %}
+
+<blockquote>
+<h3> La Encuesta <small> {{ aplicar_encuesta.universo_encuesta.encuesta.titulo }} </small> se ha cerrado  </h3>
+</blockquote>
+
+<p class="code"> La fecha de cierre era {{ universo.fin }}  </p>
+
+
+{% endblock %}

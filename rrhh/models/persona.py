@@ -5,7 +5,7 @@ from rrhh.models.colegio import Colegio, ContratoColegio
 
 
 class PerfilUsuario(models.Model):
-    usuario = models.OneToOneField(User)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
     perfil = models.ForeignKey("Perfil", on_delete=models.CASCADE)
     nivel_acceso = models.PositiveSmallIntegerField(default=1, choices=NIVEL_ACCESO, verbose_name='Nivel de acceso')
 
@@ -56,7 +56,7 @@ class Persona(models.Model):
     email = models.EmailField()
     titulado = models.BooleanField(default=False)
     profesion = models.CharField(max_length=255, null=True, blank=True, verbose_name='Título profesional', default='')
-    usuario = models.OneToOneField(User, null=True, blank=True)
+    usuario = models.OneToOneField(User, null=True, blank=True, on_delete=models.SET_NULL)
     foto = models.FileField(null=True, blank=True, upload_to="rrhh/fotos", verbose_name='Foto de perfil')
     curriculum = models.FileField(null=True, blank=True, upload_to="rrhh/curriculums")
 
@@ -79,6 +79,13 @@ class Persona(models.Model):
     def get_full_name(self):
         return '{} {} {}'.format(
             self.nombres,
+            self.apellido_paterno,
+            self.apellido_materno
+        )
+
+    @property
+    def apellidos(self):
+        return '{} {}'.format(
             self.apellido_paterno,
             self.apellido_materno
         )

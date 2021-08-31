@@ -1,0 +1,24 @@
+{% extends 'encuesta/base.html' %}
+
+{% block content %}
+
+<blockquote>
+<h3> Encuesta Finalizada! <small> {{ aplicar_encuesta.universo_encuesta.encuesta.titulo }} - {{ aplicar_encuesta.nombre }} </small>  </h3>
+</blockquote>
+
+<p class="code"> Muchas gracias por completar nuestra encuesta, estimado/a <strong> {{ aplicar_encuesta.persona.nombres }}  {{ aplicar_encuesta.persona.apellidos }} </strong>  </p>
+
+<h3 align="center"> Encuestas Restantes <span class="badge"> {{ restantes }} </span> </h3>
+
+    <ul class="list-group">
+    {% for encuesta in encuestas %}
+        {% if not encuesta.finalizado %}
+            <a href="{% url 'tomar_encuesta' encuesta.hash %}" class="list-group-item"> <span class="label label-info"> {{ forloop.counter }} </span> &nbsp;&nbsp;{{ encuesta.universo_encuesta.encuesta.titulo }} - <strong> {{ encuesta.nombre }} </strong> <span class="badge"> {{ encuesta.respuestas_contestadas|length }} /{{ encuesta.universo_encuesta.encuesta.preguntaencuesta_set.all|length }}</span> </a>
+        {% else %}
+            <a href="#" class="list-group-item list-group-item-success"> <span class="label label-info"> {{ forloop.counter }} </span> &nbsp;&nbsp;  {{ encuesta.universo_encuesta.encuesta.titulo }} - <strong> {{ encuesta.nombre }} </strong> <span class="badge"> {{ encuesta.respuestas_finalizado|length }}/{{ encuesta.universo_encuesta.encuesta.preguntaencuesta_set.all|length }} </span>  </a>
+        {% endif %}
+    {% endfor %}
+    </ul>
+
+
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'encuesta/object_list.html' %}
+
+{% block title_page %}
+    Encuestas
+{% endblock %}
+
+{% block title_panel %}
+ <strong> Encuestas </strong> <span class="badge"> {{ total_objects }} </span>
+{% endblock %}
+
+{% block alert_empty_message %}
+No se encontraron encuestas creadas..
+{% endblock %}
+
+{% block  placeholder_buscar %}
+Buscar Encuesta...
+{% endblock %}

@@ -1,0 +1,315 @@
+{% extends 'base/base.html' %}
+
+{% block title_page %}
+    Evaluación Docente
+{% endblock %}
+
+{% block title %}
+    Evaluación Docente
+{% endblock %}
+
+{% block content %}
+    <div class="row text-center mb-3">
+        <div class="col-md-6">
+            <div class="card mx-md-3">
+                <a href="{% url 'evado:encuesta_create' %}" class="black">
+                    <div class="card-body">
+                        <i class="mdi mdi-clipboard-edit-outline text-info" style="font-size: 100px"></i>
+                        <h4 class="text-black-50 text-center">Crear Encuesta</h4>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mx-md-3">
+                <a href="{% url 'evado:configurar_universo_personas' %}" class="black">
+                    <div class="card-body">
+                        <i class="mdi mdi-account-group text-info" style="font-size: 100px"></i>
+                        <h4 class="text-black-50 text-center">Crear Universo</h4>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    {#    <div class="row">#}
+    {#        <div class="col-12">#}
+    {#            <div class="card widget-inline">#}
+    {#                <div class="card-body p-0">#}
+    {#                    <div class="row no-gutters">#}
+    {#                        <div class="col-sm-6 col-xl-4">#}
+    {#                            <div class="card shadow-none m-0">#}
+    {#                                <div class="card-body text-center">#}
+    {#                                    <i class="dripicons-briefcase text-muted" style="font-size: 24px;"></i>#}
+    {#                                    <h3><span>{{ encuestas_habilitadas|length }}</span></h3>#}
+    {#                                    <p class="text-muted font-15 mb-0">Encuestas Habilitadas</p>#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {##}
+    {#                        <div class="col-sm-6 col-xl-4">#}
+    {#                            <div class="card shadow-none m-0 border-left">#}
+    {#                                <div class="card-body text-center">#}
+    {#                                    <i class="dripicons-checklist text-muted" style="font-size: 24px;"></i>#}
+    {#                                    <h3><span>{{ total_finalizados|length }}</span></h3>#}
+    {#                                    <p class="text-muted font-15 mb-0">Encuestas terminadas</p>#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {##}
+    {#                        <div class="col-sm-6 col-xl-4">#}
+    {#                            <div class="card shadow-none m-0 border-left">#}
+    {#                                <div class="card-body text-center" href="#last" data-toggle="tab" aria-expanded="true">#}
+    {#                                    <i class="dripicons-user-group text-muted" style="font-size: 24px;"></i>#}
+    {#                                    <h3><span>{{ encuestas_rendidas|length }}</span></h3>#}
+    {#                                    <p class="text-muted font-15 mb-0">Ultimas rendidas <small> hace 2 días </small></p>#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {##}
+    {#                    </div> <!-- end row -->#}
+    {#                </div>#}
+    {#            </div> <!-- end card-box-->#}
+    {#        </div> <!-- end col-->#}
+    {#    </div>#}
+
+    <ul class="nav nav-pills nav-justified">
+        <li class="nav-item card">
+            <a href="#first" data-toggle="tab" aria-expanded="false" class="rounded-0">
+                <div class="m-0">
+                    <div class="card-body text-center">
+                        <i class="dripicons-lock-open text-muted" style="font-size: 32px;"></i>
+                        <h3><span>{{ encuestas_habilitadas|length }}</span></h3>
+                        <p class="text-muted font-15 mb-0">Encuestas Habilitadas</p>
+                    </div>
+                </div>
+            </a>
+        </li>
+        <li class="nav-item card shadow-none">
+            <a href="#second" data-toggle="tab" aria-expanded="false" class="rounded-0">
+                <div class="sm-0 border-left">
+                    <div class="card-body text-center">
+                        <i class="dripicons-briefcase text-muted" style="font-size: 32px;"></i>
+                        <h3><span>{{ total_finalizados|length }}</span></h3>
+                        <p class="text-muted font-15 mb-0">Encuestas terminadas</p>
+                    </div>
+                </div>
+            </a>
+        </li>
+        <li class="nav-item card shadow-none">
+            <a href="#third" data-toggle="tab" aria-expanded="false" class="rounded-0">
+                <div class="m-0 border-left">
+                    <div class="card-body text-center">
+                        <i class="dripicons-document-edit text-muted" style="font-size: 32px;"></i>
+                        <h3><span>{{ encuestas_rendidas|length }}</span></h3>
+                        <p class="text-muted font-15 mb-0">Últimas rendidas <small> hace 2 días </small></p>
+                    </div>
+                </div>
+            </a>
+        </li>
+    </ul>
+
+    <div class="card">
+        <div class="tab-content">
+            <div class="tab-pane show active" id="first">
+                <div class="card-body">
+                    <div class="dropdown float-right">
+                        <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                            <i class="mdi mdi-dots-vertical"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" style="">
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Weekly Report</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Monthly Report</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Settings</a>
+                        </div>
+                    </div>
+                    <h4 class="header-title mb-3">Encuestas Habilitadas</h4>
+
+                    {#                    <p><b>107</b> Tasks completed out of 195</p>#}
+
+                    <div class="table-responsive">
+                        <table class="table table-centered table-nowrap table-hover mb-0">
+                            <tbody>
+                            {% for x in encuestas_habilitadas %}
+                                <tr>
+                                    <td>
+                                        <h5 class="font-14 my-1"><a href="javascript:void(0);" class="text-body">{{ x.encuesta.titulo }}</a></h5>
+                                        <span class="text-muted font-13"> habilitada desde el  <em> {{ x.inicio  }} </em> al  <em>{{ x.fin }}</em></span>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted font-13">Status</span> <br>
+                                        <span class="badge badge-warning-lighten">In-progress</span>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted font-13">Assigned to</span>
+                                        <h5 class="font-14 mt-1 font-weight-normal">Logan R. Cohn</h5>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted font-13">Total time spend</span>
+                                        <h5 class="font-14 mt-1 font-weight-normal">3h 20min</h5>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                No existen datos
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div> <!-- end table-responsive-->
+
+                </div> <!-- end card body-->
+            </div>
+            <div class="tab-pane" id="second">
+                <div class="card-body">
+                    <div class="dropdown float-right">
+                        <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                            <i class="mdi mdi-dots-vertical"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" style="">
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Weekly Report</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Monthly Report</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Settings</a>
+                        </div>
+                    </div>
+                    <h4 class="header-title mb-3">Encuestas terminadas</h4>
+
+                    {#                    <p><b>107</b> Tasks completed out of 195</p>#}
+
+                    <div class="table-responsive">
+                        <table class="table table-centered table-nowrap table-hover mb-0">
+                            <tbody>
+                            {% for k, v in total_finalizados.iteritems %}
+                                <li> <b>  : </b>  {{ v.terminados }}      </li>
+                                <tr>
+                                    <td>
+                                        <h5 class="font-14 my-1"><a href="javascript:void(0);" class="text-body">{{ k.encuesta.titulo }}</a></h5>
+                                        <span class="text-muted font-13">Due in 3 days</span>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted font-13">Terminados</span> <br>
+                                        <span class="badge badge-warning-lighten">{{ v.terminados }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted font-13">Assigned to</span>
+                                        <h5 class="font-14 mt-1 font-weight-normal">Logan R. Cohn</h5>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted font-13">Total time spend</span>
+                                        <h5 class="font-14 mt-1 font-weight-normal">3h 20min</h5>
+                                    </td>
+                                    <td class="table-action" style="width: 90px;">
+                                        <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
+                                        <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                No existen datos
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div> <!-- end table-responsive-->
+
+                </div> <!-- end card body-->
+            </div>
+            <div class="tab-pane" id="third">
+                <div class="card-body">
+                    <div class="dropdown float-right">
+                        <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                            <i class="mdi mdi-dots-vertical"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" style="">
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Weekly Report</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Monthly Report</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Settings</a>
+                        </div>
+                    </div>
+                    <h4 class="header-title mb-3">Últimas encuestas rendidas</h4>
+
+                    {#                    <p><b>107</b> Tasks completed out of 195</p>#}
+
+                    <div class="table-responsive">
+                        <table class="table table-centered table-nowrap table-hover mb-0">
+                            <tbody>
+                            {% for x in encuestas_rendidas %}
+                                <tr>
+                                    <td>
+                                        <h5 class="font-14 my-1"><a href="javascript:void(0);" class="text-body">{{ x.universo_encuesta.encuesta.titulo }}</a></h5>
+                                        <span class="text-muted font-13">Due in 3 days</span>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted font-13">Persona</span> <br>
+                                        <span class="badge badge-warning-lighten">{{ x.nombre }} ({{ x.persona }})</span>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted font-13">Finalizado</span>
+                                        <h5 class="font-14 mt-1 font-weight-normal">{{ x.finalizado}}</h5>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted font-13">Total time spend</span>
+                                        <h5 class="font-14 mt-1 font-weight-normal">3h 20min</h5>
+                                    </td>
+                                    <td class="table-action" style="width: 90px;">
+                                        <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
+                                        <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                No existen datos
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div> <!-- end table-responsive-->
+
+                </div> <!-- end card body-->
+            </div>
+        </div>
+    </div> <!-- end card -->
+
+    {#    <div class="row">#}
+    {#        <div class="col-md-6">#}
+    {#            <div class="page-header">#}
+    {#                <h4> Encuestas Habilitadas <span class="badge">{{ encuestas_habilitadas|length }}</span> </h4>#}
+    {#                <ul class="list-group">#}
+    {#                    {% for x in encuestas_habilitadas %}#}
+    {#                        <a href="#" class="list-group-item list-group-item-success"> <strong> {{ x.encuesta.titulo }} </strong> habilitada desde el  <em> {{ x.inicio  }} </em> al  <em>{{ x.fin }}</em> </a>#}
+    {#                    {% endfor %}#}
+    {#                </ul>#}
+    {##}
+    {#                <h4> Número de encuestas terminadas.</h4>#}
+    {#                <ul>#}
+    {#                    {% for k, v in total_finalizados.iteritems %}#}
+    {#                        <li> <b> {{ k.encuesta.titulo }} : </b>  {{ v.terminados }}      </li>#}
+    {#                    {% endfor %}#}
+    {#                </ul>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#        <div class="col-md-6">#}
+    {#            <div class="page-header">#}
+    {#                <h4> Ultimas encuestas rendidas, <small> hace 2 días </small>  <span class="badge"> {{ encuestas_rendidas|length }}</span></h4>#}
+    {#                <ul class="list-group">#}
+    {#                    {% for x in encuestas_rendidas %}#}
+    {#                        <a href="#" class="list-group-item"> <strong class="text-info"> {{ x.universo_encuesta.encuesta.titulo }} </strong>,  {{ x.nombre }}  <small> <b> ( {{ x.persona }} ) </b> </small> <span class="label label-default"> {{ x.finalizado}}</span> </a>#}
+    {#                    {% endfor %}#}
+    {#                </ul>#}
+    {#            </div>#}
+    {##}
+    {#        </div>#}
+    {#    </div>#}
+
+{% endblock %}
+

@@ -1,0 +1,22 @@
+{% extends 'encuesta/encuesta_list.html' %}
+{% load bootstrap3 %}
+
+{% block object_detail %}
+
+    <div class="page-header">
+        <h1> Nueva Encuesta, <small> {% now 'D d F Y' %} </small> </h1>
+    </div>
+
+    <div class="well">
+    <form  method="post" class="form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% buttons %}
+        <button type="submit" class="btn btn-primary">
+            {% bootstrap_icon "save" %} Guardar
+        </button>
+    {% endbuttons %}
+    </form>
+    </div>
+
+{% endblock %}
