@@ -153,6 +153,11 @@ Asistente - Detalle
                             </div>
                         </div>
                         {% endfor %}
+                        <tr>
+                            <td colspan="2" style="text-align: right;"><strong>Total</strong></td>
+                            <td colspan="2" style="text-align: left;">
+                                <strong>{{ object.horas_sep }}</strong></td>
+                        </tr>
                         {% endif %}
 
                         <!-- segunda tabla -->
@@ -216,6 +221,11 @@ Asistente - Detalle
                             </div>
                         </div>
                         {% endfor %}
+                        <tr>
+                            <td colspan="2" style="text-align: right;"><strong>Total</strong></td>
+                            <td colspan="2" style="text-align: left;">
+                                <strong>{{ object.horas_pie }}</strong></td>
+                        </tr>
                         {% endif %}
 
                         <!-- tercera tabla -->
@@ -277,7 +287,11 @@ Asistente - Detalle
                                 </div>
                             </div>
                         </div>
-                        {% endfor %}
+                        {% endfor %}<tr>
+                            <td colspan="2" style="text-align: right;"><strong>Total</strong></td>
+                            <td colspan="2" style="text-align: left;">
+                                <strong>{{ object.horas_sostenedor }}</strong></td>
+                        </tr>
 
                         </tbody>
                 </table>

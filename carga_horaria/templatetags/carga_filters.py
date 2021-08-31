@@ -24,3 +24,7 @@ def decimal_maybe(value):
         return int(value)
     else:
         return "{:.1f}".format(value).replace('.', ',')
+
+@register.filter
+def diferencia(value, arg):
+       return value - arg
