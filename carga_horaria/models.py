@@ -564,6 +564,10 @@ class Profesor(BaseModel):
         return self.horas_asignadas_pie + self.horas_no_aula_asignadas_pie
 
     @property
+    def total_horas_detalle_profesor(self):
+        return self.total_sep2 + self.total_pie2 + self.horas_sbvg_total2
+
+    @property
     def horas_no_aula_disponibles(self):
         return self.horas_disponibles
 

@@ -785,19 +785,39 @@ Profesor - Detalle
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="title-center "><strong>Comparativo de profesor</strong></h5>
+                <h5 class="title-center"><strong>Comparativo de profesor</strong></h5>
             </div>
-            <div class="modal-body">
-                <p><strong>
-                    S.E.P. = {{ object.total_sep2|hhmm }}
-                </strong></p>
-                <p><strong>
-                    P.I.E. = {{ object.total_pie2|hhmm }}
-                </strong></p>
-                <p><strong>
-                    S.G. = {{ object.horas_sbvg_total2|hhmm }}
-                </strong></p>
-            </div>
+            <table class="default">
+                <tr align="center">
+                    <td><strong></strong</td>
+                    <td><strong>S.E.P.</strong></td>
+                    <td><strong>P.I.E.</strong></td>
+                    <td><strong>S.G.</strong></td>
+                    <td><strong>TOTAL</strong></td>
+                </tr>
+                <tr align="center">
+                    <td><strong>{{ object.colegio.periode }}</strong></td>
+                    <td>{{ object.total_sep2|hhmm }}</td>
+                    <td>{{ object.total_pie2|hhmm }}</td>
+                    <td>{{ object.horas_sbvg_total2|hhmm }}</td>
+                    <td>{{ object.total_horas_detalle_profesor|hhmm }}</td>
+                </tr>
+                <!--<tr align="center">
+                    <td><strong>2021</strong></td>
+                    <td>{{ object.total_sep2|hhmm }}</td>
+                    <td>{{ object.total_pie2|hhmm }}</td>
+                    <td>{{ object.horas_sbvg_total2|hhmm }}</td>
+                    <td>{{ object.total_horas_detalle_profesor|hhmm }}</td>
+                </tr>
+                <tr align="center">
+                    <td><strong>Diferencia</strong></td>
+                    <td>{{ object.total_sep2|hhmm }}</td>
+                    <td>{{ object.total_pie2|hhmm }}</td>
+                    <td>{{ object.horas_sbvg_total2|hhmm }}</td>
+                    <td>{{ object.total_horas_detalle_profesor|hhmm }}</td>
+                    <td></td>
+                </tr>-->
+            </table>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-warning" data-dismiss="modal">Cerrar</button>
             </div>
