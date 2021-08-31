@@ -36,7 +36,7 @@
                             <a href="{% url 'rrhh:home_rrhh' %}" class="dropdown-item">Recursos Humanos</a>
                             <a href="{% url 'carga-horaria:home' %}" class="dropdown-item">Carga Horaria</a>
                             <a href="https://ac.unach.cl/" target="_blank" class="dropdown-item">Ciclos de Calidad</a>
-                            <a href="https://sistemaencuestas.unach.cl/accounts/login/?next=/app/home/" target="_blank" class="dropdown-item">Evaluación Docente</a>
+                            <a href="{% url 'evado:home_evado' %}" class="dropdown-item">Evaluación Docente</a>
                             <a href="#" class="dropdown-item">Evaluación Aprendizajes</a>
                             <a href="https://app.powerbi.com/?noSignUpCheck=1&pbi_source=weblandingsignin" target="_blank" class="dropdown-item">Power Bi</a>
                             <a href="https://www.educacionadventista.com/" target="_blank" class="dropdown-item">Portal Adventista</a>
@@ -46,7 +46,7 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-admin" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="uil-cog mr-1"></i> Administracion <div class="arrow-down"></div>
+                            <i class="uil-cog mr-1"></i> Administración <div class="arrow-down"></div>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="topnav-admin">
                             <div class="dropdown">
@@ -93,6 +93,17 @@
                                     <a href="{% url 'gestion:funciones' %}" class="dropdown-item">Funciones</a>
                                     <a href="{% url 'gestion:tiposlicencia' %}" class="dropdown-item">Tipos de Licencia</a>
                                     <a href="{% url 'gestion:tiposdocumento' %}" class="dropdown-item">Tipos de Documento</a>
+                                </div>
+                            </div>
+                            <div class="dropdown">
+                                <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-colaboradores" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Evaluación Docente <div class="arrow-down"></div>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="topnav-colaboradores">
+                                    <a href="{% url 'evado:periodo_list' %}" class="dropdown-item">Periodos de Encuesta</a>
+                                    <a href="{% url 'evado:categoria_pregunta_list' %}" class="dropdown-item">Categorias de pregunta</a>
+                                    <a href="{% url 'evado:encuesta_list' %}" class="dropdown-item">Encuestas</a>
+                                    <a href="{% url 'evado:universo_encuesta_list' %}" class="dropdown-item">Universos de Encuesta</a>
                                 </div>
                             </div>
                         </div>

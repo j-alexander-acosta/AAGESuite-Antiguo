@@ -1,0 +1,11 @@
+{% load i18n %}
+
+<h3> Estimado/a <strong>{{ nombres }} {{apellidos}}</strong></h3>
+
+<p> {{ universo.contenido_email|safe }}</p>
+
+<h5> Encuesta{{ encuestas|pluralize }} Disponible{{ encuestas|pluralize }}</h5>
+
+<ul>
+    <li> <a href="{{ dominio }}/app/encuesta/{{ encuestas.first.hash }}">  {{ universo.encuesta.titulo }}  </a></li>
+</ul>

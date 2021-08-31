@@ -1,0 +1,17 @@
+{% extends 'encuesta/object_list.html' %}
+
+{% block title_page %}
+    Personas
+{% endblock %}
+
+{% block title_panel %}
+ <strong> Personas </strong> <span class="badge"> {{ total_objects }} </span>
+{% endblock %}
+
+{% block alert_empty_message %}
+No se encontraron personas registradas..
+{% endblock %}
+
+{% block  placeholder_buscar %}
+Buscar Persona...
+{% endblock %}

@@ -20,7 +20,7 @@ class Colegio(models.Model):
     abrev = models.CharField(max_length=50, verbose_name="Abreviación")
     fundacion = models.ForeignKey('Fundacion', on_delete=models.CASCADE, verbose_name='Fundación')
     rbd = models.CharField(max_length=50, null=True, blank=True, verbose_name="Rol de base de datos (RBD)")
-    estado = models.CharField(max_length=25, default='particular_subvencionado', choices=TIPO_SUBVENCION)
+    estado = models.CharField(max_length=50, default='particular_subvencionado', choices=TIPO_SUBVENCION)
     tipo_jornada = models.CharField(max_length=25, default='completa', choices=TIPO_JORNADA,
                                     verbose_name='Tipo de jornada')
     total_salas = models.PositiveIntegerField(null=True, blank=True, verbose_name="Total de salas")
