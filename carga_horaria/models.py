@@ -495,11 +495,7 @@ class Profesor(BaseModel):
     @property
     def asignacion_periodo_anterior(self):
         anio_anterior = int(self.colegio.periode) - 1
-        print(self.colegio.periode)
-        print(anio_anterior)
         colegio = Colegio.objects.filter(nombre=self.colegio.nombre, periode=anio_anterior).first()
-        print(colegio.nombre)
-        print(colegio.periode)
         profesor = get_object_or_404(Profesor, persona=self.persona, colegio=colegio)
         return profesor if profesor else None
 
