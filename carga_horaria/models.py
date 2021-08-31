@@ -10,6 +10,7 @@ from decimal import Decimal, ROUND_HALF_DOWN, ROUND_HALF_UP, InvalidOperation
 from simple_history.models import HistoricalRecords
 from .templatetags.carga_filters import decimal_maybe, hhmm
 from .fucklogic import Ley20903
+from django.shortcuts import get_object_or_404
 
 
 
@@ -492,6 +493,17 @@ class Profesor(BaseModel):
         return self.horas_asignadas * 45 / 60
 
     @property
+    def asignacion_periodo_anterior(self):
+        anio_anterior = int(self.colegio.periode) - 1
+        print(self.colegio.periode)
+        print(anio_anterior)
+        colegio = Colegio.objects.filter(nombre=self.colegio.nombre, periode=anio_anterior).first()
+        print(colegio.nombre)
+        print(colegio.periode)
+        profesor = get_object_or_404(Profesor, persona=self.persona, colegio=colegio)
+        return profesor if profesor else None
+
+    @property
     def horas_asignadas(self):
         return sum(self.asignacion_set.values_list('horas', flat=True))
 
@@ -634,7 +646,7 @@ class Profesor(BaseModel):
     @property
     def horas_recreo_total(self):
         return self.horas_recreo + self.horas_recreo_vulnerables
-        
+
     @property
     def horas_recreo(self):
         return Ley20903(self.horas_docentes).horas_recreo
@@ -663,7 +675,7 @@ class Profesor(BaseModel):
     def horas_planificacion(self):
         return self.horas_no_lectivas_total * 0.4
 
-    def __str__(self): 
+    def __str__(self):
         return self.nombre
 
     class Meta:

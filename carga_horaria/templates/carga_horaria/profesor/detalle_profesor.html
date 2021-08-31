@@ -802,21 +802,24 @@ Profesor - Detalle
                     <td>{{ object.horas_sbvg_total2|hhmm }}</td>
                     <td>{{ object.total_horas_detalle_profesor|hhmm }}</td>
                 </tr>
-                <!--<tr align="center">
-                    <td><strong>2021</strong></td>
-                    <td>{{ object.total_sep2|hhmm }}</td>
-                    <td>{{ object.total_pie2|hhmm }}</td>
-                    <td>{{ object.horas_sbvg_total2|hhmm }}</td>
-                    <td>{{ object.total_horas_detalle_profesor|hhmm }}</td>
+                <tr align="center">
+                    {% if object.asignacion_periodo_anterior %}
+                    <td><strong>{{ object.asignacion_periodo_anterior.colegio.periode }}</strong></td>
+                    <td>{{ object.asignacion_periodo_anterior.total_sep2|hhmm }}</td>
+                    <td>{{ object.asignacion_periodo_anterior.total_pie2|hhmm }}</td>
+                    <td>{{ object.asignacion_periodo_anterior.horas_sbvg_total2|hhmm }}</td>
+                    <td>{{ object.asignacion_periodo_anterior.total_horas_detalle_profesor|hhmm }}</td>
                 </tr>
                 <tr align="center">
                     <td><strong>Diferencia</strong></td>
-                    <td>{{ object.total_sep2|hhmm }}</td>
-                    <td>{{ object.total_pie2|hhmm }}</td>
-                    <td>{{ object.horas_sbvg_total2|hhmm }}</td>
-                    <td>{{ object.total_horas_detalle_profesor|hhmm }}</td>
+                    <td>{{ object.total_sep2|diferencia:object.asignacion_periodo_anterior.total_sep2|hhmm }}</td>
+                    <td>{{ object.total_pie2|diferencia:object.asignacion_periodo_anterior.total_pie2|hhmm }}</td>
+                    <td>{{ object.horas_sbvg_total2|diferencia:object.asignacion_periodo_anterior.horas_sbvg_total2|hhmm }}</td>
+                    <td>{{ object.total_horas_detalle_profesor|diferencia:object.asignacion_periodo_anterior.total_horas_detalle_profesor|hhmm }}</td>
                     <td></td>
-                </tr>-->
+                    {% else %} <td>No hay datos del profesor en el año anterior</td>
+                    {% endif %}
+                </tr>
             </table>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-warning" data-dismiss="modal">Cerrar</button>
