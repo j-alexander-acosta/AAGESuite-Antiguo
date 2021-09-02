@@ -1,0 +1,25 @@
+{% load encuesta_extras crispy_forms_tags %}
+{% with aencuesta.respuestaaplicaruniversoencuestapersona_set.all as respuestas_encuesta %}
+    {% for r in item.tipo_respuesta.respuesta_set.all %}
+        <td width="60px"  align="center">
+            {% if r.escrita %}
+                <textarea name="escrita_{{ aencuesta.id }}_{{ item.id }}_{{ r.id }}">{% for rae in respuestas_encuesta %}{% if rae.respuesta.id == r.id and item.id == rae.pregunta.id %}{{ rae.respuesta_directa }}{% endif %}{% endfor %}</textarea>
+            {% elif r.check %}
+                <input type="checkbox"  name="check_{{ aencuesta.id }}_{{ item.id }}"  value="{{ r.id }}" {% for rae in respuestas_encuesta %}{% if rae.respuesta.id == r.id and item.id == rae.pregunta.id %}checked{% endif %}{% endfor %} />
+            {% else %}
+                <input id="radio_{{ forloop.counter }}_{{ aencuesta.id }}_{{ item.id }}" class="css-checkbox" type="radio" name="respuesta_{{ aencuesta.id }}_{{ item.id }}" value="{{ r.id }}" {% for rae in respuestas_encuesta %}{% if rae.respuesta.id == r.id and item.id == rae.pregunta.id %}
+                       checked="checked"{% endif %}{% endfor %}>
+                <label for="radio_{{ forloop.counter }}_{{ aencuesta.id }}_{{ item.id }}" class="css-label"></label>
+            {% endif %}
+            <br>
+
+            {% if item.descripcion_item_pregunta  %}
+                {% if item.tipo_respuesta.respuesta_set.all|length == item.descripcion_item_pregunta.descripcionitempregunta_set.all|length %}
+                    <p style="font-size: 10px;">
+                        {{ item.descripcion_item_pregunta.descripcionitempregunta_set.all|get_at_index:forloop.counter0  }}
+                    </p>
+                {% endif %}
+            {% endif %}
+        </td>
+    {% endfor %}
+{% endwith %}

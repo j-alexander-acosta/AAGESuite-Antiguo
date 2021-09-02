@@ -59,12 +59,18 @@ PREREQ_APPS = [
     'compressor',
     'guardian',
     'wkhtmltopdf',
-    'inline_static'
+    'inline_static',
+    'import_export',
+    'report_builder',
+    'nested_inline',
+    'parsley',
+    'django_summernote',
 ]
 
 PROJECT_APPS = [
     'carga_horaria',
     'rrhh',
+    'evado',
     'gestion',
 ]
 
@@ -157,3 +163,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 LOGIN_URL = '/login/'
+
+DOMINIO_DEL_SITIO = os.environ.get("DOMINIO_DEL_SITIO")

@@ -1,0 +1,29 @@
+{% extends 'encuesta/periodo_list.html' %}
+{% load crispy_forms_tags %}
+
+{% block title_page %}
+    {{ object }} - actualizar
+{% endblock %}
+
+{% block object_detail %}
+    <div class="page-header">
+        <h3> <strong> Actualizar Periodo:</strong> {{ object }}  </h3>
+    </div>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="alert alert-{{ message.tags }} volatile"{% endif %}>
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+                    {{ message }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="row">
+    <div class="well col-md-6 col-md-offset-3">
+        {% crispy form %}
+    </div>
+    </div>
+
+{% endblock %}

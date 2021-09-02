@@ -12,11 +12,12 @@ from .viewsAlexis import *
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from carga_horaria.models import Periodo, Colegio, Plan
 from carga_horaria.formsDani import PeriodoForm, ColegioForm, PlanForm
-from django.core.urlresolvers import reverse_lazy, reverse
+from django.urls import reverse_lazy, reverse
 from guardian.shortcuts import get_objects_for_user
 from guardian.shortcuts import assign_perm
 from guardian.shortcuts import remove_perm
 from wkhtmltopdf.views import PDFTemplateResponse, PDFTemplateView
+from wkhtmltopdf.views import PDFTemplateView
 from .models import Nivel
 from .models import Profesor
 from .models import Asistente
@@ -39,6 +40,7 @@ from .models import AsignacionAsistente
 from .forms import AsignacionAsistenteForm
 from .forms import AssignPermForm
 from .formsDani import PlantillaPlanForm
+from django.http import FileResponse
 
 
 @login_required
