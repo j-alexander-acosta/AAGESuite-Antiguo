@@ -330,49 +330,56 @@
                             <th>Opciones</th>
                             </thead>
                             <tbody>
-                            {% for d in documentos %}
-                                {% for dp in object.documento_set.all %}
-                                    {% if d.0 == dp.tipo_documento %}
-                                        <tr>
-                                            <td>{{ dp.get_tipo_documento_display }}</td>
-                                            <td>{{ dp.get_document_name }}</td>
-                                            <td>{{ dp.fecha_carga|naturalday }}</td>
-                                            <td>
-                                                <div class="btn-group">
-                                                    <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi mdi-file-pdf"></i></button>
+                                <tr></tr>
+                                    <td>Contrato</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a role="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left" download="DetalleContato.pdf" href="{% url 'rrhh:detalle-contrato-pdf' object.pk %}" ><i class="mdi mdi-file-pdf"></i></a>
 {#                                                    <button type="button" class="btn btn-outline-success" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>#}
-                                                    <a role="button" class="btn btn-outline-primary" href="{{ media_url }}{{ dp.documento }}" download name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="right"><i class="mdi mdi-file-pdf"></i></a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    {% else %}
-                                        <tr class="alert-danger">
-                                            <td>{{ d.1 }}</td>
-                                            <td>No cargado</td>
-                                            <td></td>
-                                            <td>
-                                                <div class="btn-group">
-                                                    <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi mdi-file-pdf"></i></button>
+                                            <a role="button" class="btn btn-outline-primary" href="{{ media_url }}{{ dp.documento }}" download name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="right"><i class="mdi mdi-file-pdf"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr></tr>
+                                    <td>Toma de conocimiento del Reglamento Interno</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a role="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left" download="DescuentoDiezmo.pdf" href="{% url 'rrhh:detalle-trabajador-diezmo-pdf' object.pk %}" ><i class="mdi mdi-file-pdf"></i></a>
 {#                                                    <button type="button" class="btn btn-outline-success" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>#}
-                                                    <button type="button" class="btn btn-outline-primary disabled" name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="down"><i class="mdi mdi-file-pdf"></i></button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    {% endif %}
-                                {% empty %}
-                                    <tr class="alert-danger">
-                                        <td>{{ d.1 }}</td>
-                                        <td>No cargado</td>
-                                        <td>
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left"><i class="mdi mdi-file-pdf"></i></button>
-                                                <button type="button" class="btn btn-outline-success" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>
-                                                <button type="button" class="btn btn-outline-primary disabled" name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="down"><i class="mdi mdi-file-pdf"></i></button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            {% endfor %}
+                                            <a role="button" class="btn btn-outline-primary" href="{{ media_url }}{{ dp.documento }}" download name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="right"><i class="mdi mdi-file-pdf"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr></tr>
+                                    <td>Autorización de descuento de diezmo</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a role="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left" download="DescuentoDiezmo.pdf" href="{% url 'rrhh:detalle-trabajador-diezmo-pdf' object.pk %}" ><i class="mdi mdi-file-pdf"></i></a>
+{#                                                    <button type="button" class="btn btn-outline-success" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>#}
+                                            <a role="button" class="btn btn-outline-primary" href="{{ media_url }}{{ dp.documento }}" download name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="right"><i class="mdi mdi-file-pdf"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr></tr>
+                                    <td>Autorización de uso de imagen</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a role="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left" download="DescuentoDiezmo.pdf" href="{% url 'rrhh:detalle-trabajador-diezmo-pdf' object.pk %}" ><i class="mdi mdi-file-pdf"></i></a>
+{#                                                    <button type="button" class="btn btn-outline-success" name="cargar_{{ d.0 }}" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>#}
+                                            <a role="button" class="btn btn-outline-primary" href="{{ media_url }}{{ dp.documento }}" download name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="right"><i class="mdi mdi-file-pdf"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+
+
                             </tbody>
                         </table>
                     </div>

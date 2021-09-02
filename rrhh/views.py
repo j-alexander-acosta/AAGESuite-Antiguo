@@ -1,4 +1,5 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import FileResponse, HttpResponse
+from django.contrib.auth.mixins import LoginRequiredMixin   
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
 from django.core.urlresolvers import reverse_lazy
@@ -18,6 +19,11 @@ from rrhh.forms import LicenciaFuncionarioColegioForm, PermisoFuncionarioColegio
     VacacionTipoFuncionarioColegioForm, SolicitudForm, EstadoSolicitudForm
 from rrhh.forms import LicenciaTipoFuncionarioColegioForm, PermisoTipoFuncionarioColegioForm, ContratoColegioForm, \
     EstadoContratacionForm, DocumentoForm
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4, letter
+from reportlab.lib import colors
+from rrhh.pdf.descuentodiezmo import DescuentoDiezmo
+from rrhh.pdf.detallecontrato import DetalleContrato
 
 
 @login_required
@@ -623,6 +629,34 @@ def nuevo_permiso_tipo_funcionario(request):
         data['message'] = u"La solicitud debe ser GET"
 
     return data
+
+@login_required
+def detalle_contrato_pdf(request, pk):
+    contrato = get_object_or_404(ContratoColegio,pk=pk)
+    
+    pdf = DetalleContrato.contrato(contrato)
+
+    return FileResponse(open('DetalleContato.pdf', 'rb'), content_type='application/pdf')   
+    
+@login_required
+def detalle_trabajador_diezmo_pdf(request, pk):
+    contrato = get_object_or_404(ContratoColegio,pk=pk)
+    
+    pdf = DescuentoDiezmo.diezmo(contrato)
+
+    return FileResponse(open('DescuentoDiezmo.pdf', 'rb'), content_type='application/pdf')
+    # response = HttpResponse(pdf, content_type='applicaton/pdf')
+    # return response['Content-Disposition'] = 'attachment; filename="DescuentoDiezmo.pdf"'
+
+# @login_required
+# def detalle_conocimiento_pdf(request, pk):
+#     contrato = get_object_or_404(ContratoColegio,pk=pk)
+    
+#     pdf = DetalleTest.test(contrato)
+
+#     return FileResponse(open('DetalleContato.pdf', 'rb'), content_type='application/pdf')
+#     # response = HttpResponse(pdf, content_type='applicaton/pdf')
+#     # return response['Content-Disposition'] = 'attachment; filename="DescuentoDiezmo.pdf"'
 
 
 class ContratoListView(LoginRequiredMixin, ListView):

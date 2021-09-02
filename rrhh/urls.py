@@ -243,6 +243,21 @@ urlpatterns = [
         name='contrato__eliminar'
     ),
     url(
+        r'^contratos/(?P<pk>\d+)/contrato/$',
+        views.detalle_contrato_pdf,
+        name='detalle-contrato-pdf'
+    ),
+    url(
+        r'^contratos/(?P<pk>\d+)/diezmo/$',
+        views.detalle_trabajador_diezmo_pdf,
+        name='detalle-trabajador-diezmo-pdf'
+    ),
+    # url(
+    #     r'^contratos/(?P<pk>\d+)/pdf/$',
+    #     views.detalle_conocimiento_pdf,
+    #     name='detalle-conocimiento-pdf'
+    # ),
+    url(
         r'^estado-contratacion/cambiar/$',
         views.cambiar_estado_contratacion,
         name='estado_contratacion__cambiar'

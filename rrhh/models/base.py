@@ -274,7 +274,7 @@ class Documento(models.Model):
         )
 
     class Meta:
-        verbose_name = u'Docmuento'
+        verbose_name = u'Documento'
         verbose_name_plural = u'Documentos'
 
 
