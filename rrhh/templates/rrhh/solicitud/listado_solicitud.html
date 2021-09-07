@@ -31,7 +31,7 @@
                     <thead>
                     <tr>
                         <th><i class="uil-user"></i> Cargo </th>
-                        <th><i class="uil-calendar-alt"></i> Colegio </th>
+                        <th><i class="uil-calendar-alt"></i> Entidad </th>
                         <th><i class="uil-calendar-alt"></i> Tipo </th>
                         <th><i class="uil-calendar-alt"></i> Estado </th>
                         <th><i class="uil-clock"></i> Opciones </th>
@@ -41,7 +41,7 @@
                     {% for i in object_list %}
                         <tr>
                             <td><a href="{% url 'rrhh:solicitud' i.pk %}"> {{ i.cargo }} </a></td>
-                            <td> {{ i.colegio }} </td>
+                            <td> {{ i.entidad }} </td>
                             <td> {{ i.get_tipo_display }} </td>
                             <td><h5><span class="badge badge-pill
                             {% if i.estado_id == 2 or i.estado_id == 4 or i.estado_id == 5 or i.estado_id == 6 %}

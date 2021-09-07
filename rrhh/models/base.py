@@ -253,10 +253,10 @@ class TipoDocumento(models.Model):
 
 class Documento(models.Model):
     perfeccionamiento = models.ForeignKey('Perfeccionamiento', on_delete=models.CASCADE, null=True, blank=True)
-    contrato = models.ForeignKey('ContratoColegio', on_delete=models.CASCADE, null=True, blank=True)
-    licencia = models.ForeignKey('LicenciaFuncionarioColegio', on_delete=models.CASCADE, null=True, blank=True)
-    permiso = models.ForeignKey('PermisoFuncionarioColegio', on_delete=models.CASCADE, null=True, blank=True)
-    finiquito = models.ForeignKey('FiniquitoColegio', on_delete=models.CASCADE, null=True, blank=True)
+    contrato = models.ForeignKey('Contrato', on_delete=models.CASCADE, null=True, blank=True)
+    licencia = models.ForeignKey('Licencia', on_delete=models.CASCADE, null=True, blank=True)
+    permiso = models.ForeignKey('Permiso', on_delete=models.CASCADE, null=True, blank=True)
+    finiquito = models.ForeignKey('Finiquito', on_delete=models.CASCADE, null=True, blank=True)
     tipo_documento = models.CharField(max_length=150, default='otro', choices=DOCUMENTO)
     documento = models.FileField(upload_to="rrhh/documentos")
     fecha_carga = models.DateTimeField(auto_now=True)

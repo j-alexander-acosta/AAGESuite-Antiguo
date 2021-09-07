@@ -9,21 +9,17 @@ from django.contrib.humanize.templatetags.humanize import naturalday
 from rrhh.templatetags.rrhh_utils import *
 from rrhh.models.base import TipoLicencia, DOCUMENTO, Documento
 from rrhh.models.persona import Persona, Funcionario
-from rrhh.models.colegio import Entrevista, VacacionFuncionarioColegio, FiniquitoColegio, LicenciaFuncionarioColegio
-from rrhh.models.colegio import PermisoFuncionarioColegio, ContratoColegio, EstadoContratacion, Solicitud, \
-    EstadoSolicitud
-from rrhh.forms import PersonaForm, FuncionarioForm, EntrevistaForm, DocumentoForm, VacacionFuncionarioColegioForm, \
-    FiniquitoColegioForm
-from rrhh.forms import LicenciaFuncionarioColegioForm, PermisoFuncionarioColegioForm, \
-    VacacionTipoFuncionarioColegioForm, SolicitudForm, EstadoSolicitudForm
-from rrhh.forms import LicenciaTipoFuncionarioColegioForm, PermisoTipoFuncionarioColegioForm, ContratoColegioForm, \
-    EstadoContratacionForm, DocumentoForm
+from rrhh.models.entidad import Entrevista, Vacacion, Finiquito, Licencia, Permiso, Contrato, EstadoContratacion
+from rrhh.models.entidad import Solicitud, EstadoSolicitud
+from rrhh.forms import VacacionTipoFuncionarioColegioForm, VacacionForm, ContratoForm, FuncionarioForm, EntrevistaForm
+from rrhh.forms import PermisoTipoFuncionarioColegioForm, PermisoForm, SolicitudForm, EstadoSolicitudForm, DocumentoForm
+from rrhh.forms import LicenciaTipoFuncionarioColegioForm, LicenciaForm, PersonaForm, FiniquitoForm, EstadoContratacionForm
 
 
 @login_required
 def home(request):
     # Contratos
-    contratos = ContratoColegio.objects.all()
+    contratos = Contrato.objects.all()
     contratos_expirar = []
     contratos_finiquitar = []
     contratos_contratar = []
@@ -312,27 +308,27 @@ class DocumentoDeleteView(LoginRequiredMixin, DeleteView):
 
 
 class VacacionListView(LoginRequiredMixin, ListView):
-    model = VacacionFuncionarioColegio
+    model = Vacacion
     template_name = 'rrhh/vacacion/listado_vacacion.html'
     search_fields = ['contrato__persona__rut', 'contrato__persona']
     paginate_by = 10
 
 
 class VacacionDetailView(LoginRequiredMixin, DetailView):
-    model = VacacionFuncionarioColegio
+    model = Vacacion
     template_name = 'rrhh/vacacion/detalle_vacacion.html'
 
 
 class VacacionCreateView(LoginRequiredMixin, CreateView):
-    model = VacacionFuncionarioColegio
-    form_class = VacacionFuncionarioColegioForm
+    model = Vacacion
+    form_class = VacacionForm
     template_name = 'rrhh/vacacion/nueva_vacacion.html'
     success_url = reverse_lazy('rrhh:vacaciones')
 
 
 class VacacionUpdateView(LoginRequiredMixin, UpdateView):
-    model = VacacionFuncionarioColegio
-    form_class = VacacionFuncionarioColegioForm
+    model = Vacacion
+    form_class = VacacionForm
     template_name = 'rrhh/vacacion/editar_vacacion.html'
 
     def get_success_url(self):
@@ -345,7 +341,7 @@ class VacacionUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class VacacionDeleteView(LoginRequiredMixin, DeleteView):
-    model = VacacionFuncionarioColegio
+    model = Vacacion
     success_url = reverse_lazy('rrhh:vacaciones')
 
     def get(self, request, *args, **kwargs):
@@ -369,7 +365,7 @@ def nuevo_vacacion_funcionario(request):
 
     if request.method == 'GET':
         contrato = get_object_or_404(
-            ContratoColegio,
+            Contrato,
             id=request.GET.get('contrato', None)
         )
         total_dias = request.GET.get('total_dias', None)
@@ -380,7 +376,7 @@ def nuevo_vacacion_funcionario(request):
         # dias_pendiente = request.GET.get('dias_pendiente', None)
         es_pendiente = request.GET.get('es_pendiente', None)
 
-        vacacion = VacacionFuncionarioColegio.objects.create(
+        vacacion = Vacacion.objects.create(
             contrato=contrato,
             total_dias=total_dias,
             fecha_inicio=fecha_inicio,
@@ -405,7 +401,7 @@ def nuevo_vacacion_funcionario(request):
 
 
 class LicenciaListView(LoginRequiredMixin, ListView):
-    model = LicenciaFuncionarioColegio
+    model = Licencia
     template_name = 'rrhh/licencia/listado_licencia.html'
     search_fields = ['contrato__persona', 'contrato__persona_rut']
     paginate_by = 10
@@ -413,20 +409,20 @@ class LicenciaListView(LoginRequiredMixin, ListView):
 
 
 class LicenciaDetailView(LoginRequiredMixin, DetailView):
-    model = LicenciaFuncionarioColegio
+    model = Licencia
     template_name = 'rrhh/licencia/detalle_licencia.html'
 
 
 class LicenciaCreateView(LoginRequiredMixin, CreateView):
-    model = LicenciaFuncionarioColegio
-    form_class = LicenciaFuncionarioColegioForm
+    model = Licencia
+    form_class = LicenciaForm
     template_name = 'rrhh/licencia/nuevo_licencia.html'
     success_url = reverse_lazy('rrhh:licencias')
 
 
 class LicenciaUpdateView(LoginRequiredMixin, UpdateView):
-    model = LicenciaFuncionarioColegio
-    form_class = LicenciaFuncionarioColegioForm
+    model = Licencia
+    form_class = LicenciaForm
     template_name = 'rrhh/licencia/nuevo_licencia.html'
 
     def get_success_url(self):
@@ -439,7 +435,7 @@ class LicenciaUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class LicenciaDeleteView(LoginRequiredMixin, DeleteView):
-    model = LicenciaFuncionarioColegio
+    model = Licencia
     success_url = reverse_lazy('rrhh:licencias')
 
     def get(self, request, *args, **kwargs):
@@ -464,7 +460,7 @@ def nuevo_licencia_tipo_funcionario(request):
     if request.method == 'GET':
 
         contrato = get_object_or_404(
-            ContratoColegio,
+            Contrato,
             id=request.GET.get('contrato', None)
         )
         tipo_licencia_id = request.GET.get('tipo_licencia', None)
@@ -482,7 +478,7 @@ def nuevo_licencia_tipo_funcionario(request):
             id=tipo_licencia_id
         ) if tipo_licencia_id else None
 
-        licencia = LicenciaFuncionarioColegio.objects.create(
+        licencia = Licencia.objects.create(
             contrato=contrato,
             tipo_licencia=tipo_licencia,
             tipo_licencia_descripcion=descripcion,
@@ -516,7 +512,7 @@ def nuevo_licencia_tipo_funcionario(request):
 
 
 class PermisoListView(LoginRequiredMixin, ListView):
-    model = PermisoFuncionarioColegio
+    model = Permiso
     template_name = 'rrhh/permiso/listado_permiso.html'
     search_fields = ['contrato__persona', 'contrato__persona_rut']
     paginate_by = 10
@@ -524,20 +520,20 @@ class PermisoListView(LoginRequiredMixin, ListView):
 
 
 class PermisoDetailView(LoginRequiredMixin, DetailView):
-    model = PermisoFuncionarioColegio
+    model = Permiso
     template_name = 'rrhh/permiso/detalle_permiso.html'
 
 
 class PermisoCreateView(LoginRequiredMixin, CreateView):
-    model = PermisoFuncionarioColegio
-    form_class = PermisoFuncionarioColegioForm
+    model = Permiso
+    form_class = PermisoForm
     template_name = 'rrhh/permiso/nuevo_permiso.html'
     success_url = reverse_lazy('rrhh:permisos')
 
 
 class PermisoUpdateView(LoginRequiredMixin, UpdateView):
-    model = PermisoFuncionarioColegio
-    form_class = PermisoFuncionarioColegioForm
+    model = Permiso
+    form_class = PermisoForm
     template_name = 'rrhh/permiso/editar_permiso.html'
 
     def get_success_url(self):
@@ -550,7 +546,7 @@ class PermisoUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class PermisoDeleteView(LoginRequiredMixin, DeleteView):
-    model = PermisoFuncionarioColegio
+    model = Permiso
     success_url = reverse_lazy('rrhh:permisos')
 
     def get(self, request, *args, **kwargs):
@@ -575,7 +571,7 @@ def nuevo_permiso_tipo_funcionario(request):
     if request.method == 'GET':
 
         contrato = get_object_or_404(
-            ContratoColegio,
+            Contrato,
             id=request.GET.get('contrato', None)
         )
 
@@ -591,7 +587,7 @@ def nuevo_permiso_tipo_funcionario(request):
         voto = request.GET.get('voto', None)
         documento = request.GET.get('documento', None)
 
-        permiso = PermisoFuncionarioColegio.objects.create(
+        permiso = Permiso.objects.create(
             contrato=contrato,
             total_dias=total_dias,
             observaciones=observaciones,
@@ -626,7 +622,7 @@ def nuevo_permiso_tipo_funcionario(request):
 
 
 class ContratoListView(LoginRequiredMixin, ListView):
-    model = ContratoColegio
+    model = Contrato
     template_name = 'rrhh/contrato/listado_contrato.html'
     search_fields = ['persona__rut', 'persona']
     paginate_by = 10
@@ -634,7 +630,7 @@ class ContratoListView(LoginRequiredMixin, ListView):
 
 
 class ContratoDetailView(LoginRequiredMixin, DetailView):
-    model = ContratoColegio
+    model = Contrato
     template_name = 'rrhh/contrato/detalle_contrato.html'
 
     def get_context_data(self, **kwargs):
@@ -649,8 +645,8 @@ class ContratoDetailView(LoginRequiredMixin, DetailView):
 
 
 class ContratoCreateView(LoginRequiredMixin, CreateView):
-    model = ContratoColegio
-    form_class = ContratoColegioForm
+    model = Contrato
+    form_class = ContratoForm
     template_name = 'rrhh/contrato/nuevo_contrato.html'
 
     # success_url = reverse_lazy('rrhh:contratos')
@@ -671,8 +667,8 @@ class ContratoCreateView(LoginRequiredMixin, CreateView):
 
 
 class ContratoUpdateView(LoginRequiredMixin, UpdateView):
-    model = ContratoColegio
-    form_class = ContratoColegioForm
+    model = Contrato
+    form_class = ContratoForm
     template_name = 'rrhh/contrato/editar_contrato.html'
 
     def get_success_url(self):
@@ -691,7 +687,7 @@ class ContratoUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class ContratoDeleteView(LoginRequiredMixin, DeleteView):
-    model = ContratoColegio
+    model = Contrato
     success_url = reverse_lazy('rrhh:contratos')
 
     def get(self, request, *args, **kwargs):
@@ -701,13 +697,13 @@ class ContratoDeleteView(LoginRequiredMixin, DeleteView):
 @login_required
 def nuevo_finiquito(request, id_contrato):
     contrato = get_object_or_404(
-        ContratoColegio,
+        Contrato,
         pk=id_contrato
     )
     context = {}
 
     if request.method == 'POST':
-        form = FiniquitoColegioForm(
+        form = FiniquitoForm(
             request.POST,
             request.FILES,
         )
@@ -718,7 +714,7 @@ def nuevo_finiquito(request, id_contrato):
             voto_traslado = form.cleaned_data['contrato']
             documento = form.cleaned_data['documento']
 
-            finiquito = FiniquitoColegio.objects.create(
+            finiquito = Finiquito.objects.create(
                 contrato=contrato,
                 razon_baja=razon_baja,
                 descripcion=descripcion,
@@ -741,7 +737,7 @@ def nuevo_finiquito(request, id_contrato):
             context['form'] = form
 
     else:
-        form = FiniquitoColegioForm(
+        form = FiniquitoForm(
             initial={
                 'contrato': contrato
             }
@@ -760,7 +756,7 @@ def nuevo_finiquito(request, id_contrato):
 
 
 class FiniquitoDeleteView(LoginRequiredMixin, DeleteView):
-    model = FiniquitoColegio
+    model = Finiquito
 
     def get_success_url(self):
         return reverse_lazy(
@@ -941,7 +937,7 @@ def guardar_candidato(request):
 
 
 @login_required
-def crear_contrato_colegio(request, id_funcionario, id_solicitud):
+def crear_contrato(request, id_funcionario, id_solicitud):
     funcionario = get_object_or_404(
         Funcionario,
         id=id_funcionario
@@ -955,14 +951,18 @@ def crear_contrato_colegio(request, id_funcionario, id_solicitud):
         solicitud.contrato.vigente = False
         solicitud.contrato.save()
 
-    context = crear_contrato_colegio_funcion(
+    context = crear_contrato_funcion(
         request,
         funcionario,
-        solicitud.colegio,
+        solicitud.entidad,
         solicitud.categoria,
         solicitud.tipo_contrato,
         solicitud.reemplazando_licencia,
+        solicitud.reemplazando_permiso,
         solicitud.horas,
+        solicitud.sueldo,
+        solicitud.asignacion_funcion,
+        solicitud.asignacion_locomocion,
         solicitud.fecha_inicio,
         solicitud.fecha_termino,
     )
@@ -971,7 +971,7 @@ def crear_contrato_colegio(request, id_funcionario, id_solicitud):
         EstadoSolicitud.objects.create(
             solicitud=solicitud,
             estado=7,
-            observaciones='Se aprueba y culmina con el contrato de {} en {}'.format(funcionario, solicitud.colegio),
+            observaciones='Se aprueba y culmina con el contrato de {} en {}'.format(funcionario, solicitud.entidad),
             autor=request.user
         )
 
@@ -991,18 +991,22 @@ def crear_contrato_colegio(request, id_funcionario, id_solicitud):
 @login_required
 def renovar_contrato(request, id_contrato):
     contrato = get_object_or_404(
-        ContratoColegio,
+        Contrato,
         id=id_contrato
     )
 
     context = crear_solicitud_funcion(
         request,
         3,
-        contrato.colegio,
+        contrato.entidad,
         contrato,
         contrato.categoria,
         contrato.horas_total,
+        contrato.sueldo,
+        contrato.asignacion_funcion,
+        contrato.asignacion_locomocion,
         contrato.tipo_contrato,
+        None,
         None,
         contrato.fecha_termino,
         None,
@@ -1028,7 +1032,7 @@ def renovar_contrato(request, id_contrato):
 @login_required
 def trasladar_funcionario(request, id_contrato):
     contrato = get_object_or_404(
-        ContratoColegio,
+        Contrato,
         id=id_contrato
     )
 
@@ -1039,7 +1043,11 @@ def trasladar_funcionario(request, id_contrato):
         contrato,
         contrato.categoria,
         contrato.horas_total,
+        contrato.sueldo,
+        contrato.asignacion_funcion,
+        contrato.asignacion_locomocion,
         contrato.tipo_contrato,
+        None,
         None,
         contrato.fecha_inicio,
         contrato.fecha_termino,
@@ -1065,12 +1073,16 @@ def trasladar_funcionario(request, id_contrato):
 def crear_solicitud_funcion(
         request,
         tipo_solicitud,
-        colegio,
+        entidad,
         contrato,
         categoria,
         horas,
+        sueldo,
+        asignacion_funcion,
+        asignacion_locomocion,
         tipo_contrato,
         licencia,
+        permiso,
         fecha_inicio,
         fecha_termino,
         justificacion,
@@ -1094,12 +1106,16 @@ def crear_solicitud_funcion(
         form = SolicitudForm(
             initial={
                 'tipo': tipo_solicitud,
-                'colegio': colegio,
+                'entidad': entidad,
                 'contrato': contrato,
                 'categoria': categoria,
                 'horas': horas,
+                'sueldo': sueldo,
+                'asignacion_funcion': asignacion_funcion,
+                'asignacion_locomocion':asignacion_locomocion,
                 'tipo_contrato': tipo_contrato,
                 'remmplazando_licencia': licencia,
+                'remmplazando_permiso': permiso,
                 'fecha_inicio': fecha_inicio,
                 'fecha_termino': fecha_termino,
                 'justificacion': justificacion,
@@ -1114,14 +1130,18 @@ def crear_solicitud_funcion(
     return context
 
 
-def crear_contrato_colegio_funcion(
+def crear_contrato_funcion(
         request,
         funcionario,
-        colegio,
+        entidad,
         categoria,
         tipo_contrato,
         licencia,
+        permiso,
         horas_total,
+        sueldo,
+        asignacion_funcion,
+        asignacion_locomocion,
         fecha_inicio,
         fecha_termino,
 ):
@@ -1130,7 +1150,7 @@ def crear_contrato_colegio_funcion(
     }
 
     if request.method == 'POST':
-        form = ContratoColegioForm(request.POST)
+        form = ContratoForm(request.POST)
         if form.is_valid():
             c = form.save()
 
@@ -1149,14 +1169,18 @@ def crear_contrato_colegio_funcion(
             context['form'] = form
 
     else:
-        form = ContratoColegioForm(
+        form = ContratoForm(
             initial={
                 'funcionario': funcionario,
-                'colegio': colegio,
+                'entidad': entidad,
                 'categoria': categoria,
                 'tipo_contrato': tipo_contrato,
                 'reemplazando_licencia': licencia,
+                'reemplazando_permiso': permiso,
                 'horas_total': horas_total,
+                'sueldo': sueldo,
+                'asignacion_funcion': asignacion_funcion,
+                'asignacion_locomocion': asignacion_locomocion,
                 'fecha_inicio': fecha_inicio,
                 'fecha_termino': fecha_termino,
             },
@@ -1171,7 +1195,7 @@ def cambiar_estado_contratacion(request):
     form = EstadoContratacionForm(request.POST, request.FILES)
     if form.is_valid():
         contrato = get_object_or_404(
-            ContratoColegio,
+            Contrato,
             pk=request.POST.get('contrato')
         )
         estado = request.POST.get('estado')

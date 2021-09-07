@@ -61,7 +61,7 @@
                             </a>
                         </li>
                     {% endif %}
-                    {% if object.historial.union or object.historial.fundacion or object.historial.colegio %}
+                    {% if object.historial %}
                         <li class="nav-item" role="presentation">
                             <a class="nav-link" id="historial-contrato-tab" data-toggle="tab" href="#historial-contrato"
                                role="tab" aria-controls="ihstorial-contrato" aria-selected="false">Hitorial</a>
@@ -173,7 +173,7 @@
                                             <div class="card-header" id="heading{{contrato.id}}" data-toggle="collapse" data-target="#collapse{{contrato.id}}" aria-expanded="true" aria-controls="collapse{{contrato.id}}">
                                                 <h2 class="mb-0">
                                                     <button class="btn btn-link" type="button">
-                                                        {{ contrato.colegio }}
+                                                        {{ contrato.entidad }}
                                                     </button>
                                                 </h2>
                                             </div>

@@ -127,7 +127,7 @@
                                     </tr>
                                     <tr>
                                         <th> Establecimiento </th>
-                                        <td>  {{ object.colegio }} - {{ object.colegio.fundacion|beauty_none }} </td>
+                                        <td>  {{ object.entidad }} - {{ object.entidad.dependiente|beauty_none }} </td>
                                     </tr>
                                     <tr>
                                         <th> Tipo de contrato </th>
@@ -198,7 +198,7 @@
                                     </tbody>
                                 </table>
                                 <br>
-                                {% if object.finiquitocolegio %}
+                                {% if object.finiquito %}
                                     <h5 class="card-title">Finiquito</h5>
                                     <table class="table table-responsive">
                                         <thead>
@@ -210,20 +210,20 @@
                                         </thead>
                                         <tbody>
                                         <tr>
-                                            <td>{{ object.finiquitocolegio.get_razon_baja_display }}</td>
-                                            <td>{{ object.finiquitocolegio.descripcion }}</td>
+                                            <td>{{ object.finiquito.get_razon_baja_display }}</td>
+                                            <td>{{ object.finiquito.descripcion }}</td>
                                             <td>
-                                                {% if object.finiquitocolegio.archivo %}
-                                                    <a class="btn btn-outline-info" href="{{ MEDIA_URL }}{{ object.finiquitocolegio.archivo.url }}" target="_blank">
+                                                {% if object.finiquito.archivo %}
+                                                    <a class="btn btn-outline-info" href="{{ MEDIA_URL }}{{ object.finiquito.archivo.url }}" target="_blank">
                                                         <i class="uil-download-alt"></i> Descargar</a>
                                                 {% endif %}
-                                                <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#eliminar_finiquito_{{object.finiquitocolegio.pk}}">
+                                                <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#eliminar_finiquito_{{object.finiquito.pk}}">
                                                     <i class="uil-trash-alt"></i> Eliminar</a>
                                             </td>
                                         </tr>
                                         </tbody>
                                     </table>
-                                    <div class="modal" tabindex="-1" role="dialog" id="eliminar_finiquito_{{object.finiquitocolegio.pk}}">
+                                    <div class="modal" tabindex="-1" role="dialog" id="eliminar_finiquito_{{object.finiquito.pk}}">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -236,7 +236,7 @@
                                                     <p>Está seguro que desea eliminar el Finiquito de "{{ object }}"?.</p>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <a role="button" class="btn btn-danger" href="{% url 'rrhh:finiquito__eliminar' object.finiquitocolegio.pk %}">Eliminar</a>
+                                                    <a role="button" class="btn btn-danger" href="{% url 'rrhh:finiquito__eliminar' object.finiquito.pk %}">Eliminar</a>
                                                     <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                                                 </div>
                                             </div>
@@ -300,7 +300,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {% for v in object.vacacionfuncionariocolegio_set.all|dictsortreversed:"fecha_inicio" %}
+                                    {% for v in object.vacacion_set.all|dictsortreversed:"fecha_inicio" %}
                                         <tr>
                                             <td>{{ v.periodo }}</td>
                                             <td>{{ v.fecha_retorno|naturalday }}</td>
@@ -399,7 +399,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {% for l in object.permisofuncionariocolegio_set.all|dictsortreversed:"fecha_inicio" %}
+                                    {% for l in object.permiso_set.all|dictsortreversed:"fecha_inicio" %}
                                         <tr>
                                             <td>{{ l.observaciones }}</td>
                                             <td>{{ l.periodo }}</td>
@@ -443,7 +443,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {% for l in object.licenciafuncionariocolegio_set.all|dictsortreversed:"fecha_inicio" %}
+                                    {% for l in object.licencia_set.all|dictsortreversed:"fecha_inicio" %}
                                         <tr>
                                             <td>{% if l.tipo_licencia %} {{ l.tipo_licencia }} {% else %} {{ l.tipo_licencia_descripcion }} {% endif %}</td>
 

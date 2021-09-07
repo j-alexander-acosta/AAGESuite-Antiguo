@@ -76,7 +76,7 @@
                                 </a>
                             </li>
                         {% endif %}
-                        {% if object.historial.union or object.historial.fundacion or object.historial.colegio %}
+                        {% if object.contrato_set.all %}
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link rounded-0" id="historial-contrato-tab" data-toggle="tab" href="#aboutme"
                                    role="tab" aria-controls="ihstorial-contrato" aria-selected="false">Hitorial</a>
@@ -145,11 +145,11 @@
                         <div class="tab-pane" id="aboutme">
                             <h5 class="text-uppercase"><i class="mdi mdi-briefcase mr-1"></i>Experiencia</h5>
                             <div class="timeline-alt pb-0">
-                                {% for contrato in object.funcionario.contratocolegio_set.all|dictsortreversed:"fecha_inicio"|dictsortreversed:"vigente" %}
+                                {% for contrato in object.funcionario.contrato_set.all|dictsortreversed:"fecha_inicio"|dictsortreversed:"vigente" %}
                                     <div class="timeline-item">
                                         <i class="mdi mdi-circle{% if contrato.vigente %} bg-success-lighten{% else %} bg-danger-lighten{% endif %} text-info timeline-icon"></i>
                                         <div class="timeline-item-info">
-                                            <h5 class="mt-0 mb-1">{{ contrato.funcion_principal }} - {{ contrato.colegio }}</h5>
+                                            <h5 class="mt-0 mb-1">{{ contrato.funcion_principal }} - {{ contrato.entidad }}</h5>
                                             <p class="font-14">{{ contrato.get_tipo_contrato_display }} <span class="ml-2 font-12">{{ contrato.periodo_contrato }}</span></p>
                                             <p class="text-muted mt-2 mb-0 pb-3">
                                                 {% if contrato.reemplazando %}En reemplazo de: <span>{{ contrato.reemplazando }}</span><br>{% endif %}

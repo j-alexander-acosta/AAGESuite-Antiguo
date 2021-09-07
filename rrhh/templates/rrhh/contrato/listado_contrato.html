@@ -31,7 +31,7 @@
                 <thead>
                 <tr>
                     <th><i class="uil-user"></i> Persona </th>
-                    <th><i class="uil-building "></i> Colegio </th>
+                    <th><i class="uil-building "></i> Entidad </th>
                     <th><i class="uil-list-ul"></i> Categoria </th>
                     <th><i class="uil-check"></i> Vigente </th>
                     <th><i class="mdi mdi-cogs"></i> Opciones </th>
@@ -41,7 +41,7 @@
                 {% for c in object_list %}
                     <tr>
                         <td><a href="{% url 'rrhh:contrato' c.pk %}"> {{ c.funcionario.persona }} </a></td>
-                        <td> {{ c.colegio }} </td>
+                        <td> {{ c.entidad }} </td>
                         <td> {{ c.get_categoria_display }} </td>
                         <td class="text-center">
                             {% if c.estado_id != 4 %}
