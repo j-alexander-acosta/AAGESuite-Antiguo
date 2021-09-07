@@ -5,9 +5,8 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Field, HTML
 from rrhh.models.base import Funcion
 from rrhh.models.persona import Persona, Funcionario, Documento
-from rrhh.models.colegio import Colegio, Entrevista, VacacionFuncionarioColegio
-from rrhh.models.colegio import ContratoColegio, LicenciaFuncionarioColegio, PermisoFuncionarioColegio
-from rrhh.models.colegio import FiniquitoColegio, Solicitud, EstadoSolicitud
+from rrhh.models.entidad import Entidad, Entrevista, Vacacion, Contrato, Licencia, Permiso
+from rrhh.models.entidad import Finiquito, Solicitud, EstadoSolicitud
 
 
 class PersonaForm(forms.ModelForm):
@@ -222,9 +221,9 @@ class DocumentoForm(forms.ModelForm):
         self.helper.form_tag = False
 
 
-class VacacionFuncionarioColegioForm(forms.ModelForm):
+class VacacionForm(forms.ModelForm):
     class Meta:
-        model = VacacionFuncionarioColegio
+        model = Vacacion
         fields = [
             'contrato',
             'total_dias',
@@ -239,7 +238,7 @@ class VacacionFuncionarioColegioForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        super(VacacionFuncionarioColegioForm, self).__init__(*args, **kwargs)
+        super(VacacionForm, self).__init__(*args, **kwargs)
         self.fields['contrato'].widget.attrs['class'] = 'chosen'
         self.fields['fecha_inicio'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
@@ -253,7 +252,7 @@ class VacacionFuncionarioColegioForm(forms.ModelForm):
 
 class VacacionTipoFuncionarioColegioForm(forms.ModelForm):
     class Meta:
-        model = VacacionFuncionarioColegio
+        model = Vacacion
         fields = [
             'contrato',
             'total_dias',
@@ -317,9 +316,9 @@ class VacacionTipoFuncionarioColegioForm(forms.ModelForm):
         )
 
 
-class LicenciaFuncionarioColegioForm(forms.ModelForm):
+class LicenciaForm(forms.ModelForm):
     class Meta:
-        model = LicenciaFuncionarioColegio
+        model = Licencia
         fields = [
             'contrato',
             'tipo_licencia',
@@ -334,7 +333,7 @@ class LicenciaFuncionarioColegioForm(forms.ModelForm):
         ]
 
     def __init__(self, *args, **kwargs):
-        super(LicenciaFuncionarioColegioForm, self).__init__(*args, **kwargs)
+        super(LicenciaForm, self).__init__(*args, **kwargs)
         self.fields['contrato'].widget.attrs['class'] = 'chosen'
         self.fields['tipo_licencia'].widget.attrs['class'] = 'chosen'
         self.fields['fecha_inicio'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
@@ -349,7 +348,7 @@ class LicenciaFuncionarioColegioForm(forms.ModelForm):
 
 class LicenciaTipoFuncionarioColegioForm(forms.ModelForm):
     class Meta:
-        model = LicenciaFuncionarioColegio
+        model = Licencia
         fields = [
             'contrato',
             'tipo_licencia',
@@ -426,11 +425,11 @@ class LicenciaTipoFuncionarioColegioForm(forms.ModelForm):
         )
 
 
-class PermisoFuncionarioColegioForm(forms.ModelForm):
+class PermisoForm(forms.ModelForm):
     documento = forms.FileField()
 
     class Meta:
-        model = PermisoFuncionarioColegio
+        model = Permiso
         fields = '__all__'
         help_texts = {
             'goce_sueldo': u'Marque si corresponde',
@@ -438,7 +437,7 @@ class PermisoFuncionarioColegioForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        super(PermisoFuncionarioColegioForm, self).__init__(*args, **kwargs)
+        super(PermisoForm, self).__init__(*args, **kwargs)
         self.fields['contrato'].widget.attrs['class'] = 'chosen'
         self.fields['fecha_solicitud'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'])
         self.fields['fecha_solicitud'].widget.attrs['class'] = 'datepicker'
@@ -457,7 +456,7 @@ class PermisoTipoFuncionarioColegioForm(forms.ModelForm):
     documento = forms.FileField()
 
     class Meta:
-        model = PermisoFuncionarioColegio
+        model = Permiso
         fields = '__all__'
         help_texts = {
             'dias_habiles': u'Información necesaria para el cálculo de fechas',
@@ -536,31 +535,23 @@ class PermisoTipoFuncionarioColegioForm(forms.ModelForm):
         )
 
 
-class ContratoColegioForm(forms.ModelForm):
+class ContratoForm(forms.ModelForm):
     class Meta:
-        model = ContratoColegio
-        fields = [
-            'funcionario',
-            'colegio',
-            'categoria',
-            'funcion_principal',
-            'funcion_secundaria',
-            'tipo_contrato',
-            'fecha_inicio',
-            'fecha_termino',
-            'reemplazando_licencia',
-            'horas_total'
+        model = Contrato
+        exclude = [
+            'vigente'
         ]
 
     def __init__(self, *args, **kwargs):
-        super(ContratoColegioForm, self).__init__(*args, **kwargs)
+        super(ContratoForm, self).__init__(*args, **kwargs)
         self.fields['funcionario'].widget.attrs['class'] = 'chosen'
-        self.fields['colegio'].widget.attrs['class'] = 'chosen'
+        self.fields['entidad'].widget.attrs['class'] = 'chosen'
         self.fields['categoria'].widget.attrs['class'] = 'chosen'
         self.fields['funcion_principal'].queryset = Funcion.objects.filter(tipo=1) 
         self.fields['funcion_secundaria'].queryset = Funcion.objects.filter(tipo=2) 
         self.fields['tipo_contrato'].widget.attrs['class'] = 'chosen'
         self.fields['reemplazando_licencia'].widget.attrs['class'] = 'chosen'
+        self.fields['reemplazando_permiso'].widget.attrs['class'] = 'chosen'
         self.fields['fecha_inicio'] = forms.DateField(
             widget=forms.widgets.DateInput(attrs={'type': 'date'}),
             input_formats=['%Y-%m-%d']
@@ -587,7 +578,7 @@ class ContratoColegioForm(forms.ModelForm):
                         css_class='col-md-6',
                     ),
                     Div(
-                        Field('colegio'),
+                        Field('entidad'),
                         css_class='col-md-6'
                     ),
                     css_class='row'
@@ -624,6 +615,21 @@ class ContratoColegioForm(forms.ModelForm):
                 ),
                 Div(
                     Div(
+                        Field('sueldo'),
+                        css_class='col-md-4'
+                    ),
+                    Div(
+                        Field('asignacion_funcion'),
+                        css_class='col-md-4'
+                    ),
+                    Div(
+                        Field('asignacion_locomocion'),
+                        css_class='col-md-4'
+                    ),
+                    css_class='row'
+                ),
+                Div(
+                    Div(
                         Field('horas_total'),
                         css_class='col-md-6'
                     ),
@@ -637,16 +643,16 @@ class ContratoColegioForm(forms.ModelForm):
         )
 
     def clean(self):
-        cleaned_data = super(ContratoColegioForm, self).clean()
+        cleaned_data = super(ContratoForm, self).clean()
         horas_total = self.cleaned_data.get('horas_total', 0)
         tipo_contrato = self.cleaned_data.get('tipo_contrato', 0)
         categoria = self.cleaned_data.get('categoria', 0)
-        colegio = self.cleaned_data.get('colegio', None)
+        entidad = self.cleaned_data.get('entidad', None)
         funcionario = self.cleaned_data.get('funcionario', None)
-        colegios = Colegio.objects.filter(fundacion=colegio.fundacion)
-        contratos_funcionario = ContratoColegio.objects.filter(
+        entidades = Entidad.objects.filter(dependiente=entidad.dependiente)
+        contratos_funcionario = Contrato.objects.filter(
             funcionario=funcionario,
-            colegio__in=colegios,
+            entidad__in=entidades,
             vigente=True,
             reemplazando_permiso=None,
             reemplazando_licencia=None
@@ -681,11 +687,11 @@ class ContratoColegioForm(forms.ModelForm):
         return cleaned_data
 
 
-class FiniquitoColegioForm(forms.ModelForm):
+class FiniquitoForm(forms.ModelForm):
     documento = forms.FileField()
 
     class Meta:
-        model = FiniquitoColegio
+        model = Finiquito
         fields = [
             'contrato',
             'razon_baja',
@@ -697,7 +703,7 @@ class FiniquitoColegioForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        super(FiniquitoColegioForm, self).__init__(*args, **kwargs)
+        super(FiniquitoForm, self).__init__(*args, **kwargs)
         self.fields['razon_baja'].widget.attrs['class'] = 'chosen'
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -706,18 +712,8 @@ class FiniquitoColegioForm(forms.ModelForm):
 class SolicitudForm(forms.ModelForm):
     class Meta:
         model = Solicitud
-        fields = [
-            'tipo',
-            'contrato',
-            'colegio',
-            'categoria',
-            'cargo',
-            'horas',
-            'tipo_contrato',
-            'reemplazando_licencia',
-            'fecha_inicio',
-            'fecha_termino',
-            'justificacion'
+        exclude = [
+            'postulantes'
         ]
 
         widgets = {
@@ -731,17 +727,18 @@ class SolicitudForm(forms.ModelForm):
         self.fields['fecha_inicio'].widget.attrs['class'] = 'datepicker'
         self.fields['fecha_termino'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), input_formats=['%Y-%m-%d'], required=False)
         self.fields['fecha_termino'].widget.attrs['class'] = 'datepicker'
-        self.fields['colegio'].widget.attrs['class'] = 'chosen'
+        self.fields['entidad'].widget.attrs['class'] = 'chosen'
         self.fields['categoria'].widget.attrs['class'] = 'chosen'
         self.fields['tipo_contrato'].widget.attrs['class'] = 'chosen'
         self.fields['reemplazando_licencia'].widget.attrs['class'] = 'chosen'
-        self.fields['contrato'].queryset = ContratoColegio.objects.filter(vigente=True)
+        self.fields['reemplazando_permiso'].widget.attrs['class'] = 'chosen'
+        self.fields['contrato'].queryset = Contrato.objects.filter(vigente=True)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.layout = Layout(
             'tipo',
             'contrato',
-            'colegio',
+            'entidad',
             Div(
                 Div(
                     Div(
@@ -753,14 +750,14 @@ class SolicitudForm(forms.ModelForm):
                         css_class='col-md-4'
                     ),
                     Div(
-                        Field('horas'),
+                        Field('tipo_contrato'),
                         css_class='col-md-4'
                     ),
                     css_class='row'
                 ),
                 Div(
                     Div(
-                        Field('tipo_contrato'),
+                        Field('horas'),
                         css_class='col-md-4'
                     ),
                     Div(
@@ -769,6 +766,21 @@ class SolicitudForm(forms.ModelForm):
                     ),
                     Div(
                         Field('fecha_termino'),
+                        css_class='col-md-4'
+                    ),
+                    css_class='row'
+                ),
+                Div(
+                    Div(
+                        Field('sueldo'),
+                        css_class='col-md-4'
+                    ),
+                    Div(
+                        Field('asignacion_funcion'),
+                        css_class='col-md-4'
+                    ),
+                    Div(
+                        Field('asignacion_locomocion'),
                         css_class='col-md-4'
                     ),
                     css_class='row'

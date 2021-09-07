@@ -5,40 +5,17 @@ from django.contrib.auth.models import User
 
 from rrhh.models.base import Perfil, Banco, AFP, Isapre, Funcion, TipoLicencia, TipoDocumento, TipoTitulo, AreaTitulo
 from rrhh.models.base import Especialidad, Mencion
-from rrhh.models.union import Union
-from rrhh.models.fundacion import Fundacion
-from rrhh.models.colegio import Colegio
+from rrhh.models.entidad import Entidad
 
 
-class UnionForm(forms.ModelForm):
+class EntidadForm(forms.ModelForm):
     class Meta:
-        model = Union
+        model = Entidad
         fields = '__all__'
 
     def __init__(self, *args, **kwargs):
-        super(UnionForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_tag = False
-
-
-class FundacionForm(forms.ModelForm):
-    class Meta:
-        model = Fundacion
-        fields = '__all__'
-
-    def __init__(self, *args, **kwargs):
-        super(FundacionForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_tag = False
-
-
-class ColegioForm(forms.ModelForm):
-    class Meta:
-        model = Colegio
-        fields = '__all__'
-
-    def __init__(self, *args, **kwargs):
-        super(ColegioForm, self).__init__(*args, **kwargs)
+        super(EntidadForm, self).__init__(*args, **kwargs)
+        self.fields['dependiente'].widget.attrs['required'] = True
         self.helper = FormHelper()
         self.helper.form_tag = False
 

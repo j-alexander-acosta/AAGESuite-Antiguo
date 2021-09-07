@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from rrhh.models.base import *
-from rrhh.models.colegio import Colegio, ContratoColegio
+from rrhh.models.entidad import Entidad, Contrato
 
 
 class PerfilUsuario(models.Model):
@@ -94,9 +94,9 @@ class Persona(models.Model):
     def clasificacion(self):
         clasificacion = 'Postulante'
         try:
-            if self.funcionario.contratocolegio_set.all():
+            if self.funcionario.contrato_set.all():
                 clasificacion = 'Postulante SEA'
-            if self.funcionario.contratocolegio_set.filter(vigente=True):
+            if self.funcionario.contrato_set.filter(vigente=True):
                 clasificacion = 'Funcionario'
         except:
             pass
@@ -105,9 +105,7 @@ class Persona(models.Model):
     @property
     def historial(self):
         return {
-            'union': self.funcionario.contratounion_set.all(),
-            'fundacion': self.funcionario.contratofundacion_set.all(),
-            'colegio': self.funcionario.contratocolegio_set.all()
+            'contratos': self.funcionario.contrato_set.all(),
         }
 
     def save(self, *args, **kwargs):
@@ -174,18 +172,18 @@ class Funcionario(models.Model):
     )
     puntos = models.PositiveIntegerField(default=0, null=True, blank=True)
 
-    def __str__(self):
-        return str(self.persona)
-
     @staticmethod
     def contrato_vigente(id_colegio):
         colegio = get_object_or_404(
-            Colegio,
+            Entidad,
             id=id_colegio
         )
-        colegios = Colegio.objects.filter(fundacion=colegio.fundacion)
+        colegios = Entidad.objects.filter(dependiente=colegio.dependiente)
 
-        return ContratoColegio.objects.filter(colegio__in=colegios, vigente=True).exists()
+        return Contrato.objects.filter(entidad__in=colegios, vigente=True).exists()
+
+    def __str__(self):
+        return str(self.persona)
 
     class Meta:
         verbose_name = u'Funcionario'

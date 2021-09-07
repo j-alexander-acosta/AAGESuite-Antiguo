@@ -6,7 +6,7 @@ from crispy_forms.bootstrap import StrictButton
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Field, Fieldset, Div
 
-from rrhh.models import ContratoColegio, Persona
+from rrhh.models import Contrato, Persona
 from evado.models import UniversoEncuesta, Encuesta, PreguntaEncuesta, Respuesta, PeriodoEncuesta
 from evado.models import CorreoUniversoEncuesta, TipoUniversoEncuesta, ConfigurarEncuestaUniversoPersona
 
@@ -97,10 +97,9 @@ class RespuestaEncuestaItem(forms.Form):
     id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
     correlativo = forms.IntegerField(required=False)
     pregunta = forms.CharField(widget=forms.Textarea({'rows': 2}), required=False)
-    # respuesta_select = forms.ChoiceField(
-    #     label="Respuesta",
-    #     choices=Respuesta.objects.values_list('id', 'respuesta')
-    # )
+    respuesta_select = forms.ChoiceField(
+        label="Respuesta"
+    )
 
     def __init__(self, *args, **kwargs):
         super(RespuestaEncuestaItem, self).__init__(*args, **kwargs)
@@ -108,6 +107,7 @@ class RespuestaEncuestaItem(forms.Form):
         self.fields['pregunta'].widget.attrs['disabled'] = True
         self.fields['correlativo'].widget.attrs['class'] = ""
         self.fields['correlativo'].widget.attrs['style'] = "width: 100px"
+        self.fields['respuesta_select'].queryset = Respuesta.objects.values_list('id', 'respuesta')
         self.fields['respuesta_select'].widget.attrs['data-bv-notempty'] = "true"
         self.fields['respuesta_select'].widget.attrs['data-bv-notempty-message'] = "Seleccione una opción válida."
         self.helper = FormHelper()
@@ -163,7 +163,7 @@ class CorreoUniversoEncuestaForm(forms.ModelForm):
 
 
 class ConfigurarUniversoPersonaForm(forms.Form):
-    pe = ContratoColegio.objects.all()
+    pe = Contrato.objects.all()
     persona = forms.ModelChoiceField(
         queryset=pe,
         label="Persona"
