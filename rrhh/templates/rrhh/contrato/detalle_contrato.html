@@ -340,7 +340,7 @@
                                         <div class="btn-group">
                                             <a role="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left" download="DetalleContato.pdf" href="{% url 'rrhh:detalle-contrato-pdf' object.pk %}" ><i class="mdi mdi-file-pdf"></i></a>
                                             <button type="button" class="btn btn-outline-success" name="cargar_contrato_pdf" value="contrato" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>
-                                            <a role="button" class="btn btn-outline-primary" download name="Descargar" title="Descargar documento" href="/media/{{ dp.documento }}" data-toggle="tooltip" data-placement="right"><i class="mdi mdi-file-pdf"></i></a>
+                                            <a role="button" class="btn btn-outline-primary" href="/media/{{ dp.documento }}" download name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="right"><i class="mdi mdi-file-pdf"></i></a>
                                         </div>
                                     </td>
                                     {% endif %}
@@ -352,7 +352,7 @@
                                         <div class="btn-group">
                                             <a role="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left" download="ConocimientoReglamentoInterno.pdf" href="{% url 'rrhh:toma-conocimiento-reglamento-interno-pdf' object.pk %}" ><i class="mdi mdi-file-pdf"></i></a>
                                             <button type="button" class="btn btn-outline-success" name="cargar_reglamento_pdf" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>
-                                            <a role="button" class="btn btn-outline-primary" href="{{ media_url }}{{ dp.documento }}" download name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="right"><i class="mdi mdi-file-pdf"></i></a>
+                                            <a role="button" class="btn btn-outline-primary" href="/media/{{ dp.documento }}" download name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="right"><i class="mdi mdi-file-pdf"></i></a>
                                         </div>
                                     </td>
                                     {% endif %}
@@ -364,7 +364,7 @@
                                         <div class="btn-group">
                                             <a role="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left" download="DescuentoDiezmo.pdf" href="{% url 'rrhh:detalle-trabajador-diezmo-pdf' object.pk %}"><i class="mdi mdi-file-pdf"></i></a>
                                             <button type="button" class="btn btn-outline-success" name="cargar_diezmo_pdf" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>
-                                            <a role="button" class="btn btn-outline-primary" href="{{ media_url }}{{ dp.documento }}" download name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="right"><i class="mdi mdi-file-pdf"></i></a>
+                                            <a role="button" class="btn btn-outline-primary" href="/media/{{ dp.documento }}" download name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="right"><i class="mdi mdi-file-pdf"></i></a>
                                         </div>
                                     </td>
                                     {% endif %}
@@ -376,7 +376,7 @@
                                         <div class="btn-group">
                                             <a role="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="left" download="Autorizacionimagen.pdf" href="{% url 'rrhh:autorizacion-imagen-pdf' object.pk %}"><i class="mdi mdi-file-pdf"></i></a>
                                             <button type="button" class="btn btn-outline-success" name="cargar_imagen_pdf" title="Cargar documento" data-toggle="modal" data-target="#cargar_documento_personal"><i class="uil-upload-alt"></i></button>
-                                            <a role="button" class="btn btn-outline-primary" href="{{ media_url }}{{ dp.documento }}" download name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="right"><i class="mdi mdi-file-pdf"></i></a>
+                                            <a role="button" class="btn btn-outline-primary" href="/media/{{ dp.documento }}" download name="Descargar" title="Descargar documento" data-toggle="tooltip" data-placement="right"><i class="mdi mdi-file-pdf"></i></a>
                                         </div>
                                     </td>
                                     {% endif %}
