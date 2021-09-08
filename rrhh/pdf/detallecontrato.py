@@ -1,7 +1,7 @@
 from reportlab.pdfgen import canvas
 from reportlab.lib import colors
 from reportlab.lib.units import cm
-from reportlab.lib.pagesizes import letter
+from reportlab.lib.pagesizes import letter, A4
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, PageBreak, Image, BaseDocTemplate, Frame, NextPageTemplate, PageTemplate
 from sqlite3 import connect
@@ -21,7 +21,7 @@ class DetalleContrato:
         canvas.drawCentredString(300, 750, "FUNDACIÓN EDUCACIONAL ARNALDO SALAMANCA CID")
         canvas.setFont('Times-Roman',9)
         canvas.drawCentredString(300, 740, "Con Personalidad Jurídica inscrita en el Registro Nacional de Personas Jurídicas sin Fines de Lucro,")
-        canvas.drawCentredString(300, 730, "Nº de inscripción 193474 del "+fecha)
+        canvas.drawCentredString(300, 730, "Nº de inscripción 193474 del 4 de marzo de 2015")
 
         # TODO optimizar  usuando el path del img 
         # p = os.path.join(os.path.dirname(os.path.dirname(__file__)))
@@ -153,10 +153,6 @@ class DetalleContrato:
     
         story.append(Spacer(0,20))
 
-
-# contrato.funcionario.persona.ciudad.nombre
-
-
         fecha_actual = datetime.now().strftime("%d de %B de %Y")
         textLines = 'En '+contrato.funcionario.persona.ciudad.nombre+' a <b>'+fecha_actual+'</b>  entre la '
         upcase = ('FUNDACIÓN EDUCACIONAL '+contrato.colegio.fundacion.nombre+'').upper()
@@ -222,12 +218,11 @@ class DetalleContrato:
         story.append(data)
         story.append(Spacer(0,10))
 
-        numm = 2154654
-        strinng = str(numm)
-        numero = strinng.replace('.','').replace(',','')
+        sueldo = str(15554654)
+        numero = sueldo.replace('.','').replace(',','')
         num_letra = 'valor'
-        # num_letra = DetalleContrato.numero_to_letras(numero)
-        textLines = '<u><b>QUINTO</b></u>: La Fundación Educacional se compromete a remunerar al Trabajador con la suma de $'+strinng+'.- ('+num_letra+' pesos) mensuales,'
+        num_letra = DetalleContrato.numero_to_letras(int(numero))
+        textLines = '<u><b>QUINTO</b></u>: La Fundación Educacional se compromete a remunerar al Trabajador con la suma de $'+sueldo+'.- ('+num_letra+' pesos) mensuales,'
         textLines = textLines + ' como sueldo base (equivalente a la RBMN por horas de contrato), correspondientes a <b>'+horas_total+'</b> horas cronológicas semanales mensuales.'
         textLines = textLines + ' Cancelará además como parte de sus remuneraciones las siguientes asignaciones al docente:<br /><br />'
         textLines = textLines + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-    Bono Zona 40% sobre RBMN.<br />'
