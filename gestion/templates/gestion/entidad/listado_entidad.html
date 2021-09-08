@@ -2,24 +2,24 @@
 {% load staticfiles bootstrap_pagination %}
 
 {% block title_page %}
-    Uniones
+    Entidades
 {% endblock %}
 
 {% block title %}
-    Uniones
+    Entidades
 {% endblock %}
 
 {% block breadcrumb %}
     <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
-    <li class="breadcrumb-item active">Administración de Uniones</li>
+    <li class="breadcrumb-item active">Administración de Entidades</li>
 {% endblock %}
 
 {% block content %}
     <div class="card">
         <div class="card-header">
-            <h5>Tabla para configuración de Unión
-                <a class="btn btn-sm btn-outline-primary float-right" href="{% url 'gestion:union__nuevo'%}" role="button">
-                    <span><i class="uil-plus"></i> Crear Unión</span>
+            <h5>Tabla para configuración de Entidad
+                <a class="btn btn-sm btn-outline-primary float-right" href="{% url 'gestion:entidad__nuevo'%}" role="button">
+                    <span><i class="uil-plus"></i> Crear Entidad</span>
                 </a>
             </h5>
         </div>
@@ -36,28 +36,28 @@
                     <tbody>
                     {% for f in object_list %}
                         <tr>
-                            <td><a href="{% url 'gestion:union' f.pk %}"> {{ f.nombre }} </a></td>
+                            <td><a href="{% url 'gestion:entidad' f.pk %}"> {{ f.nombre }} </a></td>
                             <td> {% if f.descripcion %}{{ f.descripcion|truncatewords:"7" }}{% else %}No específicado{% endif %} </td>
                             <td>
-                                <a class="btn btn-sm btn-outline-info" href="{% url 'gestion:union__editar' f.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
-                                <a class="btn btn-sm btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_union_{{f.pk}}"><i class="uil-trash" data-toggle="tooltip" data-placement="top" title="Eliminar"></i></a>
+                                <a class="btn btn-sm btn-outline-primary" href="{% url 'gestion:entidad__editar' f.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
+                                <a class="btn btn-sm btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_entidad_{{f.pk}}"><i class="uil-trash" data-toggle="tooltip" data-placement="top" title="Eliminar"></i></a>
                             </td>
                         </tr>
-                        <div class="modal" tabindex="-1" role="dialog" id="eliminar_union_{{f.pk}}">
+                        <div class="modal" tabindex="-1" role="dialog" id="eliminar_entidad_{{f.pk}}">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title alert alert-warning bg-white text-warning"><strong>¡Alerta!</strong> Está a punto de eliminar una Unión</h5>
+                                        <h5 class="modal-title alert alert-danger bg-white text-danger"><strong>¡Alerta!</strong> Está a punto de eliminar una Entidad</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <p>Está seguro que desea eliminar la Unión "{{ f }}"?.</p>
-                                        <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta Unión.</p>
+                                        <p>Está seguro que desea eliminar la Entidad "{{ f }}"?.</p>
+                                        <p class="text-muted">Recuerde que eliminará todos los registros asociados a esta Entidad.</p>
                                     </div>
                                     <div class="modal-footer">
-                                        <a role="button" class="btn btn-outline-danger" href="{% url 'gestion:union__eliminar' f.pk %}">Eliminar</a>
+                                        <a role="button" class="btn btn-outline-danger" href="{% url 'gestion:entidad__eliminar' f.pk %}">Eliminar</a>
                                         <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                                     </div>
                                 </div>

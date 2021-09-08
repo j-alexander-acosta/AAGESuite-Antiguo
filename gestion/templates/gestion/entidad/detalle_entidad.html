@@ -2,17 +2,17 @@
 {% load staticfiles humanize %}
 
 {% block title_page %}
-    Colegio - Detalle
+    Entidad - Detalle
 {% endblock %}
 
 {% block title %}
-    Detalle de Colegio
+    Detalle de Entidad
 {% endblock %}
 
 {% block breadcrumb %}
     <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
-    <li class="breadcrumb-item"><a href="{% url 'gestion:colegios' %}">Colegios</a></li>
-    <li class="breadcrumb-item active">Detalle Colegio</li>
+    <li class="breadcrumb-item"><a href="{% url 'gestion:entidades' %}">Entidades</a></li>
+    <li class="breadcrumb-item active">Detalle Entidad</li>
 {% endblock %}
 
 {% block content %}
@@ -21,10 +21,10 @@
             <h5>{{ object }}
                 {% block buttons %}
                     <div class="btn-group btn-group-sm float-right">
-                        <a href="{% url 'gestion:colegio__editar' object.pk %}" type="button" class="btn btn-outline-primary">
+                        <a href="{% url 'gestion:entidad__editar' object.pk %}" type="button" class="btn btn-outline-primary">
                             <i class="uil-edit"></i>
                         </a>
-                        <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_colegio_{{object.pk}}">
+                        <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_entidad_{{object.pk}}">
                             <i class="uil-trash-alt"></i>
                         </a>
                     </div>
@@ -70,21 +70,21 @@
         </div>
     </div>
 
-    <div class="modal" tabindex="-1" role="dialog" id="eliminar_colegio_{{object.pk}}">
+    <div class="modal" tabindex="-1" role="dialog" id="eliminar_entidad_{{object.pk}}">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title alert alert-danger bg-white text-danger"><strong>¡Alerta!</strong> Está a punto de eliminar la Colegio</h5>
+                    <h5 class="modal-title alert alert-danger bg-white text-danger"><strong>¡Alerta!</strong> Está a punto de eliminar la Entidad</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Está seguro que desea eliminar la Colegio "{{ object }}"?.</p>
-                    <p class="text-muted">Recuerde que eliminará todos los registros asociados a la Colegio.</p>
+                    <p>Está seguro que desea eliminar la Entidad "{{ object }}"?.</p>
+                    <p class="text-muted">Recuerde que eliminará todos los registros asociados a la Entidad.</p>
                 </div>
                 <div class="modal-footer">
-                    <a role="button" class="btn btn-outline-danger" href="{% url 'gestion:colegio__eliminar' object.pk %}">Eliminar</a>
+                    <a role="button" class="btn btn-outline-danger" href="{% url 'gestion:entidad__eliminar' object.pk %}">Eliminar</a>
                     <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>

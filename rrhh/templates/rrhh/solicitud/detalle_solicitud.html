@@ -79,7 +79,7 @@
                 </li>
                 {% if object.tipo >= 3 and object.estado_id == 6 %}
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link btn btn-outline-primary" href="{% url 'rrhh:contrato_colegio__crear' object.contrato.funcionario.id object.id %}" role="tab">Contratar</a>
+                        <a class="nav-link btn btn-outline-primary" href="{% url 'rrhh:contrato__crear' object.contrato.funcionario.id object.id %}" role="tab">Contratar</a>
                     </li>
                 {% endif %}
             </ul>
@@ -93,12 +93,12 @@
                                 <td> {{ object.contrato.funcionario }} </td>
                             </tr>
                             <tr>
-                                <th> Colegio de origen </th>
-                                <td> {{ object.contrato.colegio }} </td>
+                                <th> Origen </th>
+                                <td> {{ object.contrato.entidad }} </td>
                             </tr>
                             <tr>
-                                <th> Colegio de destino </th>
-                                <td> {{ object.colegio }} </td>
+                                <th> Destino </th>
+                                <td> {{ object.entidad }} </td>
                             </tr>
                         {% endif %}
                         <tr>
@@ -150,20 +150,14 @@
                                     <td><a href="{% url 'rrhh:persona' p.pk %}"> {{ p.rut }} </a></td>
                                     <td> {{ p.get_full_name }} </td>
                                     <td>
-                                        {% for cu in p.historial.union %}
-                                            <p> {{ cu.periodo_contrato }}, {{ cu.get_categoria_display }}, {{ cu.union.nombre }}{% if cu.vigente %} (Vigente) {% endif %}</p>
-                                        {% endfor %}
-                                        {% for cf in p.historial.fundacion %}
-                                            <p> {{ cf.periodo_contrato }}, {{ cf.get_categoria_display }}, {{ cf.fundacion.nombre }}{% if cf.vigente %} (Vigente) {% endif %}</p>
-                                        {% endfor %}
-                                        {% for cc in p.historial.colegio %}
-                                            <p> {{ cc.periodo_contrato }}, {{ cc.get_categoria_display }}, {{ cc.colegio.nombre }}{% if cc.vigente %} (Vigente) {% endif %}</p>
+                                        {% for c in p.contrato_set.all %}
+                                            <p> {{ c.periodo_contrato }}, {{ c.get_categoria_display }}, {{ c.entidad.nombre }}{% if c.vigente %} (Vigente) {% endif %}</p>
                                         {% endfor %}
                                     </td>
                                     <td></td>
                                     {% if object.estado_id == 6 %}
                                         {% if p.funcionario %}
-                                            <td><a role="button" class="btn btn-outline-info" href="{% url 'rrhh:contrato_colegio__crear' p.funcionario.id object.id %}">
+                                            <td><a role="button" class="btn btn-outline-info" href="{% url 'rrhh:contrato__crear' p.funcionario.id object.id %}">
                                                 <i class="uil-plus"></i> Contratar
                                             </a></td>
                                         {% else %}

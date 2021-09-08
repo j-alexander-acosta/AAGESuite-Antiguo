@@ -2,23 +2,23 @@
 {% load staticfiles crispy_forms_tags %}
 
 {% block title_page %}
-    Unión - {% if object %}Editar{% else %}Crear{% endif %}
+    Entidad - {% if object %}Editar{% else %}Crear{% endif %}
 {% endblock %}
 
 {% block title %}
-    {% if object %}Editar{% else %}Crear{% endif %} Unión
+    {% if object %}Editar{% else %}Crear{% endif %} Entidad
 {% endblock %}
 
 {% block breadcrumb %}
     <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
-    <li class="breadcrumb-item"><a href="{% url 'gestion:uniones' %}">Uniones</a></li>
-    <li class="breadcrumb-item active">{% if object %}Editar{% else %}Crear{% endif %} Unión</li>
+    <li class="breadcrumb-item"><a href="{% url 'gestion:entidades' %}">Entidades</a></li>
+    <li class="breadcrumb-item active">{% if object %}Editar{% else %}Crear{% endif %} Entidad</li>
 {% endblock %}
 
 {% block content %}
 <div class="card">
     <div class="card-header">
-        <h4>Datos de Unión</h4>
+        <h4>Datos de Entidad</h4>
     </div>
     <div class="card-body">
         <form class="form-horizontal" method="post">
