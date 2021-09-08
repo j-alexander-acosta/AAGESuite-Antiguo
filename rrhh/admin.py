@@ -22,8 +22,19 @@ class FuncionarioAdmin(admin.ModelAdmin):
     list_filter = ['afp', 'salud', 'isapre', 'estado', 'tipo_misionero']
 
 
-@admin.register(colegio.VacacionFuncionarioColegio)
-class VacacionFuncionarioColegioAdmin(admin.ModelAdmin):
+@admin.register(entidad.Entidad)
+class EntidadAdmin(admin.ModelAdmin):
+    list_display = (
+        'nombre',
+        'tipo_entidad',
+        'dependiente'
+    )
+    search_fields = ['nombre', 'abrev', 'direccion']
+    list_filter = ['dependiente']
+
+
+@admin.register(entidad.Vacacion)
+class VacacionAdmin(admin.ModelAdmin):
     list_display = (
         'contrato',
         'total_dias',
@@ -32,8 +43,8 @@ class VacacionFuncionarioColegioAdmin(admin.ModelAdmin):
     search_fields = ['contrato__persona__rut', 'contrato__persona__get_full_name']
 
 
-@admin.register(colegio.LicenciaFuncionarioColegio)
-class LicenciaFuncionarioColegioAdmin(admin.ModelAdmin):
+@admin.register(entidad.Licencia)
+class LicenciaAdmin(admin.ModelAdmin):
     list_display = (
         'contrato',
         'tipo_licencia',
@@ -49,8 +60,8 @@ class LicenciaFuncionarioColegioAdmin(admin.ModelAdmin):
     list_filter = ['tipo_licencia']
 
 
-@admin.register(colegio.PermisoFuncionarioColegio)
-class PermisoFuncionarioColegioAdmin(admin.ModelAdmin):
+@admin.register(entidad.Permiso)
+class PermisoAdmin(admin.ModelAdmin):
     list_display = (
         'contrato',
         'observaciones',
@@ -63,28 +74,28 @@ class PermisoFuncionarioColegioAdmin(admin.ModelAdmin):
     list_filter = ['goce_sueldo']
 
 
-@admin.register(colegio.ContratoColegio)
-class ContratoColegioAdmin(admin.ModelAdmin):
+@admin.register(entidad.Contrato)
+class ContratoAdmin(admin.ModelAdmin):
     list_display = (
         'funcionario',
-        'colegio',
+        'entidad',
         'categoria',
         #'vigente'
     )
     search_fields = [
         'funcionario__persona__rut',
         'funcionario__persona__get_full_name',
-        'colegio__nombre'
+        'entidad__nombre'
     ]
     list_filter = [
-        'colegio',
+        'entidad',
         'categoria',
         'tipo_contrato'
     ]
 
 
-@admin.register(colegio.FiniquitoColegio)
-class FiniquitoColegioAdmin(admin.ModelAdmin):
+@admin.register(entidad.Finiquito)
+class FiniquitoAdmin(admin.ModelAdmin):
     list_display = (
         'contrato',
         'razon_baja',
@@ -92,7 +103,7 @@ class FiniquitoColegioAdmin(admin.ModelAdmin):
     search_fields = ['contrato__persona__rut']
 
 
-@admin.register(colegio.Entrevista)
+@admin.register(entidad.Entrevista)
 class EntrevistaAdmin(admin.ModelAdmin):
     list_display = (
         'contrato',
@@ -101,37 +112,37 @@ class EntrevistaAdmin(admin.ModelAdmin):
     search_fields = ['contrato__persona__rut']
 
 
-@admin.register(colegio.Solicitud)
+@admin.register(entidad.Solicitud)
 class SolicitudAdmin(admin.ModelAdmin):
     list_display = (
-        'colegio',
+        'entidad',
         'cargo',
     )
-    search_fields = ['colegio', 'cargo']
-    list_filter = ['colegio']
+    search_fields = ['entidad', 'cargo']
+    list_filter = ['entidad']
 
 
-@admin.register(colegio.EstadoSolicitud)
+@admin.register(entidad.EstadoSolicitud)
 class EstadoSolicitudAdmin(admin.ModelAdmin):
     list_display = (
         'solicitud',
         'estado',
     )
-    search_fields = ['solicitud__colegio']
-    list_filter = ['solicitud__colegio']
+    search_fields = ['solicitud__entidad']
+    list_filter = ['solicitud__entidad']
 
 
-@admin.register(colegio.EstadoContratacion)
+@admin.register(entidad.EstadoContratacion)
 class EstadoContratacionAdmin(admin.ModelAdmin):
     list_display = (
         'contrato',
         'estado',
     )
-    search_fields = ['contrato', 'contrato__colegio', 'contrato__funcionario']
-    list_filter = ['contrato__colegio', 'estado']
+    search_fields = ['contrato', 'contrato__entidad', 'contrato__funcionario']
+    list_filter = ['contrato__entidad', 'estado']
 
 
-@admin.register(colegio.Documento)
+@admin.register(entidad.Documento)
 class DocumentoAdmin(admin.ModelAdmin):
     list_display = (
         'tipo_documento',
@@ -139,13 +150,13 @@ class DocumentoAdmin(admin.ModelAdmin):
     )
     search_fields = [
         'tipo_documento',
-        'contrato__colegio',
+        'contrato__entidad',
         'contrato__funcionario__persona',
-        'finiquito__contrato__colegio',
+        'finiquito__contrato__entidad',
         'finiquito__contrato__funcionario__persona',
-        'permiso__contrato__colegio',
+        'permiso__contrato__entidad',
         'permiso__contrato__funcionario__persona',
-        'licencia__contrato__colegio',
+        'licencia__contrato__entidad',
         'licencia__contrato__funcionario__persona',
         'perfeccionamiento__persona',
         'perfeccionamiento__titulo',

@@ -6,79 +6,29 @@ app_name = 'gestion'
 
 urlpatterns = [
     url(
-        r'^uniones/$',
-        views.UnionListView.as_view(),
-        name='uniones'
+        r'^entidades/$',
+        views.EntidadListView.as_view(),
+        name='entidades'
     ),
     url(
-        r'^uniones/nuevo/$',
-        views.UnionCreateView.as_view(),
-        name='union__nuevo'
+        r'^entidades/nuevo/$',
+        views.EntidadCreateView.as_view(),
+        name='entidad__nuevo'
     ),
     url(
-        r'^uniones/(?P<pk>\d+)/$',
-        views.UnionDetailView.as_view(),
-        name='union'
+        r'^entidades/(?P<pk>\d+)/$',
+        views.EntidadDetailView.as_view(),
+        name='entidad'
     ),
     url(
-        r'^uniones/(?P<pk>\d+)/editar/$',
-        views.UnionUpdateView.as_view(),
-        name='union__editar'
+        r'^entidades/(?P<pk>\d+)/editar/$',
+        views.EntidadUpdateView.as_view(),
+        name='entidad__editar'
     ),
     url(
-        r'^uniones/(?P<pk>\d+)/eliminar/$',
-        views.UnionDeleteView.as_view(),
-        name='union__eliminar'
-    ),
-    url(
-        r'^fundaciones/$',
-        views.FundacionListView.as_view(),
-        name='fundaciones'
-    ),
-    url(
-        r'^fundaciones/nuevo/$',
-        views.FundacionCreateView.as_view(),
-        name='fundacion__nuevo'
-    ),
-    url(
-        r'^fundaciones/(?P<pk>\d+)/$',
-        views.FundacionDetailView.as_view(),
-        name='fundacion'
-    ),
-    url(
-        r'^fundaciones/(?P<pk>\d+)/editar/$',
-        views.FundacionUpdateView.as_view(),
-        name='fundacion__editar'
-    ),
-    url(
-        r'^fundaciones/(?P<pk>\d+)/eliminar/$',
-        views.FundacionDeleteView.as_view(),
-        name='fundacion__eliminar'
-    ),
-    url(
-        r'^colegios/$',
-        views.ColegioListView.as_view(),
-        name='colegios'
-    ),
-    url(
-        r'^colegios/nuevo/$',
-        views.ColegioCreateView.as_view(),
-        name='colegio__nuevo'
-    ),
-    url(
-        r'^colegios/(?P<pk>\d+)/$',
-        views.ColegioDetailView.as_view(),
-        name='colegio'
-    ),
-    url(
-        r'^colegios/(?P<pk>\d+)/editar/$',
-        views.ColegioUpdateView.as_view(),
-        name='colegio__editar'
-    ),
-    url(
-        r'^colegios/(?P<pk>\d+)/eliminar/$',
-        views.ColegioDeleteView.as_view(),
-        name='colegio__eliminar'
+        r'^entidades/(?P<pk>\d+)/eliminar/$',
+        views.EntidadDeleteView.as_view(),
+        name='entidad__eliminar'
     ),
     url(
         r'^usuarios/nuevo/$',

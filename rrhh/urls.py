@@ -214,8 +214,8 @@ urlpatterns = [
     ),
     url(
         r'^contratos/nuevo/(?P<id_funcionario>\d+)/(?P<id_solicitud>\d+)/',
-        views.crear_contrato_colegio,
-        name='contrato_colegio__crear'
+        views.crear_contrato,
+        name='contrato__crear'
     ),
     url(
         r'^contratos/$',

@@ -19,13 +19,15 @@ from django.contrib import admin
 from django.views.generic import RedirectView
 from carga import views
 
-admin.site.site_header = 'Carga Académica - Back Office'
+print(admin)
+# admin.site.site_header = 'Suite AAGE - Back Office'
 
 urlpatterns = [
     url(r'^login/', views.login_view, name='login'),
     url(r'^logout/', views.logout_view, name='logout'),
     url(r'^carga/', include('carga_horaria.urls')),
     url(r'^rrhh/', include('rrhh.urls')),
+    url(r'^evado/', include('evado.urls')),
     url(r'^gestion/', include('gestion.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.home, name='home'),

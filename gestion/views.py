@@ -4,153 +4,57 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from rrhh.models.base import Perfil, Banco, AFP, Isapre, Funcion, TipoLicencia, TipoDocumento, TipoTitulo, AreaTitulo
 from rrhh.models.base import Especialidad, Mencion
-from rrhh.models.union import Union
-from rrhh.models.fundacion import Fundacion
-from rrhh.models.colegio import Colegio
-from gestion.forms import UnionForm, FundacionForm, ColegioForm, UserForm, UserUpdateForm, PerfilForm, BancoForm
+from rrhh.models.entidad import Entidad
+from gestion.forms import EntidadForm, UserForm, UserUpdateForm, PerfilForm, BancoForm
 from gestion.forms import AFPForm, IsapreForm, FuncionForm, TipoLicenciaForm, TipoDocumentoForm, TipoTituloForm
 from gestion.forms import AreaTituloForm, EspecialidadForm, MencionForm
 
 
-class UnionListView(LoginRequiredMixin, ListView):
-    model = Union
-    template_name = 'gestion/union/listado_union.html'
+class EntidadListView(LoginRequiredMixin, ListView):
+    model = Entidad
+    template_name = 'gestion/entidad/listado_entidad.html'
     paginate_by = 10
 
 
-class UnionCreateView(LoginRequiredMixin, CreateView):
-    model = Union
-    form_class = UnionForm
-    template_name = 'gestion/union/nuevo_union.html'
+class EntidadCreateView(LoginRequiredMixin, CreateView):
+    model = Entidad
+    form_class = EntidadForm
+    template_name = 'gestion/entidad/nuevo_entidad.html'
 
     def get_success_url(self):
         return reverse_lazy(
-            'rrgestionhh:union',
+            'gestion:entidad',
             kwargs={
                 'pk': self.object.pk,
             }
         )
 
 
-class UnionDetailView(LoginRequiredMixin, DetailView):
-    model = Union
-    template_name = 'gestion/union/detalle_union.html'
+class EntidadDetailView(LoginRequiredMixin, DetailView):
+    model = Entidad
+    template_name = 'gestion/entidad/detalle_entidad.html'
 
 
-class UnionUpdateView(LoginRequiredMixin, UpdateView):
-    model = Union
-    form_class = UnionForm
-    template_name = 'gestion/union/nuevo_union.html'
+class EntidadUpdateView(LoginRequiredMixin, UpdateView):
+    model = Entidad
+    form_class = EntidadForm
+    template_name = 'gestion/entidad/nuevo_entidad.html'
 
     def get_success_url(self):
         return reverse_lazy(
-            'gestion:union',
+            'gestion:entidad',
             kwargs={
                 'pk': self.object.pk,
             }
         )
 
 
-class UnionDeleteView(LoginRequiredMixin, DeleteView):
-    model = Union
-    success_url = reverse_lazy('gestion:uniones')
-
-    def get(self, request, *args, **kwargs):
-        return self.post(request, *args, **kwargs)
-
-
-class FundacionListView(LoginRequiredMixin, ListView):
-    model = Fundacion
-    template_name = 'gestion/fundacion/listado_fundacion.html'
-    paginate_by = 10
-
-
-class FundacionCreateView(LoginRequiredMixin, CreateView):
-    model = Fundacion
-    form_class = FundacionForm
-    template_name = 'gestion/fundacion/nuevo_fundacion.html'
-
-    def get_success_url(self):
-        return reverse_lazy(
-            'gestion:fundacion',
-            kwargs={
-                'pk': self.object.pk,
-            }
-        )
-
-
-class FundacionDetailView(LoginRequiredMixin, DetailView):
-    model = Fundacion
-    template_name = 'gestion/fundacion/detalle_fundacion.html'
-
-
-class FundacionUpdateView(LoginRequiredMixin, UpdateView):
-    model = Fundacion
-    form_class = FundacionForm
-    template_name = 'gestion/fundacion/nuevo_fundacion.html'
-
-    def get_success_url(self):
-        return reverse_lazy(
-            'gestion:fundacion',
-            kwargs={
-                'pk': self.object.pk,
-            }
-        )
-
-
-class FundacionDeleteView(LoginRequiredMixin, DeleteView):
-    model = Fundacion
-    success_url = reverse_lazy('gestion:fundaciones')
-
-    def get(self, request, *args, **kwargs):
-        return self.post(request, *args, **kwargs)
-
-
-class ColegioListView(LoginRequiredMixin, ListView):
-    model = Colegio
-    template_name = 'gestion/colegio/listado_colegio.html'
-    paginate_by = 10
-
-
-class ColegioCreateView(LoginRequiredMixin, CreateView):
-    model = Colegio
-    form_class = ColegioForm
-    template_name = 'gestion/colegio/nuevo_colegio.html'
-
-    def get_success_url(self):
-        return reverse_lazy(
-            'gestion:colegio',
-            kwargs={
-                'pk': self.object.pk,
-            }
-        )
-
-
-class ColegioDetailView(LoginRequiredMixin, DetailView):
-    model = Colegio
-    template_name = 'gestion/colegio/detalle_colegio.html'
-
-
-class ColegioUpdateView(LoginRequiredMixin, UpdateView):
-    model = Colegio
-    form_class = ColegioForm
-    template_name = 'gestion/colegio/nuevo_colegio.html'
-
-    def get_success_url(self):
-        return reverse_lazy(
-            'gestion:colegio',
-            kwargs={
-                'pk': self.object.pk,
-            }
-        )
-
-
-class ColegioDeleteView(LoginRequiredMixin, DeleteView):
-    model = Colegio
-    success_url = reverse_lazy('gestion:colegios')
+class EntidadDeleteView(LoginRequiredMixin, DeleteView):
+    model = Entidad
+    success_url = reverse_lazy('gestion:entidades')
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)

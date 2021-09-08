@@ -1,0 +1,94 @@
+{% extends 'base/base.html' %}
+{% load staticfiles humanize %}
+
+{% block title_page %}
+    Entidad - Detalle
+{% endblock %}
+
+{% block title %}
+    Detalle de Entidad
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'gestion:entidades' %}">Entidades</a></li>
+    <li class="breadcrumb-item active">Detalle Entidad</li>
+{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h5>{{ object }}
+                {% block buttons %}
+                    <div class="btn-group btn-group-sm float-right">
+                        <a href="{% url 'gestion:entidad__editar' object.pk %}" type="button" class="btn btn-outline-primary">
+                            <i class="uil-edit"></i>
+                        </a>
+                        <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_entidad_{{object.pk}}">
+                            <i class="uil-trash-alt"></i>
+                        </a>
+                    </div>
+                {% endblock %}
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="row mx-3">
+                <div class="col-md-6">
+                    <div class="text-left">
+                        <h5 class="font-15 text-uppercase">Información</h5>
+                        <div style="padding: 12px 20px">
+                            <p class="mb-2"><strong>Nombre :</strong> <span class="ml-2">{{ object.nombre }}</span></p>
+                            <p class="mb-2"><strong>Abreviación :</strong> <span class="ml-2">{{ object.abrev }}</span></p>
+                            <p class="mb-2"><strong>Fundación :</strong> <span class="ml-2">{{ object.fundacion }}</span></p>
+                            <p class="mb-2"><strong>RBD :</strong> <span class="ml-2">{{ object.rbd }}</span></p>
+                            <p class="mb-2"><strong>Estado :</strong> <span class="ml-2">{{ object.get_estado_display }}</span></p>
+                            <p class="mb-2"><strong>Tipo de jornada :</strong> <span class="ml-2">{{ object.get_tipo_jornada_display }}</span></p>
+                            <p class="mb-2"><strong>Total de Salas :</strong> <span class="ml-2">{{ object.total_salas }}</span></p>
+                            <p class="mb-2"><strong>Capacidad promedio por sala :</strong> <span class="ml-2">{{ object.capacidad_promedio_salas }}</span></p>
+                            <p class="mb-2"><strong>Matricula total en el último año :</strong> <span class="ml-2">{{ object.total_matricula_ultimo_anio }}</span></p>
+                            <p class="mb-2"><strong>Total profesores de aula :</strong> <span class="ml-2">{{ object.total_profesores_aula }}</span></p>
+                            <p class="mb-2"><strong>Total profesionales de la educación :</strong> <span class="ml-2">{{ object.total_profesionales_educacion }}</span></p>
+                            <p class="mb-2"><strong>Total asistentes de la educación :</strong> <span class="ml-2">{{ object.total_asistentes_educacion }}</span></p>
+                            <p class="mb-2"><strong>Total alumnos PIE :</strong> <span class="ml-2">{{ object.total_alumnos_pie }}</span></p>
+                            <p class="mb-2"><strong>Indice de vulnerabilidad :</strong> <span class="ml-2">{{ object.indice_vulnerabilidad }}</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="text-left">
+                        <h5 class="font-15 text-uppercase">Colaboradores</h5>
+                        <ul class="list-group list-group-flush">
+                            {% for colaborador in object.colaboradores %}
+                                <li class="list-group-item">
+                                    <a href="{% url 'rrhh:contrato' colaborador.pk %}" class="text-muted">{{ colaborador.colaborador }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" role="dialog" id="eliminar_entidad_{{object.pk}}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title alert alert-danger bg-white text-danger"><strong>¡Alerta!</strong> Está a punto de eliminar la Entidad</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Está seguro que desea eliminar la Entidad "{{ object }}"?.</p>
+                    <p class="text-muted">Recuerde que eliminará todos los registros asociados a la Entidad.</p>
+                </div>
+                <div class="modal-footer">
+                    <a role="button" class="btn btn-outline-danger" href="{% url 'gestion:entidad__eliminar' object.pk %}">Eliminar</a>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

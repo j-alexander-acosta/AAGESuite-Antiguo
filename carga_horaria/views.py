@@ -12,7 +12,7 @@ from .viewsAlexis import *
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from carga_horaria.models import Periodo, Colegio, Plan
 from carga_horaria.formsDani import PeriodoForm, ColegioForm, PlanForm
-from django.core.urlresolvers import reverse_lazy, reverse
+from django.urls import reverse_lazy, reverse
 from guardian.shortcuts import get_objects_for_user
 from guardian.shortcuts import assign_perm
 from guardian.shortcuts import remove_perm

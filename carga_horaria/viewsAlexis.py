@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from carga_horaria.models import Profesor, AsignaturaBase, Asignatura, Asistente
 from carga_horaria.formsAlexis import ProfesorForm, AsignaturaBaseForm, AsignaturaCreateForm, AsignaturaUpdateForm, AsistenteForm
-from django.core.urlresolvers import reverse_lazy, reverse
+from django.urls import reverse_lazy, reverse
 from guardian.shortcuts import get_objects_for_user
 from .models import Persona
 from .models import Fundacion

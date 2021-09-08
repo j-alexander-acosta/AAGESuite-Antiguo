@@ -1,0 +1,116 @@
+{% extends 'encuesta/encuesta_list.html' %}
+{% load encuesta_extras %}
+{% load crispy_forms_tags %}
+
+
+{% block title_page %}
+    {{ object }} - detalle
+{% endblock %}
+
+{% block object_detail %}
+    <div class="page-header">
+        <h2> <strong>Encuesta:</strong> {{ encuesta.titulo }} <small> Creada el {{ encuesta.creado_en }} </small>  </h2>
+    </div>
+
+    <h4> Descripción </h4>
+    {{ encuesta.descripcion|safe }}
+
+    {% regroup encuesta.obtener_preguntas_no_respuesta_directa by categoria as preguntas %}
+    {% for x in preguntas %}
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" align="center"> {{ x.grouper|upper }} </h3> </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th width="30px"> # </th>
+                            <th width="100px"> Pregunta  </th>
+                            {% with x.list|first as element %}
+                                {% for r in element.tipo_respuesta.respuesta_set.all %}
+                                    <th width="60px" align="center"> <small style="font-size: 10px;">  {{ r }} </small>  </th>
+                                {% endfor %}
+                            {% endwith %}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in x.list %}
+                            {% ifchanged item.tipo_respuesta.respuesta_set.all|length or item.tipo_respuesta.respuesta_set.all.0.id %}
+                                {% if forloop.counter > 1 %}
+                                    <tr>
+                                        <td> </td>
+                                        <td> </td>
+                                        {% for r in item.tipo_respuesta.respuesta_set.all %}
+                                            <th width="60px" align="center"> <small style="font-size: 10px;">  {{ r }} </small>  </th>
+                                        {% endfor %}
+                                    </tr>
+                                {% endif %}
+                            {% endifchanged %}
+                            <tr>
+                                <td> {{ forloop.counter }} </td>
+                                <td> {{ item.pregunta }} </td>
+                                {% for r in item.tipo_respuesta.respuesta_set.all %}
+                                    <td width="60px" align="center">
+                                        {% if r.escrita %}
+                                            <textarea name="respuesta_{{ item.id }}"> </textarea>
+                                        {% elif r.check %}
+                                                <input type="checkbox"  id="check_{{ forloop.counter }}_{{ item.id }}" name="check_{{ item.id }}" value="{{ r.id }}" />
+                                        {% else %}
+                                            <input id="radio_{{ forloop.counter }}_{{ item.id }}" class="css-checkbox"  type="radio"  name="respuesta_{{ item.id }}" value="{{ r.id }}">
+                                            <label for="radio_{{ forloop.counter }}_{{ item.id }}" class="css-label"></label>
+                                        {% endif %}
+                                        <br>
+                                        {% if item.descripcion_item_pregunta  %}
+                                            {% if item.tipo_respuesta.respuesta_set.all|length == item.descripcion_item_pregunta.descripcionitempregunta_set.all|length %}
+                                                <p style="font-size: 10px;">
+                                                    {{ item.descripcion_item_pregunta.descripcionitempregunta_set.all|get_at_index:forloop.counter0  }}
+                                                </p>
+                                                <br>
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    {% regroup encuesta.obtener_preguntas_respuesta_directa by categoria as preguntas %}
+    {% for x in preguntas %}
+        <h4> {{ x.grouper|upper }} </h4>
+        <ol>
+            {% for item in x.list %}
+                <li>
+                    {{ item.pregunta }}
+                </li>
+                <textarea class="form-control" id="pregunta_directa__{{ item.id }}" rows="2px">
+                        </textarea>
+            {% endfor %}
+        </ol>
+    {% endfor %}
+
+    <div class="row">
+        <!-- Textarea -->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="comentario">Observaciones:</label>
+            <div class="col-md-12">
+                <textarea class="form-control" id="comentario" name="comentario" rows="5px"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <div class="well" align="center">
+        <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Permite guardar el avance parcial de la encuesta." name="guardar"> <span class="glyphicon glyphicon-save"></span> Guardar </button>
+        <button type="button" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Permite guardar y enviar la encuesta terminada." name="guardar_enviar"> <span class="glyphicon glyphicon-save"></span> <span class="glyphicon glyphicon-send"></span> Guardar y Enviar </button>
+    </div>
+    </form>
+    <hr>
+
+{% endblock %}
+

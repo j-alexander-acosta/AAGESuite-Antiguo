@@ -1,0 +1,406 @@
+{% extends 'encuesta/base.html' %}
+{% load encuesta_extras crispy_forms_tags %}
+
+{% block title_page %}
+    {{ aplicar_encuesta.universo_encuesta.encuesta }}
+{% endblock %}
+
+{% block extra_style %}
+    <style type="text/css">
+        .table-responsive {
+            max-height: 22em;
+            overflow-y: scroll;
+            position: relative;
+        }
+
+        table {
+            position: relative;
+            border-collapse: collapse;
+        }
+
+        td,
+        th {
+            padding: 0.25em;
+        }
+
+        thead th {
+            position: -webkit-sticky; /* for Safari */
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background-color: #ffffff;
+        }
+
+        thead th:first-child {
+            left: 0;
+            z-index: 1;
+        }
+
+        tbody th {
+            position: -webkit-sticky; /* for Safari */
+            position: sticky;
+            left: 0;
+            z-index: 10;
+            background-color: #ffffff;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    {% with aplicar_encuesta.universo_encuesta.encuesta as encuesta  %}
+        <div class="page-header" style="margin-top: 0">
+            <h3> <strong>Encuesta:</strong> {{ encuesta.titulo }}
+                <small>
+                    {% if aplicar_encuesta.universo_encuesta.tipo_encuesta.codigo == "EN0001" %}
+                        ( {{ aplicar_encuesta.nombre }} )
+                    {% else %}
+                        ({{ aplicar_encuesta.persona.nombres }} {{ aplicar_encuesta.persona.apellidos }})
+                    {% endif %}
+                </small>
+            </h3>
+            {#            {% if aplicar_encuesta.universo_encuesta.tipo_encuesta.codigo == "EN0002" %}#}
+            {#                <em>Total de evaluados: {{ todas_las_encuestas|length }} personas</em>#}
+            {#            {% endif %}#}
+        </div>
+
+        {{ encuesta.descripcion|safe }}
+
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} {% if message.tags == "error" %} class="alert alert-danger volatile" {% else %} class="alert alert-{{ message.tags }} volatile" {% endif %} {% endif %}>
+                        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}<strong> Importante: </strong> {% endif %}
+                        {{ message }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            {% comment %}{% regroup encuesta.obtener_preguntas_no_respuesta_directa by categoria as preguntas %}{% endcomment %}
+
+            {% if aplicar_encuesta.universo_encuesta.tipo_encuesta.codigo == "EN0000" %}
+                <!-- si es autoevaluacion -->
+                {% for categoria in preguntas %}
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title" align="center"> {{ categoria.grouper|upper }} </h3> </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th width="30px"> # </th>
+                                        {% if not categoria.list.0.no_mostrar_pregunta %}
+                                            <th width="100px"> Pregunta  </th>
+                                        {% endif %}
+                                        {% with categoria.list|first as element %}
+                                            {% for r in element.tipo_respuesta.respuesta_set.all %}
+                                                <th width="60px" align="center"> <small style="font-size: 10px;">  {{ r }} </small>  </th>
+                                            {% endfor %}
+                                        {% endwith %}
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for item in categoria.list %}
+                                        {% ifchanged item.tipo_respuesta.respuesta_set.all|length or item.tipo_respuesta.respuesta_set.all.0.id %}
+                                            {% if forloop.counter > 1 %}
+                                                <tr>
+                                                    <td> </td>
+                                                    <td> </td>
+                                                    {% for r in item.tipo_respuesta.respuesta_set.all %}
+                                                        <th width="60px" align="center"> <small style="font-size: 10px;">  {{ r }} </small>  </th>
+                                                    {% endfor %}
+                                                </tr>
+                                            {% endif %}
+                                        {% endifchanged %}
+                                        <tr>
+                                            <td> {{ forloop.counter }} </td>
+                                            {% if not item.no_mostrar_pregunta %}
+                                                <td> {{ item.pregunta }} </td>
+                                            {% endif %}
+                                            {% for r in item.tipo_respuesta.respuesta_set.all %}
+
+                                                <td width="60px"  align="center">
+                                                    {% if r.escrita %}
+                                                        <textarea name="escrita_{{ item.id }}_{{ r.id }}">{% for rae in respuestas_encuesta %}{% if rae.respuesta.id == r.id and item.id == rae.pregunta.id %}{{ rae.respuesta_directa }}{% endif %}{% endfor %}</textarea>
+                                                    {% elif r.check %}
+                                                        <input type="checkbox"  name="check_{{ item.id }}"  value="{{ r.id }}" {% for rae in respuestas_encuesta %}{% if rae.respuesta.id == r.id and item.id == rae.pregunta.id %}checked{% endif %}{% endfor %} />
+                                                    {% else %}
+                                                        <input id="radio_{{ forloop.counter }}_{{ item.id }}" class="css-checkbox" type="radio" name="respuesta_{{ item.id }}" value="{{ r.id }}" {% for rae in respuestas_encuesta %}{% if rae.respuesta.id == r.id and item.id == rae.pregunta.id %}
+                                                               checked="checked"{% endif %}{% endfor %}>
+                                                        <label for="radio_{{ forloop.counter }}_{{ item.id }}" class="css-label"></label>
+                                                    {% endif %}
+                                                    <br>
+
+                                                    {% if item.descripcion_item_pregunta  %}
+                                                        {% if item.tipo_respuesta.respuesta_set.all|length == item.descripcion_item_pregunta.descripcionitempregunta_set.all|length %}
+                                                            <p style="font-size: 10px;">
+                                                                {{ item.descripcion_item_pregunta.descripcionitempregunta_set.all|get_at_index:forloop.counter0  }}
+                                                            </p>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </td>
+
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            {% else %}
+<!-- aqui puede ir el id="titulo-pregunta" -->
+                <div class="panel panel-primary" id="categoria">
+                    <div class="panel-heading">
+                        <h3 class="panel-title" align="center">{{ pregunta.categoria|upper }}
+                            <span id="respondido" class="pull-right"></span>
+                        </h3>
+                    </div>
+
+                    <!-- recorriendo preguntas dentro de categoria -->
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    {% if not pregunta.no_mostrar_pregunta %}
+                                        <th width="250px">{{ pregunta.numero_pregunta }}. {{ pregunta.pregunta }}</th>
+                                    {% endif %}
+                                    {% for r in pregunta.tipo_respuesta.respuesta_set.all %}
+                                        <th width="60px" class="text-center"> <small style="font-size: 10px;">  {{ r }} </small>  </th>
+                                    {% endfor %}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for aencuesta in todas_las_encuestas %}
+                                    <tr>
+                                        <!-- inicio docentes -->
+                                        <!-- seleccionador de docentes -->
+                                        {% if aencuesta.profesor and aencuesta.universo_encuesta.tipo_encuesta.codigo == "EN0001" %}
+                                            {% if aencuesta.profesor|length > 1 %}
+                                                <!-- muchos docentes -->
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <select id="profesores" name="profesores" class="form-control">
+                                                                {% for p in aencuesta.profesor %}
+                                                                    <option value="{{ p.id }}" {% if aencuesta.curso_profesor.id == p.id %} selected="selected" {% endif %}> {{ p.nombres }} {{ p.apellidos }}  </option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="alert alert-info">
+                                                        <p> <strong> Información: </strong> Hemos encontrado varios profesores que dictan
+                                                            la materia <b> {{ aencuesta.nombre }}, </b> selecciona al docente correcto antes de proceder a completar la evaluación. </p>
+                                                    </div>
+                                                </td>
+                                                <!-- inicio preguntas -->
+                                                {% include "encuesta/respuestas_template_part.html" with item=item codigo_evaluado="" aencuesta=aencuesta respuestas_encuesta=respuestas_encuesta only %}
+                                                <!-- fin preguntas -->
+
+                                            {% else %}
+                                                <!-- solo 1 docente -->
+                                                <td>
+                                                    <input type="hidden" value="{{ aencuesta.profesor.0.rut }}">
+                                                    {{ aencuesta.profesor.0.nombres }} {{ aencuesta.profesor.0.apellidos }}
+                                                </td>
+                                                <!-- inicio preguntas -->
+                                                {% include "encuesta/respuestas_template_part.html" with item=item codigo_evaluado=aencuesta.profesor.0.rut aencuesta=aencuesta respuestas_encuesta=respuestas_encuesta only %}
+                                                <!-- fin preguntas -->
+
+                                            {% endif %}
+                                        {% else %}
+                                            <!-- si no es e. docente o no hay profes -->
+                                            {% if aencuesta.universo_encuesta.tipo_encuesta.codigo == "EN0001" %}
+                                                <!-- si no hay profes pero es encuesta docente -->
+                                                <td>
+                                                    <div class="alert alert-warning"> Por algúna razón no hemos podido encontrar el nombre de su profesor. Ingrese el
+                                                        nombre completo del profesor a evaluar, correspondiente a la materia <b> {{ aencuesta.nombre }} </b>.
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <label class="sr-only" for="profesores">Profesor</label>
+                                                            <input name="profesor_nombre" class="form-control"
+                                                                    {% if aencuesta.encuestado %} value="{{ aencuesta.encuestado }}" {% endif %}>
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                                <!-- inicio preguntas -->
+                                                {% include "encuesta/respuestas_template_part.html" with item=item codigo_evaluado="" aencuesta=aencuesta respuestas_encuesta=respuestas_encuesta only %}
+                                                <!-- fin preguntas -->
+
+                                            {% elif aencuesta.universo_encuesta.tipo_encuesta.codigo == "EN0002"  %}
+                                                <!-- si es encuesta personalizada -->
+                                                <td>
+                                                    <input type="hidden" value="{{ aencuesta.config_universo_persona.evaluado.rut }}">
+                                                    {{ aencuesta.config_universo_persona.evaluado.nombres }} {{ aencuesta.config_universo_persona.evaluado.apellidos }}
+                                                </td>
+
+                                                <!-- inicio preguntas -->
+                                                {% include "encuesta/respuestas_template_part.html" with item=pregunta codigo_evaluado=aencuesta.config_universo_persona.evaluado.rut aencuesta=aencuesta respuestas_encuesta=respuestas_encuesta only %}
+                                                <!-- fin preguntas -->
+
+                                            {% elif aencuesta.universo_encuesta.tipo_encuesta.codigo == "EN0003" %}
+                                                <!-- si es encuesta superiores -->
+                                                <td>
+                                                    <input type="hidden" value="{{ aencuesta.curso_profesor.rut }}">
+                                                    {{ aencuesta.curso_profesor.nombres }} {{ aencuesta.curso_profesor.apellidos }}
+                                                    <h5> Cursos </h5>
+                                                    <ol>
+                                                        {% for materia in aencuesta.materias_asociadas %}
+                                                            <li> {{ materia }} </li>
+                                                        {% endfor %}
+                                                    </ol>
+                                                </td>
+
+                                                <!-- inicio preguntas -->
+                                                {% include "encuesta/respuestas_template_part.html" with item=item codigo_evaluado=aencuesta.curso_profesor.rut aencuesta=aencuesta respuestas_encuesta=respuestas_encuesta only %}
+                                                <!-- fin preguntas -->
+
+                                            {% elif aencuesta.universo_encuesta.tipo_encuesta.codigo == "EN0004" %}
+                                                <!-- si es encuesta docente por cursos -->
+                                                <td>
+                                                    <input type="hidden" value="{{ aencuesta.curso_profesor.codigo }}">
+                                                    <b> {{ aencuesta.curso_profesor.codigo }} </b> - {{ aencuesta.curso_profesor.materia }}
+                                                </td>
+                                                {% include "encuesta/respuestas_template_part.html" with item=item codigo_evaluado=aencuesta.curso_profesor.codigo aencuesta=aencuesta respuestas_encuesta=respuestas_encuesta only %}
+                                            {% else %}
+                                            {% endif %}
+                                        {% endif %}
+                                        <!-- fin docentes -->
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% regroup encuesta.obtener_preguntas_respuesta_directa by categoria as preguntas %}
+            {% for categoria in preguntas %}
+                <h4> {{ categoria.grouper|upper }} </h4>
+                <ol>
+                    {% for item in categoria.list %}
+                        <li>
+                            {{ item.pregunta }}
+                        </li>
+                        {% for aencuesta in todas_las_encuestas %}
+                            <!-- inicio docentes -->
+                            <!-- seleccionador de docentes -->
+                            {% if aencuesta.profesor and aencuesta.universo_encuesta.tipo_encuesta.codigo == "EN0001" %}
+                                {% if aencuesta.profesor|length > 1 %}
+                                    <!-- muchos docentes -->
+
+                                    {% for p in aencuesta.profesor %}
+                                        <p>{{ p.nombres }} {{ p.apellidos }}</p><br>
+                                    {% endfor %}
+
+                                {% else %}
+                                    <!-- solo 1 docente -->
+                                    {{ aencuesta.profesor.0.nombres }} {{ aencuesta.profesor.0.apellidos }}
+                                {% endif %}
+                            {% else %}
+                                <!-- si no es e. docente o no hay profes -->
+                                {% if aencuesta.universo_encuesta.tipo_encuesta.codigo == "EN0001" %}
+                                    <!-- si no hay profes pero es encuesta docente -->
+                                    {{ aencuesta.nombre }}
+
+                                {% elif aencuesta.universo_encuesta.tipo_encuesta.codigo == "EN0002"  %}
+                                    <!-- si es encuesta personalizada -->
+                                    {{ aencuesta.config_universo_persona.evaluado.nombres }} {{ aencuesta.config_universo_persona.evaluado.apellidos }}
+
+                                {% elif aencuesta.universo_encuesta.tipo_encuesta.codigo == "EN0003" %}
+                                    <!-- si es encuesta superiores -->
+                                    {{ aencuesta.curso_profesor.nombres }} {{ aencuesta.curso_profesor.apellidos }}
+                                    <h5> Cursos </h5>
+                                    <ol>
+                                        {% for materia in aencuesta.materias_asociadas %}
+                                            <li> {{ materia }} </li>
+                                        {% endfor %}
+                                    </ol>
+
+                                {% elif aencuesta.universo_encuesta.tipo_encuesta.codigo == "EN0004" %}
+                                    <!-- si es encuesta docente por cursos -->
+                                    <b> {{ aencuesta.curso_profesor.codigo }} </b> - {{ aencuesta.curso_profesor.materia }}
+                                {% else %}
+                                {% endif %}
+                            {% endif %}
+                            <!-- fin docentes -->
+
+                            <textarea class="form-control" id="preguntadirecta_{{ aencuesta.id }}_{{ item.id }}" name="preguntadirecta_{{ aencuesta.id }}_{{ item.id }}" rows="2px">{{ item.id|get_respuesta_directa:aencuesta.id }}</textarea>
+                        {% endfor %}
+                    {% endfor %}
+                </ol>
+            {% endfor %}
+
+            {% for aencuesta in todas_las_encuestas %}
+                {% if aencuesta.universo_encuesta.activar_campo_comentario %}
+
+                    <div class="row">
+                        <!-- Textarea -->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="comentario_{{ aencuesta.id }}">Observaciones:</label>
+                            <div class="col-md-12">
+                                <textarea class="form-control" id="comentario" name="comentario_{{ aencuesta.id }}"
+                                          rows="5px"> {{ aencuesta.comentario|default:"" }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <br>
+                {% endif %}
+            {% endfor %}
+
+            <div class="well" align="center">
+                <div class="button-group">
+                    <button type="submit" {% if not previus %} disabled {% endif %} class="btn btn-info" name="anterior"
+                            data-toggle="tooltip" data-placement="top" title="Permite volver a la pregunta anterior" >
+                        <span class="glyphicon glyphicon-arrow-left"></span> Anterior
+                    </button>
+                    <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
+                            title="Permite guardar y enviar la encuesta terminada"
+                            name="guardar">
+                        {% if not next %}
+                            Guardar y Enviar
+                        {% else %}
+                            Guardar
+                        {% endif %}
+                    </button>
+                    <button type="submit" disabled class="btn btn-success" data-toggle="tooltip" data-placement="top"
+                            title="Permite continuar con la siguiente pregunta" name="siguiente">
+                        Siguiente <span class="glyphicon glyphicon-arrow-right"></span>
+                    </button>
+                </div>
+                <div class="pt-3 pull-right"><em>Pregunta {{ pregunta.numero_pregunta }} de {{ total_preguntas }}</em></div>
+            </div>
+        </form>
+    {% endwith %}
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        function activar_siguiente() {
+            let checked = $(document).find("input[id^='radio_']:checked");
+            let total_checked = checked.length;
+            $(document).find("span[id='respondido']").html(total_checked + " repondidos de {{ todas_las_encuestas|length }} evaluados");
+            if (total_checked === {{ todas_las_encuestas|length }} ) {
+                $(document).find("button[name='siguiente']").prop('disabled', false);
+            }
+        }
+        $(function() {
+            activar_siguiente();
+
+            $(document).find('input[id^="radio_"]').on('click', function(){
+                activar_siguiente();
+            });
+        });
+    </script>
+{% endblock %}

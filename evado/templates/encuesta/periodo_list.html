@@ -1,0 +1,18 @@
+{% extends 'encuesta/object_list.html' %}
+
+{% block title_page %}
+    Periodos
+{% endblock %}
+
+{% block title_panel %}
+    <strong> Periodos </strong> <span class="badge"> {{ total_objects }} </span>
+    <a href="{% url 'periodo_create' %}" class="btn btn-sm btn-success pull-right"> <span class="glyphicon glyphicon-plus"></span> Nuevo</a>
+{% endblock %}
+
+{% block alert_empty_message %}
+No se encontraron periodos registrados..
+{% endblock %}
+
+{% block  placeholder_buscar %}
+Buscar Periodo...
+{% endblock %}

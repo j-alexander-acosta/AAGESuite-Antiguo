@@ -1,0 +1,128 @@
+{% extends 'encuesta/base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{#{% load django_select2_tags %}#}
+{##}
+{#{% block head_script %}#}
+{#{% import_django_select2_js %}#}
+{#	{% import_django_select2_css %}#}
+{#	<!-- For testing importing it again, but with another tag and light=1 -->#}
+{#	{% import_django_select2_js_css light=1 %}#}
+{#{% endblock %}#}
+
+{% block title_page %}
+    Configuración de Evaluados
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1> Configuración Personas y Evaluados, <small> periodo {{ periodo }} </small> </h1>
+    </div>
+    <p>
+        Cuando se configure un  <strong>Universo Encuesta</strong> con esta configuración las personas que sean seleccionadas seran comparadas con la configuración de encuestados que se halla realizado en esta página.
+    </p>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="alert alert-{{ message.tags }} volatile"{% endif %}>
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Importante: {% endif %}
+                    {{ message }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form role="Form" method="POST">
+        {% csrf_token %}
+        <table class="table table-bordered table-striped">
+            <caption> <span class="label label-success"> Añadir Configuración</span> </caption>
+            {{ form.as_table }}
+        </table>
+        <div align="center">
+            <button type="submit" class="btn btn-warning"> <span class="glyphicon glyphicon-arrow-down"></span>  Guardar </button>
+        </div>
+    </form>
+    <br>
+    <!-- Carlos -->
+    <div class="table-responsive-md">
+        <table class="table table-borderless table-striped">
+            <tr>
+                <th>
+                    <p>Importar</p>
+                    <form action="{% url 'persona_upload' %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <label class="form-label" for="file">Subir un archivo</label>
+                        <input type="file" id="file" name="file">
+                        <p calss="small"><small>*Se admiten archivos XLS, XLSX (ver plantilla)</small></p>
+                        <button class="btn btn-primary" type="submit">Importar</button>
+                    </form>
+                </th>
+                <th>
+                    <div style="padding-right: 5%">
+                        <p>Exportar</p>
+                        <a class="btn btn-info" href="{% url 'export_eup_xls' %}">Exportar</a>
+                    </div>
+                </th>
+                <th>
+                    <div style="margin-top: 10%; margin-left: 20%">
+                        <a class="btn btn-info" href="/static/encuesta/plantilla_evaluadores.xlsx" download>Descargar Plantilla</a>
+                    </div>
+                </th>
+            </tr>
+        </table>
+    </div>
+    <!-- Hasta aqui -->
+    <br>
+
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                <th> Detalle </th>
+                <th> Evaluados </th>
+                <th> Eliminar </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% regroup configuraciones_lista by persona as configuraciones %}
+
+            {% for x in configuraciones %}
+
+                {% regroup x.list by tipo_encuesta as tipos_encuestas %}
+
+                {% for t in tipos_encuestas %}
+                    {% regroup t.list by periodo as periodos %}
+
+                    {% for p in periodos %}
+                        <tr>
+                            <td> <strong>Evaluador:</strong> {{ p.list.0.persona }} <br>
+                                <strong>Tipo de Universo de Encuesta:</strong> {{ p.list.0.tipo_encuesta }} <br>
+                                <strong>Periodo:</strong> {{ p.grouper }}
+                            </td>
+                            <td>
+                                <ul>
+                                    {% for item in p.list %}
+                                        {% for evaluado in item.evaluados.all %}
+                                            <li> {{ evaluado.rut }} - {{ evaluado.nombres }} {{ evaluado.apellidos }} </li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td> <a href="{% url 'eliminar_configurar_universo_personas' x.list.0.persona.id %}" class="btn btn-danger btn-xs"> <span class="glyphicon glyphicon-remove-circle"> </span> </a> </td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+    <a class="btn btn-danger" href="{% url 'eliminar_todos_eup' %}">Eliminar Relaciones</a>
+{% endblock %}
+
+
+{% block js_document_ready %}
+    $(".volatile").animate({opacity: 1}, 400, "swing", function () {
+    $(".volatile").delay(3000).fadeOut();
+    });
+    {#$('.select').djangoSelect2();#}
+    {#$('.multiselect').djangoSelect2();#}
+{% endblock %}
