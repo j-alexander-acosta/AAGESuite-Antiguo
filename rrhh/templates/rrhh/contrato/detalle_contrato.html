@@ -329,12 +329,11 @@
                             <th>Opciones</th>
                             </thead>
                             <tbody>
-                            
                             {% for dp in object.documento_set.all %}
                                 <tr>
                                     {% if dp.tipo_documento  == 'contrato' %}
                                     <td>{{ dp.get_tipo_documento_display }}</td>
-                                    <td>{{ dp.get_document_name }}:{{ media_url }}:{{ dp.documento }}</td>
+                                    <td>{{ dp.get_document_name }}</td>
                                     <td>{{ dp.fecha_carga|naturalday }}</td>
                                     <td>
                                         <div class="btn-group">

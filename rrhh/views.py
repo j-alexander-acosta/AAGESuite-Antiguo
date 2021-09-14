@@ -15,9 +15,6 @@ from rrhh.models.entidad import Solicitud, EstadoSolicitud
 from rrhh.forms import VacacionTipoFuncionarioColegioForm, VacacionForm, ContratoForm, FuncionarioForm, EntrevistaForm
 from rrhh.forms import PermisoTipoFuncionarioColegioForm, PermisoForm, SolicitudForm, EstadoSolicitudForm, DocumentoForm
 from rrhh.forms import LicenciaTipoFuncionarioColegioForm, LicenciaForm, PersonaForm, FiniquitoForm, EstadoContratacionForm
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import A4, letter
-from reportlab.lib import colors
 from rrhh.pdf.descuentodiezmo import DescuentoDiezmo
 from rrhh.pdf.detallecontrato import DetalleContrato
 from rrhh.pdf.autorizacionimagen import AutorizacionImagen
@@ -629,25 +626,25 @@ def nuevo_permiso_tipo_funcionario(request):
 
 @login_required
 def detalle_contrato_pdf(request, pk):
-    contrato = get_object_or_404(ContratoColegio,pk=pk)
+    contrato = get_object_or_404(Contrato,pk=pk)
     pdf = DetalleContrato.contrato(contrato)
     return FileResponse(open('DetalleContato.pdf', 'rb'), content_type='application/pdf')   
 
 @login_required
 def Toma_conocimiento_reglamento_interno_pdf(request, pk):
-    contrato = get_object_or_404(ContratoColegio,pk=pk)
+    contrato = get_object_or_404(Contrato,pk=pk)
     pdf = TomaConocimientoReglamentoInterno.reglamento(contrato)
     return FileResponse(open('ConocimientoReglamentoInterno.pdf', 'rb'), content_type='application/pdf')  
 
 @login_required
 def detalle_trabajador_diezmo_pdf(request, pk):
-    contrato = get_object_or_404(ContratoColegio,pk=pk)
+    contrato = get_object_or_404(Contrato,pk=pk)
     pdf = DescuentoDiezmo.diezmo(contrato)
     return FileResponse(open('DescuentoDiezmo.pdf', 'rb'), content_type='application/pdf')
 
 @login_required
 def autorizacion_imagen_pdf(request, pk):
-    contrato = get_object_or_404(ContratoColegio,pk=pk)
+    contrato = get_object_or_404(Contrato,pk=pk)
     pdf = AutorizacionImagen.imagen(contrato)
     return FileResponse(open('Autorizacionimagen.pdf', 'rb'), content_type='application/pdf')
 

@@ -6,7 +6,7 @@ from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, PageBreak, Image, BaseDocTemplate, Frame, NextPageTemplate, PageTemplate
 from sqlite3 import connect
 from datetime import date, datetime
-from rrhh.models.colegio import ContratoColegio
+from rrhh.models.entidad import Contrato
 import os
 
 
@@ -44,7 +44,7 @@ class TomaConocimientoReglamentoInterno:
         textLines = '&nbsp;&nbsp;Yo, <b>'+contrato.funcionario.persona.get_name+'</b>'
         textLines = textLines + ' para estos efectos domiciliado(a) en <b>'+contrato.funcionario.persona.direccion+'</b>,'
         textLines = textLines + ' R.U.T. <b>'+contrato.funcionario.persona.rut+'</b>,'
-        textLines = textLines + ' Tomo conocimiento del reglamento interno del <b>'+contrato.colegio.nombre+'</b>'
+        textLines = textLines + ' Tomo conocimiento del reglamento interno del <b>'+contrato.entidad.nombre+'</b>'
         textLines = textLines + ' y declaro que el colegio facilito y/o me entrego una copia del texto del reglamento para su respectiva consulta.'
 
         data = Paragraph(textLines, styles['normal'])

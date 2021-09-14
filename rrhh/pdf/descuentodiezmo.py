@@ -6,7 +6,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, PageBreak, Image
 from sqlite3 import connect
 from datetime import date, datetime
-from rrhh.models.colegio import ContratoColegio
+from rrhh.models.entidad import Contrato
 
 class DescuentoDiezmo:
 

@@ -545,7 +545,7 @@ class ContratoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ContratoForm, self).__init__(*args, **kwargs)
         self.fields['funcionario'].widget.attrs['class'] = 'chosen'
-        self.fields['entidad'].widget.attrs['class'] = 'chosen'
+        self.fields['entidad'].queryset = Entidad.objects.filter(tipo_entidad='colegio')
         self.fields['categoria'].widget.attrs['class'] = 'chosen'
         self.fields['funcion_principal'].queryset = Funcion.objects.filter(tipo=1) 
         self.fields['funcion_secundaria'].queryset = Funcion.objects.filter(tipo=2) 

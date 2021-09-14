@@ -6,11 +6,13 @@ from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, PageBreak, Image, BaseDocTemplate, Frame, NextPageTemplate, PageTemplate
 from sqlite3 import connect
 from datetime import date, datetime
-from rrhh.models.colegio import ContratoColegio
+from rrhh.models.entidad import Contrato
 import os
 
 
 class DetalleContrato:
+    global nombre_fundacion
+    nombre_fundacion=''
 
     def header(canvas,pdf):
 
@@ -18,7 +20,7 @@ class DetalleContrato:
 
         canvas.saveState()
         canvas.setFont('Times-Roman',11)
-        canvas.drawCentredString(300, 750, "FUNDACIÓN EDUCACIONAL ARNALDO SALAMANCA CID")
+        canvas.drawCentredString(300, 750, nombre_fundacion.upper())
         canvas.setFont('Times-Roman',9)
         canvas.drawCentredString(300, 740, "Con Personalidad Jurídica inscrita en el Registro Nacional de Personas Jurídicas sin Fines de Lucro,")
         canvas.drawCentredString(300, 730, "Nº de inscripción 193474 del 4 de marzo de 2015")
@@ -119,6 +121,9 @@ class DetalleContrato:
         
         frame = Frame(pdf.leftMargin, pdf.bottomMargin, pdf.width, pdf.height, id='normal')
 
+        global nombre_fundacion 
+        nombre_fundacion = contrato.entidad.dependiente.nombre
+
         pdf.addPageTemplates([
             PageTemplate(id='contenido', frames=frame, onPage = DetalleContrato.header, onPageEnd = DetalleContrato.footer),
         ])
@@ -155,13 +160,14 @@ class DetalleContrato:
 
         fecha_actual = datetime.now().strftime("%d de %B de %Y")
         textLines = 'En '+contrato.funcionario.persona.ciudad.nombre+' a <b>'+fecha_actual+'</b>  entre la '
-        upcase = ('FUNDACIÓN EDUCACIONAL '+contrato.colegio.fundacion.nombre+'').upper()
+        # upcase = ('FUNDACIÓN EDUCACIONAL '+contrato.entidad.dependiente.nombre+'').upper()
+        upcase = (contrato.entidad.dependiente.nombre).upper()
         textLines = textLines + '<u><b>"'+upcase+'"</b></u>,'
         textLines = textLines + ' R.U.T. 65.102.261-4, Persona Jurídica de Derecho privado,'
         textLines = textLines + ' concedida mediante Decreto Nº 193474 de fecha 4 de marzo de 2015 del Ministerio de Justicia, en adelante, '
         fecha_nace = contrato.funcionario.persona.fecha_nacimiento.strftime("%d de %B de %Y")
-        textLines = textLines + ' “La Fundación Educacional Arnaldo Salamanca”, representada legalmente por don ERWIN ALEJANDRO JEREZ CACERES,'
-        textLines = textLines + ' Profesor, C.I. y  Rut Nº 12.674.856-6, ambos con domicilio en calle 14 de febrero, Nº 2784, Antofagasta y'
+        textLines = textLines + ' “La '+contrato.entidad.dependiente.nombre+'”, representada legalmente por don ERWIN ALEJANDRO JEREZ CACERES,'
+        textLines = textLines + ' Profesor, C.I. y  Rut Nº 12.674.856-6, ambos con domicilio en '+contrato.entidad.dependiente.direccion+', Antofagasta y'
         textLines = textLines + ' don (a) <b>'+contrato.funcionario.persona.get_name.upper()+'</b>, '+contrato.funcionario.persona.estado_civil+', R.U.T. '+contrato.funcionario.persona.rut+', '
         textLines = textLines +contrato.funcionario.persona.nacionalidad+', nacido el '+fecha_nace+','
         textLines = textLines + ' domiciliado en '+contrato.funcionario.persona.direccion+', '+contrato.funcionario.persona.ciudad.nombre+','
@@ -218,16 +224,26 @@ class DetalleContrato:
         story.append(data)
         story.append(Spacer(0,10))
 
-        sueldo = str(15554654)
+        sueldo = str(contrato.sueldo)
         numero = sueldo.replace('.','').replace(',','')
-        num_letra = 'valor'
         num_letra = DetalleContrato.numero_to_letras(int(numero))
         textLines = '<u><b>QUINTO</b></u>: La Fundación Educacional se compromete a remunerar al Trabajador con la suma de $'+sueldo+'.- ('+num_letra+' pesos) mensuales,'
         textLines = textLines + ' como sueldo base (equivalente a la RBMN por horas de contrato), correspondientes a <b>'+horas_total+'</b> horas cronológicas semanales mensuales.'
         textLines = textLines + ' Cancelará además como parte de sus remuneraciones las siguientes asignaciones al docente:<br /><br />'
         textLines = textLines + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-    Bono Zona 40% sobre RBMN.<br />'
         textLines = textLines + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-    Ley 19410 y 19933.<br />'
-        textLines = textLines + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-    Bono de Reconocimiento Profesional<br /><br />'
+        textLines = textLines + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-    Bono de Reconocimiento Profesional<br />'
+
+        sueldo = str(contrato.asignacion_funcion)
+        numero = sueldo.replace('.','').replace(',','')
+        num_letra = DetalleContrato.numero_to_letras(int(numero))
+        textLines = textLines + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-    Asignación por función $'+sueldo+'.- ('+num_letra+' pesos)<br />'
+
+        sueldo = str(contrato.asignacion_locomocion)
+        numero = sueldo.replace('.','').replace(',','')
+        num_letra = DetalleContrato.numero_to_letras(int(numero))
+        textLines = textLines + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-    Asignación por locomoción $'+sueldo+'.- ('+num_letra+' pesos)<br /><br />'
+
         textLines = textLines + 'El docente tendrá derecho a recibir una asignación de movilización que tendrá un tope de  $21.500.- (veintiún mil quinientos pesos) mensuales,'
         textLines = textLines + ' la cual será cancelada mensualmente o en los periodos que determine el empleador durante el período lectivo. Esta asignación no constituye remuneración para ningún efecto.'
 

@@ -6,7 +6,7 @@ from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, PageBreak, Image, BaseDocTemplate, Frame, NextPageTemplate, PageTemplate
 from sqlite3 import connect
 from datetime import date, datetime
-from rrhh.models.colegio import ContratoColegio
+from rrhh.models.entidad import Contrato
 import os
 
 
@@ -54,7 +54,7 @@ class AutorizacionImagen:
         textLines = textLines + ' comprometiéndome a que toda la información escrita, fotografías, videos o cualquier otro material que se obtenga de él,' 
         textLines = textLines + ' en el proceso de realización de videos, documentos, afiches, gigantografías, cuadros, pendones, página web y'
         textLines = textLines + ' otros elementos en el marco de la difusión de las políticas, beneficios y programas,'
-        textLines = textLines + ' serán de exclusiva propiedad del <b>'+contrato.colegio.nombre+'</b>, y no me serán devueltos, pudiendo éste utilizarlos libremente.'
+        textLines = textLines + ' serán de exclusiva propiedad del <b>'+contrato.entidad.nombre+'</b>, y no me serán devueltos, pudiendo éste utilizarlos libremente.'
 
         data = Paragraph(textLines, styles['normal'])
         story.append(data)
