@@ -497,7 +497,7 @@ class Profesor(BaseModel):
         anio_anterior = int(self.colegio.periode) - 1
         colegio = Colegio.objects.filter(nombre=self.colegio.nombre, periode=anio_anterior).first()
         profesor = get_object_or_404(Profesor, persona=self.persona, colegio=colegio)
-        return profesor if profesor else None
+        return profesor
 
     @property
     def horas_asignadas(self):
