@@ -45,15 +45,15 @@ class Persona(models.Model):
     nombres = models.CharField(max_length=255)
     apellido_paterno = models.CharField(max_length=255)
     apellido_materno = models.CharField(max_length=255)
-    genero = models.CharField(max_length=100, default='masculino', choices=GENERO, verbose_name='Género')
-    fecha_nacimiento = models.DateField(verbose_name='Fecha de nacimiento')
+    genero = models.CharField(max_length=100, default='masculino', choices=GENERO, null=True, blank=True, verbose_name='Género')
+    fecha_nacimiento = models.DateField(null=True, blank=True, verbose_name='Fecha de nacimiento')
     nacionalidad = models.CharField(max_length=100, default='chilena', choices=NACIONALIDAD)
     estado_civil = models.CharField(max_length=100, default='soltero', choices=ESTADO_CIVIL)
     religion = models.BooleanField(default=True, verbose_name='Adventista del Séptimo día')
-    direccion = models.CharField(max_length=255, verbose_name='Dirección')
+    direccion = models.CharField(max_length=255, null=True, blank=True, verbose_name='Dirección')
     ciudad = models.ForeignKey('Ciudad', on_delete=models.SET_NULL, null=True, blank=True)
-    telefono = models.PositiveIntegerField(verbose_name='Teléfono', help_text='Número de 9 dígitos')
-    email = models.EmailField()
+    telefono = models.PositiveIntegerField(null=True, blank=True, verbose_name='Teléfono', help_text='Número de 9 dígitos')
+    email = models.EmailField(null=True, blank=True)
     titulado = models.BooleanField(default=False)
     profesion = models.CharField(max_length=255, null=True, blank=True, verbose_name='Título profesional', default='')
     usuario = models.OneToOneField(User, null=True, blank=True, on_delete=models.SET_NULL)
@@ -112,9 +112,9 @@ class Persona(models.Model):
         self.nombres = self.nombres.title()
         self.apellido_paterno = self.apellido_paterno.capitalize()
         self.apellido_materno = self.apellido_materno.capitalize()
-        self.direccion = self.direccion.title()
+        self.direccion = self.direccion.title() if self.direccion else None
         self.profesion = self.profesion.title() if self.profesion else None
-        self.email = self.email.lower()
+        self.email = self.email.lower() if self.email else None
         return super(Persona, self).save(*args, **kwargs)
 
     def __str__(self):

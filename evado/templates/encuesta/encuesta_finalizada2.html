@@ -1,14 +1,23 @@
-{% extends 'encuesta/base.html' %}
+{% extends 'base/base.html' %}
+
+{% block title_page %}
+    Encuesta Finalizada
+{% endblock %}
+
+{% block title %}
+    <p></p>
+{% endblock %}
 
 {% block content %}
+    <blockquote>
+        <h3> Encuesta Finalizada!</h3>
+    </blockquote>
 
-<blockquote>
-<h3> Encuesta Finalizada! <small> {{ aplicar_encuesta.universo_encuesta.encuesta.titulo }}</small>  </h3>
-</blockquote>
+    <p class="code"> Estimado/a <strong>{{ aplicar_encuesta.persona.get_name }}</strong>,
+        la encuesta <strong>{{ aplicar_encuesta.universo_encuesta.encuesta.titulo }}</strong> ha sido terminada satisfactoriamente. </p>
+    <p class="code"> Muchas Gracias.</p>
 
-<p class="code"> Muchas gracias por completar nuestra encuesta, estimado/a <strong> {{ aplicar_encuesta.persona.nombres }}  {{ aplicar_encuesta.persona.apellidos }} </strong>  </p>
-
-{% comment %}
+    {% comment %}
     <ul class="list-group">
     {% for encuesta in encuestas %}
         {% if not encuesta.finalizado %}
@@ -18,6 +27,6 @@
         {% endif %}
     {% endfor %}
     </ul>
-
 {% endcomment %}
+
 {% endblock %}

@@ -1,4 +1,5 @@
 {% extends 'base/base.html' %}
+{% load humanize %}
 
 {% block title_page %}
     Evaluación Docente
@@ -10,22 +11,32 @@
 
 {% block content %}
     <div class="row text-center mb-3">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="card mx-md-3">
-                <a href="{% url 'evado:encuesta_create' %}" class="black">
+                <a href="{% url 'evado:encuesta_list' %}" class="black">
                     <div class="card-body">
                         <i class="mdi mdi-clipboard-edit-outline text-info" style="font-size: 100px"></i>
-                        <h4 class="text-black-50 text-center">Crear Encuesta</h4>
+                        <h4 class="text-black-50 text-center">Encuestas</h4>
                     </div>
                 </a>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="card mx-md-3">
                 <a href="{% url 'evado:configurar_universo_personas' %}" class="black">
                     <div class="card-body">
                         <i class="mdi mdi-account-group text-info" style="font-size: 100px"></i>
-                        <h4 class="text-black-50 text-center">Crear Universo</h4>
+                        <h4 class="text-black-50 text-center">Configurar Evaluados</h4>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mx-md-3">
+                <a href="{% url 'evado:universo_encuesta_list' %}" class="black">
+                    <div class="card-body">
+                        <i class="mdi mdi-account-convert text-info" style="font-size: 100px"></i>
+                        <h4 class="text-black-50 text-center">Universos de Encuestas</h4>
                     </div>
                 </a>
             </div>
@@ -89,7 +100,7 @@
                 <div class="sm-0 border-left">
                     <div class="card-body text-center">
                         <i class="dripicons-briefcase text-muted" style="font-size: 32px;"></i>
-                        <h3><span>{{ total_finalizados|length }}</span></h3>
+                        <h3><span>{{ encuestas_finalizadas|length }}</span></h3>
                         <p class="text-muted font-15 mb-0">Encuestas terminadas</p>
                     </div>
                 </div>
@@ -138,19 +149,19 @@
                                 <tr>
                                     <td>
                                         <h5 class="font-14 my-1"><a href="javascript:void(0);" class="text-body">{{ x.encuesta.titulo }}</a></h5>
-                                        <span class="text-muted font-13"> habilitada desde el  <em> {{ x.inicio  }} </em> al  <em>{{ x.fin }}</em></span>
+                                        <span class="text-muted font-13"><em>{{ x.periodo_activo }}</em> </span>
                                     </td>
-                                    <td>
-                                        <span class="text-muted font-13">Status</span> <br>
-                                        <span class="badge badge-warning-lighten">In-progress</span>
+                                    <td class="text-center">
+                                        <h5 class="font-14 my-1">Evaluadores</h5>
+                                        <h4 class="text-muted font-14">{{ x.total_evaluadores }}</h4>
                                     </td>
-                                    <td>
-                                        <span class="text-muted font-13">Assigned to</span>
-                                        <h5 class="font-14 mt-1 font-weight-normal">Logan R. Cohn</h5>
+                                    <td class="text-center">
+                                        <h5 class="font-14 my-1">Total evaluaciones</h5>
+                                        <h4 class="text-muted font-14">{{ x.total_evaluaciones }}</h4>
                                     </td>
-                                    <td>
-                                        <span class="text-muted font-13">Total time spend</span>
-                                        <h5 class="font-14 mt-1 font-weight-normal">3h 20min</h5>
+                                    <td class="text-center">
+                                        <h5 class="font-14 my-1">Total finalizadas</h5>
+                                        <h4 class="text-muted font-14">{{ x.total_finalizadas }}</h4>
                                     </td>
                                 </tr>
                             {% empty %}
@@ -187,28 +198,24 @@
                     <div class="table-responsive">
                         <table class="table table-centered table-nowrap table-hover mb-0">
                             <tbody>
-                            {% for k, v in total_finalizados.iteritems %}
-                                <li> <b>  : </b>  {{ v.terminados }}      </li>
+                            {% regroup encuestas_finalizadas by universo_encuesta as universos %}
+                            {% for universo in universos %}
                                 <tr>
                                     <td>
-                                        <h5 class="font-14 my-1"><a href="javascript:void(0);" class="text-body">{{ k.encuesta.titulo }}</a></h5>
-                                        <span class="text-muted font-13">Due in 3 days</span>
+                                        <h5 class="font-14 my-1"><a href="javascript:void(0);" class="text-body">{{ universo.grouper.encuesta.titulo }}</a></h5>
+                                        <span class="text-muted font-13"><em> {{ universo.grouper.periodo_activo }}</em></span>
                                     </td>
                                     <td>
-                                        <span class="text-muted font-13">Terminados</span> <br>
-                                        <span class="badge badge-warning-lighten">{{ v.terminados }}</span>
+                                        <h5 class="font-14 my-1">Evaluador</h5>
+                                        <span class="font-14 mt-1 font-weight-normal">{{ universo.list.0.persona.get_name }}</span>
                                     </td>
                                     <td>
-                                        <span class="text-muted font-13">Assigned to</span>
-                                        <h5 class="font-14 mt-1 font-weight-normal">Logan R. Cohn</h5>
+                                        <h5 class="font-14 my-1">Total evaluaciones</h5>
+                                        <span class="font-14 mt-1 font-weight-normal">{{ universo.grouper.total_evaluaciones }}</span>
                                     </td>
                                     <td>
-                                        <span class="text-muted font-13">Total time spend</span>
-                                        <h5 class="font-14 mt-1 font-weight-normal">3h 20min</h5>
-                                    </td>
-                                    <td class="table-action" style="width: 90px;">
-                                        <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
-                                        <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                        <h5 class="font-14 my-1">Finalizada</h5>
+                                        <span class="font-14 mt-1 font-weight-normal">{{ universo.list.0.finalizado|naturalday }}</span>
                                     </td>
                                 </tr>
                             {% empty %}
@@ -249,23 +256,19 @@
                                 <tr>
                                     <td>
                                         <h5 class="font-14 my-1"><a href="javascript:void(0);" class="text-body">{{ x.universo_encuesta.encuesta.titulo }}</a></h5>
-                                        <span class="text-muted font-13">Due in 3 days</span>
+                                        <span class="text-muted font-13"><em> {{ x.universo_encuesta.periodo_activo }}</em></span>
                                     </td>
                                     <td>
-                                        <span class="text-muted font-13">Persona</span> <br>
-                                        <span class="badge badge-warning-lighten">{{ x.nombre }} ({{ x.persona }})</span>
+                                        <h5 class="font-14 my-1">Evaluador</h5>
+                                        <span class="font-14 mt-1 font-weight-normal">{{ x.persona.get_name }}</span>
                                     </td>
                                     <td>
-                                        <span class="text-muted font-13">Finalizado</span>
-                                        <h5 class="font-14 mt-1 font-weight-normal">{{ x.finalizado}}</h5>
+                                        <h5 class="font-14 my-1">Evaluado</h5>
+                                        <span class="font-14 mt-1 font-weight-normal">{{ x.evaluado.get_name }}</span>
                                     </td>
                                     <td>
-                                        <span class="text-muted font-13">Total time spend</span>
-                                        <h5 class="font-14 mt-1 font-weight-normal">3h 20min</h5>
-                                    </td>
-                                    <td class="table-action" style="width: 90px;">
-                                        <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
-                                        <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                        <h5 class="font-14 my-1">Finalizada</h5>
+                                        <span class="font-14 mt-1 font-weight-normal">{{ x.finalizado|naturalday }}</span>
                                     </td>
                                 </tr>
                             {% empty %}

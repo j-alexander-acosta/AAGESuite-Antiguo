@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.urls import path
 from django.conf.urls import url
 from evado import views
 
@@ -9,17 +10,17 @@ urlpatterns = [
     # Periodos
     url(r'^periodos/$', views.PeriodoEncuestaListView.as_view(), name='periodo_list'),
     url(r'^periodos/nuevo/$', views.PeriodoEncuestaCreateView.as_view(), name='periodo_create'),
-    url(r'^periodos/<pk>/detalle/$', views.PeriodoEncuestaDetailView.as_view(), name='periodo_detail'),
-    url(r'^periodos/<pk>/actualizar/$', views.PeriodoEncuestaUpdateView.as_view(), name='periodo_update'),
+    url(r'^periodos/(?P<pk>\d+)/detalle/$', views.PeriodoEncuestaDetailView.as_view(), name='periodo_detail'),
+    url(r'^periodos/(?P<pk>\d+)/actualizar/$', views.PeriodoEncuestaUpdateView.as_view(), name='periodo_update'),
     # Encuestas
     url(r'^encuestas/$', views.EncuestaListView.as_view(), name='encuesta_list'),
-    url(r'^encuesta/<pk>/detalle/$', views.EncuestaDetailView.as_view(), name='encuesta_detail'),
+    url(r'^encuesta/(?P<pk>\d+)/detalle/$', views.EncuestaDetailView.as_view(), name='encuesta_detail'),
     url(r'^encuesta/nueva/$', views.EncuestaCreateView.as_view(), name='encuesta_create'),
-    url(r'^encuesta/<str:hash>/$', views.tomar_encuesta, name='tomar_encuesta'),
-    url(r'^encuesta/<str:hash>/finalizada/$', views.encuesta_finalizada, name='encuesta_finalizada'),
-    url(r'^encuesta/<str:hash>/cerrada/$', views.encuesta_cerrada, name='encuesta_cerrada'),
-    url(r'^encuesta/<id_persona>/enviar/<id_universo>/$', views.enviar_encuesta, name='enviar_encuesta'),
-    url(r'^encuesta/enviar/<id_universo>/correos/$', views.enviar_todas_encuestas, name='enviar_todas_encuestas'),
+    url(r'^encuesta/(\b[a-f0-9]{128})/$', views.tomar_encuesta, name='tomar_encuesta'),
+    url(r'^encuesta/(\b[a-f0-9]{128})/finalizada/$', views.encuesta_finalizada, name='encuesta_finalizada'),
+    url(r'^encuesta/(\b[a-f0-9]{128})/cerrada/$', views.encuesta_cerrada, name='encuesta_cerrada'),
+    url(r'^encuesta/(?P<id_persona>\d+)/enviar/(?P<id_universo>\d+)/$', views.enviar_encuesta, name='enviar_encuesta'),
+    url(r'^encuesta/enviar/(?P<id_universo>\d+)/correos/$', views.enviar_todas_encuestas, name='enviar_todas_encuestas'),
     # Universo Correos
     url(r'^encuesta/correos/$', views.CorreoUniversoEncuestaListView.as_view(), name='correo_universo_list'),
     url(r'^encuesta/correo/<pk>/detalle/$', views.CorreoUniversoEncuestaDetailView.as_view(), name='correo_universo_detail'),
@@ -35,18 +36,18 @@ urlpatterns = [
     url(r'^encuestas/pregunta/<pk>/$', views.PreguntaEncuestaListView.as_view(), name='pregunta_encuesta_detail'),
     # Universo Encuestas
     url(r'^universoencuestas/$', views.UniverEncuestaListView.as_view(), name='universo_encuesta_list'),
-    url(r'^universoencuesta/<pk>/detalle/$', views.UniversoEncuestaDetailView.as_view(), name='universo_encuesta_detail'),
+    url(r'^universoencuesta/(?P<pk>\d+)/detalle/$', views.UniversoEncuestaDetailView.as_view(), name='universo_encuesta_detail'),
     url(r'^universoencuesta/nuevo/$', views.UniversoEncuestaCreateView.as_view(), name='universo_encuesta_create'),
     url(r'^universoencuesta/mail/universosencuestas/$', views.enviar_mail_universo_encuestas, name='enviar_mail_universo_encuestas'),
-    url(r'^encuesta/<pk>/editar/$', views.EncuestaPreguntaFormSetView.as_view(), name='encuesta_preguntas_edit'),
-    url(r'^encuesta/<pk>/pregunta/anadir/$', views.encuesta_crear_pregunta, name='encuesta_crear_pregunta'),
+    url(r'^encuesta/(?P<pk>\d+)/editar/$', views.EncuestaPreguntaFormSetView.as_view(), name='encuesta_preguntas_edit'),
+    url(r'^encuesta/(?P<pk>\d+)/pregunta/anadir/$', views.encuesta_crear_pregunta, name='encuesta_crear_pregunta'),
     url(r'^encuesta/<pk_pregunta>/pregunta/eliminar/$', views.encuesta_eliminar_pregunta, name='encuesta_eliminar_pregunta'),
-    url(r'^universoencuesta/<id_universo>/actualizar/personas/$', views.actualizar_encuestas_universo, name='actualizar_encuestas_universo'),
+    url(r'^universoencuesta/(?P<id_universo>\d+)/actualizar/personas/$', views.actualizar_encuestas_universo, name='actualizar_encuestas_universo'),
     # Correos para enviar
     url(r'^encuesta/correos/<id_universo_correo>/enviar/$', views.enviar_recordar_contestar_encuestas, name='enviar_recordar_contestar_encuestas'),
     # Configurar Unierso Encuestas
     url(r'^encuesta/configurar/universo/$', views.configurar_universo_personas, name='configurar_universo_personas'),
-    url(r'^encuesta/configurar/<pk>/eliminar/$', views.eliminar_configurar_universo_personas, name='eliminar_configurar_universo_personas'),
+    url(r'^encuesta/configurar/(?P<pk>\d+)/eliminar/$', views.eliminar_configurar_universo_personas, name='eliminar_configurar_universo_personas'),
     # url(r'^encuesta/configurar/universo/persona_upload/$', persona_upload, name='persona_upload'),
     url(r'^encuesta/configurar/universo/export/excel/$', views.export_eup_xls, name='export_eup_xls'),
     url(r'^encuesta/configurar/universo/import/excel/$', views.import_eup_xls, name='persona_upload'),

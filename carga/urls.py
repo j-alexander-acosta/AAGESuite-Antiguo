@@ -19,7 +19,6 @@ from django.contrib import admin
 from django.views.generic import RedirectView
 from carga import views
 
-print(admin)
 # admin.site.site_header = 'Suite AAGE - Back Office'
 
 urlpatterns = [
@@ -31,6 +30,7 @@ urlpatterns = [
     url(r'^gestion/', include('gestion.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.home, name='home'),
+    url('summernote/', include('django_summernote.urls'))
 ]
 
 # add static

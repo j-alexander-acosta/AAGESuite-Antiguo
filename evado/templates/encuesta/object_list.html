@@ -1,52 +1,25 @@
-{% extends 'encuesta/base.html' %}
-{% load active_link_tags %}
+{% extends 'base/base.html' %}
 {% load bootstrap_pagination %}
 
 {% block content %}
-
-    <div class="row">
-        <div class="col-md-3">
-            <!--  Lista de objetos  -->
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h1 class="panel-title"> {% block title_panel %} {% endblock %}  </h1>
-                </div>
-                <div class="panel-body">
-
-                    <form role="form" method="GET">
-                        <div class="input-group custom-search-form">
-                            <input type="text" class="form-control" name="q" placeholder="{% block placeholder_buscar %} {% endblock %}">
-                            <span class="input-group-btn">
-                            <button class="btn btn-info" type="submit">
-                                <span class="glyphicon glyphicon-search"></span>
-                            </button>
-                            </span>
-                        </div><!-- /input-group -->
-                    </form>
-                    {% if is_filter %}
-                    <a href="{{ request.path }}"> Quitar Filtro</a>
-                    {% endif %}
-
-                    <hr>
-                    {% bootstrap_paginate object_list range=4 show_first_last="true"  %}
-                    <ul class="list-group"  style="height: 300px; overflow-y: auto;">
-                        {% for x in object_list %}
-                            <a href="{{  x.get_absolute_url }}" {% if x.get_absolute_url %} class="list-group-item active" {% else %} class="list-group-item" {% endif %}> {{ x }} </a>
-                        {% empty %}
-                            <div class="alert alert-warning"> {% block alert_empty_message %} {% endblock %} </div>
-                        {% endfor %}
-                    </ul>
-
-                </div>
+    <div class="card">
+        <div class="card-header">
+            <h5>{% block subtitle %}{% endblock %}
+                {% block create_button %}{% endblock %}
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                {% block table_list %}{% endblock %}
             </div>
         </div>
-        <div class="col-md-9">
-            <!-- Detalle de objeto -->
-            {% block object_detail %}
-                <div class="alert alert-info"> Seleccione un item de la lista.</div>
-            {% endblock %}
+
+        <div class="card-footer">
+            <div>
+                {% bootstrap_paginate page_obj range=5 %}
+            </div>
         </div>
+
     </div>
 
-
-{% endblock %}
+{% endblock content  %}
