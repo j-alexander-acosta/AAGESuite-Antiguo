@@ -101,7 +101,6 @@
                                     <a href="{% url 'evado:periodo_list' %}" class="dropdown-item">Periodos de Encuesta</a>
                                     <a href="{% url 'evado:categoria_pregunta_list' %}" class="dropdown-item">Categorias de pregunta</a>
                                     <a href="{% url 'evado:encuesta_list' %}" class="dropdown-item">Encuestas</a>
-                                    <a href="{% url 'evado:universo_encuesta_list' %}" class="dropdown-item">Universos de Encuesta</a>
                                 </div>
                             </div>
                         </div>
@@ -209,7 +208,7 @@
 
                             <!-- item-->
                             {% if request.user.is_staff %}
-                                <a href="/admin/" class="dropdown-item notify-item">
+                                <a href="/admin/" class="dropdown-item notify-item" target="_blank">
                                     <i class="mdi mdi-cogs mr-1"></i>
                                     <span>Sitio de Administración</span>
                                 </a>

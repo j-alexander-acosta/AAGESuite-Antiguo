@@ -4,15 +4,48 @@
     Universos de Encuestas
 {% endblock %}
 
-{% block title_panel %}
-    <strong> Universo de Encuestas </strong> <span class="badge"> {{ total_objects }} </span>
-    <a href="{% url 'universo_encuesta_create' %}" class="btn btn-success btn-sm"> <span class="glyphicon glyphicon-plus"></span> Añadir</a>
+{% block title %}
+    Universos de Encuesta <span class="badge"> {{ total_objects }} </span>
 {% endblock %}
 
-{% block alert_empty_message %}
-No se encontraron registros..
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'evado:home_evado' %}">Evaluación Docente</a></li>
+    <li class="breadcrumb-item active">Universos de Encuestas</li>
 {% endblock %}
 
-{% block  placeholder_buscar %}
-Buscar Encuesta...
+{% block subtitle %}
+    Tabla para configuración de Universos de Encuestas
+{% endblock %}
+
+{% block create_button %}
+    <a class="btn btn-sm btn-outline-primary float-right" href="{% url 'evado:universo_encuesta_create'%}" role="button">
+        <span><i class="uil-plus"></i> Crear Universo de Encuesta</span>
+    </a>
+{% endblock %}
+
+{% block table_list %}
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th><i class="uil uil-user-exclamation"></i> Encuesta </th>
+            <th><i class="uil-graduation-hat"></i> Tipo de Encuesta </th>
+            <th><i class="mdi mdi-calendar-clock"></i> Periodo activa </th>
+            <th><i class="mdi mdi-cogs"></i> Opciones </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for o in object_list %}
+            <tr>
+                <td><a href="{% url 'evado:universo_encuesta_detail' o.pk %}"> {{ o.encuesta }} </a></td>
+                <td> {{ o.tipo_encuesta }} </td>
+                <td> {{ o.periodo_activo }} </td>
+                <td>
+{#                    <a class="btn btn-outline-primary" href="{% url 'evado:univers' o.pk %}"#}
+{#                       data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>#}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

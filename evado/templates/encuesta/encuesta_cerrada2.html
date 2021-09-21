@@ -1,12 +1,20 @@
-{% extends 'encuesta/base.html' %}
+{% extends 'base/base.html' %}
+
+{% block title_page %}
+    Encuesta Cerrada
+{% endblock %}
+
+{% block title %}
+    <p></p>
+{% endblock %}
 
 {% block content %}
+    <blockquote>
+        <h3> Encuesta Cerrada!</h3>
+    </blockquote>
 
-<blockquote>
-<h3> La Encuesta <small> {{ aplicar_encuesta.universo_encuesta.encuesta.titulo }} </small> se ha cerrado  </h3>
-</blockquote>
-
-<p class="code"> La fecha de cierre era {{ universo.fin }}  </p>
-
+    <p class="code"> Estimado/a <strong>{{ aplicar_encuesta.persona.get_name }}</strong>,
+        la encuesta <strong>{{ aplicar_encuesta.universo_encuesta.encuesta.titulo }}</strong>, ya ha cumplido el plazo de cierre ({{ universo.fin }}). </p>
+    <p class="code"> Muchas Gracias.</p>
 
 {% endblock %}

@@ -1,6 +1,8 @@
 # coding: utf-8
 from __future__ import unicode_literals
 import hashlib
+
+from django.contrib.humanize.templatetags.humanize import naturalday
 from django.core.exceptions import ValidationError
 from django.urls import reverse
 from django.db import models
@@ -12,6 +14,19 @@ def generate_hash():
     hash = "%032x"
     return hashlib.sha512(hash.encode('utf-8') % getrandbits(160)).hexdigest()
 
+
+class InfoPersona(models.Model):
+    persona = models.OneToOneField(Persona, on_delete=models.CASCADE)
+    funcion = models.CharField(max_length=100, null=True, blank=True)
+    colegio = models.CharField(max_length=100, null=True, blank=True)
+    fundacion = models.CharField(max_length=100, null=True, blank=True)
+
+    def __str__(self):
+        return self.persona
+
+    class Meta:
+        verbose_name = 'Información extra de Persona'
+        verbose_name_plural = 'Información extra de Personas'
 
 class ConfigurarEncuestaUniversoPersona(models.Model):
     persona = models.ForeignKey(Persona, related_name="persona", on_delete=models.CASCADE, verbose_name='Evaluador')
@@ -158,7 +173,7 @@ class PeriodoEncuesta(models.Model):
         super(PeriodoEncuesta, self).clean(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('periodo_detail', kwargs={'pk': self.pk})
+        return reverse('evado:periodo_detail', kwargs={'pk': self.pk})
 
     def __str__(self):
         return '{}'.format(
@@ -174,11 +189,11 @@ class TipoUniversoEncuesta(models.Model):
     CODIGO_DOCENTE_CURSOS = "EN004"
 
     CODIGO_CHOICES = (
-        (CODIGO_NORMAL, "Evaluación Normal"),
-        (CODIGO_DOCENTE, "Evaluación Docente"),
+        # (CODIGO_NORMAL, "Evaluación Normal"),
+        # (CODIGO_DOCENTE, "Evaluación Docente"),
         (CODIGO_PERSONALIZADA, "Evaluación Personalizada"),
-        (CODIGO_SUPERIOR, "Evaluación desde Superiores"),
-        (CODIGO_DOCENTE_CURSOS, "Evaluación Docente de sus cursos")
+        # (CODIGO_SUPERIOR, "Evaluación desde Superiores"),
+        # (CODIGO_DOCENTE_CURSOS, "Evaluación Docente de sus cursos")
     )
 
     nombre = models.CharField(max_length=255)
@@ -201,8 +216,27 @@ class UniversoEncuesta(models.Model):
     correos_enviados = models.DateTimeField(null=True, blank=True, verbose_name="Fecha de envío de correos")
     creado = models.BooleanField(default=False)
 
-    class Meta:
-        ordering = ['creado_en']
+    @property
+    def periodo_activo(self):
+        return 'habilitada desde {} hasta {}'.format(
+            naturalday(self.inicio),
+            naturalday(self.fin)
+        )
+
+    @property
+    def total_evaluadores(self):
+        return self.config_universo_persona.all().distinct('persona').count()
+
+    @property
+    def total_evaluaciones(self):
+        total_evaluaciones = 0
+        for confi in self.config_universo_persona.all():
+            total_evaluaciones += confi.evaluados.all().count()
+        return total_evaluaciones
+
+    @property
+    def total_finalizadas(self):
+        return self.aplicaruniversoencuestapersona_set.filter(finalizado__isnull=False).count()
 
     def generar_encuestas_del_universo(self):
         if not self.creado:
@@ -215,10 +249,10 @@ class UniversoEncuesta(models.Model):
         <aues> tipo:list. Objetos AplicarUniversoEncuestaPersona.
         """
         aues = ''
-        if self.config_universo_persona.tipo_encuesta.codigo == TipoUniversoEncuesta.CODIGO_NORMAL:
+        if self.tipo_encuesta.codigo == TipoUniversoEncuesta.CODIGO_NORMAL:
             aues = self.aplicar_encuesta_tipo_normal()
 
-        elif self.config_universo_persona.tipo_encuesta.codigo == TipoUniversoEncuesta.CODIGO_PERSONALIZADA:
+        elif self.tipo_encuesta.codigo == TipoUniversoEncuesta.CODIGO_PERSONALIZADA:
             aues = self.aplicar_encuesta_tipo_personalizada()
 
         self.generar_preguntas_para_aues(aues)
@@ -245,11 +279,10 @@ class UniversoEncuesta(models.Model):
     def aplicar_encuesta_tipo_personalizada(self):
         # preguntas = self.encuesta.preguntaencuesta_set.all()
         aues = []
-        for x in self.config_universo_persona.evaluados.all():
-            query = ConfigurarEncuestaUniversoPersona.objects.filter(persona=x)
-            for y in query:
-                aue, created = AplicarUniversoEncuestaPersona.objects.get_or_create(universo_encuesta=self, persona=x,
-                                                                                    config_universo_persona=y)
+        for cup in self.config_universo_persona.all():
+            for x in cup.evaluados.all():
+                aue, created = AplicarUniversoEncuestaPersona.objects.get_or_create(universo_encuesta=self,
+                                                                                    persona=cup.persona, evaluado=x)
                 if created:
                     aues.append(aue)
         return aues
@@ -259,13 +292,16 @@ class UniversoEncuesta(models.Model):
         return self.personauniversoencuesta_set.all()
 
     def get_absolute_url(self):
-        return reverse('universo_encuesta_detail', kwargs={'pk': self.pk})
+        return reverse('evado:universo_encuesta_detail', kwargs={'pk': self.pk})
 
     def __str__(self):
         return '{} ({})'.format(
             self.encuesta.titulo,
             self.inicio
         )
+
+    class Meta:
+        ordering = ['creado_en']
 
 
 class PersonaUniversoEncuesta(models.Model):
@@ -287,11 +323,14 @@ class PersonaUniversoEncuesta(models.Model):
             self.persona
         )
 
+    class Meta:
+        ordering = ['id']
+
 
 class AplicarUniversoEncuestaPersona(models.Model):
     universo_encuesta = models.ForeignKey('UniversoEncuesta', on_delete=models.CASCADE)
     persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
-    encuestado = models.CharField(max_length=255, null=True, blank=True)
+    evaluado = models.ForeignKey(Persona, on_delete=models.CASCADE, related_name='evaluado')
     hash = models.CharField('hash', max_length=128, default=generate_hash, unique=True, null=True)
     comentario = models.TextField(null=True, blank=True)
     finalizado = models.DateTimeField(null=True, blank=True)
@@ -326,10 +365,11 @@ class AplicarUniversoEncuestaPersona(models.Model):
         return reverse('aplicar_universo_encuesta_persona_detail', kwargs={'pk': self.pk})
 
     def __str__(self):
-        return '{} - {} > {}'.format(
+        return '{} - {} ({}) > {}'.format(
             self.persona,
             self.universo_encuesta,
-            self.universo_encuesta.tipo_encuesta
+            self.universo_encuesta.tipo_encuesta,
+            self.evaluado
         )
 
 

@@ -84,6 +84,18 @@ class PreguntaEncuestaInline(admin.TabularInline):
 #     search_fields = ['persona__nombres', 'persona__apellidos', 'persona__funcion', 'persona__rut']
 
 
+@admin.register(AplicarUniversoEncuestaPersona)
+class AplicarUniversoEncuestaPersonaAdmin(admin.ModelAdmin):
+    list_display = (
+        'universo_encuesta',
+        'persona',
+        'evaluado',
+        'finalizado'
+    )
+    list_filter = ['persona', 'evaluado']
+    search_fields = ['universo_encuesta', 'persona__get_full_name', 'evaluado__get_full_name']
+
+
 @admin.register(Encuesta)
 class EncuestaAdmin(SummernoteModelAdmin):
     inlines = [PreguntaEncuestaInline]
@@ -168,8 +180,8 @@ class RespuestaAplicarUniversoEncuestaPersonaAdmin(admin.ModelAdmin):
         'respuesta_directa',
         'creado_en'
     )
-    list_filter = ['aplicar_universo_encuesta_persona']
-    search_fields = ['aplicar_universo_encuesta_persona']
+    list_filter = ['aplicar_universo_encuesta_persona__persona', 'aplicar_universo_encuesta_persona__evaluado']
+    search_fields = ['aplicar_universo_encuesta_persona__persona', 'aplicar_universo_encuesta_persona__evaluado']
 
 
 @admin.register(PeriodoEncuesta)
@@ -225,6 +237,8 @@ class DescripcionItemPreguntaAdmin(admin.ModelAdmin):
     )
     list_filter = ['tipo_descripcion']
     search_fields = ['tipo_descripcion']
+
+
 
 
 @admin.register(UniversoEncuesta)

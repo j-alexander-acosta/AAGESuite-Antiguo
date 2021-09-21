@@ -77,7 +77,8 @@ class DetalleColegio(models.Model):
     """
     colegio = models.ForeignKey('Entidad', on_delete=models.CASCADE)
     rbd = models.CharField(max_length=50, null=True, blank=True, verbose_name="Rol de base de datos (RBD)")
-    estado = models.CharField(max_length=50, default='particular_subvencionado', choices=TIPO_SUBVENCION)
+    tipo_subvencion = models.CharField(max_length=75, default='particular_subvencionado', choices=TIPO_SUBVENCION,
+                              verbose_name='Tipo de subvención')
     tipo_jornada = models.CharField(max_length=25, default='completa', choices=TIPO_JORNADA,
                                     verbose_name='Tipo de jornada')
     total_salas = models.PositiveIntegerField(null=True, blank=True, verbose_name="Total de salas")
