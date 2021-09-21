@@ -1,4 +1,5 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import FileResponse, HttpResponse
+from django.contrib.auth.mixins import LoginRequiredMixin   
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
 from django.urls import reverse_lazy
@@ -14,7 +15,10 @@ from rrhh.models.entidad import Solicitud, EstadoSolicitud
 from rrhh.forms import VacacionTipoFuncionarioColegioForm, VacacionForm, ContratoForm, FuncionarioForm, EntrevistaForm
 from rrhh.forms import PermisoTipoFuncionarioColegioForm, PermisoForm, SolicitudForm, EstadoSolicitudForm, DocumentoForm
 from rrhh.forms import LicenciaTipoFuncionarioColegioForm, LicenciaForm, PersonaForm, FiniquitoForm, EstadoContratacionForm
-
+from rrhh.pdf.descuentodiezmo import DescuentoDiezmo
+from rrhh.pdf.detallecontrato import DetalleContrato
+from rrhh.pdf.autorizacionimagen import AutorizacionImagen
+from rrhh.pdf.conocimientoreglameto import TomaConocimientoReglamentoInterno
 
 @login_required
 def home(request):
@@ -620,6 +624,29 @@ def nuevo_permiso_tipo_funcionario(request):
 
     return data
 
+@login_required
+def detalle_contrato_pdf(request, pk):
+    contrato = get_object_or_404(Contrato,pk=pk)
+    pdf = DetalleContrato.contrato(contrato)
+    return FileResponse(open('DetalleContato.pdf', 'rb'), content_type='application/pdf')   
+
+@login_required
+def Toma_conocimiento_reglamento_interno_pdf(request, pk):
+    contrato = get_object_or_404(Contrato,pk=pk)
+    pdf = TomaConocimientoReglamentoInterno.reglamento(contrato)
+    return FileResponse(open('ConocimientoReglamentoInterno.pdf', 'rb'), content_type='application/pdf')  
+
+@login_required
+def detalle_trabajador_diezmo_pdf(request, pk):
+    contrato = get_object_or_404(Contrato,pk=pk)
+    pdf = DescuentoDiezmo.diezmo(contrato)
+    return FileResponse(open('DescuentoDiezmo.pdf', 'rb'), content_type='application/pdf')
+
+@login_required
+def autorizacion_imagen_pdf(request, pk):
+    contrato = get_object_or_404(Contrato,pk=pk)
+    pdf = AutorizacionImagen.imagen(contrato)
+    return FileResponse(open('Autorizacionimagen.pdf', 'rb'), content_type='application/pdf')
 
 class ContratoListView(LoginRequiredMixin, ListView):
     model = Contrato
@@ -1238,20 +1265,25 @@ def cambiar_estado_contratacion(request):
 def cargar_documento_personal(request):
     if request.method == 'POST':
         form = DocumentoForm(request.POST, request.FILES)
+        
         if form.is_valid():
             contrato = form.cleaned_data['contrato']
             documento = form.cleaned_data['documento']
+            print(request.POST)
             tipo_documento = 'otro'
-            if 'cargar_1' in request.POST:
+            if 'cargar_contrato_pdf' in request.POST:
+                tipo_documento = 'contrato'
+            if 'cargar_reglamento_pdf' in request.POST:
                 tipo_documento = 'conocimiento reglamento'
-            elif 'cargar_2' in request.POST:
+            if 'cargar_diezmo_pdf' in request.POST:
                 tipo_documento = 'autorizacion diezmo'
-            elif 'cargar_3' in request.POST:
+            if 'cargar_imagen_pdf' in request.POST:
                 tipo_documento = 'autorizacion imagen'
-
+            # print(request.POST['cargar_doc_pdf'])
             d = Documento.objects.create(
                 contrato=contrato,
                 tipo_documento=tipo_documento,
                 documento=documento
             )
+            # print(d)
             return redirect('rrhh:contrato', d.contrato.pk)
