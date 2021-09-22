@@ -51,6 +51,11 @@ urlpatterns = [
         views.profesores_pares,
         name='profesores-pares'
     ),
+    #url(
+    #    r'^profesores/(?P<pk>\d+)/excel-pares/$',
+    #    views.profesores_pares_xlsx,
+    #    name='profesores-pares-xlsx'
+    #),
     url(
         r'^profesores/excel-directivos/$',
         views.profesores_directivos,

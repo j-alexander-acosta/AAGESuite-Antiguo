@@ -175,3 +175,5 @@ EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS = True
 NOREPLY_MAIL = os.environ.get("NOREPLY_MAIL")
 IMPORT_EXPORT_USE_TRANSACTIONS = True
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

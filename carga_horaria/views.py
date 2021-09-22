@@ -41,6 +41,7 @@ from .forms import AsignacionAsistenteForm
 from .forms import AssignPermForm
 from .formsDani import PlantillaPlanForm
 from django.http import FileResponse
+from .import models
 
 
 @login_required
