@@ -871,6 +871,188 @@ def profesores_info(request):
 
 
 @login_required
+def profesores_auto(request):
+    output = io.BytesIO()
+
+    # Create a workbook and add a worksheet.
+    workbook = xlsxwriter.Workbook(output)
+    worksheet = workbook.add_worksheet('Profesores')
+    
+    # Some data we want to write to the worksheet.
+    qs = get_for_user(request, Profesor.objects.all(), 'colegio__pk', request.user)
+
+    # Start from the first cell. Rows and columns are zero indexed.
+    row = 0
+    col = 0
+
+    # Iterate over the data and write it out row by row.
+    worksheet.write(0, 0, 'RUT Evaluador')
+    worksheet.write(0, 1, 'Nombres Evaluador')
+    worksheet.write(0, 2, 'Correo Institucional Evaluador')
+    worksheet.write(0, 3, 'Función Evaluador')
+    worksheet.write(0, 4, 'Colegio Evaluador')
+    worksheet.write(0, 5, 'Fundación Evaluador')
+    worksheet.write(0, 6, 'RUT Evaluado')
+    worksheet.write(0, 7, 'Nombres Evaluado')
+    worksheet.write(0, 8, 'Correo Institucional Evaluado')
+    worksheet.write(0, 9, 'Función Evaluado')
+    worksheet.write(0, 10, 'Colegio Evaluado')
+    worksheet.write(0, 11, 'Fundación Evaluado')
+
+
+    row = 1
+    for pp in qs:
+        worksheet.write(row, 0, pp.rut)
+        worksheet.write(row, 1, pp.nombre)
+        worksheet.write(row, 2, pp.persona.email_institucional)
+        worksheet.write(row, 3, pp.get_cargo_display())
+        worksheet.write(row, 4, str(pp.colegio))
+        worksheet.write(row, 5, str(pp.fundacion))
+        worksheet.write(row, 6, pp.rut)
+        worksheet.write(row, 7, pp.nombre)
+        worksheet.write(row, 8, pp.persona.email_institucional)
+        worksheet.write(row, 9, pp.get_cargo_display())
+        worksheet.write(row, 10, str(pp.colegio))
+        worksheet.write(row, 11, str(pp.fundacion))
+
+        row += 1
+
+    workbook.close()
+    output.seek(0)
+
+    # Set up the Http response.
+    filename = 'profesores-auto.xlsx'
+    response = HttpResponse(
+        output,
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+
+    return response
+
+
+@login_required
+def profesores_pares(request):
+    output = io.BytesIO()
+
+    # Create a workbook and add a worksheet.
+    workbook = xlsxwriter.Workbook(output)
+    worksheet = workbook.add_worksheet('Profesores')
+    
+    # Some data we want to write to the worksheet.
+    qs = get_for_user(request, Profesor.objects.all(), 'colegio__pk', request.user)
+
+    # Start from the first cell. Rows and columns are zero indexed.
+    row = 0
+    col = 0
+
+    # Iterate over the data and write it out row by row.
+    worksheet.write(0, 0, 'RUT Evaluador')
+    worksheet.write(0, 1, 'Nombres Evaluador')
+    worksheet.write(0, 2, 'Correo Institucional Evaluador')
+    worksheet.write(0, 3, 'Función Evaluador')
+    worksheet.write(0, 4, 'Colegio Evaluador')
+    worksheet.write(0, 5, 'Fundación Evaluador')
+    worksheet.write(0, 6, 'RUT Evaluado')
+    worksheet.write(0, 7, 'Nombres Evaluado')
+    worksheet.write(0, 8, 'Correo Institucional Evaluado')
+    worksheet.write(0, 9, 'Función Evaluado')
+    worksheet.write(0, 10, 'Colegio Evaluado')
+    worksheet.write(0, 11, 'Fundación Evaluado')
+
+
+    row = 1
+    #for pp in qs:
+    #    worksheet.write(row, 0, pp.rut)
+    #    worksheet.write(row, 1, pp.nombre)
+    #    worksheet.write(row, 2, pp.persona.email_institucional)
+    #    worksheet.write(row, 3, pp.get_cargo_display())
+    #    worksheet.write(row, 4, str(pp.colegio))
+    #    worksheet.write(row, 5, str(pp.fundacion))
+    #    worksheet.write(row, 6, pp.rut)
+    #    worksheet.write(row, 7, pp.nombre)
+    #    worksheet.write(row, 8, pp.persona.email_institucional)
+    #    worksheet.write(row, 9, pp.get_cargo_display())
+    #    worksheet.write(row, 10, str(pp.colegio))
+    #    worksheet.write(row, 11, str(pp.fundacion))
+#
+    #    row += 1
+#
+    workbook.close()
+    output.seek(0)
+
+    # Set up the Http response.
+    filename = 'profesores-pares.xlsx'
+    response = HttpResponse(
+        output,
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+
+    return response
+    
+
+@login_required
+def profesores_directivos(request):
+    output = io.BytesIO()
+
+    # Create a workbook and add a worksheet.
+    workbook = xlsxwriter.Workbook(output)
+    worksheet = workbook.add_worksheet('Profesores')
+    
+    # Some data we want to write to the worksheet.
+    qs = get_for_user(request, Profesor.objects.all(), 'colegio__pk', request.user)
+
+    # Start from the first cell. Rows and columns are zero indexed.
+    row = 0
+    col = 0
+
+    # Iterate over the data and write it out row by row.
+    worksheet.write(0, 0, 'RUT Evaluador')
+    worksheet.write(0, 1, 'Nombres Evaluador')
+    worksheet.write(0, 2, 'Correo Institucional Evaluador')
+    worksheet.write(0, 3, 'Función Evaluador')
+    worksheet.write(0, 4, 'Colegio Evaluador')
+    worksheet.write(0, 5, 'Fundación Evaluador')
+    worksheet.write(0, 6, 'RUT Evaluado')
+    worksheet.write(0, 7, 'Nombres Evaluado')
+    worksheet.write(0, 8, 'Correo Institucional Evaluado')
+    worksheet.write(0, 9, 'Función Evaluado')
+    worksheet.write(0, 10, 'Colegio Evaluado')
+    worksheet.write(0, 11, 'Fundación Evaluado')
+    
+    row = 1
+    for pp in qs:
+        worksheet.write(row, 0, pp.rut)
+        worksheet.write(row, 1, pp.nombre)
+        worksheet.write(row, 2, pp.persona.email_institucional)
+        worksheet.write(row, 3, pp.get_cargo_display())
+        worksheet.write(row, 4, str(pp.fundacion))
+        worksheet.write(row, 5, str(pp.colegio))
+        worksheet.write(row, 6, pp.rut)
+        worksheet.write(row, 7, pp.nombre)
+        worksheet.write(row, 8, pp.persona.email_institucional)
+        worksheet.write(row, 9, pp.get_cargo_display())
+        worksheet.write(row, 10, str(pp.fundacion))
+        worksheet.write(row, 11, str(pp.colegio))
+
+        row += 1
+
+    workbook.close()
+    output.seek(0)
+
+    # Set up the Http response.
+    filename = 'profesores-directivos.xlsx'
+    response = HttpResponse(
+        output,
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+
+    return response
+
+
+@login_required
 def asistentes_info(request):
     output = io.BytesIO()
 
@@ -908,7 +1090,7 @@ def asistentes_info(request):
     worksheet.write(0, 19, 'Fundación que lo contrata')
     worksheet.write(0, 20, 'Colegio')
 
-    
+
     row = 1
     for pp in qs:
         worksheet.write(row, 0, pp.rut)
