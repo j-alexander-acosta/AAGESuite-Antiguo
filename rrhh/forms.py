@@ -220,6 +220,30 @@ class DocumentoForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
 
+class AgregarDocumentoForm(forms.ModelForm):
+
+    class Meta:
+        model = Documento
+        fields = '__all__'
+        exclude = (
+            'fecha_carga',
+        )
+        help_texts = {
+            'documento': u'Cargue el documento firmado por ambas partes'
+        }
+        widgets = {
+            'perfeccionamiento': forms.HiddenInput,
+            'contrato': forms.HiddenInput,
+            'licencia': forms.HiddenInput,
+            'permiso': forms.HiddenInput,
+            'finiquito': forms.HiddenInput
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super(AgregarDocumentoForm, self).__init__(*args, **kwargs)
+        self.fields['tipo_documento'].queryset = Documento.objects.filter(tipo_documento='otro')
+        self.helper = FormHelper()
+        self.helper.form_tag = False
 
 class VacacionForm(forms.ModelForm):
     class Meta:
