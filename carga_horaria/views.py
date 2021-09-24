@@ -809,8 +809,8 @@ def profesores_info(request):
     worksheet.write(0, 32, 'Asignación No Aula SEP')
     worksheet.write(0, 33, 'Especialidad')
     worksheet.write(0, 34, 'Profesor Jefe')
-    worksheet.write(0, 35, 'Fundación que lo contrata')
-    worksheet.write(0, 36, 'Colegio')
+    worksheet.write(0, 35, 'Colegio')
+    worksheet.write(0, 36, 'Fundación que lo contrata')
   
 
 
@@ -852,8 +852,8 @@ def profesores_info(request):
         worksheet.write(row, 32, pp.horas_no_aula_asignadas_sep)
         worksheet.write(row, 33, str(pp.especialidad))
         worksheet.write(row, 34, pp.jefatura if pp.es_profesor_jefe else 'No')
-        worksheet.write(row, 35, str(pp.fundacion))
-        worksheet.write(row, 36, str(pp.colegio))
+        worksheet.write(row, 35, str(pp.colegio))
+        worksheet.write(row, 36, str(pp.fundacion))
 
         row += 1
 
@@ -987,7 +987,7 @@ def profesores_directivos(request):
     worksheet = workbook.add_worksheet('Profesores')
     
     # Some data we want to write to the worksheet.
-    qs = get_for_user((request, Profesor.objects.filter(cargo="4")), 'colegio__pk', user=request.user)
+    qs = get_for_user(request, Profesor.objects.all(), 'colegio__pk', request.user)
 
     # Start from the first cell. Rows and columns are zero indexed.
     row = 0
@@ -1006,21 +1006,21 @@ def profesores_directivos(request):
     worksheet.write(0, 9, 'Función Evaluado')
     worksheet.write(0, 10, 'Colegio Evaluado')
     worksheet.write(0, 11, 'Fundación Evaluado')
-    
+
     row = 1
     for pp in qs:
         worksheet.write(row, 0, pp.rut)
         worksheet.write(row, 1, pp.nombre)
         worksheet.write(row, 2, pp.persona.email_institucional)
         worksheet.write(row, 3, pp.get_cargo_display())
-        worksheet.write(row, 4, str(pp.fundacion))
-        worksheet.write(row, 5, str(pp.colegio))
+        worksheet.write(row, 4, str(pp.colegio))
+        worksheet.write(row, 5, str(pp.fundacion))
         worksheet.write(row, 6, pp.rut)
         worksheet.write(row, 7, pp.nombre)
         worksheet.write(row, 8, pp.persona.email_institucional)
         worksheet.write(row, 9, pp.get_cargo_display())
-        worksheet.write(row, 10, str(pp.fundacion))
-        worksheet.write(row, 11, str(pp.colegio))
+        worksheet.write(row, 10, str(pp.colegio))
+        worksheet.write(row, 11, str(pp.fundacion))
 
         row += 1
 
