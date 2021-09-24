@@ -41,7 +41,7 @@ from .forms import AsignacionAsistenteForm
 from .forms import AssignPermForm
 from .formsDani import PlantillaPlanForm
 from django.http import FileResponse
-from .import models
+from . import models
 
 
 @login_required
@@ -963,22 +963,7 @@ def profesores_pares(request):
 
 
     row = 1
-    #for pp in qs:
-    #    worksheet.write(row, 0, pp.rut)
-    #    worksheet.write(row, 1, pp.nombre)
-    #    worksheet.write(row, 2, pp.persona.email_institucional)
-    #    worksheet.write(row, 3, pp.get_cargo_display())
-    #    worksheet.write(row, 4, str(pp.colegio))
-    #    worksheet.write(row, 5, str(pp.fundacion))
-    #    worksheet.write(row, 6, pp.rut)
-    #    worksheet.write(row, 7, pp.nombre)
-    #    worksheet.write(row, 8, pp.persona.email_institucional)
-    #    worksheet.write(row, 9, pp.get_cargo_display())
-    #    worksheet.write(row, 10, str(pp.colegio))
-    #    worksheet.write(row, 11, str(pp.fundacion))
-#
-    #    row += 1
-#
+
     workbook.close()
     output.seek(0)
 
@@ -991,7 +976,7 @@ def profesores_pares(request):
     response['Content-Disposition'] = 'attachment; filename=%s' % filename
 
     return response
-    
+
 
 @login_required
 def profesores_directivos(request):
@@ -1002,7 +987,7 @@ def profesores_directivos(request):
     worksheet = workbook.add_worksheet('Profesores')
     
     # Some data we want to write to the worksheet.
-    qs = get_for_user(request, Profesor.objects.all(), 'colegio__pk', request.user)
+    qs = get_for_user((request, Profesor.objects.filter(cargo="4")), 'colegio__pk', user=request.user)
 
     # Start from the first cell. Rows and columns are zero indexed.
     row = 0
@@ -1051,7 +1036,6 @@ def profesores_directivos(request):
     response['Content-Disposition'] = 'attachment; filename=%s' % filename
 
     return response
-
 
 @login_required
 def asistentes_info(request):
@@ -1129,3 +1113,22 @@ def asistentes_info(request):
     response['Content-Disposition'] = 'attachment; filename=%s' % filename
 
     return response
+
+def uploadFile(request):
+    if request.method == "POST":
+        # Fetching the form data
+        fileTitle = request.POST["fileTitle"]
+        uploadedFile = request.FILES["uploadedFile"]
+
+        # Saving the information in the database
+        document = models.Document(
+            title = fileTitle,
+            uploadedFile = uploadedFile
+        )
+        document.save()
+
+    documents = models.Document.objects.all()
+    return redirect('carga-horaria:profesores')
+    #return render(request, "carga_horaria/profesor/listado_profesor.html", context = {
+    #    "files": documents
+    #})

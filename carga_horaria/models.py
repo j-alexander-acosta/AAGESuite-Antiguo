@@ -956,3 +956,8 @@ class Persona(models.Model):
 
     def __str__(self):
         return "{} ({})".format(self.nombre, self.rut)
+
+class Document(models.Model):
+    title = models.CharField(max_length = 50)
+    uploadedFile = models.FileField(upload_to = "Uploaded Files/")
+    dateTimeOfUpload = models.DateTimeField(auto_now = True)

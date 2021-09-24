@@ -88,7 +88,7 @@ Profesores
 
 {% block content %}
 <div class="card">
-    <div class="card-header">
+    <class class="card-header">
         <h4 class="card-title">Profesores
             <div class="float-right">
                 <!--<a class="btn btn-outline-warning" href="#" data-toggle="modal"
@@ -114,11 +114,8 @@ Profesores
                     class="uil-cloud-download"></i> F. Evaluación Directivos</a>
         </class>
         <class class="card-subtitle mb-2 text-muted">
-            <a class="btn btn-outline-default" href="{% url 'carga-horaria:profesores-pares' %}"><i
+            <a class="btn btn-outline-default" href="{% url 'carga-horaria:uploadFile' %}"><i
                     class="uil-cloud-download"></i> F. Evaluación Pares</a>
-        </class>
-        <class style="text-align:center">
-            <button type="button" class="btn btn-outline-success" name="cargar_pares" value="formato" title="Cargar Formato Evaluación Pares" data-toggle="modal" data-target="#cargar_documento_formato"><i class="uil-upload-alt"></i></button>
         </class>
         <span style="float: right;">
             <class style="text-align: right;" class="card-subtitle mb-2 text-muted">
@@ -128,6 +125,14 @@ Profesores
                         class="uil-print"></i> Imprimir</a>
             </class>
         </span>
+        <class>
+            <center><form action="{% url 'carga-horaria:uploadFile' %}" method="POST" enctype="multipart/form-data">
+                <input type="text" name="fileTitle" placeholder="Enter a title">
+                <input type="file" name="uploadedFile">
+                {% csrf_token %}
+                <input type="submit" value="Upload">
+            </form></center>
+        </class>
     </div>
     <div class="row">
         <div class="col-3" style="text-align:center">
@@ -311,7 +316,6 @@ Profesores
     </div>
 
 </div>
-
 <div class="card-footer">
     {% bootstrap_paginate page_obj range=5 %}
 </div>
