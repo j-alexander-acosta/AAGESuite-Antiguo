@@ -4,14 +4,46 @@
     Encuestas
 {% endblock %}
 
-{% block title_panel %}
+{% block title %}
  <strong> Encuestas </strong> <span class="badge"> {{ total_objects }} </span>
 {% endblock %}
 
-{% block alert_empty_message %}
-No se encontraron encuestas creadas..
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item active">Administración de Encuestas</li>
 {% endblock %}
 
-{% block  placeholder_buscar %}
-Buscar Encuesta...
+{% block subtitle %}
+    Tabla para configuración de Encuestas
 {% endblock %}
+
+{% block create_button %}
+    <a class="btn btn-sm btn-outline-primary float-right" href="{% url 'evado:encuesta_create'%}" role="button">
+        <span><i class="uil-plus"></i> Crear Encuesta</span>
+    </a>
+{% endblock %}
+
+{% block table_list %}
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th><i class="uil-user-exclamation"></i> Nombre </th>
+            <th><i class="uil-document-layout-left"></i> Descripción </th>
+            <th><i class="mdi mdi-cogs"></i> Opciones </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for o in object_list %}
+            <tr>
+                <td><a href="{% url 'evado:encuesta_detail' o.pk %}"> {{ o.titulo }} </a></td>
+                <td> {{ o.descripcion|safe|escape|truncatewords:"15" }} </td>
+                <td>
+{#                    <a class="btn btn-outline-primary" href="{% url 'evado:encuesta_update' o.pk %}"#}
+{#                       data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>#}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+

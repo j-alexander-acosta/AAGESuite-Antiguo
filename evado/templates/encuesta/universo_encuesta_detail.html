@@ -1,90 +1,81 @@
 {% extends 'encuesta/universo_encuesta_list.html' %}
-{% load bootstrap_pagination %}
 
 {% block title_page %}
-    {{ object }} - detalle
+    Universo de Encuestas - detalle
 {% endblock %}
 
-{% block object_detail %}
-    <div class="page-header">
-        <h3> <strong> Universo Encuesta:</strong> {{ universoencuesta }}  </h3>
-    </div>
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li{% if message.tags %} class="alert alert-{{ message.tags }} volatile"{% endif %}>
-                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
-                    {{ message }}
-                </li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+{% block title %}
+    Detalle de Universo de Encuestas
+{% endblock %}
 
-    <h4>
-        Listado de Personas <small> Disponibles para Encuestar. </small>  </h4>
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'evado:home_evado' %}">Evaluación Docente</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'evado:universo_encuesta_list' %}">Universos de Encuestas</a></li>
+    <li class="breadcrumb-item active">Detalle de Universo de Encuestas</li>
+{% endblock %}
 
-    <div class="row">
-        <div class="col-md-6">
-            <form role="form" method="GET">
-                <div class="input-group custom-search-form">
-                    <input type="text" class="form-control" name="search" placeholder="Buscar Persona">
-                            <span class="input-group-btn">
-                            <button class="btn btn-info" type="submit">
-                                <span class="glyphicon glyphicon-search"></span>
-                            </button>
-                            </span>
-                </div><!-- /input-group -->
-            </form>
-            {% if filtro %}
-                <a href="{{ request.path }}"> Quitar Filtro</a>
-            {% endif %}
-
-        </div>
-    {% comment %}
-        <div class="col-md-6">
-            <a href="{% url 'actualizar_encuestas_universo' universoencuesta.id %}" class="btn btn-default"> <span class="glyphicon glyphicon-refresh"></span>  Actualizar </a>
-        </div>
-    {% endcomment %}
-    </div>
-
-    <hr>
-
-    <div class="row">
-        <div class="col-md-5">
-            {% bootstrap_paginate personas range=5 show_first_last="true"  %}
-        </div>
-        <div class="col-md-5">
-            <a data-toggle="modal" data-target="#send_mails" class="btn btn-primary"> <span class="glyphicon glyphicon-send"></span> Enviar Correos </a>
-            <!-- Modal -->
-            <div class="modal fade" id="send_mails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Envío de Correos <small> {{ universoencuesta }} </small> </h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="alert alert-warning">
-                                <p> ¿Está seguro que desea enviar multiples correos?</p>
-                            </div>
-                            {% if universoencuesta.correos_enviados %}
-                                <div class="alert alert-danger">
-                                    <strong> Ya ha realizado el envío de correos el {{ universoencuesta.correos_enviados }} </strong>
-                                </div>
-                            {% endif %}
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar operación</button>
-                            <a href="{% url 'enviar_todas_encuestas' universoencuesta.id %}" class="btn btn-danger">Enviar Correos</a>
-                        </div>
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h5>{{ universoencuesta }}
+                {% block buttons %}
+                    <div class="btn-group btn-group-sm float-right">
+                        <a data-toggle="modal" data-target="#send_mails" class="btn btn-primary">
+                            <span class="mdi mdi-email-send"></span> Enviar Correos </a>
+                        {#                        <a href="{% url 'evado:universo' object.pk %}" type="button" class="btn btn-outline-primary">#}
+                        {#                            <i class="uil-edit"></i>#}
+                        {#                        </a>#}
+                        {#                        <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_afp_{{object.pk}}">#}
+                        {#                            <i class="uil-trash-alt"></i>#}
+                        {#                        </a>#}
                     </div>
+                {% endblock %}
+            </h5>
+            <p class="subtitle"> Listado de Personas <small> Disponibles para Encuestar. </small> </p>
+        </div>
+
+        <div class="card-body">
+            <ul class="list-group">
+                {% for x in personas %}
+                    <li class="list-group-item">
+                        {{ x.persona }}
+                        <a href="{% url 'evado:enviar_encuesta' x.persona.id universoencuesta.id %}" class="btn btn-sm btn-success float-right">
+                            <span class="mdi mdi-email-send"></span> Enviar Correo
+                        </a>
+                        <p class="label {% if x.correo_enviado %} text-success {% else %} text-danger {% endif %} mb-0">
+                            {% if x.correo_enviado %} Enviado {% else %} No Enviado  {% endif %}
+                        </p>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" tabindex="-1" role="dialog" id="send_mails">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Envío de Correos <small> {{ universoencuesta }} </small></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p> ¿Está seguro que desea enviar multiples correos?</p>
+                    {% if universoencuesta.correos_enviados %}
+                        <div class="alert alert-danger">
+                            <strong> Ya ha realizado el envío de correos el {{ universoencuesta.correos_enviados }} </strong>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar operación</button>
+                    <a href="{% url 'evado:enviar_todas_encuestas' universoencuesta.id %}" class="btn btn-primary">Enviar Correos</a>
                 </div>
             </div>
         </div>
     </div>
-    <ul class="list-group">
-        {% for x in personas %}
-            <li class="list-group-item"><a href="{% url 'enviar_encuesta' x.persona.id universoencuesta.id %}" class="btn btn-warning btn-sm"> <span class="glyphicon glyphicon-send"></span> Mail </a> {{ x.persona }} <span class="label label-success"> {% if x.correo_enviado %} Enviado {% else %} No Enviado  {% endif %} </span> </li>
-        {% endfor %}
-    </ul>
+
 {% endblock %}

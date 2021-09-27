@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import forms
+from easy_select2.widgets import Select2, Select2Multiple
 from parsley.decorators import parsleyfy
 from django_summernote.widgets import SummernoteWidget
 from crispy_forms.bootstrap import StrictButton
@@ -16,26 +17,45 @@ class UniversoEncuestaForm(forms.ModelForm):
     class Meta:
         model = UniversoEncuesta
         fields = '__all__'
-        widgets = {
-            'contenido_email': SummernoteWidget(),
+        # widgets = {
+        #     'contenido_email': SummernoteWidget(),
+        # }
+        help_texts = {
+            'activar_campo_comentario': u"Marque si desea habilitar el campo de comentarios"
+                                        u"y observaciones para los encuestados"
         }
 
     def __init__(self, *args, **kwargs):
         super(UniversoEncuestaForm, self).__init__(*args, **kwargs)
+        self.fields['encuesta'].widget.attrs['class'] = 'select2'
+        self.fields['tipo_encuesta'].widget.attrs['class'] = 'select2'
         self.fields['activar_campo_comentario'].label = "Activar Campo de Observaciones"
         self.fields['config_universo_persona'].queryset = ConfigurarEncuestaUniversoPersona.objects.all()
+        self.fields['inicio'] = forms.DateField(
+            widget=forms.widgets.DateInput(attrs={'type': 'date'}),
+            input_formats=['%Y-%m-%d']
+        )
+        self.fields['fin'] = forms.DateField(
+            widget=forms.widgets.DateInput(attrs={'type': 'date'}),
+            input_formats=['%Y-%m-%d']
+        )
+        self.fields['contenido_email'].widget.attrs = {'class': 'summernote', 'placeholder': 'Escriba aqui el mensaje...'}
         self.helper = FormHelper()
+        self.helper.form_tag = False
         self.helper.layout = Layout(
             Fieldset(
                 'Configuración de la encuesta',
-                'encuesta',
+                Div(
+                    Div(Field('encuesta'), css_class="col-md-4"),
+                    Div(Field('tipo_encuesta'), css_class="col-md-4"),
+                    Div(Field('activar_campo_comentario'), css_class="col-md-4"),
+                    css_class="row"
+                ),
                 'contenido_email',
-                'tipo_encuesta',
-                Field('activar_campo_comentario'),
             ),
             Fieldset(
                 'Seleccione el universo de personas',
-                Field('config_universo_persona', css_class='multiselect'),
+                Field('config_universo_persona', css_class='select2'),
             ),
             # Fieldset(
             #   'Seleccionar Cursos Disponibles',
@@ -45,19 +65,15 @@ class UniversoEncuestaForm(forms.ModelForm):
                 'Tiempo disponible',
                 Div(
                     Div(
-                        Field('inicio', css_class='dateinput'),
-                        css_class='col-md-5 col-md-offset-1',
+                        Field('inicio', css_class='datepicker'),
+                        css_class='col-md-6',
                     ),
                     Div(
-                        Field('fin', css_class='dateinput'),
-                        css_class='col-md-5 col-md-offset-1',
+                        Field('fin', css_class='datepicker'),
+                        css_class='col-md-6',
                     ),
                     css_class='row',
                 ),
-            ),
-            Div(
-                StrictButton('Guardar', css_class='btn-success btn-lg', type="submit"),
-                align="center",
             ),
         )
 
@@ -139,13 +155,14 @@ class PeriodoEncuestaForm(forms.ModelForm):
         model = PeriodoEncuesta
         fields = '__all__'
 
+        help_texts = {
+            'activo': u"Marque si se lo permite, en caso contrario, utilice la opcion de cambio de periodo"
+        }
+
     def __init__(self, *args, **kwargs):
         super(PeriodoEncuestaForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_id = "PeriodoEncuestaForm"
-        self.helper._form_method = "POST"
-        self.helper._form_action = "."
-        self.helper.add_input(Submit('submit', 'Guardar', css_class='btn btn-warning btn-lg'))
+        self.helper.form_tag = False
 
 
 class CorreoUniversoEncuestaForm(forms.ModelForm):
@@ -163,33 +180,90 @@ class CorreoUniversoEncuestaForm(forms.ModelForm):
 
 
 class ConfigurarUniversoPersonaForm(forms.Form):
-    pe = Contrato.objects.all()
+    pe = Persona.objects.all()
     persona = forms.ModelChoiceField(
         queryset=pe,
-        label="Persona"
+        label="Evaluador"
     )
     evaluados = forms.ModelMultipleChoiceField(
         queryset=pe,
-        label="Evaluados",
+        label="Evaluados"
     )
     tipo_encuesta = forms.ModelChoiceField(
-        queryset=TipoUniversoEncuesta.objects.all()
+        queryset=TipoUniversoEncuesta.objects.all(),
+        label="Tipo de Universo de Encuesta"
     )
     periodo = forms.ModelChoiceField(
-        queryset=PeriodoEncuesta.objects.all()
+        queryset=PeriodoEncuesta.objects.all(),
+        label="Periodo de Encuesta"
     )
 
     def __init__(self, *args, **kwargs):
         super(ConfigurarUniversoPersonaForm, self).__init__(*args, **kwargs)
-        self.fields['persona'].widget.attrs = {"class": "select"}
-        self.fields['evaluados'].widget.attrs = {"class": "multiselect"}
-        self.fields['periodo'].widget.attrs = {"class": "select"}
-        self.fields['tipo_encuesta'].widget.attrs = {"class": "select"}
+        self.fields['persona'].widget.attrs['class'] = 'select2'
+        self.fields['evaluados'].widget.attrs['class'] = 'select2'
+        self.fields['periodo'].widget.attrs['class'] = 'select2'
+        self.fields['tipo_encuesta'].widget.attrs['class'] = 'select2'
         self.helper = FormHelper()
-        self.helper.form_id = "configurarUniversoPersonaForm"
-        self.helper._form_method = "POST"
-        self.helper._form_action = "."
-        self.helper.add_input(Submit('submit', 'Guardar', css_class='btn btn-warning btn-lg'))
+        self.helper.form_tag = False
+        # self.helper.form_id = "configurarUniversoPersonaForm"
+        # self.helper._form_method = "POST"
+        # self.helper._form_action = "."
+        # self.helper.add_input(Submit('submit', 'Guardar', css_class='btn btn-success'))
+        self.helper.layout = Layout(
+            Div(
+                Div(
+                    Div(
+                        Field('persona'),
+                        css_class='col-md-6'
+                    ),
+                    Div(
+                        Field('periodo'),
+                        css_class='col-md-6'
+                    ),
+                    css_class="row"
+                ),
+                Div(
+                    Div(
+                        Field('evaluados'),
+                        css_class='col-md-6'
+                    ),
+                    Div(
+                        Field('tipo_encuesta'),
+                        css_class='col-md-6'
+                    ),
+                    css_class="row"
+                )
+            )
+        )
+
+
+class ImportarConfiguracionUniversoPersonaForm(forms.Form):
+    file = forms.FileField(
+        label="Subir archivo de configuración",
+        help_text="*Se admiten archivos XLS, XLSX (ver plantilla)"
+    )
+    periodo_encuesta = forms.ModelChoiceField(
+        queryset=PeriodoEncuesta.objects.all(),
+        label="Periodo de Encuesta"
+    )
+    tipo_universo_encuesta = forms.ModelChoiceField(
+        queryset=TipoUniversoEncuesta.objects.all(),
+        label="Tipo de Universo de Encuesta"
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(ImportarConfiguracionUniversoPersonaForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Div(
+                Div(Field('file'), css_class='col-md-4'),
+                Div(Field('periodo_encuesta'), css_class='col-md-4'),
+                Div(Field('tipo_universo_encuesta'), css_class='col-md-4'),
+                css_class="row"
+            )
+        )
 
 
 class MailEncuestaUniversoForm(forms.Form):

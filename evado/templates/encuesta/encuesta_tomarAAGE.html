@@ -1,4 +1,4 @@
-{% extends 'encuesta/base.html' %}
+{% extends 'base/base.html' %}
 {% load encuesta_extras crispy_forms_tags %}
 
 {% block title_page %}
@@ -46,10 +46,14 @@
     </style>
 {% endblock %}
 
+{% block title %}
+    <p></p>
+{% endblock %}
+
 {% block content %}
     {% with aplicar_encuesta.universo_encuesta.encuesta as encuesta  %}
         <div class="page-header" style="margin-top: 0">
-            <h3> <strong>Encuesta:</strong> {{ encuesta.titulo }}
+            <h3> {{ encuesta.titulo }}
                 <small>
                     {% if aplicar_encuesta.universo_encuesta.tipo_encuesta.codigo == "EN0001" %}
                         ( {{ aplicar_encuesta.nombre }} )
@@ -84,10 +88,10 @@
             {% if aplicar_encuesta.universo_encuesta.tipo_encuesta.codigo == "EN0000" %}
                 <!-- si es autoevaluacion -->
                 {% for categoria in preguntas %}
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            <h3 class="panel-title" align="center"> {{ categoria.grouper|upper }} </h3> </div>
-                        <div class="panel-body">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title" align="center"> {{ categoria.grouper|upper }} </h3> </div>
+                        <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-hover table-bordered table-striped">
                                     <thead>
@@ -155,16 +159,16 @@
                 {% endfor %}
 
             {% else %}
-<!-- aqui puede ir el id="titulo-pregunta" -->
-                <div class="panel panel-primary" id="categoria">
-                    <div class="panel-heading">
-                        <h3 class="panel-title" align="center">{{ pregunta.categoria|upper }}
-                            <span id="respondido" class="pull-right"></span>
+                <!-- aqui puede ir el id="titulo-pregunta" -->
+                <div class="card" id="categoria">
+                    <div class="card-header">
+                        <h3 align="center">{{ pregunta.categoria|upper }}
+                            <span id="respondido" class="font-18 float-right"></span>
                         </h3>
                     </div>
 
                     <!-- recorriendo preguntas dentro de categoria -->
-                    <div class="panel-body">
+                    <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-hover table-bordered table-striped">
                                 <thead>
@@ -239,12 +243,12 @@
                                             {% elif aencuesta.universo_encuesta.tipo_encuesta.codigo == "EN0002"  %}
                                                 <!-- si es encuesta personalizada -->
                                                 <td>
-                                                    <input type="hidden" value="{{ aencuesta.config_universo_persona.evaluado.rut }}">
-                                                    {{ aencuesta.config_universo_persona.evaluado.nombres }} {{ aencuesta.config_universo_persona.evaluado.apellidos }}
+                                                    <input type="hidden" value="{{ aencuesta.evaluado.rut }}">
+                                                    {{ aencuesta.evaluado.get_full_name }}
                                                 </td>
 
                                                 <!-- inicio preguntas -->
-                                                {% include "encuesta/respuestas_template_part.html" with item=pregunta codigo_evaluado=aencuesta.config_universo_persona.evaluado.rut aencuesta=aencuesta respuestas_encuesta=respuestas_encuesta only %}
+                                                {% include "encuesta/respuestas_template_part.html" with item=pregunta codigo_evaluado=aencuesta.evaluado.rut aencuesta=aencuesta respuestas_encuesta=respuestas_encuesta only %}
                                                 <!-- fin preguntas -->
 
                                             {% elif aencuesta.universo_encuesta.tipo_encuesta.codigo == "EN0003" %}

@@ -1,18 +1,48 @@
 {% extends 'encuesta/object_list.html' %}
 
 {% block title_page %}
-    Periodos
+    Periodos de Encuestas
 {% endblock %}
 
-{% block title_panel %}
-    <strong> Periodos </strong> <span class="badge"> {{ total_objects }} </span>
-    <a href="{% url 'periodo_create' %}" class="btn btn-sm btn-success pull-right"> <span class="glyphicon glyphicon-plus"></span> Nuevo</a>
+{% block title %}
+    Periodos de Encuestas
 {% endblock %}
 
-{% block alert_empty_message %}
-No se encontraron periodos registrados..
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item active">Administración de Periodos de Encuestas</li>
 {% endblock %}
 
-{% block  placeholder_buscar %}
-Buscar Periodo...
+{% block subtitle %}
+    Tabla para configuración de Periodos de Encuestas
+{% endblock %}
+
+{% block create_button %}
+    <a class="btn btn-sm btn-outline-primary float-right" href="{% url 'evado:periodo_create'%}" role="button">
+        <span><i class="uil-plus"></i> Crear Periodo de Encuestas</span>
+    </a>
+{% endblock %}
+
+{% block table_list %}
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th><i class="uil uil-user-exclamation"></i> Nombre </th>
+            <th><i class="uil uil-check-circle"></i> Activo </th>
+            <th><i class="mdi mdi-cogs"></i> Opciones </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for o in object_list %}
+            <tr>
+                <td><a href="{% url 'evado:periodo_detail' pk=o.pk %}"> {{ o.nombre }} </a></td>
+                <td> {% if o.activo %}<i class="text-success uil-check-circle"></i>{% endif %} {{ o.activo|yesno }} </td>
+                <td>
+                    <a class="btn btn-outline-primary" href="{% url 'evado:periodo_update' o.pk %}"
+                       data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

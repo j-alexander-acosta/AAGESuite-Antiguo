@@ -803,7 +803,7 @@ Profesor - Detalle
                     <td>{{ object.total_horas_detalle_profesor|hhmm }}</td>
                 </tr>
                 <tr align="center">
-                    {% if object.asignacion_periodo_anterior %}
+                    {% if object.asignacion_periodo_anterior is not None %}
                     <td><strong>{{ object.asignacion_periodo_anterior.colegio.periode }}</strong></td>
                     <td>{{ object.asignacion_periodo_anterior.total_sep2|hhmm }}</td>
                     <td>{{ object.asignacion_periodo_anterior.total_pie2|hhmm }}</td>

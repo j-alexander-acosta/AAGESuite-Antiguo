@@ -33,6 +33,17 @@ class EntidadAdmin(admin.ModelAdmin):
     list_filter = ['dependiente']
 
 
+@admin.register(entidad.DetalleColegio)
+class DetalleColegioAdmin(admin.ModelAdmin):
+    list_display = (
+        'colegio',
+        'rbd',
+        'tipo_subvencion'
+    )
+    search_fields = ['colegio__nombre', 'rbd', 'direccion']
+    list_filter = ['tipo_subvencion', 'tipo_jornada', 'colegio__dependiente']
+
+
 @admin.register(entidad.Vacacion)
 class VacacionAdmin(admin.ModelAdmin):
     list_display = (
