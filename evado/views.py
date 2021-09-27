@@ -17,8 +17,9 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import Context
 from django.template.loader import get_template
+from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views.generic.edit import ModelFormMixin
 from extra_views import InlineFormSetView
 from jsonview.decorators import json_view
@@ -41,10 +42,14 @@ def home(request):
     context['encuestas_rendidas'] = auep.filter(finalizado__gte=two_days_before).order_by('-finalizado') if auep.exists() else None
 
     encuestas_finalizadas = []
+    total_encuestas_finalizadas = 0
     for encuesta in encuestas_habilitadas:
-        for enc in encuesta.aplicaruniversoencuestapersona_set.all().exclude(finalizado__isnull=True):
+        aueps = encuesta.aplicaruniversoencuestapersona_set.all().exclude(finalizado__isnull=True)
+        total_encuestas_finalizadas += aueps.distinct('persona').count()
+        for enc in aueps:
             encuestas_finalizadas.append(enc)
     context['encuestas_finalizadas'] = encuestas_finalizadas
+    context['total_encuestas_finalizadas'] = total_encuestas_finalizadas
     return render(request, 'encuesta/home.html', context)
 
 
@@ -135,7 +140,57 @@ class PreguntaEncuestaListView(LoginRequired, SearchableListMixin, ListView):
     search_fields = [('pregunta', 'icontains',)]
 
 
-class UniverEncuestaListView(LoginRequired, ListView):
+class TipoUniversoEncuestaListView(LoginRequired, ListView):
+    model = TipoUniversoEncuesta
+    template_name = 'encuesta/tipo_universo_encuesta/tipo_universo_encuesta_list.html'
+    search_fields = ['nombre']
+    paginate_by = 10
+
+
+class TipoUniversoEncuestaDetailView(LoginRequired, DetailView):
+    model = TipoUniversoEncuesta
+    template_name = 'encuesta/tipo_universo_encuesta/tipo_universo_encuesta_detail.html'
+
+
+class TipoUniversoEncuestaCreateView(LoginRequired, CreateView):
+    model = TipoUniversoEncuesta
+    form_class = TipoUniversoEncuestaForm
+    template_name = 'encuesta/tipo_universo_encuesta/tipo_universo_encuesta_create.html'
+    success_url = reverse_lazy('evado:tipo_universo_encuesta_list')
+
+    # def get_success_url(self):
+    #     return reverse_lazy(
+    #         'evado:tipo_universo_encuesta_detail',
+    #         kwargs={
+    #             'pk': self.object.pk,
+    #         }
+    #     )
+
+
+class TipoUniversoEncuestaUpdateView(LoginRequired, UpdateView):
+    model = TipoUniversoEncuesta
+    form_class = TipoUniversoEncuestaForm
+    template_name = 'encuesta/tipo_universo_encuesta/tipo_universo_encuesta_create.html'
+    success_url = reverse_lazy('evado:tipo_universo_encuesta_list')
+
+    # def get_success_url(self):
+    #     return reverse_lazy(
+    #         'evado:tipo_universo_encuesta_detail',
+    #         kwargs={
+    #             'pk': self.object.pk,
+    #         }
+    #     )
+
+
+class TipoUniversoEncuestaDeleteView(LoginRequired, DeleteView):
+    model = TipoUniversoEncuesta
+    success_url = reverse_lazy('evado:tipo_universo_encuesta_list')
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+
+class UniversoEncuestaListView(LoginRequired, ListView):
     model = UniversoEncuesta
     template_name = 'encuesta/universo_encuesta_list.html'
     search_fields = [('encuesta__titulo', 'icontains')]
@@ -302,10 +357,19 @@ def guardar_respuestas(request, encuesta_aplicada, dic):
     return guardada
 
 
+def redirect_url_tomar_encuesta(hash, page):
+    # base_url = reverse('evado:tomar_encuesta', kwargs={"hash": hash})  # 1 /products/
+    base_url = reverse('evado:tomar_encuesta', args=[hash])  # 1 /products/
+    url = '{}?page={}#categoria'.format(base_url, page)  # 3 /products/?category=42
+    return url
+    # return redirect('tomar_encuesta', hash)
+
+
 def tomar_encuesta(request, hash):
     context = {}
     aeu = get_object_or_404(AplicarUniversoEncuestaPersona, hash=hash)
-    page = int(request.GET.get('page', 0))
+    request_page = request.GET.get('page')
+    page = int(request_page) if request_page else 0
     # update
     todas_aeu_para_una_persona = AplicarUniversoEncuestaPersona.objects.filter(
         persona=aeu.persona,
@@ -375,17 +439,25 @@ def tomar_encuesta(request, hash):
         #     messages.add_message(request, messages.ERROR,
         #                          "No se pudo enviar la encuesta, asegurese de responder a todas las preguntas.")
 
-        base_url = reverse('evado:tomar_encuesta', kwargs={"hash": hash})  # 1 /products/
-        url = '{}?page={}#categoria'.format(base_url, new_page)  # 3 /products/?category=42
-        return redirect(url)  # 4
-        # return redirect('tomar_encuesta', hash)
+        redirect_url = redirect_url_tomar_encuesta(hash, new_page)
+        return redirect(redirect_url)
 
     else:
         preguntas = aeu.universo_encuesta.encuesta.obtener_preguntas_no_respuesta_directa
+        ultima_pregunta = aeu.universo_encuesta.ultima_pregunta_respondida
+        if ultima_pregunta and not request_page:
+            for index, pregunta in enumerate(preguntas):
+                if pregunta == ultima_pregunta:
+                    page = index
+
         context['pregunta'] = preguntas[page]
         context['total_preguntas'] = preguntas.count()
         context['previus'] = True if page - 1 >= 0 else False
         context['next'] = True if page + 1 < len(preguntas) else False
+
+        if not request_page:
+            redirect_url = redirect_url_tomar_encuesta(hash, page)
+            return redirect(redirect_url)
 
     context['aplicar_encuesta'] = aeu
     return render(request, 'encuesta/encuesta_tomarAAGE.html', context)
@@ -844,9 +916,6 @@ def enviar_mail_universo_encuestas(request):
 
 @login_required
 def configurar_universo_personas(request):
-    context = {
-        'periodo': PeriodoEncuesta.objects.get(activo=True),
-    }
     if request.method == 'POST':
         form = ConfigurarUniversoPersonaForm(request.POST)
         if form.is_valid():
@@ -872,10 +941,11 @@ def configurar_universo_personas(request):
             return redirect('evado:configurar_universo_personas')
     else:
         form = ConfigurarUniversoPersonaForm()
-    context['form'] = form
-    context['formImport'] = ImportarConfiguracionUniversoPersonaForm()
-    context['configuraciones_lista'] = ConfigurarEncuestaUniversoPersona.objects.order_by('persona', 'tipo_encuesta',
-                                                                                          'periodo')
+    context = {
+        'form': form,
+        'formImport': ImportarConfiguracionUniversoPersonaForm(),
+        'configuraciones': ConfigurarEncuestaUniversoPersona.objects.order_by('persona', 'tipo_encuesta', 'periodo')
+    }
     return render(request, 'encuesta/configurar_universo_personas.html', context)
 
 
@@ -914,7 +984,7 @@ def enviar_correo_personalizado(personas, universos, contenido_mail, motivo):
                                  'dominio': settings.DOMINIO_DEL_SITIO,
                                  'contenido': contenido_mail})
 
-                    subject, from_email, to = '%s' % motivo, 'docencia.encuesta@unach.cl', email
+                    subject, from_email, to = '%s' % motivo, settings.EMAIL_HOST_USER, email
                     text_content = plaintext.render(d)
                     html_content = htmly.render(d)
                     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])

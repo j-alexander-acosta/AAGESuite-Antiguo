@@ -5,7 +5,7 @@ from parsley.decorators import parsleyfy
 from django_summernote.widgets import SummernoteWidget
 from crispy_forms.bootstrap import StrictButton
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout, Field, Fieldset, Div
+from crispy_forms.layout import Submit, Layout, Field, Fieldset, Div, HTML
 
 from rrhh.models import Contrato, Persona
 from evado.models import UniversoEncuesta, Encuesta, PreguntaEncuesta, Respuesta, PeriodoEncuesta
@@ -39,7 +39,7 @@ class UniversoEncuestaForm(forms.ModelForm):
             widget=forms.widgets.DateInput(attrs={'type': 'date'}),
             input_formats=['%Y-%m-%d']
         )
-        self.fields['contenido_email'].widget.attrs = {'class': 'summernote', 'placeholder': 'Escriba aqui el mensaje...'}
+        self.fields['contenido_email'].widget.attrs = {'class': 'summernote'}
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.layout = Layout(
@@ -55,7 +55,13 @@ class UniversoEncuestaForm(forms.ModelForm):
             ),
             Fieldset(
                 'Seleccione el universo de personas',
-                Field('config_universo_persona', css_class='select2'),
+                Div(
+                    HTML(
+                        '<a href="javascript:void(0);" id="select_all" type="button" class="float-right">'
+                        '<i class="uil-check"></i> Seleccionar todo</a>'
+                    ),
+                    Field('config_universo_persona', css_class='select2')
+                ),
             ),
             # Fieldset(
             #   'Seleccionar Cursos Disponibles',
@@ -293,3 +299,14 @@ class MailEncuestaUniversoForm(forms.Form):
                 align="center",
             ),
         )
+
+
+class TipoUniversoEncuestaForm(forms.ModelForm):
+    class Meta:
+        model = TipoUniversoEncuesta
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(TipoUniversoEncuestaForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
