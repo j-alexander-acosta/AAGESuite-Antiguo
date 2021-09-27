@@ -332,7 +332,11 @@ urlpatterns = [
         views.cargar_documento_personal,
         name='personal__cargar_documento'
     ),
-
+    url(
+        r'^documento_funcionario/nuevo/$',
+        views.cargar_documento_personal,
+        name='documento_funcionario__nuevo'
+    ),
 ]
 
 # add static
