@@ -125,9 +125,10 @@ class ColegioForm(forms.ModelForm):
         label='jec', 
         required=False,
         initial=False
-     )
+    )
         fields = [
             'nombre',
+            'logo',
             'abrev',
             'fundacion',
             'direccion',

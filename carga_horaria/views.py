@@ -985,7 +985,7 @@ def profesores_directivos(request):
     # Create a workbook and add a worksheet.
     workbook = xlsxwriter.Workbook(output)
     worksheet = workbook.add_worksheet('Profesores')
-    
+
     # Some data we want to write to the worksheet.
     qs = get_for_user(request, Profesor.objects.all(), 'colegio__pk', request.user)
 

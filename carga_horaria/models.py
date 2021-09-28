@@ -147,6 +147,7 @@ class Colegio(models.Model):
                          (FREE, 'Gratuito'))
     
     nombre = models.CharField(max_length=255)
+    logo = models.FileField(null=True, blank=True, upload_to="carga_horaria/colegio/logos/", verbose_name='Logo del Colegio')
     abrev = models.CharField(max_length=10, blank=True, null=True)
     fundacion = models.ForeignKey('Fundacion', on_delete=models.CASCADE, blank=True, null=True)
     direccion = models.CharField(max_length=255, blank=True, null=True)
