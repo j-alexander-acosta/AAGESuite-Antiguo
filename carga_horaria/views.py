@@ -42,6 +42,7 @@ from .forms import AssignPermForm
 from .formsDani import PlantillaPlanForm
 from django.http import FileResponse
 from . import models
+from django.db.models import Q
 
 
 @login_required
@@ -987,7 +988,13 @@ def profesores_directivos(request):
     worksheet = workbook.add_worksheet('Profesores')
 
     # Some data we want to write to the worksheet.
+    
+    # Profesor.objects.filter(
+    #     Q(cargo="3") | Q(cargo="5") | Q(cargo="6") | Q(cargo="7") | Q(cargo="9")
+    # )
+
     qs = get_for_user(request, Profesor.objects.all(), 'colegio__pk', request.user)
+
 
     # Start from the first cell. Rows and columns are zero indexed.
     row = 0

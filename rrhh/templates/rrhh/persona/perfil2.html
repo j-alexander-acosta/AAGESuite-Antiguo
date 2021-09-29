@@ -23,9 +23,9 @@
             <div class="card text-center">
                 <div class="card-body">
                     {% if object.foto %}
-                        <img src="{{ object.foto.url }}" class="rounded-circle avatar-lg img-thumbnail" alt="{{ object.username }}">
+                        <img src="{{ object.foto.url }}" class="img-thumbnail" alt="{{ object.username }}">
                     {% else %}
-                        <img src="{% static 'base/img/user.png' %}" class="rounded-circle avatar-lg img-thumbnail" alt="{{ object.username }}">
+                        <img src="{% static 'base/img/user.png' %}" class="img-thumbnail" alt="{{ object.username }}">
                     {% endif %}
 
                     <h4 class="mb-0 mt-2">{{ object.get_short_name }}</h4>

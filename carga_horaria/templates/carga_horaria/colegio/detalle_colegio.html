@@ -64,9 +64,9 @@
                     <th> Logo </th>
                     <td>
                         {% if object.logo %}
-                            <img src="{{ object.logo.url }}" class="rounded-circle avatar-lg img-thumbnail" alt="{{ object.nombre }}">
+                            <img src="{{ object.logo.url }}" class="avatar-lg img-thumbnail" alt="{{ object.nombre }}">
                         {% else %}
-                            <img src="{% static 'base/img/logotipo2.png' %}" class="rounded-circle avatar-lg img-thumbnail" alt="{{ object.nombre }}">
+                            <img src="{% static 'base/img/logotipo2.png' %}" class="avatar-lg img-thumbnail" alt="{{ object.nombre }}">
                         {% endif %}
                     </td>
                 </tr>
