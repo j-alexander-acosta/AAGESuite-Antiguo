@@ -110,31 +110,31 @@ def encuesta_eliminar_pregunta(request, pk_pregunta):
     return redirect('encuesta_detail', id_encuesta)
 
 
-class CategoriaPreguntaListView(LoginRequired, SearchableListMixin, ListView):
-    model = CategoriaPregunta
-    template_name = 'encuesta/categoria_pregunta_list.html'
-    search_fields = [('nombre', 'icontains',)]
+# class CategoriaPreguntaListView(LoginRequired, ListView):
+#     model = CategoriaPregunta
+#     template_name = 'encuesta/categoria_pregunta/categoria_pregunta_list.html'
+#     paginate_by = 10
+#
+#
+# class CategoriaPreguntaDetailView(LoginRequired, DetailView):
+#     model = CategoriaPregunta
+#     template_name = 'encuesta/categoria_pregunta_detail.html'
+#     search_fields = [('nombre', 'icontains',)]
+#
+#
+# class CategoriaPreguntaCreateView(LoginRequired, CreateView):
+#     model = CategoriaPregunta
+#     template_name = 'encuesta/categoria_pregunta_create.html'
+#     search_fields = [('nombre', 'icontains',)]
+#
+#
+# class CategoriaPreguntaUpdateView(LoginRequired, UpdateView):
+#     model = CategoriaPregunta
+#     template_name = 'encuesta/categoria_pregunta_update.html'
+#     search_fields = [('nombre', 'icontains',)]
 
 
-class CategoriaPreguntaDetailView(LoginRequired, SearchableListMixin, DetailView):
-    model = CategoriaPregunta
-    template_name = 'encuesta/categoria_pregunta_detail.html'
-    search_fields = [('nombre', 'icontains',)]
-
-
-class CategoriaPreguntaCreateView(LoginRequired, SearchableListMixin, CreateView):
-    model = CategoriaPregunta
-    template_name = 'encuesta/categoria_pregunta_create.html'
-    search_fields = [('nombre', 'icontains',)]
-
-
-class CategoriaPreguntaUpdateView(LoginRequired, SearchableListMixin, UpdateView):
-    model = CategoriaPregunta
-    template_name = 'encuesta/categoria_pregunta_update.html'
-    search_fields = [('nombre', 'icontains',)]
-
-
-class PreguntaEncuestaListView(LoginRequired, SearchableListMixin, ListView):
+class PreguntaEncuestaListView(LoginRequired, ListView):
     model = PreguntaEncuesta
     template_name = 'encuesta/pregunta_encuesta_list.html'
     search_fields = [('pregunta', 'icontains',)]
@@ -252,11 +252,11 @@ class UniversoEncuestaCreateView(LoginRequired, CreateView):
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.save()
-        for config_universo in form.cleaned_data['config_universo_persona']:
-            self.object.config_universo_persona.add(config_universo)
+        for evaluador in form.cleaned_data['evaluadores']:
+            self.object.evaluadores.add(evaluador)
             pue = PersonaUniversoEncuesta()
             pue.universo_encuesta = self.object
-            pue.persona = config_universo.persona
+            pue.persona = evaluador
             pue.save()
 
         # Generando encuestas para el universo
@@ -374,7 +374,8 @@ def tomar_encuesta(request, hash):
     todas_aeu_para_una_persona = AplicarUniversoEncuestaPersona.objects.filter(
         persona=aeu.persona,
         universo_encuesta=aeu.universo_encuesta
-    )
+    ).order_by('tipo_encuesta__codigo')
+
     context.update({'todas_las_encuestas': todas_aeu_para_una_persona})
 
     if datetime.datetime.now().date() > aeu.universo_encuesta.fin:
@@ -699,7 +700,7 @@ def enviar_todas_encuestas(request, id_universo):
     universo = get_object_or_404(UniversoEncuesta, pk=id_universo)
 
     conexion = mail.get_connection()
-    for x in universo.personas.all():
+    for x in universo.evaluadores.all():
         try:
             enviar_encuesta(request, x.id, id_universo, unica=False, conexion=conexion)
         except:
@@ -708,8 +709,8 @@ def enviar_todas_encuestas(request, id_universo):
 
     universo.correos_enviados = timezone.now()
     universo.save()
-    messages.add_message(request, messages.SUCCESS, "Correos Enviados!")
-    return redirect('universo_encuesta_detail', universo.id)
+    messages.add_message(request, messages.SUCCESS, "Correos Enviados!", 'success')
+    return redirect('evado:universo_encuesta_detail', universo.id)
 
 
 @login_required
@@ -996,18 +997,18 @@ def enviar_correo_personalizado(personas, universos, contenido_mail, motivo):
 
 @login_required
 def eliminar_configurar_universo_personas(request, pk):
-    persona = get_object_or_404(Persona, id=pk)
-    ConfigurarEncuestaUniversoPersona.objects.filter(persona=persona).delete()
+    confi = get_object_or_404(ConfigurarEncuestaUniversoPersona, pk=pk)
     messages.add_message(request, messages.INFO,
-                         'Configuracion de persona (%s) eliminada satisfactoriamente.' % persona)
-    return redirect('configurar_universo_personas')
+                         'Configuracion de persona (%s) eliminada satisfactoriamente.' % confi.persona, 'success')
+    confi.delete()
+    return redirect('evado:configurar_universo_personas')
 
 
 def eliminar_todos_eup(request):
     # persona = get_object_or_404(Persona)
     # ConfigurarEncuestaUniversoPersona.objects.filter(pk__in=[i.pk for i in persona]).delete()
     ConfigurarEncuestaUniversoPersona.objects.all().delete()
-    messages.add_message(request, messages.INFO, 'Configuraciones de personas eliminadas satisfactoriamente')
+    messages.add_message(request, messages.INFO, 'Configuraciones de personas eliminadas satisfactoriamente', 'success')
     return redirect('configurar_universo_personas')
 
 
@@ -1101,7 +1102,6 @@ def import_eup_xls(request):
     :return: HTML
     """
     form = ImportarConfiguracionUniversoPersonaForm(request.POST, request.FILES)
-    print(form.is_valid())
     excel_file = form.cleaned_data.get('file')
     periodo = form.cleaned_data.get('periodo_encuesta', None)
     tipo_encuesta = form.cleaned_data.get('tipo_universo_encuesta', None)

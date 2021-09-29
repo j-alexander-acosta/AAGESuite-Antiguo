@@ -15,6 +15,7 @@ class EntidadForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(EntidadForm, self).__init__(*args, **kwargs)
+        self.fields['direccion'].widget.attrs['required'] = True
         self.fields['dependiente'].widget.attrs['required'] = True
         self.helper = FormHelper()
         self.helper.form_tag = False

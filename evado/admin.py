@@ -258,7 +258,7 @@ class UniversoEncuestaAdmin(admin.ModelAdmin):
     )
     list_filter = [
         'encuesta',
-        'config_universo_persona',
+        'evaluadores',
         'inicio',
         'fin',
         'tipo_encuesta',

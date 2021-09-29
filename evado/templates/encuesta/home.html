@@ -255,7 +255,7 @@
                             {% for x in encuestas_rendidas %}
                                 <tr>
                                     <td>
-                                        <h5 class="font-14 my-1"><a href="javascript:void(0);" class="text-body">{{ x.universo_encuesta.encuesta.titulo }}</a></h5>
+                                        <h5 class="font-14 my-1"><a href="javascript:void(0);" class="text-body">{{ x.universo_encuesta.encuesta.titulo }} ({{ x.tipo_encuesta }})</a></h5>
                                         <span class="text-muted font-13"><em> {{ x.universo_encuesta.periodo_activo }}</em></span>
                                     </td>
                                     <td>

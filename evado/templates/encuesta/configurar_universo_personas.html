@@ -59,8 +59,8 @@
                         {#                        <input type="file" id="file" name="file">#}
                         {#                        <p class="small"><small>*Se admiten archivos XLS, XLSX (ver plantilla)</small></p>#}
                         <button class="btn btn-success" type="submit">Importar</button>
-                        <a class="btn btn-primary" href="{% url 'evado:export_eup_xls' %}">Exportar Configuración</a>
                         <a class="btn btn-info" href="{% static 'evado/plantilla_evaluadores.xlsx' %}" download>Descargar Plantilla</a>
+                        <a class="btn btn-primary" href="{% url 'evado:export_eup_xls' %}">Exportar Configuración</a>
                     </form>
                 </div>
             </div>
@@ -106,7 +106,7 @@
                                         </ul>
                                     </td>
                                     <td>
-                                        <a href="{% url 'evado:eliminar_configurar_universo_personas' x.list.0.persona.id %}" class="btn btn-danger btn-xs">
+                                        <a href="{% url 'evado:eliminar_configurar_universo_personas' p.list.0.id %}" class="btn btn-danger btn-xs">
                                             <span class="uil-trash-alt"> </span>
                                         </a>
                                     </td>
