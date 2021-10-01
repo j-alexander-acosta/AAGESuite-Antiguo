@@ -815,7 +815,7 @@ Profesor - Detalle
                     <td>{{ object.horas_sbvg_total|diferencia:object.asignacion_periodo_anterior.horas_sbvg_total }}</td>
                     <td>{{ object.total_sep|diferencia:object.asignacion_periodo_anterior.total_sep }}</td>
                     <td>{{ object.total_pie|diferencia:object.asignacion_periodo_anterior.total_pie }}</td>
-                    <td>{{ object.total_horas_detalle_profesor|diferencia:object.asignacion_periodo_anterior.total_horas_detalle_profesor }}</td>
+                    <td>{{ object.total_horas_detalle_profesor|diferencia:object.asignacion_periodo_anterior.total_horas_detalle_profesor    }}</td>
                     <td></td>
                     {% else %} <td>No hay datos</td>
                     {% endif %}
