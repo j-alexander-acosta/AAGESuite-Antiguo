@@ -797,24 +797,24 @@ Profesor - Detalle
                 </tr>
                 <tr align="center">
                     <td><strong>{{ object.colegio.periode }}</strong></td>
+                    <td>{{ object.horas_sbvg_total|hhmm }}</td>
                     <td>{{ object.total_sep|hhmm }}</td>
                     <td>{{ object.total_pie|hhmm }}</td>
-                    <td>{{ object.horas_sbvg_total|hhmm }}</td>
                     <td>{{ object.total_horas_detalle_profesor|hhmm }}</td>
                 </tr>
                 <tr align="center">
                     {% if object.asignacion_periodo_anterior is not None %}
                     <td><strong>{{ object.asignacion_periodo_anterior.colegio.periode }}</strong></td>
+                    <td>{{ object.asignacion_periodo_anterior.horas_sbvg_total|hhmm }}</td>
                     <td>{{ object.asignacion_periodo_anterior.total_sep|hhmm }}</td>
                     <td>{{ object.asignacion_periodo_anterior.total_pie|hhmm }}</td>
-                    <td>{{ object.asignacion_periodo_anterior.horas_sbvg_total|hhmm }}</td>
                     <td>{{ object.asignacion_periodo_anterior.total_horas_detalle_profesor|hhmm }}</td>
                 </tr>
                 <tr align="center">
                     <td><strong>Diferencia</strong></td>
+                    <td>{{ object.horas_sbvg_total|diferencia:object.asignacion_periodo_anterior.horas_sbvg_total|hhmm }}</td>
                     <td>{{ object.total_sep|diferencia:object.asignacion_periodo_anterior.total_sep|hhmm }}</td>
                     <td>{{ object.total_pie|diferencia:object.asignacion_periodo_anterior.total_pie|hhmm }}</td>
-                    <td>{{ object.horas_sbvg_total|diferencia:object.asignacion_periodo_anterior.horas_sbvg_total|hhmm }}</td>
                     <td>{{ object.total_horas_detalle_profesor|diferencia:object.asignacion_periodo_anterior.total_horas_detalle_profesor|hhmm }}</td>
                     <td></td>
                     {% else %} <td>No hay datos</td>
