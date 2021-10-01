@@ -792,7 +792,7 @@ Profesor - Detalle
                     <td><strong></strong</td>
                     <td><strong>S.E.P.</strong></td>
                     <td><strong>P.I.E.</strong></td>
-                    <td><strong>S.G.</strong></td>
+                    <td><strong>S.B.V.G.</strong></td>
                     <td><strong>TOTAL</strong></td>
                 </tr>
                 <tr align="center">
@@ -817,7 +817,7 @@ Profesor - Detalle
                     <td>{{ object.horas_sbvg_total|diferencia:object.asignacion_periodo_anterior.horas_sbvg_total|hhmm }}</td>
                     <td>{{ object.total_horas_detalle_profesor|diferencia:object.asignacion_periodo_anterior.total_horas_detalle_profesor|hhmm }}</td>
                     <td></td>
-                    {% else %} <td>No hay datos del profesor en el año anterior</td>
+                    {% else %} <td>No hay datos</td>
                     {% endif %}
                 </tr>
             </table>
