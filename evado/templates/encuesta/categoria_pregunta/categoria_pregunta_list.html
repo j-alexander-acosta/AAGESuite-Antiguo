@@ -1,0 +1,58 @@
+{% extends 'base/base.html' %}
+{% load staticfiles bootstrap_pagination %}
+
+{% block title_page %}
+    Categorias de Preguntas
+{% endblock %}
+
+{% block title %}
+    Categorias de Preguntas
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'evado:home_evado' %}">Evaluación Docente</a></li>
+    <li class="breadcrumb-item active">Categorias de Preguntas</li>
+{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h5>Tabla para configuración de Categorias de Preguntas
+                <a class="btn btn-sm btn-outline-primary float-right" href="{% url 'evado:categoria_pregunta_create'%}" role="button">
+                    <span><i class="uil-plus"></i> Crear Categoria de Pregunta</span>
+                </a>
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th><i class="uil uil-user-exclamation"></i> Nombre </th>
+                        <th><i class="mdi mdi-cogs"></i> Opciones </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for f in object_list %}
+                        <tr>
+                            <td> {{ f.nombre }} </td>
+                            <td>
+                                <a class="btn btn-outline-primary" href="{% url 'evado:categoria_pregunta_edit' f.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <div>
+                {% bootstrap_paginate page_obj range=5 %}
+            </div>
+        </div>
+
+    </div>
+
+{% endblock content  %}

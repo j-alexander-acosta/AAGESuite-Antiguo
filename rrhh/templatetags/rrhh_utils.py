@@ -14,3 +14,8 @@ def beauty_none(value):
 @register.filter
 def start_with(value, arg):
     return value.startswith(arg)
+
+
+@register.filter
+def get_word(value, arg):
+    return value.split(' ')[int(arg) - 1]

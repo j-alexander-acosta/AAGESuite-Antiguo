@@ -1,30 +1,35 @@
 {% extends 'base/base.html' %}
+{% load crispy_forms_filters %}
 {% load staticfiles crispy_forms_tags %}
 
 {% block title_page %}
-    Universo de Encuestas - {% if object %}Editar{% else %}Crear{% endif %}
+    Tipo de Respuesta - {% if object %}Editar{% else %}Crear{% endif %}
 {% endblock %}
 
 {% block title %}
-    Crear Universo de Encuestas <small> {% now "D d M Y" %} </small>
+    {% if object %}Editar{% else %}Crear{% endif %} Tipo de Rsspuesta
 {% endblock %}
 
 {% block breadcrumb %}
     <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
     <li class="breadcrumb-item"><a href="{% url 'evado:home_evado' %}">Evaluación Docente</a></li>
-    <li class="breadcrumb-item"><a href="{% url 'evado:universo_encuesta_list' %}">Universos de Encuestas</a></li>
-    <li class="breadcrumb-item active">{% if object %}Editar{% else %}Crear{% endif %} Universo de Encuestas</li>
+    <li class="breadcrumb-item"><a href="{% url 'evado:tipo_respuesta_list' %}">Tipos de Respuestas</a></li>
+    <li class="breadcrumb-item active">{% if object %}Editar{% else %}Crear{% endif %} Tipo de Respuesta</li>
 {% endblock %}
 
 {% block content %}
     <div class="card">
         <div class="card-header">
-            <h5>Datos de Universo de Encuestas</h5>
+            <h5>Datos de Tipo de Respuesta</h5>
         </div>
         <div class="card-body">
-            <form class="form-horizontal text-" method="post" novalidate>
+            <form class="form-horizontal" method="post">
                 {% csrf_token %}
                 {% crispy form %}
+                {% for formset in inlines %}
+                    {% crispy formset formset.form.helper %}
+{#                    {{ formset }}#}
+                {% endfor %}
                 <div class="form-group">
                     <div class="col-sm-10 col-sm-offset-2">
                         <button type="submit" class="btn btn-outline-success">Guardar</button>
@@ -37,20 +42,4 @@
             </form>
         </div>
     </div>
-{% endblock %}
-
-{% block extra_js %}
-    <script>
-        $(function() {
-            $('.summernote').summernote({
-                placeholder: 'Escriba aquí lo que quiere decir...',
-                tabsize: 2,
-                height: 180
-            });
-            $(document).on("click", "#select_all", function(){
-                $("#id_evaluadores > option").prop("selected","selected");
-                $("#id_evaluadores").trigger("change");
-            });
-        });
-    </script>
 {% endblock %}

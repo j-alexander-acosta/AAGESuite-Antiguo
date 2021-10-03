@@ -28,9 +28,12 @@ urlpatterns = [
     url(r'^encuesta/correo/<pk>/actualizar/$', views.CorreoUniversoEncuestaUpdateView.as_view(), name='correo_universo_update'),
     # Categorias
     url(r'^encuestas/preguntas/categorias/$', views.CategoriaPreguntaListView.as_view(), name='categoria_pregunta_list'),
-    url(r'^encuestas/preguntas/categoria/<pk>/$', views.CategoriaPreguntaDetailView.as_view(), name='categoria_pregunta_detail'),
-    url(r'^encuestas/preguntas/categoria/<pk>/actualizar/$', views.CategoriaPreguntaUpdateView.as_view(), name='categoria_pregunta_update'),
+    url(r'^encuestas/preguntas/categoria/(?P<pk>\d+)/actualizar/$', views.CategoriaPreguntaUpdateView.as_view(), name='categoria_pregunta_edit'),
     url(r'^encuestas/preguntas/categoria/nueva/$', views.CategoriaPreguntaCreateView.as_view(), name='categoria_pregunta_create'),
+    # Tipos de respuestas
+    url(r'^encuestas/tipos_respuestas/$', views.TipoRespuestaListView.as_view(), name='tipo_respuesta_list'),
+    url(r'^encuestas/tipos_respuestas/(?P<pk>\d+)/actualizar/$', views.TipoRespuestaUpdateView.as_view(), name='tipo_respuesta_edit'),
+    url(r'^encuestas/tipos_respuestas/nueva/$', views.TipoRespuestaCreateView.as_view(), name='tipo_respuesta_create'),
     # Preguntas
     url(r'^encuestas/preguntas/$', views.PreguntaEncuestaListView.as_view(), name='pregunta_encuesta_list'),
     url(r'^encuestas/pregunta/<pk>/$', views.PreguntaEncuestaListView.as_view(), name='pregunta_encuesta_detail'),

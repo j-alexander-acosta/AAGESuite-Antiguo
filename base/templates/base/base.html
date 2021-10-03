@@ -13,8 +13,6 @@
         {% block title_page %}
             {% if request.path|start_with:"/carga/" %}
                 Carga Horaria
-            {% elif request.path|start_with:"/rrhh/" %}
-                Recursos Humanos
             {% else %}
                 Suite AAGE
             {% endif %}
@@ -68,7 +66,7 @@
 {#                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">#}
 {#                                            <span aria-hidden="true">&times;</span>#}
 {#                                        </button>#}
-{#                                        <strong>{{ message.extra_tags|title }} - </strong> {{ message.message }}#}
+{#                                        <strong>{{ message.level }} - </strong> {{ message.tags|get_word:'1' }}#}
 {#                                    </div>#}
 {#                                {% endfor %}#}
 {#                            {% endif %}#}
@@ -122,9 +120,12 @@
     {% endcomment %}
 
 <script>
-    $(function() {
+    $(function(i) {
         $('.chosen').chosen(
             {width: '100%'});
+        {% if not request.path|start_with:"/carga/" %}
+            $('select').select2();
+        {% endif %}
 
         $('[data-toggle="tooltip"]').tooltip();
 
@@ -134,20 +135,34 @@
         });
 
         {% block datepicker %}
-            $('.datepicker').pickadate({
+            /* $('.datepicker').pickadate({
                 formatSubmit: 'dd/mm/yyyy',
                 format: 'dd/mm/yyyy',
                 selectMonths: true,
                 hiddenName: true,
                 selectYears: true
-            });
+            }); */
         {% endblock %}
-        alertify.set('notifier','position', 'top-right');
+        {#alertify.set('notifier','position', 'top-right');#}
 
         {% if messages %}
             {% for message in messages %}
-                // todo Intentar update de toastr para la muestra de las notificaciones
-                mostrarNotificacionGrowl('{{ message|safe }}', '{{ message.tags }}');
+                i.NotificationApp.send(
+                    {% if message.tags|get_word:'1' == 'info' %}
+                        "Información",
+                    {% elif message.tags|get_word:'1' == 'success' %}
+                        "Bien hecho",
+                    {% elif message.tags|get_word:'1' == 'warning' %}
+                        "Tenga cuidado",
+                    {% elif message.tags|get_word:'1' == 'error' %}
+                        "Algo ha salido mal",
+                    {% endif %}
+                    "{{ message.message|safe }}",
+                    "top-right",
+                    "rgba(0,0,0,0.2)",
+                    "{{ message.tags|get_word:'1' }}"
+                )
+                {#mostrarNotificacionGrowl('{{ message|safe }}', '{{ message.tags }}');#}
             {% endfor %}
         {% endif %}
     });

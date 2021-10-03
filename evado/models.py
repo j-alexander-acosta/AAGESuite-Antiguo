@@ -30,9 +30,13 @@ class InfoPersona(models.Model):
 
 
 class ConfigurarEncuestaUniversoPersona(models.Model):
+    """
+        El tipo de encuesta, en la configuración de evaluados, representa a que tipo de evaluación responde ésta
+        y sirve para el cálculo y generación de reportes
+    """
     persona = models.ForeignKey(Persona, related_name="persona", on_delete=models.CASCADE, verbose_name='Evaluador')
     evaluados = models.ManyToManyField(Persona, related_name="evaluados")
-    periodo = models.ForeignKey('PeriodoEncuesta', on_delete=models.CASCADE, null=True)
+    periodo = models.ForeignKey('PeriodoEncuesta', on_delete=models.CASCADE, null=True, verbose_name="Grupo de encuesta")
     tipo_encuesta = models.ForeignKey('TipoUniversoEncuesta', on_delete=models.CASCADE, verbose_name="Tipo de encuesta")
     creado_en = models.DateTimeField(auto_now_add=True)
     modificado_en = models.DateTimeField(auto_now=True)
@@ -170,11 +174,11 @@ class PeriodoEncuesta(models.Model):
 
     def clean(self, *args, **kwargs):
         if self.activo and PeriodoEncuesta.objects.filter(activo=True).count() > 0:
-            raise ValidationError('Ya existe un periodo activo.')
+            raise ValidationError('Ya existe un grupo activo.')
         super(PeriodoEncuesta, self).clean(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('evado:periodo_detail', kwargs={'pk': self.pk})
+        return reverse('evado:periodo_list')
 
     def __str__(self):
         return '{}'.format(
@@ -183,18 +187,16 @@ class PeriodoEncuesta(models.Model):
 
 
 class TipoUniversoEncuesta(models.Model):
-    CODIGO_NORMAL = "EN0000"
-    CODIGO_DOCENTE = "EN0001"
+    CODIGO_AUTO = "EN0000"
+    CODIGO_PARES = "EN0001"
     CODIGO_PERSONALIZADA = "EN0002"
     CODIGO_SUPERIOR = "EN0003"
-    CODIGO_DOCENTE_CURSOS = "EN004"
 
     CODIGO_CHOICES = (
-        # (CODIGO_NORMAL, "Evaluación Normal"),
-        # (CODIGO_DOCENTE, "Evaluación Docente"),
+        (CODIGO_AUTO, "Autoevaluación"),
+        (CODIGO_PARES, "Evaluación de Pares"),
         (CODIGO_PERSONALIZADA, "Evaluación Personalizada"),
-        # (CODIGO_SUPERIOR, "Evaluación desde Superiores"),
-        # (CODIGO_DOCENTE_CURSOS, "Evaluación Docente de sus cursos")
+        (CODIGO_SUPERIOR, "Evaluación desde Superiores"),
     )
 
     nombre = models.CharField(max_length=255)
@@ -205,12 +207,17 @@ class TipoUniversoEncuesta(models.Model):
 
 
 class UniversoEncuesta(models.Model):
+    """
+        El tipo de encuesta, en el Universo de encuesta,
+        representa el tipo de encuesta a desarrollar (distribucion de preguntas y evaluados)
+    """
     encuesta = models.ForeignKey("Encuesta", on_delete=models.CASCADE)
-    config_universo_persona = models.ManyToManyField("ConfigurarEncuestaUniversoPersona", verbose_name='Evaluadores')
+    evaluadores = models.ManyToManyField(Persona, verbose_name='Evaluadores')
     contenido_email = models.TextField(verbose_name="Contenido del correo electrónico")
     inicio = models.DateField()
     fin = models.DateField()
     tipo_encuesta = models.ForeignKey('TipoUniversoEncuesta', on_delete=models.CASCADE, verbose_name="Tipo de encuesta")
+    periodo = models.ForeignKey('PeriodoEncuesta', on_delete=models.CASCADE, verbose_name="Grupo de encuesta")
     activar_campo_comentario = models.BooleanField(default=False)
     creado_en = models.DateTimeField(auto_now_add=True)
     modificado_en = models.DateTimeField(auto_now=True)
@@ -226,13 +233,15 @@ class UniversoEncuesta(models.Model):
 
     @property
     def total_evaluadores(self):
-        return self.config_universo_persona.all().distinct('persona').count()
+        return self.evaluadores.all().count()
 
     @property
     def total_evaluaciones(self):
         total_evaluaciones = 0
-        for confi in self.config_universo_persona.all():
-            total_evaluaciones += confi.evaluados.all().count()
+        for evaluador in self.evaluadores.all():
+            configs = ConfigurarEncuestaUniversoPersona.objects.filter(persona=evaluador, periodo=self.periodo)
+            for confi in configs:
+                total_evaluaciones += confi.evaluados.all().count()
         return total_evaluaciones
 
     @property
@@ -250,7 +259,7 @@ class UniversoEncuesta(models.Model):
         <aues> tipo:list. Objetos AplicarUniversoEncuestaPersona.
         """
         aues = ''
-        if self.tipo_encuesta.codigo == TipoUniversoEncuesta.CODIGO_NORMAL:
+        if self.tipo_encuesta.codigo == TipoUniversoEncuesta.CODIGO_AUTO:
             aues = self.aplicar_encuesta_tipo_normal()
 
         elif self.tipo_encuesta.codigo == TipoUniversoEncuesta.CODIGO_PERSONALIZADA:
@@ -271,21 +280,40 @@ class UniversoEncuesta(models.Model):
     def aplicar_encuesta_tipo_normal(self):
         # preguntas = self.encuesta.preguntaencuesta_set.all()
         aues = []
-        for x in self.config_universo_persona.evaluados.all():
+        for x in self.evaluadores.all():
             aue, created = AplicarUniversoEncuestaPersona.objects.get_or_create(universo_encuesta=self, persona=x)
             if created:
                 aues.append(aue)
         return aues
 
     def aplicar_encuesta_tipo_personalizada(self):
-        # preguntas = self.encuesta.preguntaencuesta_set.all()
+        """
+            Esta Funcion, crea los registros para la toma de la encuesta (Aplicar Universo Encuesta Persona)
+            El Periodo es la clave para la creación de la encuesta
+            y permanencia de distintas configuraciones con el mismo evaluador.
+            así al seleccionar un evaluador (Persona),
+            solo se consideraran las configuraciones pertenecientes al periodo del Universo de Encuestas
+            y no se crearán encuestas para todas las configuraciones de este evaluador
+        :return: Diccionario de Aplicar Universo Encuesta Persona
+        """
         aues = []
-        for cup in self.config_universo_persona.all():
-            for x in cup.evaluados.all():
-                aue, created = AplicarUniversoEncuestaPersona.objects.get_or_create(universo_encuesta=self,
-                                                                                    persona=cup.persona, evaluado=x)
-                if created:
-                    aues.append(aue)
+        for evaluador in self.evaluadores.all():
+            configs = ConfigurarEncuestaUniversoPersona.objects.filter(persona=evaluador, periodo=self.periodo)
+            print(configs)
+            for cup in configs:
+                print(cup)
+                for x in cup.evaluados.all():
+                    print(cup.persona)
+                    print(x)
+                    print(cup.tipo_encuesta)
+                    aue, created = AplicarUniversoEncuestaPersona.objects.get_or_create(
+                        universo_encuesta=self,
+                        persona=cup.persona,
+                        evaluado=x,
+                        tipo_encuesta=cup.tipo_encuesta
+                    )
+                    if created:
+                        aues.append(aue)
         return aues
 
     @property
@@ -343,6 +371,7 @@ class PersonaUniversoEncuesta(models.Model):
 
 class AplicarUniversoEncuestaPersona(models.Model):
     universo_encuesta = models.ForeignKey('UniversoEncuesta', on_delete=models.CASCADE)
+    tipo_encuesta = models.ForeignKey('TipoUniversoEncuesta', on_delete=models.CASCADE, verbose_name="Tipo de encuesta")
     persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
     evaluado = models.ForeignKey(Persona, on_delete=models.CASCADE, related_name='evaluado')
     hash = models.CharField('hash', max_length=128, default=generate_hash, unique=True, null=True)
@@ -369,7 +398,7 @@ class AplicarUniversoEncuestaPersona(models.Model):
     def nombre(self):
         code = self.universo_encuesta.tipo_encuesta.codigo
         name = ""
-        if code == TipoUniversoEncuesta.CODIGO_NORMAL:
+        if code == TipoUniversoEncuesta.CODIGO_AUTO:
             name = u"%s" % self.universo_encuesta.encuesta.titulo
         elif code == TipoUniversoEncuesta.CODIGO_PERSONALIZADA:
             name = u""
