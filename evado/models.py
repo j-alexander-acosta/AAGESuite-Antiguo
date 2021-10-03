@@ -36,7 +36,7 @@ class ConfigurarEncuestaUniversoPersona(models.Model):
     """
     persona = models.ForeignKey(Persona, related_name="persona", on_delete=models.CASCADE, verbose_name='Evaluador')
     evaluados = models.ManyToManyField(Persona, related_name="evaluados")
-    periodo = models.ForeignKey('PeriodoEncuesta', on_delete=models.CASCADE, null=True)
+    periodo = models.ForeignKey('PeriodoEncuesta', on_delete=models.CASCADE, null=True, verbose_name="Grupo de encuesta")
     tipo_encuesta = models.ForeignKey('TipoUniversoEncuesta', on_delete=models.CASCADE, verbose_name="Tipo de encuesta")
     creado_en = models.DateTimeField(auto_now_add=True)
     modificado_en = models.DateTimeField(auto_now=True)
@@ -174,11 +174,11 @@ class PeriodoEncuesta(models.Model):
 
     def clean(self, *args, **kwargs):
         if self.activo and PeriodoEncuesta.objects.filter(activo=True).count() > 0:
-            raise ValidationError('Ya existe un periodo activo.')
+            raise ValidationError('Ya existe un grupo activo.')
         super(PeriodoEncuesta, self).clean(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('evado:periodo_detail', kwargs={'pk': self.pk})
+        return reverse('evado:periodo_list')
 
     def __str__(self):
         return '{}'.format(
@@ -217,7 +217,7 @@ class UniversoEncuesta(models.Model):
     inicio = models.DateField()
     fin = models.DateField()
     tipo_encuesta = models.ForeignKey('TipoUniversoEncuesta', on_delete=models.CASCADE, verbose_name="Tipo de encuesta")
-    periodo = models.ForeignKey('PeriodoEncuesta', on_delete=models.CASCADE, verbose_name="Periodo de encuesta")
+    periodo = models.ForeignKey('PeriodoEncuesta', on_delete=models.CASCADE, verbose_name="Grupo de encuesta")
     activar_campo_comentario = models.BooleanField(default=False)
     creado_en = models.DateTimeField(auto_now_add=True)
     modificado_en = models.DateTimeField(auto_now=True)
@@ -287,12 +287,25 @@ class UniversoEncuesta(models.Model):
         return aues
 
     def aplicar_encuesta_tipo_personalizada(self):
-        # preguntas = self.encuesta.preguntaencuesta_set.all()
+        """
+            Esta Funcion, crea los registros para la toma de la encuesta (Aplicar Universo Encuesta Persona)
+            El Periodo es la clave para la creación de la encuesta
+            y permanencia de distintas configuraciones con el mismo evaluador.
+            así al seleccionar un evaluador (Persona),
+            solo se consideraran las configuraciones pertenecientes al periodo del Universo de Encuestas
+            y no se crearán encuestas para todas las configuraciones de este evaluador
+        :return: Diccionario de Aplicar Universo Encuesta Persona
+        """
         aues = []
         for evaluador in self.evaluadores.all():
             configs = ConfigurarEncuestaUniversoPersona.objects.filter(persona=evaluador, periodo=self.periodo)
+            print(configs)
             for cup in configs:
+                print(cup)
                 for x in cup.evaluados.all():
+                    print(cup.persona)
+                    print(x)
+                    print(cup.tipo_encuesta)
                     aue, created = AplicarUniversoEncuestaPersona.objects.get_or_create(
                         universo_encuesta=self,
                         persona=cup.persona,

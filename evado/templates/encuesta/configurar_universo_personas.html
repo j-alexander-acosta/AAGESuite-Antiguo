@@ -40,19 +40,17 @@
 
             <div class="tab-content">
                 <div class="tab-pane" id="home-b1">
-                    <form role="Form" method="POST" action=".">
+                    <form role="Form" method="POST" action="." novalidate>
                         {% csrf_token %}
                         {#        <table class="table table-bordered table-striped">#}
                         {#            {{ form.as_table }}#}
                         {#        </table>#}
                         {% crispy form %}
-                        <div>
-                            <button type="submit" class="btn btn-success"> <span class="glyphicon glyphicon-arrow-down"></span>  Guardar </button>
-                        </div>
+                        <button type="submit" class="btn btn-success"> <span class="glyphicon glyphicon-arrow-down"></span>  Guardar </button>
                     </form>
                 </div>
                 <div class="tab-pane show active" id="profile-b1">
-                    <form action="{% url 'evado:persona_upload' %}" method="POST" enctype="multipart/form-data">
+                    <form action="{% url 'evado:persona_upload' %}" method="POST" enctype="multipart/form-data" novalidate>
                         {% csrf_token %}
                         {% crispy formImport %}
                         {#                        <label class="form-label" for="file">Subir un archivo</label>#}
@@ -94,7 +92,7 @@
                                 <tr>
                                     <td> <strong>Evaluador:</strong> {{ p.list.0.persona }} <br>
                                         <strong>Tipo de Universo de Encuesta:</strong> {{ p.list.0.tipo_encuesta }} <br>
-                                        <strong>Periodo:</strong> {{ p.grouper }}
+                                        <strong>Grupo:</strong> {{ p.grouper }}
                                     </td>
                                     <td>
                                         <ul>
@@ -129,7 +127,6 @@
             $(".volatile").animate({opacity: 1}, 400, "swing", function () {
                 $(".volatile").delay(3000).fadeOut();
             });
-            $('select').select2();
         });
     </script>
 {% endblock %}

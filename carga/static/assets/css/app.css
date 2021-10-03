@@ -3346,7 +3346,7 @@ input[type="button"].btn-block {
   .custom-file-input:disabled ~ .custom-file-label {
     background-color: #e9ecef; }
   .custom-file-input:lang(en) ~ .custom-file-label::after {
-    content: "Browse"; }
+    content: "Buscar"; }
   .custom-file-input ~ .custom-file-label[data-browse]::after {
     content: attr(data-browse); }
 
@@ -3375,7 +3375,7 @@ input[type="button"].btn-block {
     padding: 0.45rem 0.9rem;
     line-height: 1.5;
     color: #6c757d;
-    content: "Browse";
+    content: "Buscar";
     background-color: #e9ecef;
     border-left: inherit;
     border-radius: 0 0.25rem 0.25rem 0; }

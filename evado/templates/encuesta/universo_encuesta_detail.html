@@ -23,9 +23,9 @@
                     <div class="btn-group btn-group-sm float-right">
                         <a data-toggle="modal" data-target="#send_mails" class="btn btn-primary">
                             <span class="mdi mdi-email-send"></span> Enviar Correos </a>
-                        {#                        <a href="{% url 'evado:universo' object.pk %}" type="button" class="btn btn-outline-primary">#}
-                        {#                            <i class="uil-edit"></i>#}
-                        {#                        </a>#}
+                        <a href="{% url 'evado:actualizar_encuestas_universo' object.pk %}" type="button" class="btn btn-success">
+                            <i class="uil-refresh"></i> Actualizar encuestas
+                        </a>
                         {#                        <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_afp_{{object.pk}}">#}
                         {#                            <i class="uil-trash-alt"></i>#}
                         {#                        </a>#}
@@ -36,19 +36,41 @@
         </div>
 
         <div class="card-body">
-            <ul class="list-group">
-                {% for x in personas %}
-                    <li class="list-group-item">
-                        {{ x.persona }}
-                        <a href="{% url 'evado:enviar_encuesta' x.persona.id universoencuesta.id %}" class="btn btn-sm btn-success float-right">
-                            <span class="mdi mdi-email-send"></span> Enviar Correo
-                        </a>
-                        <p class="label {% if x.correo_enviado %} text-success {% else %} text-danger {% endif %} mb-0">
-                            {% if x.correo_enviado %} Enviado {% else %} No Enviado  {% endif %}
-                        </p>
-                    </li>
-                {% endfor %}
-            </ul>
+            <div class="table-responsive">
+                <table id="basic-datatable" class="table">
+                    <thead>
+                        <th>Evaluador</th>
+                    </thead>
+                    <tbody>
+                    {% for x in personas %}
+                        <tr>
+                            <td>
+                                {{ x.persona }}
+                                <a href="{% url 'evado:enviar_encuesta' x.persona.id universoencuesta.id %}" class="btn btn-sm btn-primary float-right">
+                                    <span class="mdi mdi-email-send"></span> Enviar Correo
+                                </a>
+                                <p class="label {% if x.correo_enviado %} text-success {% else %} text-danger {% endif %} mb-0">
+                                    {% if x.correo_enviado %} Enviado {% else %} No Enviado  {% endif %}
+                                </p>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {#            <ul class="list-group">#}
+            {#                {% for x in personas %}#}
+            {#                    <li class="list-group-item">#}
+            {#                        {{ x.persona }}#}
+            {#                        <a href="{% url 'evado:enviar_encuesta' x.persona.id universoencuesta.id %}" class="btn btn-sm btn-primary float-right">#}
+            {#                            <span class="mdi mdi-email-send"></span> Enviar Correo#}
+            {#                        </a>#}
+            {#                        <p class="label {% if x.correo_enviado %} text-success {% else %} text-danger {% endif %} mb-0">#}
+            {#                            {% if x.correo_enviado %} Enviado {% else %} No Enviado  {% endif %}#}
+            {#                        </p>#}
+            {#                    </li>#}
+            {#                {% endfor %}#}
+            {#            </ul>#}
         </div>
     </div>
 

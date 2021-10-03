@@ -148,7 +148,7 @@
                             {% for x in encuestas_habilitadas %}
                                 <tr>
                                     <td>
-                                        <h5 class="font-14 my-1"><a href="javascript:void(0);" class="text-body">{{ x.encuesta.titulo }}</a></h5>
+                                        <h5 class="font-14 my-1"><a href="{% url 'evado:encuesta_detail' x.encuesta.pk %}" class="text-body">{{ x.encuesta.titulo }}</a></h5>
                                         <span class="text-muted font-13"><em>{{ x.periodo_activo }}</em> </span>
                                     </td>
                                     <td class="text-center">

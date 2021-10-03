@@ -1,26 +1,26 @@
 {% extends 'encuesta/object_list.html' %}
 
 {% block title_page %}
-    Periodos de Encuestas
+    Grupos de Encuestas
 {% endblock %}
 
 {% block title %}
-    Periodos de Encuestas
+    Grupos de Encuestas
 {% endblock %}
 
 {% block breadcrumb %}
     <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
     <li class="breadcrumb-item"><a href="{% url 'evado:home_evado' %}">Evaluación Docente</a></li>
-    <li class="breadcrumb-item active">Periodos de Encuestas</li>
+    <li class="breadcrumb-item active">Grupos de Encuestas</li>
 {% endblock %}
 
 {% block subtitle %}
-    Tabla para configuración de Periodos de Encuestas
+    Tabla para configuración de Grupos de Encuestas
 {% endblock %}
 
 {% block create_button %}
     <a class="btn btn-sm btn-outline-primary float-right" href="{% url 'evado:periodo_create'%}" role="button">
-        <span><i class="uil-plus"></i> Crear Periodo de Encuestas</span>
+        <span><i class="uil-plus"></i> Crear Grupo de Encuestas</span>
     </a>
 {% endblock %}
 
@@ -37,7 +37,7 @@
         {% for o in object_list %}
             <tr>
                 <td><a href="{% url 'evado:periodo_detail' pk=o.pk %}"> {{ o.nombre }} </a></td>
-                <td> {% if o.activo %}<i class="text-success uil-check-circle"></i>{% endif %} {{ o.activo|yesno }} </td>
+                <td> {% if o.activo %}<i class="text-success uil-check-circle"></i>{% endif %} {{ o.activo|yesno|title }} </td>
                 <td>
                     <a class="btn btn-outline-primary" href="{% url 'evado:periodo_update' o.pk %}"
                        data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>

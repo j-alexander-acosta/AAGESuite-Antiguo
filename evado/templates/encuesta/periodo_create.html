@@ -2,23 +2,24 @@
 {% load staticfiles crispy_forms_tags %}
 
 {% block title_page %}
-    Periodo de Encuestas - {% if object %}Editar{% else %}Crear{% endif %}
+    Grupo de Encuestas - {% if object %}Editar{% else %}Crear{% endif %}
 {% endblock %}
 
 {% block title %}
-    {% if object %}Editar{% else %}Crear{% endif %} Periodo de Encuestas
+    {% if object %}Editar{% else %}Crear{% endif %} Grupo de Encuestas
 {% endblock %}
 
 {% block breadcrumb %}
     <li class="breadcrumb-item"><a href="{% url 'home' %}">Suite AAGE</a></li>
-    <li class="breadcrumb-item"><a href="{% url 'evado:periodo_list' %}">Periodos de Encuestas</a></li>
-    <li class="breadcrumb-item active">{% if object %}Editar{% else %}Crear{% endif %} Periodo de Encuestas</li>
+    <li class="breadcrumb-item"><a href="{% url 'evado:home_evado' %}">Evaluación Docente</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'evado:periodo_list' %}">Grupos de Encuestas</a></li>
+    <li class="breadcrumb-item active">{% if object %}Editar{% else %}Crear{% endif %} Grupo de Encuestas</li>
 {% endblock %}
 
 {% block content %}
 <div class="card">
     <div class="card-header">
-        <h5>Datos de Periodo de Encuestas</h5>
+        <h5>Datos de Grupo de Encuestas</h5>
     </div>
     <div class="card-body">
         <form class="form-horizontal" method="post">

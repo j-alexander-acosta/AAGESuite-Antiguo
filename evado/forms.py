@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from easy_select2.widgets import Select2, Select2Multiple
 from parsley.decorators import parsleyfy
+from django.forms import inlineformset_factory
 from django_summernote.widgets import SummernoteWidget
 from crispy_forms.bootstrap import StrictButton
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Field, Fieldset, Div, HTML
 
-from rrhh.models import Contrato, Persona
-from evado.models import UniversoEncuesta, Encuesta, PreguntaEncuesta, Respuesta, PeriodoEncuesta
-from evado.models import CorreoUniversoEncuesta, TipoUniversoEncuesta, ConfigurarEncuestaUniversoPersona
+from rrhh.models import Persona
+from evado.models import UniversoEncuesta, Encuesta, PreguntaEncuesta, Respuesta, PeriodoEncuesta, CategoriaPregunta
+from evado.models import CorreoUniversoEncuesta, TipoUniversoEncuesta, ConfigurarEncuestaUniversoPersona, TipoRespuesta
 
 
 @parsleyfy
@@ -167,7 +167,7 @@ class PeriodoEncuestaForm(forms.ModelForm):
         fields = '__all__'
 
         help_texts = {
-            'activo': u"Marque si se lo permite, en caso contrario, utilice la opcion de cambio de periodo"
+            'activo': u"Marque si se lo permite, en caso contrario, utilice la opción de cambio de grupo"
         }
 
     def __init__(self, *args, **kwargs):
@@ -206,43 +206,23 @@ class ConfigurarUniversoPersonaForm(forms.Form):
     )
     periodo = forms.ModelChoiceField(
         queryset=PeriodoEncuesta.objects.all(),
-        label="Periodo de Encuesta"
+        label="Grupo de Encuesta"
     )
 
     def __init__(self, *args, **kwargs):
         super(ConfigurarUniversoPersonaForm, self).__init__(*args, **kwargs)
-        self.fields['persona'].widget.attrs['class'] = 'select2'
-        self.fields['evaluados'].widget.attrs['class'] = 'select2'
-        self.fields['periodo'].widget.attrs['class'] = 'select2'
-        self.fields['tipo_encuesta'].widget.attrs['class'] = 'select2'
         self.helper = FormHelper()
         self.helper.form_tag = False
-        # self.helper.form_id = "configurarUniversoPersonaForm"
-        # self.helper._form_method = "POST"
-        # self.helper._form_action = "."
-        # self.helper.add_input(Submit('submit', 'Guardar', css_class='btn btn-success'))
         self.helper.layout = Layout(
             Div(
                 Div(
-                    Div(
-                        Field('persona'),
-                        css_class='col-md-6'
-                    ),
-                    Div(
-                        Field('periodo'),
-                        css_class='col-md-6'
-                    ),
+                    Div(Field('persona'), css_class='col-md-6'),
+                    Div(Field('periodo'), css_class='col-md-6'),
                     css_class="row"
                 ),
                 Div(
-                    Div(
-                        Field('evaluados'),
-                        css_class='col-md-6'
-                    ),
-                    Div(
-                        Field('tipo_encuesta'),
-                        css_class='col-md-6'
-                    ),
+                    Div(Field('evaluados'), css_class='col-md-6'),
+                    Div(Field('tipo_encuesta'), css_class='col-md-6'),
                     css_class="row"
                 )
             )
@@ -252,11 +232,11 @@ class ConfigurarUniversoPersonaForm(forms.Form):
 class ImportarConfiguracionUniversoPersonaForm(forms.Form):
     file = forms.FileField(
         label="Subir archivo de configuración",
-        help_text="*Se admiten archivos XLS, XLSX (ver plantilla)"
+        help_text="Se admiten archivos XLS, XLSX (ver plantilla)"
     )
     periodo_encuesta = forms.ModelChoiceField(
         queryset=PeriodoEncuesta.objects.all(),
-        label="Periodo de Encuesta"
+        label="Grupo de Encuesta"
     )
     tipo_universo_encuesta = forms.ModelChoiceField(
         queryset=TipoUniversoEncuesta.objects.all(),
@@ -315,3 +295,51 @@ class TipoUniversoEncuestaForm(forms.ModelForm):
         super(TipoUniversoEncuestaForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+
+
+class CategoriaPreguntaForm(forms.ModelForm):
+    class Meta:
+        model = CategoriaPregunta
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(CategoriaPreguntaForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+
+
+class RespuestaForm(forms.ModelForm):
+    class Meta:
+        model = Respuesta
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(RespuestaForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Div(
+                Div(
+                    Field('respuesta'),
+                    css_class='col-md-2'
+                ),
+                Div(
+                    Field('columna'),
+                    css_class='col-md-2'
+                ),
+                Div(
+                    Field('peso'),
+                    css_class='col-md-2'
+                ),
+                Div(
+                    Field('escrita'),
+                    css_class='col-md-2'
+                ),
+                Div(
+                    Field('check'),
+                    css_class='col-md-2'
+                ),
+                css_class='row'
+            )
+        )
+

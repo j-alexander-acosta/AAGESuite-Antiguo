@@ -7,6 +7,7 @@ import traceback
 import xlwt
 from crispy_forms.utils import render_crispy_form
 from django.contrib import messages
+from localflavor.cl.forms import CLRutField
 from django.contrib.auth.decorators import login_required
 from django.core import mail
 from django.core.exceptions import MultipleObjectsReturned
@@ -21,7 +22,8 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views.generic.edit import ModelFormMixin
-from extra_views import InlineFormSetView
+from extra_views import InlineFormSetView, InlineFormSetFactory, CreateWithInlinesView
+from django.contrib import admin
 from jsonview.decorators import json_view
 
 from django.conf import settings
@@ -110,28 +112,47 @@ def encuesta_eliminar_pregunta(request, pk_pregunta):
     return redirect('encuesta_detail', id_encuesta)
 
 
-# class CategoriaPreguntaListView(LoginRequired, ListView):
-#     model = CategoriaPregunta
-#     template_name = 'encuesta/categoria_pregunta/categoria_pregunta_list.html'
-#     paginate_by = 10
-#
-#
-# class CategoriaPreguntaDetailView(LoginRequired, DetailView):
-#     model = CategoriaPregunta
-#     template_name = 'encuesta/categoria_pregunta_detail.html'
-#     search_fields = [('nombre', 'icontains',)]
-#
-#
-# class CategoriaPreguntaCreateView(LoginRequired, CreateView):
-#     model = CategoriaPregunta
-#     template_name = 'encuesta/categoria_pregunta_create.html'
-#     search_fields = [('nombre', 'icontains',)]
-#
-#
-# class CategoriaPreguntaUpdateView(LoginRequired, UpdateView):
-#     model = CategoriaPregunta
-#     template_name = 'encuesta/categoria_pregunta_update.html'
-#     search_fields = [('nombre', 'icontains',)]
+class CategoriaPreguntaListView(LoginRequired, ListView):
+    model = CategoriaPregunta
+    template_name = 'encuesta/categoria_pregunta/categoria_pregunta_list.html'
+    paginate_by = 10
+
+
+class CategoriaPreguntaCreateView(LoginRequired, CreateView):
+    model = CategoriaPregunta
+    form_class = CategoriaPreguntaForm
+    template_name = 'encuesta/categoria_pregunta/categoria_pregunta_create.html'
+
+
+class CategoriaPreguntaUpdateView(LoginRequired, UpdateView):
+    model = CategoriaPregunta
+    form_class = CategoriaPreguntaForm
+    template_name = 'encuesta/categoria_pregunta/categoria_pregunta_create.html'
+
+
+class RespuestaInline(InlineFormSetFactory):
+    model = Respuesta
+    form_class = RespuestaForm
+    # fields = ['respuesta', 'columna', 'peso', 'escrita', 'check']
+
+
+class TipoRespuestaListView(LoginRequired, ListView):
+    model = TipoRespuesta
+    template_name = 'encuesta/tipo_respuesta/tipo_respuesta_list.html'
+    paginate_by = 10
+
+
+class TipoRespuestaCreateView(LoginRequired, CreateWithInlinesView):
+    model = TipoRespuesta
+    inlines = [RespuestaInline]
+    fields = ['nombre']
+    template_name = 'encuesta/tipo_respuesta/tipo_respuesta_create.html'
+
+
+class TipoRespuestaUpdateView(LoginRequired, UpdateView):
+    model = TipoRespuesta
+    fields = ['nombre']
+    template_name = 'encuesta/tipo_respuesta/tipo_respuesta_create.html'
 
 
 class PreguntaEncuestaListView(LoginRequired, ListView):
@@ -238,9 +259,9 @@ class UniversoEncuestaDetailView(LoginRequired, DetailView):
 def actualizar_encuestas_universo(request, id_universo):
     universo = get_object_or_404(UniversoEncuesta, id=id_universo)
     # Generando encuestas para el universo
-    universo.generar_encuestas_del_universo()
-    messages.add_message(request, messages.INFO, 'Universo Actualizado')
-    return redirect('universo_encuesta_detail', universo.id)
+    universo.generar_encuestas_segun_tipo()
+    messages.add_message(request, messages.SUCCESS, 'Se ha actualizado el universo de encuestas')
+    return redirect('evado:universo_encuesta_detail', universo.id)
 
 
 class UniversoEncuestaCreateView(LoginRequired, CreateView):
@@ -434,7 +455,7 @@ def tomar_encuesta(request, hash):
                 encuesta_aplicada.save()
                 messages.add_message(request, messages.SUCCESS,
                                      "La encuesta a {} se ha finalizado, muchas gracias!".format(
-                                         encuesta_aplicada.evaluado), 'success')
+                                         encuesta_aplicada.evaluado))
             return redirect('evado:encuesta_finalizada', hash)
         # else:
         #     messages.add_message(request, messages.ERROR,
@@ -553,10 +574,10 @@ def tomar_encuesta_original(request, hash):
                             pregunta__es_respuesta_directa=True)
                         res.respuesta_directa = v[0]
                         res.save()
-                messages.add_message(request, messages.SUCCESS, "Encuesta Guardada Satisfactoriamente!")
+                messages.add_message(request, messages.SUCCESS, "La encuesta ha sido guardada")
             except:
                 traceback.print_exc()
-                messages.add_message(request, messages.ERROR, "No se pudo guardar la encuesta correctamente.")
+                messages.add_message(request, messages.ERROR, "No se pudo guardar la encuesta correctamente")
         elif "enviar" in dic:
             estado = True
             for x in RespuestaAplicarUniversoEncuestaPersona.objects.filter(aplicar_universo_encuesta_persona=aeu):
@@ -568,7 +589,7 @@ def tomar_encuesta_original(request, hash):
                 return redirect('encuesta_finalizada', hash)
             else:
                 messages.add_message(request, messages.ERROR,
-                                     "No se pudo enviar la encuesta, asegurese de responder a todas las preguntas.")
+                                     "No se pudo enviar la encuesta, asegurese de responder a todas las preguntas")
         elif "guardar_enviar" in dic:
             try:
                 RespuestaAplicarUniversoEncuestaPersona.objects.filter(aplicar_universo_encuesta_persona=aeu,
@@ -643,9 +664,9 @@ def tomar_encuesta_original(request, hash):
                             pregunta__es_respuesta_directa=True)
                         res.respuesta_directa = v[0]
                         res.save()
-                messages.add_message(request, messages.SUCCESS, "Encuesta Guardada Satisfactoriamente!")
+                messages.add_message(request, messages.SUCCESS, "Se ha guardado la encuesta")
             except:
-                messages.add_message(request, messages.ERROR, "No se pudo guardar la encuesta correctamente.")
+                messages.add_message(request, messages.ERROR, "No se pudo guardar la encuesta correctamente")
             estado = True
             for x in RespuestaAplicarUniversoEncuestaPersona.objects.filter(aplicar_universo_encuesta_persona=aeu):
                 if not x.respuesta and x.pregunta.requerida:
@@ -656,7 +677,7 @@ def tomar_encuesta_original(request, hash):
                 return redirect('encuesta_finalizada', hash)
             else:
                 messages.add_message(request, messages.ERROR,
-                                     "No se pudo enviar la encuesta, asegurese de responder a todas las preguntas.")
+                                     "No se pudo enviar la encuesta, asegurese de responder a todas las preguntas")
         if aeu.universo_encuesta.activar_campo_comentario:
             if u'comentario' in dic:
                 comentario = dic['comentario'][0]
@@ -704,12 +725,12 @@ def enviar_todas_encuestas(request, id_universo):
         try:
             enviar_encuesta(request, x.id, id_universo, unica=False, conexion=conexion)
         except:
-            pass
+            messages.add_message(request, messages.SUCCESS, "No se ha podido enviar el correo a {}".format(x))
     conexion.close()
 
     universo.correos_enviados = timezone.now()
     universo.save()
-    messages.add_message(request, messages.SUCCESS, "Correos Enviados!", 'success')
+    messages.add_message(request, messages.SUCCESS, "Los correos han sido enviados")
     return redirect('evado:universo_encuesta_detail', universo.id)
 
 
@@ -762,15 +783,15 @@ def enviar_encuesta(request, id_persona, id_universo, unica=True, conexion=None)
                 msg.attach_alternative(html_content, "text/html")
                 msg.send()
                 if unica:
-                    messages.add_message(request, messages.SUCCESS, 'Correo enviado satisfactoriamente a %s' % p, 'success')
+                    messages.add_message(request, messages.SUCCESS, 'El correo ha sido enviado')
                 pue.correo_enviado = timezone.now()
                 pue.save()
             else:
-                messages.add_message(request, messages.ERROR, 'No se encontraron encuestas para la persona %s' % p, 'error')
+                messages.add_message(request, messages.ERROR, 'No se encontraron encuestas para %s' % p)
         else:
-            messages.add_message(request, messages.ERROR, 'No se encontro registro de correo para la persona %s' % p, 'error')
+            messages.add_message(request, messages.ERROR, 'No se encontró registro de correo para %s' % p)
     else:
-        messages.add_message(request, messages.ERROR, 'No se pudo enviar el correo a %s' % p, 'error')
+        messages.add_message(request, messages.ERROR, 'No se pudo enviar el correo a %s' % p)
 
     return redirect('evado:universo_encuesta_detail', universo.id)
 
@@ -884,14 +905,14 @@ def recordar_contestar_encuestas(request, id_persona, id_universo_correo, unica=
                 msg.attach_alternative(html_content, "text/html")
                 msg.send()
                 if unica:
-                    messages.add_message(request, messages.SUCCESS, 'Correo enviado satisfactoriamente a %s' % p)
+                    messages.add_message(request, messages.SUCCESS, 'El correo ha sido enviado')
                 pue.correo_enviado = timezone.now()
                 pue.save()
             else:
                 messages.add_message(request, messages.ERROR,
-                                     'No se encontro registro de correo para la persona %s' % p)
+                                     'No se encontró registro de correo para %s' % p)
         else:
-            messages.add_message(request, messages.INFO, 'La persona %s ya finalizo su/s encuestas.' % p)
+            messages.add_message(request, messages.INFO, '%s ya finalizó sus evaluaciones' % p)
     else:
         messages.add_message(request, messages.ERROR, 'No se pudo enviar el correo a %s' % p)
 
@@ -933,11 +954,11 @@ def configurar_universo_personas(request):
             for x in evaluados:
                 obj.evaluados.add(x)
 
-            message = 'Configuracion {} agregada satisfactoriamente.'.format(obj)
-            message_style = messages.INFO
+            message = 'La configuración se ha agregado'.format(obj)
+            message_style = messages.SUCCESS
             if not created:
-                message = 'Configuracion {} actualizada satisfactoriamente.'.format(obj)
-                message_style = messages.WARNING
+                message = 'La configuración se ha agregado'.format(obj)
+                message_style = messages.SUCCESS
             messages.add_message(request, message_style, message)
             return redirect('evado:configurar_universo_personas')
     else:
@@ -998,8 +1019,8 @@ def enviar_correo_personalizado(personas, universos, contenido_mail, motivo):
 @login_required
 def eliminar_configurar_universo_personas(request, pk):
     confi = get_object_or_404(ConfigurarEncuestaUniversoPersona, pk=pk)
-    messages.add_message(request, messages.INFO,
-                         'Configuracion de persona (%s) eliminada satisfactoriamente.' % confi.persona, 'success')
+    messages.add_message(request, messages.SUCCESS,
+                         'La configuración ha sido eliminada')
     confi.delete()
     return redirect('evado:configurar_universo_personas')
 
@@ -1008,8 +1029,8 @@ def eliminar_todos_eup(request):
     # persona = get_object_or_404(Persona)
     # ConfigurarEncuestaUniversoPersona.objects.filter(pk__in=[i.pk for i in persona]).delete()
     ConfigurarEncuestaUniversoPersona.objects.all().delete()
-    messages.add_message(request, messages.INFO, 'Configuraciones de personas eliminadas satisfactoriamente', 'success')
-    return redirect('configurar_universo_personas')
+    messages.add_message(request, messages.SUCCESS, 'Todas las configuraciónes han sido eliminadas')
+    return redirect('evado:configurar_universo_personas')
 
 
 @login_required
@@ -1039,7 +1060,7 @@ def persona_upload(request):
 
     if request.method == 'POST':
         messages.add_message(request, messages.SUCCESS, 'Importación realizada correctamente')
-        return redirect('configurar_universo_personas')
+        return redirect('evado:configurar_universo_personas')
 
     return render(request, context)
 
@@ -1101,103 +1122,125 @@ def import_eup_xls(request):
     :param request: Request de la función
     :return: HTML
     """
-    form = ImportarConfiguracionUniversoPersonaForm(request.POST, request.FILES)
-    excel_file = form.cleaned_data.get('file')
-    periodo = form.cleaned_data.get('periodo_encuesta', None)
-    tipo_encuesta = form.cleaned_data.get('tipo_universo_encuesta', None)
-    df = pd.read_excel(excel_file)
+    if request.method == 'POST':
+        form = ImportarConfiguracionUniversoPersonaForm(request.POST, request.FILES)
+        if form.is_valid():
+            excel_file = form.cleaned_data.get('file')
+            periodo = form.cleaned_data.get('periodo_encuesta', None)
+            tipo_encuesta = form.cleaned_data.get('tipo_universo_encuesta', None)
+            df = pd.read_excel(excel_file)
 
-    for row in df.to_dict(orient="records"):
-        # from pdb import set_trace; set_trace()
-        rut_evaluador = row.get("RUT Evaluador")
-        nombres_evaluador = row.get("Nombres Evaluador")
-        apellidos_evaluador = row.get("Apellidos Evaluador")
-        correo_evaluador = row.get("Correo Evaluador")
-        funcion_evaluador = row.get("Funcion Evaluador")
-        colegio_evaluador = row.get("Colegio Evaluador")
-        fundacion_evaluador = row.get("Fundacion Evaluador")
+            for row in df.to_dict(orient="records"):
+                # from pdb import set_trace; set_trace()
+                rut_evaluador = row.get("RUT Evaluador")
+                nombres_evaluador = row.get("Nombres Evaluador")
+                apellidos_evaluador = row.get("Apellidos Evaluador")
+                correo_evaluador = row.get("Correo Evaluador")
+                funcion_evaluador = row.get("Funcion Evaluador")
+                colegio_evaluador = row.get("Colegio Evaluador")
+                fundacion_evaluador = row.get("Fundacion Evaluador")
 
-        # evaluado
-        rut_evaluado = row.get("RUT Evaluado")
-        nombres_evaluado = row.get("Nombres Evaluado")
-        apellidos_evaluado = row.get("Apellidos Evaluado")
-        correo_evaluado = row.get("Correo Evaluado")
-        funcion_evaluado = row.get("Funcion Evaluado")
-        colegio_evaluado = row.get("Colegio Evaluado")
-        fundacion_evaluado = row.get("Fundacion Evaluado")
+                # evaluado
+                rut_evaluado = row.get("RUT Evaluado")
+                nombres_evaluado = row.get("Nombres Evaluado")
+                apellidos_evaluado = row.get("Apellidos Evaluado")
+                correo_evaluado = row.get("Correo Evaluado")
+                funcion_evaluado = row.get("Funcion Evaluado")
+                colegio_evaluado = row.get("Colegio Evaluado")
+                fundacion_evaluado = row.get("Fundacion Evaluado")
 
-        try:
-            p_new = Persona.objects.filter(rut=rut_evaluador).first()
-            apellidos_evaluador_array = apellidos_evaluador.split(' ')
-            if not p_new:
-                p_new = Persona.objects.create(
-                    rut=rut_evaluador,
-                    nombres=nombres_evaluador,
-                    apellido_paterno=apellidos_evaluador_array[0],
-                    apellido_materno=apellidos_evaluador_array[1] if apellidos_evaluador_array[1] else '',
-                )
+                try:
+                    p_new = Persona.objects.filter(rut=rut_evaluador).first()
+                    apellidos_evaluador_array = apellidos_evaluador.split(' ')
+                    if not p_new:
+                        p_new = Persona.objects.create(
+                            rut=rut_evaluador,
+                            nombres=nombres_evaluador,
+                            apellido_paterno=apellidos_evaluador_array[0],
+                            apellido_materno=apellidos_evaluador_array[1] if apellidos_evaluador_array[1] else '',
+                        )
 
-            e_new = Persona.objects.filter(rut=rut_evaluado).first()
-            apellidos_evaluado_array = apellidos_evaluado.split(' ')
-            if not e_new:
-                e_new = Persona.objects.create(
-                    rut=rut_evaluado,
-                    nombres=nombres_evaluado,
-                    apellido_paterno=apellidos_evaluado_array[0],
-                    apellido_materno=apellidos_evaluado_array[1] if apellidos_evaluado_array[1] else '',
-                )
+                    e_new = Persona.objects.filter(rut=rut_evaluado).first()
+                    apellidos_evaluado_array = apellidos_evaluado.split(' ')
+                    if not e_new:
+                        e_new = Persona.objects.create(
+                            rut=rut_evaluado,
+                            nombres=nombres_evaluado,
+                            apellido_paterno=apellidos_evaluado_array[0],
+                            apellido_materno=apellidos_evaluado_array[1] if apellidos_evaluado_array[1] else '',
+                        )
 
-            if correo_evaluador is not None:
-                p_new.email = correo_evaluador
-                p_new.save()
+                    if p_new:
+                        if correo_evaluador is not None:
+                            p_new.email = correo_evaluador
+                            p_new.save()
 
-            if correo_evaluado is not None:
-                e_new.email = correo_evaluado
-                e_new.save()
+                        ip, created = InfoPersona.objects.get_or_create(
+                            persona=p_new
+                        )
+                        ip.funcion = funcion_evaluador
+                        ip.colegio = colegio_evaluador
+                        ip.fundacion = fundacion_evaluador
+                        ip.save()
 
-            ip, created = InfoPersona.objects.get_or_create(
-                persona=p_new
-            )
-            ip.funcion = funcion_evaluador
-            ip.colegio = colegio_evaluador
-            ip.fundacion = fundacion_evaluador
-            ip.save()
+                    if e_new:
+                        if correo_evaluado is not None and e_new:
+                            e_new.email = correo_evaluado
+                            e_new.save()
 
-            ie, created = InfoPersona.objects.get_or_create(
-                persona=e_new
-            )
-            ie.funcion = funcion_evaluado
-            ie.colegio = colegio_evaluado
-            ie.fundacion = fundacion_evaluado
-            ie.save()
+                        ie, created = InfoPersona.objects.get_or_create(
+                            persona=e_new
+                        )
+                        ie.funcion = funcion_evaluado
+                        ie.colegio = colegio_evaluado
+                        ie.fundacion = fundacion_evaluado
+                        ie.save()
 
-            if p_new and e_new:
-                eup, eup_created = ConfigurarEncuestaUniversoPersona.objects.get_or_create(
-                    persona=p_new,
-                    periodo=periodo,
-                    tipo_encuesta=tipo_encuesta
-                )
-                eup.evaluados.add(e_new)
-                messages.add_message(request, messages.SUCCESS, 'Relación realizada correctamente', 'success')
+                    if p_new and e_new:
+                        eup, eup_created = ConfigurarEncuestaUniversoPersona.objects.get_or_create(
+                            persona=p_new,
+                            periodo=periodo,
+                            tipo_encuesta=tipo_encuesta
+                        )
+                        eup.evaluados.add(e_new)
+                    else:
+                        messages.add_message(
+                            request,
+                            messages.ERROR,
+                            'No se ha podido cargar la relación {} - {}'.format(
+                                nombres_evaluador + ' ' + apellidos_evaluador,
+                                nombres_evaluado + ' ' + apellidos_evaluado
+                            )
+                        )
 
-        except MultipleObjectsReturned:
-            p_new = Persona.objects.filter(rut=rut_evaluador).first()
-            e_new = Persona.objects.filter(rut=rut_evaluado).first()
+                except MultipleObjectsReturned:
+                    p_new = Persona.objects.filter(rut=rut_evaluador).first()
+                    e_new = Persona.objects.filter(rut=rut_evaluado).first()
 
-            if correo_evaluador is not None:
-                p_new.email = correo_evaluador
-                p_new.save()
+                    if correo_evaluador is not None:
+                        p_new.email = correo_evaluador
+                        p_new.save()
 
-            if correo_evaluado is not None:
-                e_new.email = correo_evaluado
-                e_new.save()
+                    if correo_evaluado is not None:
+                        e_new.email = correo_evaluado
+                        e_new.save()
 
-            if p_new and e_new:
-                eup, eup_created = ConfigurarEncuestaUniversoPersona.objects.get_or_create(
-                    persona=p_new,
-                    evaluado=e_new
-                )
-                if eup_created:
-                    messages.add_message(request, messages.SUCCESS, 'Relación realizada correctamente')
+                    if p_new and e_new:
+                        eup, eup_created = ConfigurarEncuestaUniversoPersona.objects.get_or_create(
+                            persona=p_new,
+                            evaluado=e_new
+                        )
+                        if eup_created:
+                            messages.add_message(request, messages.SUCCESS, 'Se ha guardado la configuración de evaluados')
 
-    return redirect('evado:configurar_universo_personas')
+            messages.add_message(request, messages.SUCCESS, 'Se ha guardado la configuración de evaluados')
+
+    else:
+        form = ImportarConfiguracionUniversoPersonaForm()
+    context = {
+        'form': ConfigurarUniversoPersonaForm(),
+        'formImport': form,
+        'configuraciones': ConfigurarEncuestaUniversoPersona.objects.order_by('persona', 'tipo_encuesta', 'periodo')
+    }
+
+    return render(request, 'encuesta/configurar_universo_personas.html', context)

@@ -880,9 +880,9 @@ function($) {
     NotificationApp.prototype.send = function(heading, body, position, loaderBgColor, icon, hideAfter, stack, showHideTransition) {
         // default      
         if (!hideAfter)
-            hideAfter = 3000;
+            hideAfter = 5000;
         if (!stack)
-            stack = 1;
+            stack = 4;
 
         var options = {
             heading: heading,
@@ -899,7 +899,7 @@ function($) {
         else
             options.showHideTransition = 'fade';
 
-        $.toast().reset('all');
+        // $.toast().reset('all');
         $.toast(options);
     },
 

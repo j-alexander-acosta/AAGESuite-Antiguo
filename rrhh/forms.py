@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib import messages
 from django.db.models import Sum
 from localflavor.cl.forms import CLRutField
 from crispy_forms.helper import FormHelper
@@ -29,6 +30,8 @@ class PersonaForm(forms.ModelForm):
         self.fields['fecha_nacimiento'].widget.attrs['class'] = 'datepicker'
         self.fields['direccion'].widget.attrs['required'] = 'required'
         self.fields['ciudad'].widget.attrs['required'] = 'required'
+        self.fields['direccion'].label = 'Dirección*'
+        self.fields['ciudad'].label = 'Ciudad*'
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.layout = Layout(
@@ -122,6 +125,29 @@ class PersonaForm(forms.ModelForm):
                 css_class='row'
             )
         )
+
+    def clean_direccion(self):
+        direccion = self.cleaned_data['direccion']
+        if not direccion:
+            raise forms.ValidationError(
+                u"Este campo es obligatorio"
+            )
+
+    def clean_ciudad(self):
+        ciudad = self.cleaned_data['ciudad']
+        if not ciudad:
+            raise forms.ValidationError(
+                u"Este campo es obligatorio"
+            )
+        return ciudad
+
+    def clean_telefono(self):
+        telefono = self.cleaned_data['telefono']
+        if len(str(telefono)) != 9:
+            raise forms.ValidationError(
+                u"El número debe ser de nueve dígitos"
+            )
+        return telefono
 
 
 class FuncionarioForm(forms.ModelForm):
