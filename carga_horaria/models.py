@@ -147,6 +147,7 @@ class Colegio(models.Model):
                          (FREE, 'Gratuito'))
     
     nombre = models.CharField(max_length=255)
+    logo = models.FileField(null=True, blank=True, upload_to="carga_horaria/colegio/logos/", verbose_name='Logo del Colegio')
     abrev = models.CharField(max_length=10, blank=True, null=True)
     fundacion = models.ForeignKey('Fundacion', on_delete=models.CASCADE, blank=True, null=True)
     direccion = models.CharField(max_length=255, blank=True, null=True)
@@ -573,7 +574,7 @@ class Profesor(BaseModel):
 
     @property
     def total_horas_detalle_profesor(self):
-        return self.total_sep2 + self.total_pie2 + self.horas_sbvg_total2
+        return self.total_sep + self.total_pie + self.horas_sbvg_total
 
     @property
     def horas_no_aula_disponibles(self):
@@ -956,3 +957,8 @@ class Persona(models.Model):
 
     def __str__(self):
         return "{} ({})".format(self.nombre, self.rut)
+
+class Document(models.Model):
+    title = models.CharField(max_length = 50)
+    uploadedFile = models.FileField(upload_to = "Uploaded Files/")
+    dateTimeOfUpload = models.DateTimeField(auto_now = True)

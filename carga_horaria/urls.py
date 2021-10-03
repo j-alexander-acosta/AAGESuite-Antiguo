@@ -42,6 +42,21 @@ urlpatterns = [
         name='profesores-info'
     ),
     url(
+        r'^profesores/excel-auto/$',
+        views.profesores_auto,
+        name='profesores-auto'
+    ),
+    url(
+        r'^profesores/uploadFile/$',
+        views.uploadFile,
+        name='uploadFile'
+    ),
+    url(
+        r'^profesores/excel-directivos/$',
+        views.profesores_directivos,
+        name='profesores-directivos'
+    ),
+    url(
         r'^asistentes/excel/$',
         views.asistentes_info,
         name='asistentes-info'
