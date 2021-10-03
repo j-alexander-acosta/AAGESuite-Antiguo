@@ -34,8 +34,14 @@ urlpatterns = [
     # Preguntas
     url(r'^encuestas/preguntas/$', views.PreguntaEncuestaListView.as_view(), name='pregunta_encuesta_list'),
     url(r'^encuestas/pregunta/<pk>/$', views.PreguntaEncuestaListView.as_view(), name='pregunta_encuesta_detail'),
+    # Tipo Universo Encuesta
+    url(r'^tipouniversoencuestas/$', views.TipoUniversoEncuestaListView.as_view(), name='tipo_universo_encuesta_list'),
+    url(r'^tipouniversoencuesta/(?P<pk>\d+)/detalle/$', views.TipoUniversoEncuestaDetailView.as_view(), name='tipo_universo_encuesta_detail'),
+    url(r'^tipouniversoencuesta/nuevo/$', views.TipoUniversoEncuestaCreateView.as_view(), name='tipo_universo_encuesta_create'),
+    url(r'^tipouniversoencuesta/(?P<pk>\d+)/editar/$', views.TipoUniversoEncuestaUpdateView.as_view(), name='tipo_universo_encuesta_edit'),
+    url(r'^tipouniversoencuesta/(?P<pk>\d+)/eliminar/$', views.TipoUniversoEncuestaDeleteView.as_view(), name='tipo_universo_encuesta_delete'),
     # Universo Encuestas
-    url(r'^universoencuestas/$', views.UniverEncuestaListView.as_view(), name='universo_encuesta_list'),
+    url(r'^universoencuestas/$', views.UniversoEncuestaListView.as_view(), name='universo_encuesta_list'),
     url(r'^universoencuesta/(?P<pk>\d+)/detalle/$', views.UniversoEncuestaDetailView.as_view(), name='universo_encuesta_detail'),
     url(r'^universoencuesta/nuevo/$', views.UniversoEncuestaCreateView.as_view(), name='universo_encuesta_create'),
     url(r'^universoencuesta/mail/universosencuestas/$', views.enviar_mail_universo_encuestas, name='enviar_mail_universo_encuestas'),
@@ -45,7 +51,7 @@ urlpatterns = [
     url(r'^universoencuesta/(?P<id_universo>\d+)/actualizar/personas/$', views.actualizar_encuestas_universo, name='actualizar_encuestas_universo'),
     # Correos para enviar
     url(r'^encuesta/correos/<id_universo_correo>/enviar/$', views.enviar_recordar_contestar_encuestas, name='enviar_recordar_contestar_encuestas'),
-    # Configurar Unierso Encuestas
+    # Configurar Universo Encuestas
     url(r'^encuesta/configurar/universo/$', views.configurar_universo_personas, name='configurar_universo_personas'),
     url(r'^encuesta/configurar/(?P<pk>\d+)/eliminar/$', views.eliminar_configurar_universo_personas, name='eliminar_configurar_universo_personas'),
     # url(r'^encuesta/configurar/universo/persona_upload/$', persona_upload, name='persona_upload'),

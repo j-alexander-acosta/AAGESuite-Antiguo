@@ -9,5 +9,3 @@ ALLOWED_HOSTS = ['*']
 COMPRESS_ENABLED = False
 COMPRESS_OFFLINE = False
 COMPRESS_CSS_HASHING_METHOD = 'content'
-
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

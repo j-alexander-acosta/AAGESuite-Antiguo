@@ -320,6 +320,19 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="documento" role="tabpanel" aria-labelledby="documento-tab">
+                    <br>
+                    <p>Listado de los Documento del funcionario, ordenado del mas reciente al mas antiguo.
+                        <a role="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="center" download="DetalleContato.pdf" href="{% url 'rrhh:detalle-contrato-pdf' object.pk %}">Contrato</i></a>
+                        <a role="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="center" download="ConocimientoReglamentoInterno.pdf" href="{% url 'rrhh:toma-conocimiento-reglamento-interno-pdf' object.pk %}" >Conocimiento Reglamento Interno</i></a>
+                        <a role="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="center" download="DescuentoDiezmo.pdf" href="{% url 'rrhh:detalle-trabajador-diezmo-pdf' object.pk %}">Diezmo</i></a>
+                        <a role="button" class="btn btn-outline-info" name="Generar" title="Generar documento" data-toggle="tooltip" data-placement="center" download="Autorizacionimagen.pdf" href="{% url 'rrhh:autorizacion-imagen-pdf' object.pk %}">Autorizacion Imagen</i></a>
+                    
+          
+
+                        <button name="agregar_documento" type="button" class="btn btn-sm btn-outline-primary float-right" data-toggle="modal" data-target="#crear_documento">
+                            <i class="uil-plus"></i> Agregar Documento
+                        </button>
+                    </p>
                     <div class="table-responsive">
                         <table class="table table-hover table-sm">
                             <thead>
@@ -526,6 +539,29 @@
     </div>
 
     <!-- Modal -->
+    <div class="modal fade" id="crear_documento" tabindex="-1" role="dialog" aria-labelledby="crear_documentoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Agregar Documento a {{ object }} </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="documentoForm" class="form-horizontal" action="{% url 'rrhh:documento_funcionario__nuevo' %}" method="post" enctype="multipart/form-data">
+                    <div class="modal-body m-10">
+                        {% csrf_token %}
+                        {% crispy df_form %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-outline-primary">Guardar</button>
+                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="crear_permiso" tabindex="-1" role="dialog" aria-labelledby="crear_permisoLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -671,11 +707,6 @@
                     <div class="modal-body">
                         {% csrf_token %}
                         {% crispy doc_form %}
-                        <!-- <input type="hidden" name="contrato" value="{{ object.pk }}"> -->
-                        <!-- <div id="div_id_documento">
-                            <label for="documento">Dcoumento</label>
-                            <input type="file" class="form-control" id="documento">
-                        </div> -->
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-outline-success">Guardar</button>
@@ -699,6 +730,7 @@
             let licenciaform = $(document).find('#licenciaForm');
             let permisoform = $(document).find('#permisoForm');
             let vacacionform = $(document).find('#vacacionForm');
+            let documentoForm = $(document).find('#documentoForm');
 
             // ocultar_input_fecha_retorno_termino(licenciaform);
             // ocultar_input_fecha_retorno_termino(permisoform);
