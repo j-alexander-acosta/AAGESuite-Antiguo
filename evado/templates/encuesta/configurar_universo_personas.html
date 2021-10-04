@@ -40,7 +40,7 @@
 
             <div class="tab-content">
                 <div class="tab-pane" id="home-b1">
-                    <form role="Form" method="POST" action="." novalidate>
+                    <form role="Form" method="POST" action="{% url 'evado:configurar_universo_personas' %}" novalidate>
                         {% csrf_token %}
                         {#        <table class="table table-bordered table-hover">#}
                         {#            {{ form.as_table }}#}
