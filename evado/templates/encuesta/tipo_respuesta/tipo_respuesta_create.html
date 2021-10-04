@@ -23,7 +23,7 @@
             <h5>Datos de Tipo de Respuesta</h5>
         </div>
         <div class="card-body">
-            <form class="form-horizontal" method="post">
+            <form class="form-horizontal" method="post" novalidate>
                 {% csrf_token %}
                 {% crispy form %}
                 {% for formset in inlines %}

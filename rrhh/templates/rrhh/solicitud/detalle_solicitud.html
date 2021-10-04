@@ -240,7 +240,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form class="form-horizontal" method="post" action="{% url 'rrhh:estado_solicitud__cambiar' %}">
+                <form class="form-horizontal" method="post" action="{% url 'rrhh:estado_solicitud__cambiar' %}" novalidate>
                     <div class="modal-body">
                         <input type="hidden" name="solicitud" value="{{ object.id }}">
                         {% crispy form %}

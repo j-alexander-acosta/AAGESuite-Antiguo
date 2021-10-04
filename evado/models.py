@@ -55,7 +55,7 @@ class Encuesta(models.Model):
     creado_en = models.DateTimeField(auto_now_add=True)
 
     def get_absolute_url(self):
-        return reverse('encuesta_detail', kwargs={'pk': self.pk})
+        return reverse('evado:encuesta_detail', kwargs={'pk': self.pk})
 
     @property
     def obtener_preguntas_no_respuesta_directa(self):
@@ -75,7 +75,7 @@ class CategoriaPregunta(models.Model):
     nombre = models.CharField(max_length=255)
 
     def get_absolute_url(self):
-        return reverse('categoria_pregunta_detail', kwargs={'pk': self.pk})
+        return reverse('evado:categoria_pregunta_list')
 
     def __str__(self):
         return '{}'.format(
@@ -128,7 +128,7 @@ class PreguntaEncuesta(models.Model):
     creado_en = models.DateTimeField(auto_now_add=True)
 
     def get_absolute_url(self):
-        return reverse('pregunta_encuesta_detail', kwargs={'pk': self.pk})
+        return reverse('evado:pregunta_encuesta_detail', kwargs={'pk': self.pk})
 
     def __str__(self):
         return '{}. {} ({})'.format(
@@ -143,7 +143,7 @@ class TipoRespuesta(models.Model):
     creado_en = models.DateTimeField(auto_now_add=True)
 
     def get_absolute_url(self):
-        return reverse('tipo_respuesta_detail', kwargs={'pk': self.pk})
+        return reverse('evado:tipo_respuesta_list')
 
     def __str__(self):
         return '{}'.format(
@@ -160,7 +160,7 @@ class Respuesta(models.Model):
     tipo_respuesta = models.ForeignKey('TipoRespuesta', on_delete=models.CASCADE, verbose_name="Tipo de respuesta")
 
     def get_absolute_url(self):
-        return reverse('respuesta_detail', kwargs={'pk': self.pk})
+        return reverse('evado:respuesta_detail', kwargs={'pk': self.pk})
 
     def __str__(self):
         return '{}'.format(
@@ -405,7 +405,7 @@ class AplicarUniversoEncuestaPersona(models.Model):
         return name
 
     def get_absolute_url(self):
-        return reverse('aplicar_universo_encuesta_persona_detail', kwargs={'pk': self.pk})
+        return reverse('evado:aplicar_universo_encuesta_persona_detail', kwargs={'pk': self.pk})
 
     def __str__(self):
         return '{} - {} ({}) > {}'.format(
@@ -424,7 +424,7 @@ class RespuestaAplicarUniversoEncuestaPersona(models.Model):
     creado_en = models.DateTimeField(auto_now_add=True)
 
     def get_absolute_url(self):
-        return reverse('respuesta_aplicar_universo_encuesta_persona_detail', kwargs={'pk': self.pk})
+        return reverse('evado:respuesta_aplicar_universo_encuesta_persona_detail', kwargs={'pk': self.pk})
 
     class Meta:
         verbose_name = u"Respuesta a Encuesta"
@@ -449,4 +449,4 @@ class CorreoUniversoEncuesta(models.Model):
         )
 
     def get_absolute_url(self):
-        return reverse('correo_universo_detail', kwargs={'pk': self.pk})
+        return reverse('evado:correo_universo_detail', kwargs={'pk': self.pk})

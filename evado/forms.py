@@ -27,12 +27,10 @@ class UniversoEncuestaForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(UniversoEncuestaForm, self).__init__(*args, **kwargs)
-        self.fields['encuesta'].widget.attrs['class'] = 'select2'
         self.fields['tipo_encuesta'].queryset = TipoUniversoEncuesta.objects.filter(codigo='EN0002')
-        self.fields['tipo_encuesta'].widget.attrs['class'] = 'select2'
-        self.fields['periodo'].widget.attrs['class'] = 'select2'
         self.fields['activar_campo_comentario'].label = "Activar Campo de Observaciones"
         # TODO Filtrar por el periodo seleccionado, las configuraciones correspondientes
+        self.fields['periodo'].initial = PeriodoEncuesta.objects.filter(activo=True).first()
         ids_personas = ConfigurarEncuestaUniversoPersona.objects.all().distinct('persona').values_list('persona__id')
         self.fields['evaluadores'].queryset = Persona.objects.filter(id__in=ids_personas)
         self.fields['inicio'] = forms.DateField(
