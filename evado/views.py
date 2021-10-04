@@ -109,7 +109,7 @@ def encuesta_eliminar_pregunta(request, pk_pregunta):
     pe = get_object_or_404(PreguntaEncuesta, id=pk_pregunta)
     id_encuesta = pe.encuesta.id
     pe.delete()
-    return redirect('encuesta_detail', id_encuesta)
+    return redirect('evado:encuesta_detail', id_encuesta)
 
 
 class CategoriaPreguntaListView(LoginRequired, ListView):
@@ -383,7 +383,7 @@ def redirect_url_tomar_encuesta(hash, page):
     base_url = reverse('evado:tomar_encuesta', args=[hash])  # 1 /products/
     url = '{}?page={}#categoria'.format(base_url, page)  # 3 /products/?category=42
     return url
-    # return redirect('tomar_encuesta', hash)
+    # return redirect('evado:tomar_encuesta', hash)
 
 
 def tomar_encuesta(request, hash):
@@ -489,9 +489,9 @@ def tomar_encuesta_original(request, hash):
     context = {}
     aeu = get_object_or_404(AplicarUniversoEncuestaPersona, hash=hash)
     if datetime.datetime.now().date() > aeu.universo_encuesta.fin:
-        return redirect('encuesta_cerrada', hash)
+        return redirect('evado:encuesta_cerrada', hash)
     if aeu.finalizado:
-        return redirect('encuesta_finalizada', hash)
+        return redirect('evado:encuesta_finalizada', hash)
     if request.method == "POST":
         dic = dict(request.POST.iterlists())
         if 'profesor_nombre' in dic:  # No existe profesor en base de datos
@@ -586,7 +586,7 @@ def tomar_encuesta_original(request, hash):
             if estado:
                 aeu.finalizado = timezone.now()
                 aeu.save()
-                return redirect('encuesta_finalizada', hash)
+                return redirect('evado:encuesta_finalizada', hash)
             else:
                 messages.add_message(request, messages.ERROR,
                                      "No se pudo enviar la encuesta, asegurese de responder a todas las preguntas")
@@ -674,7 +674,7 @@ def tomar_encuesta_original(request, hash):
             if estado:
                 aeu.finalizado = timezone.now()
                 aeu.save()
-                return redirect('encuesta_finalizada', hash)
+                return redirect('evado:encuesta_finalizada', hash)
             else:
                 messages.add_message(request, messages.ERROR,
                                      "No se pudo enviar la encuesta, asegurese de responder a todas las preguntas")
@@ -683,7 +683,7 @@ def tomar_encuesta_original(request, hash):
                 comentario = dic['comentario'][0]
                 aeu.comentario = comentario
                 aeu.save()
-        return redirect('tomar_encuesta', hash)
+        return redirect('evado:tomar_encuesta', hash)
     context['aplicar_encuesta'] = aeu
     return render(request, 'encuesta/encuesta_tomar.html', context)
 
@@ -853,7 +853,7 @@ def enviar_recordar_contestar_encuestas(request, id_universo_correo):
             recordar_contestar_encuestas(request, p.id, correo.id, False)
     correo.enviado = datetime.datetime.now()
     correo.save()
-    return redirect('correo_universo_detail', correo.id)
+    return redirect('evado:correo_universo_detail', correo.id)
 
 
 def recordar_contestar_encuestas(request, id_persona, id_universo_correo, unica=True):
@@ -962,10 +962,10 @@ def configurar_universo_personas(request):
             messages.add_message(request, message_style, message)
             return redirect('evado:configurar_universo_personas')
     else:
-        form = ConfigurarUniversoPersonaForm()
+        form = ConfigurarUniversoPersonaForm(initial={'periodo': PeriodoEncuesta.objects.filter(activo=True).first()})
     context = {
         'form': form,
-        'formImport': ImportarConfiguracionUniversoPersonaForm(),
+        'formImport': ImportarConfiguracionUniversoPersonaForm(initial={'periodo_encuesta': PeriodoEncuesta.objects.filter(activo=True).first()}),
         'configuraciones': ConfigurarEncuestaUniversoPersona.objects.order_by('persona', 'tipo_encuesta', 'periodo')
     }
     return render(request, 'encuesta/configurar_universo_personas.html', context)
@@ -1236,9 +1236,9 @@ def import_eup_xls(request):
             messages.add_message(request, messages.SUCCESS, 'Se ha guardado la configuración de evaluados')
 
     else:
-        form = ImportarConfiguracionUniversoPersonaForm()
+        form = ImportarConfiguracionUniversoPersonaForm(initial={'periodo_encuesta': PeriodoEncuesta.objects.filter(activo=True).first()})
     context = {
-        'form': ConfigurarUniversoPersonaForm(),
+        'form': ConfigurarUniversoPersonaForm(initial={'periodo': PeriodoEncuesta.objects.filter(activo=True).first()}),
         'formImport': form,
         'configuraciones': ConfigurarEncuestaUniversoPersona.objects.order_by('persona', 'tipo_encuesta', 'periodo')
     }

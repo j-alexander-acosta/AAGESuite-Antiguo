@@ -548,7 +548,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="documentoForm" class="form-horizontal" action="{% url 'rrhh:documento_funcionario__nuevo' %}" method="post" enctype="multipart/form-data">
+                <form id="documentoForm" class="form-horizontal" action="{% url 'rrhh:documento_funcionario__nuevo' %}" method="post" enctype="multipart/form-data" novalidate>
                     <div class="modal-body m-10">
                         {% csrf_token %}
                         {% crispy df_form %}
@@ -571,7 +571,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="permisoForm" class="form-horizontal" action="{% url 'rrhh:permiso_funcionario__nuevo' %}" method="post" enctype="multipart/form-data">
+                <form id="permisoForm" class="form-horizontal" action="{% url 'rrhh:permiso_funcionario__nuevo' %}" method="post" enctype="multipart/form-data" novalidate>
                     <div class="modal-body m-10">
                         {% csrf_token %}
                         {% crispy pf_form %}
@@ -595,7 +595,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="licenciaForm" class="form-horizontal" action="{% url 'rrhh:licencia_funcionario__nuevo' %}" method="post">
+                <form id="licenciaForm" class="form-horizontal" action="{% url 'rrhh:licencia_funcionario__nuevo' %}" method="post" novalidate>
                     <div class="modal-body m-10">
                         <div class="checkbox float-right">
                             <label for="id_licencia_tipo">
@@ -625,7 +625,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="vacacionForm" class="form-horizontal" action="{% url 'rrhh:vacacion_funcionario__nuevo' %}" method="post">
+                <form id="vacacionForm" class="form-horizontal" action="{% url 'rrhh:vacacion_funcionario__nuevo' %}" method="post" novalidate>
                     <div class="modal-body m-10">
                         {% csrf_token %}
                         {% crispy vf_form %}
@@ -649,7 +649,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="cambiar_estado_renovacion_form" class="form-horizontal">
+                <form id="cambiar_estado_renovacion_form" class="form-horizontal" novalidate>
                     <div class="modal-body m-10">
                         <input type="hidden" name="contrato" value="{{ object.id }}"/>
                         <input type="hidden" name="estado" value=""/>
@@ -680,7 +680,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form class="form-horizontal" method="post" action="{% url 'rrhh:estado_contratacion__cambiar' %}" enctype="multipart/form-data">
+                <form class="form-horizontal" method="post" action="{% url 'rrhh:estado_contratacion__cambiar' %}" enctype="multipart/form-data" novalidate>
                     <div class="modal-body">
                         <input type="hidden" name="contrato" value="{{ object.pk }}">
                         {% crispy ec_form %}
@@ -703,7 +703,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="cargar_documento_form" class="form-horizontal" method="post" action="{% url 'rrhh:personal__cargar_documento' %}" enctype="multipart/form-data">
+                <form id="cargar_documento_form" class="form-horizontal" method="post" action="{% url 'rrhh:personal__cargar_documento' %}" enctype="multipart/form-data" novalidate>
                     <div class="modal-body">
                         {% csrf_token %}
                         {% crispy doc_form %}

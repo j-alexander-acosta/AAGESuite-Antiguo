@@ -7,7 +7,7 @@
     </div>
 
     <div class="well">
-    <form  method="post" class="form">
+    <form  method="post" class="form" novalidate>
     {% csrf_token %}
     {{ form.as_p }}
     {% buttons %}
