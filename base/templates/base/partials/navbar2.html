@@ -27,7 +27,7 @@
                             <a href="dashboard-projects.html" class="dropdown-item">Projects</a>
                         </div>
                     </li>
-                    -->
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-apps" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="uil-apps mr-1"></i> Aplicaciones <div class="arrow-down"></div>
@@ -44,70 +44,74 @@
                             <a href="https://www.unach.cl/" target="_blank" class="dropdown-item">UnACh</a>
                         </div>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-admin" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="uil-cog mr-1"></i> Administración <div class="arrow-down"></div>
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="topnav-admin">
-                            <div class="dropdown">
-                                <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-entidades" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Entidades <div class="arrow-down"></div>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="topnav-entidades">
-                                    <a href="{% url 'gestion:entidades' %}" class="dropdown-item">Entidades</a>
+                    -->
+                    {% if request.user.perfilusuario.es_admin or request.user.is_staff %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-admin" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="uil-cog mr-1"></i> Administración <div class="arrow-down"></div>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="topnav-admin">
+                                <div class="dropdown">
+                                    <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-entidades" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Entidades <div class="arrow-down"></div>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="topnav-entidades">
+                                        <a href="{% url 'gestion:entidades' %}" class="dropdown-item">Entidades</a>
+                                    </div>
+                                </div>
+                                <div class="dropdown">
+                                    <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-persona" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Personas <div class="arrow-down"></div>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="topnav-persona">
+                                        <a href="{% url 'gestion:usuarios' %}" class="dropdown-item">Usuarios</a>
+                                        <a href="{% url 'gestion:perfiles' %}" class="dropdown-item">Perfiles</a>
+                                        {#                                    <a href="#" class="dropdown-item">Regiones</a>#}
+                                        {#                                    <a href="#" class="dropdown-item">Comunas</a>#}
+                                        <a href="#" class="dropdown-item">Ciudades</a>
+                                    </div>
+                                </div>
+                                <div class="dropdown">
+                                    <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-funcionario" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Funcionarios <div class="arrow-down"></div>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="topnav-persona">
+                                        <a href="{% url 'gestion:bancos' %}" class="dropdown-item">Bancos</a>
+                                        <a href="{% url 'gestion:afps' %}" class="dropdown-item">AFPs</a>
+                                        <a href="{% url 'gestion:isapres' %}" class="dropdown-item">Isapres</a>
+                                        <a href="{% url 'gestion:tipostitulo' %}" class="dropdown-item">Tipos de Título</a>
+                                        <a href="{% url 'gestion:areastitulo' %}" class="dropdown-item">Areas de Título</a>
+                                        <a href="{% url 'gestion:especialidades' %}" class="dropdown-item">Especialidades</a>
+                                        <a href="{% url 'gestion:menciones' %}" class="dropdown-item">Menciones</a>
+                                    </div>
+                                </div>
+                                <div class="dropdown">
+                                    <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-colaboradores" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Recursos Humanos <div class="arrow-down"></div>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="topnav-colaboradores">
+                                        <a href="{% url 'gestion:funciones' %}" class="dropdown-item">Funciones</a>
+                                        <a href="{% url 'gestion:tiposlicencia' %}" class="dropdown-item">Tipos de Licencia</a>
+                                        <a href="{% url 'gestion:tiposdocumento' %}" class="dropdown-item">Tipos de Documento</a>
+                                    </div>
+                                </div>
+                                <div class="dropdown">
+                                    <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-colaboradores" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Evaluación Docente <div class="arrow-down"></div>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="topnav-colaboradores">
+                                        <a href="{% url 'evado:periodo_list' %}" class="dropdown-item">Grupos de Encuesta</a>
+                                        <a href="{% url 'evado:tipo_universo_encuesta_list' %}" class="dropdown-item">Tipos de Universos de Encuestas</a>
+                                        <a href="{% url 'evado:categoria_pregunta_list' %}" class="dropdown-item">Categorias de pregunta</a>
+                                        <a href="{% url 'evado:tipo_respuesta_list' %}" class="dropdown-item">Tipo de Respuesta</a>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="dropdown">
-                                <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-persona" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Personas <div class="arrow-down"></div>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="topnav-persona">
-                                    <a href="{% url 'gestion:usuarios' %}" class="dropdown-item">Usuarios</a>
-                                    <a href="{% url 'gestion:perfiles' %}" class="dropdown-item">Perfiles</a>
-                                    {#                                    <a href="#" class="dropdown-item">Regiones</a>#}
-                                    {#                                    <a href="#" class="dropdown-item">Comunas</a>#}
-                                    <a href="#" class="dropdown-item">Ciudades</a>
-                                </div>
-                            </div>
-                            <div class="dropdown">
-                                <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-funcionario" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Funcionarios <div class="arrow-down"></div>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="topnav-persona">
-                                    <a href="{% url 'gestion:bancos' %}" class="dropdown-item">Bancos</a>
-                                    <a href="{% url 'gestion:afps' %}" class="dropdown-item">AFPs</a>
-                                    <a href="{% url 'gestion:isapres' %}" class="dropdown-item">Isapres</a>
-                                    <a href="{% url 'gestion:tipostitulo' %}" class="dropdown-item">Tipos de Título</a>
-                                    <a href="{% url 'gestion:areastitulo' %}" class="dropdown-item">Areas de Título</a>
-                                    <a href="{% url 'gestion:especialidades' %}" class="dropdown-item">Especialidades</a>
-                                    <a href="{% url 'gestion:menciones' %}" class="dropdown-item">Menciones</a>
-                                </div>
-                            </div>
-                            <div class="dropdown">
-                                <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-colaboradores" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Recursos Humanos <div class="arrow-down"></div>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="topnav-colaboradores">
-                                    <a href="{% url 'gestion:funciones' %}" class="dropdown-item">Funciones</a>
-                                    <a href="{% url 'gestion:tiposlicencia' %}" class="dropdown-item">Tipos de Licencia</a>
-                                    <a href="{% url 'gestion:tiposdocumento' %}" class="dropdown-item">Tipos de Documento</a>
-                                </div>
-                            </div>
-                            <div class="dropdown">
-                                <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-colaboradores" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Evaluación Docente <div class="arrow-down"></div>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="topnav-colaboradores">
-                                    <a href="{% url 'evado:periodo_list' %}" class="dropdown-item">Grupos de Encuesta</a>
-                                    <a href="{% url 'evado:tipo_universo_encuesta_list' %}" class="dropdown-item">Tipos de Universos de Encuestas</a>
-                                    <a href="{% url 'evado:categoria_pregunta_list' %}" class="dropdown-item">Categorias de pregunta</a>
-                                    <a href="{% url 'evado:tipo_respuesta_list' %}" class="dropdown-item">Tipo de Respuesta</a>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
+
             <ul class="navbar-nav list-unstyled topbar-right-menu float-right mb-0">
                 {% if request.path|start_with:"/carga/" %}
                     {% if request.session.colegio__nombre %}
@@ -146,30 +150,30 @@
                     </li>
                 {% endif %}
                 {% if request.user.is_authenticated %}
-                    {% comment %}
                     <li class="dropdown notification-list">
                         <a class="dropdown-toggle arrow-none nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                             <i class="dripicons-view-apps noti-icon" style="line-height: 100%; font-size: 32px"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated dropdown-lg p-0">
                             <div class="p-2">
+                                <h4 class="text-center">Aplicaciones</h4>
                                 <div class="row no-gutters">
                                     <div class="col">
                                         <a class="dropdown-icon-item" href="{% url 'rrhh:home_rrhh' %}">
                                             <img src="{% static 'base/img/Gestión-del-Talento-Humano-Personalizado.png' %}" alt="Recursos Humanos">
-                                            <span>Rrhh</span>
+                                            <p class="mb-0 mt-1 font-12 text-muted" style="line-height: 14px">Recursos Humanos</p>
                                         </a>
                                     </div>
                                     <div class="col">
                                         <a class="dropdown-icon-item" href="{% url 'carga-horaria:home' %}">
                                             <img src="{% static 'base/img/Carga-Horaria-Personalizado.png' %}" alt="Carga Horaria">
-                                            <span>Ch</span>
+                                            <p class="mb-0 mt-1 mx-2 font-12 text-muted" style="line-height: 14px;">Carga Horaria</p>
                                         </a>
                                     </div>
                                     <div class="col">
                                         <a class="dropdown-icon-item" href="https://ac.unach.cl/" target="_blank">
                                             <img src="{% static 'base/img/Ciclos-de-Calidad-Personalizado.png' %}" alt="Ciclos de Calidad">
-                                            <span>Cc</span>
+                                            <p class="mb-0 mt-1 mx-2 font-12 text-muted" style="line-height: 14px">Ciclos de Calidad</p>
                                         </a>
                                     </div>
                                 </div>
@@ -178,49 +182,47 @@
                                     <div class="col">
                                         <a class="dropdown-icon-item" href="{% url 'evado:home_evado' %}">
                                             <img src="{% static 'base/img/Evaluación-Docente-Personalizado.png' %}" alt="Evaluación Docente">
-                                            <span>Ed</span>
+                                            <p class="mb-0 mt-1 font-12 text-muted" style="line-height: 14px">Evaluación Docente</p>
                                         </a>
                                     </div>
                                     <div class="col">
                                         <a class="dropdown-icon-item" href="#">
                                             <img src="{% static 'base/img/Evaluación-de-los-Aprendizajes-Personalizado.png' %}" alt="Evaluación de Aprendizajes">
-                                            <span>Ea</span>
+                                            <p class="mb-0 mt-1 font-12 text-muted" style="line-height: 14px">Evaluación de Aprendizajes</p>
                                         </a>
                                     </div>
                                     <div class="col">
                                         <a class="dropdown-icon-item" href="https://app.powerbi.com/?noSignUpCheck=1&pbi_source=weblandingsignin" target="_blank">
                                             <img src="{% static 'base/img/PowerBi2.png' %}" alt="Power bi">
-                                            <span>Power Bi</span>
+                                            <p class="mb-0 mt-1 font-12 text-muted" style="line-height: 14px">Power Bi</p>
                                         </a>
                                     </div>
-
                                 </div>
 
                                 <div class="row no-gutters">
                                     <div class="col">
                                         <a class="dropdown-icon-item" href="https://www.educacionadventista.com/" target="blank">
                                             <img src="{% static 'base/img/logotipo4.png' %}" alt="Portal Adventista">
-                                            <span>PA</span>
+                                            <p class="mb-0 mt-1 mx-1 font-12 text-muted" style="line-height: 14px">Portal Adventista</p>
                                         </a>
                                     </div>
                                     <div class="col">
                                         <a class="dropdown-icon-item" href="https://aage.cl" target="_blank">
                                             <img src="{% static 'base/img/logotipo4.png' %}" alt="AAGE">
-                                            <span>AAGE</span>
+                                            <p class="mb-0 mt-1 font-12 text-muted" style="line-height: 14px">AAGE</p>
                                         </a>
                                     </div>
                                     <div class="col">
                                         <a class="dropdown-icon-item" href="https://unach.cl" target="blank">
                                             <img src="{% static 'base/img/logotipo4.png' %}" alt="UnACh">
-                                            <span>UnACh</span>
+                                            <p class="mb-0 mt-1 font-12 text-muted" style="line-height: 14px">UnACh</p>
                                         </a>
                                     </div>
-
                                 </div>
                             </div>
 
                         </div>
-                    </li>{% endcomment %}
+                    </li>
                     <li class="dropdown notification-list">
                         <a class="dropdown-toggle nav-user arrow-none mr-0 nav-link" data-toggle="dropdown"
                            id="topbar-userdrop" href="#" role="button" aria-haspopup="true" aria-expanded="false">
@@ -244,8 +246,10 @@
                                 <span class="account-position">
                                     {% if request.user.is_staff %}
                                         Administrador (STAFF)
+                                    {% elif request.user.perfilusuario %}
+                                        {{ request.user.perfilusuario.perfil }}
                                     {% else %}
-                                        Cargo
+                                        Invitado
                                     {% endif %}
                                 </span>
                             </span>

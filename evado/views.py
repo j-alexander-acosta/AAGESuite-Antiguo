@@ -7,7 +7,6 @@ import traceback
 import xlwt
 from crispy_forms.utils import render_crispy_form
 from django.contrib import messages
-from localflavor.cl.forms import CLRutField
 from django.contrib.auth.decorators import login_required
 from django.core import mail
 from django.core.exceptions import MultipleObjectsReturned
@@ -23,11 +22,10 @@ from django.utils import timezone
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views.generic.edit import ModelFormMixin
 from extra_views import InlineFormSetView, InlineFormSetFactory, CreateWithInlinesView
-from django.contrib import admin
 from jsonview.decorators import json_view
-
 from django.conf import settings
-from evado.mixins import LoginRequired, SearchableListMixin
+
+from evado.mixins import LoginRequired, SuccessOrErrorMessageMixin
 from evado.forms import *
 from evado.models import *
 
@@ -68,7 +66,7 @@ class EncuestaCreateView(LoginRequired, CreateView):
     template_name = 'encuesta/encuesta_create.html'
 
 
-class EncuestaPreguntaFormSetView(LoginRequired, SearchableListMixin, InlineFormSetView):
+class EncuestaPreguntaFormSetView(LoginRequired, InlineFormSetView):
     model = Encuesta
     extra = 1
     inline_model = PreguntaEncuesta
@@ -173,11 +171,12 @@ class TipoUniversoEncuestaDetailView(LoginRequired, DetailView):
     template_name = 'encuesta/tipo_universo_encuesta/tipo_universo_encuesta_detail.html'
 
 
-class TipoUniversoEncuestaCreateView(LoginRequired, CreateView):
+class TipoUniversoEncuestaCreateView(LoginRequired, SuccessOrErrorMessageMixin, CreateView):
     model = TipoUniversoEncuesta
     form_class = TipoUniversoEncuestaForm
     template_name = 'encuesta/tipo_universo_encuesta/tipo_universo_encuesta_create.html'
     success_url = reverse_lazy('evado:tipo_universo_encuesta_list')
+    success_message = "El Tipo de Universo de Encuestas fue creado satisfactoriamente"
 
     # def get_success_url(self):
     #     return reverse_lazy(
@@ -264,11 +263,11 @@ def actualizar_encuestas_universo(request, id_universo):
     return redirect('evado:universo_encuesta_detail', universo.id)
 
 
-class UniversoEncuestaCreateView(LoginRequired, CreateView):
+class UniversoEncuestaCreateView(LoginRequired, SuccessOrErrorMessageMixin, CreateView,):
     model = UniversoEncuesta
     form_class = UniversoEncuestaForm
     template_name = 'encuesta/universo_encuesta_create.html'
-    search_fields = [('encuesta_titulo', 'icontains')]
+    success_message = "El Universo de Encuestas fue creado satisfactoriamente"
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -822,23 +821,23 @@ class PeriodoEncuestaCreateView(LoginRequired, CreateView):
 
 
 # Correos del Universo de encuestas
-class CorreoUniversoEncuestaListView(LoginRequired, SearchableListMixin, ListView):
+class CorreoUniversoEncuestaListView(LoginRequired, ListView):
     model = CorreoUniversoEncuesta
     template_name = 'encuesta/correo_universo_list.html'
 
 
-class CorreoUniversoEncuestaDetailView(LoginRequired, SearchableListMixin, DetailView):
+class CorreoUniversoEncuestaDetailView(LoginRequired, DetailView):
     model = CorreoUniversoEncuesta
     template_name = 'encuesta/correo_universo_detail.html'
 
 
-class CorreoUniversoEncuestaCreateView(LoginRequired, SearchableListMixin, CreateView):
+class CorreoUniversoEncuestaCreateView(LoginRequired, CreateView):
     model = CorreoUniversoEncuesta
     form_class = CorreoUniversoEncuestaForm
     template_name = 'encuesta/correo_universo_create.html'
 
 
-class CorreoUniversoEncuestaUpdateView(LoginRequired, SearchableListMixin, UpdateView):
+class CorreoUniversoEncuestaUpdateView(LoginRequired, UpdateView):
     model = CorreoUniversoEncuesta
     form_class = CorreoUniversoEncuestaForm
     template_name = 'encuesta/correo_universo_update.html'
@@ -961,6 +960,8 @@ def configurar_universo_personas(request):
                 message_style = messages.SUCCESS
             messages.add_message(request, message_style, message)
             return redirect('evado:configurar_universo_personas')
+        else:
+            messages.add_message(request, messages.WARNING, "El formulario tiene errores, favor revisar")
     else:
         form = ConfigurarUniversoPersonaForm(initial={'periodo': PeriodoEncuesta.objects.filter(activo=True).first()})
     context = {
@@ -1115,6 +1116,47 @@ def export_eup_xls(request):
     return response
 
 
+def separar_apellidos(apellidos):
+    apellidos_separados = []
+    apellidos_array = apellidos.split(' ')
+    if len(apellidos_array) == 2:
+        apellidos_separados.append(apellidos_array[0])
+        apellidos_separados.append(apellidos_array[1])
+    elif len(apellidos_array) == 1:
+        apellidos_separados.append(apellidos_array[0])
+    else:
+        agregados = ['de', 'la', 'da', 'del', 'do']
+        apellido = ''
+        for a in apellidos_array:
+            if a.lower() in agregados:
+                if apellido == '':
+                    apellido = a
+                else:
+                    apellido = apellido + ' ' + a
+            elif not apellido == '':
+                apellido = apellido + ' ' + a
+                apellidos_separados.append(apellido)
+                apellido = ''
+            else:
+                apellidos_separados.append(a)
+
+    return apellidos_separados
+
+
+def crear_evaluador_evaluado(rut, apellidos, nombres):
+    p = Persona.objects.filter(rut=rut).first()
+    apellidos_evaluador_array = separar_apellidos(apellidos)
+    if not p:
+        p = Persona.objects.create(
+            rut=rut,
+            nombres=nombres,
+            apellido_paterno=apellidos_evaluador_array[0],
+            apellido_materno=apellidos_evaluador_array[1] if len(apellidos_evaluador_array) > 1 else '',
+        )
+
+    return p
+
+
 @login_required
 def import_eup_xls(request):
     """
@@ -1150,25 +1192,8 @@ def import_eup_xls(request):
                 fundacion_evaluado = row.get("Fundacion Evaluado")
 
                 try:
-                    p_new = Persona.objects.filter(rut=rut_evaluador).first()
-                    apellidos_evaluador_array = apellidos_evaluador.split(' ')
-                    if not p_new:
-                        p_new = Persona.objects.create(
-                            rut=rut_evaluador,
-                            nombres=nombres_evaluador,
-                            apellido_paterno=apellidos_evaluador_array[0],
-                            apellido_materno=apellidos_evaluador_array[1] if apellidos_evaluador_array[1] else '',
-                        )
-
-                    e_new = Persona.objects.filter(rut=rut_evaluado).first()
-                    apellidos_evaluado_array = apellidos_evaluado.split(' ')
-                    if not e_new:
-                        e_new = Persona.objects.create(
-                            rut=rut_evaluado,
-                            nombres=nombres_evaluado,
-                            apellido_paterno=apellidos_evaluado_array[0],
-                            apellido_materno=apellidos_evaluado_array[1] if apellidos_evaluado_array[1] else '',
-                        )
+                    p_new = crear_evaluador_evaluado(rut_evaluador, apellidos_evaluador, nombres_evaluador)
+                    e_new = crear_evaluador_evaluado(rut_evaluado, apellidos_evaluado, nombres_evaluado)
 
                     if p_new:
                         if correo_evaluador is not None:
@@ -1234,7 +1259,8 @@ def import_eup_xls(request):
                             messages.add_message(request, messages.SUCCESS, 'Se ha guardado la configuración de evaluados')
 
             messages.add_message(request, messages.SUCCESS, 'Se ha guardado la configuración de evaluados')
-
+        else:
+            messages.add_message(request, messages.WARNING, "El formulario tiene errores, favor revisar")
     else:
         form = ImportarConfiguracionUniversoPersonaForm(initial={'periodo_encuesta': PeriodoEncuesta.objects.filter(activo=True).first()})
     context = {

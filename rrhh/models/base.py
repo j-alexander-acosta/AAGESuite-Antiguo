@@ -85,15 +85,6 @@ TIPO_PERFIL = (
     (7, 'Asesor'),
     (8, 'Administrador'),
 )
-NIVEL_ACCESO = (
-    (1, 'Invitado'),
-    (2, 'Docente'),
-    (3, 'Docente administrativo'),
-    (4, 'Director'),
-    (5, 'Departamental'),
-    (6, 'Asesor'),
-    (7, 'Administrador'),
-)
 
 
 class Perfil(models.Model):
