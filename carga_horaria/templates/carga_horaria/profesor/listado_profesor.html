@@ -113,10 +113,6 @@ Profesores
             <a class="btn btn-outline-default" href="{% url 'carga-horaria:profesores-directivos' %}"><i
                     class="uil-cloud-download"></i> F. Evaluación Directivos</a>
         </class>
-        <class class="card-subtitle mb-2 text-muted">
-            <a class="btn btn-outline-default" href="{% url 'carga-horaria:uploadFile' %}"><i
-                    class="uil-cloud-download"></i> F. Evaluación Pares</a>
-        </class>
         <span style="float: right;">
             <class style="text-align: right;" class="card-subtitle mb-2 text-muted">
                 <a class="btn btn-outline-default" href="{% url 'carga-horaria:profesor__anexos' %}"><i
@@ -127,10 +123,10 @@ Profesores
         </span>
         <class>
             <center><form action="{% url 'carga-horaria:uploadFile' %}" method="POST" enctype="multipart/form-data">
-                <input type="text" name="fileTitle" placeholder="Enter a title">
+                <input type="text" name="fileTitle" placeholder="Cargar Pares">
                 <input type="file" name="uploadedFile">
                 {% csrf_token %}
-                <input type="submit" value="Upload">
+                <input type="submit" value="Cargar">
             </form></center>
         </class>
     </div>
