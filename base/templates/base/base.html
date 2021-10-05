@@ -149,11 +149,11 @@
             {% for message in messages %}
                 i.NotificationApp.send(
                     {% if message.tags|get_word:'1' == 'info' %}
-                        "Información",
+                        "Información importante",
                     {% elif message.tags|get_word:'1' == 'success' %}
-                        "Bien hecho",
+                        "Excelente",
                     {% elif message.tags|get_word:'1' == 'warning' %}
-                        "Tenga cuidado",
+                        "Advertencia",
                     {% elif message.tags|get_word:'1' == 'error' %}
                         "Algo ha salido mal",
                     {% endif %}

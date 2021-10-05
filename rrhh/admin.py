@@ -12,6 +12,17 @@ class PersonaAdmin(admin.ModelAdmin):
     list_filter = ['religion', 'titulado', 'profesion', 'nacionalidad']
 
 
+@admin.register(persona.PerfilUsuario)
+class PerfilUsuarioAdmin(admin.ModelAdmin):
+    list_display = (
+        'usuario',
+        'perfil',
+        'nivel_acceso'
+    )
+    search_fields = ['usuario']
+    list_filter = ['nivel_acceso', 'perfil']
+
+
 @admin.register(persona.Funcionario)
 class FuncionarioAdmin(admin.ModelAdmin):
     list_display = (

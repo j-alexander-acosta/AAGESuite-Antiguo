@@ -3,6 +3,16 @@ from django.shortcuts import get_object_or_404
 from rrhh.models.base import *
 from rrhh.models.entidad import Entidad, Contrato
 
+NIVEL_ACCESO = (
+    (1, 'Invitado'),
+    (2, 'Docente'),
+    (3, 'Docente administrativo'),
+    (4, 'Director'),
+    (5, 'Departamental'),
+    (6, 'Asesor'),
+    (7, 'Administrador'),
+)
+
 
 class PerfilUsuario(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -10,8 +20,28 @@ class PerfilUsuario(models.Model):
     nivel_acceso = models.PositiveSmallIntegerField(default=1, choices=NIVEL_ACCESO, verbose_name='Nivel de acceso')
 
     @property
+    def es_admin(self):
+        return True if self.usuario.is_staff or self.nivel_acceso == 7 else False
+
+    @property
+    def es_asesor(self):
+        return True if self.nivel_acceso >= 6 else False
+
+    @property
+    def es_departamental(self):
+        return True if self.nivel_acceso >= 5 else False
+
+    @property
+    def es_director(self):
+        return True if self.nivel_acceso >= 4 else False
+
+    @property
     def es_admin_ue(self):
         return True if self.nivel_acceso >= 3 else False
+
+    @property
+    def es_docente(self):
+        return True if self.nivel_acceso >= 2 else False
 
     def __str__(self):
         return '{}, {} ({})'.format(
@@ -110,8 +140,8 @@ class Persona(models.Model):
 
     def save(self, *args, **kwargs):
         self.nombres = self.nombres.title()
-        self.apellido_paterno = self.apellido_paterno.capitalize()
-        self.apellido_materno = self.apellido_materno.capitalize()
+        self.apellido_paterno = self.apellido_paterno.title()
+        self.apellido_materno = self.apellido_materno.title()
         self.direccion = self.direccion.title() if self.direccion else None
         self.profesion = self.profesion.title() if self.profesion else None
         self.email = self.email.lower() if self.email else None

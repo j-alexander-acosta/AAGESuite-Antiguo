@@ -22,7 +22,7 @@ class InfoPersona(models.Model):
     fundacion = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
-        return self.persona
+        return ''.format(self.persona)
 
     class Meta:
         verbose_name = 'Información extra de Persona'

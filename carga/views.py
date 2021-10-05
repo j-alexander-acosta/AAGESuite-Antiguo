@@ -53,7 +53,7 @@ def login_view(request):
         messages.add_message(
             request,
             messages.INFO,
-            'Ingrese con su usuario'
+            'Bienvenido!'
         )
 
     return render(request, 'registration/login2.html')
