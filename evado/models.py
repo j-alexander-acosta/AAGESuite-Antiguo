@@ -28,6 +28,7 @@ class InfoPersona(models.Model):
         verbose_name = 'Información extra de Persona'
         verbose_name_plural = 'Información extra de Personas'
 
+
 class ConfigurarEncuestaUniversoPersona(models.Model):
     persona = models.ForeignKey(Persona, related_name="persona", on_delete=models.CASCADE, verbose_name='Evaluador')
     evaluados = models.ManyToManyField(Persona, related_name="evaluados")
@@ -197,7 +198,7 @@ class TipoUniversoEncuesta(models.Model):
     )
 
     nombre = models.CharField(max_length=255)
-    codigo = models.CharField(max_length=10, unique=True, choices=CODIGO_CHOICES, verbose_name="Código")
+    codigo = models.CharField(max_length=10, choices=CODIGO_CHOICES, verbose_name="Tipo de Configuración")
 
     def __str__(self):
         return self.nombre
@@ -290,6 +291,19 @@ class UniversoEncuesta(models.Model):
     @property
     def itemes_personas(self):
         return self.personauniversoencuesta_set.all()
+
+    @property
+    def ultima_pregunta_respondida(self):
+        ultima_pregunta = None
+        for auep in self.aplicaruniversoencuestapersona_set.all():
+            pregunta = auep.respuestaaplicaruniversoencuestapersona_set.filter(respuesta__isnull=True)
+            if pregunta:
+                pregunta = pregunta.order_by('pregunta__numero_pregunta').first().pregunta
+                if ultima_pregunta and pregunta.numero_pregunta < ultima_pregunta.numero_pregunta:
+                    ultima_pregunta = pregunta
+                else:
+                    ultima_pregunta = pregunta
+        return ultima_pregunta
 
     def get_absolute_url(self):
         return reverse('evado:universo_encuesta_detail', kwargs={'pk': self.pk})

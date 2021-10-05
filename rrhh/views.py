@@ -13,7 +13,7 @@ from rrhh.models.persona import Persona, Funcionario
 from rrhh.models.entidad import Entrevista, Vacacion, Finiquito, Licencia, Permiso, Contrato, EstadoContratacion
 from rrhh.models.entidad import Solicitud, EstadoSolicitud
 from rrhh.forms import VacacionTipoFuncionarioColegioForm, VacacionForm, ContratoForm, FuncionarioForm, EntrevistaForm
-from rrhh.forms import PermisoTipoFuncionarioColegioForm, PermisoForm, SolicitudForm, EstadoSolicitudForm, DocumentoForm
+from rrhh.forms import PermisoTipoFuncionarioColegioForm, PermisoForm, SolicitudForm, EstadoSolicitudForm, DocumentoForm, AgregarDocumentoForm
 from rrhh.forms import LicenciaTipoFuncionarioColegioForm, LicenciaForm, PersonaForm, FiniquitoForm, EstadoContratacionForm
 from rrhh.pdf.descuentodiezmo import DescuentoDiezmo
 from rrhh.pdf.detallecontrato import DetalleContrato
@@ -625,6 +625,47 @@ def nuevo_permiso_tipo_funcionario(request):
     return data
 
 @login_required
+@json_view
+def nuevo_documento_funcionario(request):
+    """
+        Función para crear un nuevo registro de documento a un uncionario
+
+    :param request: Django Request
+    :return: Json
+    """
+    data = {
+        'success': False,
+        'message': u"",
+        'form_html': None
+    }
+
+    if request.method == 'GET':
+
+        contrato = get_object_or_404(
+            Contrato,
+            id=request.GET.get('contrato', None)
+        )
+
+        tipo_documento = request.GET.get('tipo_documento', None)
+        documento = request.GET.get('documento', None)
+
+        documento = Documento.objects.create(
+            contrato=contrato,
+            tipo_documento=tipo_documento,
+            documento=documento
+        )
+
+        data['success'] = True
+        data['message'] = u"El permiso fue agregada exitosamente"
+ 
+        data['periodo'] = documento.periodo
+        data['tipo_documento'] = documento.tipo_documento
+    else:
+        data['message'] = u"La solicitud debe ser GET"
+
+    return data
+
+@login_required
 def detalle_contrato_pdf(request, pk):
     contrato = get_object_or_404(Contrato,pk=pk)
     pdf = DetalleContrato.contrato(contrato)
@@ -665,6 +706,7 @@ class ContratoDetailView(LoginRequiredMixin, DetailView):
         context['documentos'] = DOCUMENTO[:4]
         context['doc_form'] = DocumentoForm(initial={'contrato': self.object.id})
         context['ec_form'] = EstadoContratacionForm(initial={'contrato': self.object.id})
+        context['df_form'] = AgregarDocumentoForm(initial={'contrato': self.object.id})
         context['pf_form'] = PermisoTipoFuncionarioColegioForm(initial={'contrato': self.object.id})
         context['lf_form'] = LicenciaTipoFuncionarioColegioForm(initial={'contrato': self.object.id})
         context['vf_form'] = VacacionTipoFuncionarioColegioForm(initial={'contrato': self.object.id})
@@ -1279,7 +1321,15 @@ def cargar_documento_personal(request):
                 tipo_documento = 'autorizacion diezmo'
             if 'cargar_imagen_pdf' in request.POST:
                 tipo_documento = 'autorizacion imagen'
-            # print(request.POST['cargar_doc_pdf'])
+            if request.POST['tipo_documento'] == 'contrato':
+                tipo_documento = 'contrato'
+            if request.POST['tipo_documento'] == 'conocimiento reglamento':
+                tipo_documento = 'conocimiento reglamento'
+            if request.POST['tipo_documento'] == 'autorizacion diezmo':
+                tipo_documento = 'autorizacion diezmo'
+            if request.POST['tipo_documento'] == 'autorizacion imagen':
+                tipo_documento = 'autorizacion imagen' 
+
             d = Documento.objects.create(
                 contrato=contrato,
                 tipo_documento=tipo_documento,
