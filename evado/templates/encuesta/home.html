@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block content %}
-    {% if request.user.perfilusuario.es_asesor %}
+    {% if request.user.perfilusuario.es_asesor or request.user.is_staff %}
         <div class="row text-center mb-3">
             <div class="col-md-4">
                 <div class="card mx-md-3">
