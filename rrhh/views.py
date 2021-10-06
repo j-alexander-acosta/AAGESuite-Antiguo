@@ -1311,7 +1311,6 @@ def cargar_documento_personal(request):
         if form.is_valid():
             contrato = form.cleaned_data['contrato']
             documento = form.cleaned_data['documento']
-            print(request.POST)
             tipo_documento = 'otro'
             if 'cargar_contrato_pdf' in request.POST:
                 tipo_documento = 'contrato'
@@ -1335,5 +1334,5 @@ def cargar_documento_personal(request):
                 tipo_documento=tipo_documento,
                 documento=documento
             )
-            # print(d)
+
             return redirect('rrhh:contrato', d.contrato.pk)

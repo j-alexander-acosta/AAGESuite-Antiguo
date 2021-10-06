@@ -139,7 +139,11 @@ class PreguntaEncuesta(models.Model):
 
 
 class TipoRespuesta(models.Model):
-    nombre = models.CharField(max_length=255)
+    nombre = models.CharField(max_length=150)
+    encabezado = models.CharField(
+        max_length=150,
+        default="Escala de valoración",
+        help_text="Este encabezado, aparecera en la encuesta como cabecera de las respuestas")
     creado_en = models.DateTimeField(auto_now_add=True)
 
     def get_absolute_url(self):
@@ -299,13 +303,8 @@ class UniversoEncuesta(models.Model):
         aues = []
         for evaluador in self.evaluadores.all():
             configs = ConfigurarEncuestaUniversoPersona.objects.filter(persona=evaluador, periodo=self.periodo)
-            print(configs)
             for cup in configs:
-                print(cup)
                 for x in cup.evaluados.all():
-                    print(cup.persona)
-                    print(x)
-                    print(cup.tipo_encuesta)
                     aue, created = AplicarUniversoEncuestaPersona.objects.get_or_create(
                         universo_encuesta=self,
                         persona=cup.persona,
@@ -320,10 +319,9 @@ class UniversoEncuesta(models.Model):
     def itemes_personas(self):
         return self.personauniversoencuesta_set.all()
 
-    @property
-    def ultima_pregunta_respondida(self):
+    def ultima_pregunta_respondida(self, persona):
         ultima_pregunta = None
-        for auep in self.aplicaruniversoencuestapersona_set.all():
+        for auep in self.aplicaruniversoencuestapersona_set.filter(persona=persona):
             pregunta = auep.respuestaaplicaruniversoencuestapersona_set.filter(respuesta__isnull=True)
             if pregunta:
                 pregunta = pregunta.order_by('pregunta__numero_pregunta').first().pregunta

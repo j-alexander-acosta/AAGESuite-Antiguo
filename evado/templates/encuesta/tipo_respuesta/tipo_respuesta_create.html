@@ -1,5 +1,4 @@
 {% extends 'base/base.html' %}
-{% load crispy_forms_filters %}
 {% load staticfiles crispy_forms_tags %}
 
 {% block title_page %}
@@ -26,15 +25,11 @@
             <form class="form-horizontal" method="post" novalidate>
                 {% csrf_token %}
                 {% crispy form %}
-                {% for formset in inlines %}
-                    {% crispy formset formset.form.helper %}
-{#                    {{ formset }}#}
-                {% endfor %}
                 <div class="form-group">
                     <div class="col-sm-10 col-sm-offset-2">
                         <button type="submit" class="btn btn-outline-success">Guardar</button>
                         <a href="{{ request.META.HTTP_REFERER }}"
-                           role="button" class="btn btn-outline-info">
+                        role="button" class="btn btn-outline-info">
                             Volver
                         </a>
                     </div>

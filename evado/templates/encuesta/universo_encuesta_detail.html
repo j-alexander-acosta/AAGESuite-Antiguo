@@ -18,17 +18,17 @@
 {% block content %}
     <div class="card">
         <div class="card-header">
-            <h5>{{ universoencuesta }}
+            <h5>{{ universoencuesta }} <small>{{ object.periodo }}</small>
                 {% block buttons %}
                     <div class="btn-group btn-group-sm float-right">
+{#                        <a class="btn btn-outline-primary" href="{% url 'evado:universo_encuesta_edit' object.pk %}"#}
+{#                           data-toggle="tooltip" data-placement="top" title="Editar">#}
+{#                            <i class="uil-edit"></i></a>#}
                         <a data-toggle="modal" data-target="#send_mails" class="btn btn-primary">
                             <span class="mdi mdi-email-send"></span> Enviar Correos </a>
-                        <a href="{% url 'evado:actualizar_encuestas_universo' object.pk %}" type="button" class="btn btn-success">
+                        <a class="btn btn-success" href="{% url 'evado:actualizar_encuestas_universo' object.pk %}">
                             <i class="uil-refresh"></i> Actualizar encuestas
                         </a>
-                        {#                        <a class="btn btn-outline-danger" href="#" data-toggle="modal" data-target="#eliminar_afp_{{object.pk}}">#}
-                        {#                            <i class="uil-trash-alt"></i>#}
-                        {#                        </a>#}
                     </div>
                 {% endblock %}
             </h5>
@@ -39,7 +39,7 @@
             <div class="table-responsive">
                 <table id="basic-datatable" class="table">
                     <thead>
-                        <th>Evaluador</th>
+                    <th>Evaluador</th>
                     </thead>
                     <tbody>
                     {% for x in personas %}

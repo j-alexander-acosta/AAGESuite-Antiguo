@@ -46,6 +46,7 @@ urlpatterns = [
     url(r'^universoencuestas/$', views.UniversoEncuestaListView.as_view(), name='universo_encuesta_list'),
     url(r'^universoencuesta/(?P<pk>\d+)/detalle/$', views.UniversoEncuestaDetailView.as_view(), name='universo_encuesta_detail'),
     url(r'^universoencuesta/nuevo/$', views.UniversoEncuestaCreateView.as_view(), name='universo_encuesta_create'),
+    url(r'^universoencuesta/(?P<pk>\d+)/editar/$', views.UniversoEncuestaUpdateView.as_view(), name='universo_encuesta_edit'),
     url(r'^universoencuesta/mail/universosencuestas/$', views.enviar_mail_universo_encuestas, name='enviar_mail_universo_encuestas'),
     url(r'^encuesta/(?P<pk>\d+)/editar/$', views.EncuestaPreguntaFormSetView.as_view(), name='encuesta_preguntas_edit'),
     url(r'^encuesta/(?P<pk>\d+)/pregunta/anadir/$', views.encuesta_crear_pregunta, name='encuesta_crear_pregunta'),

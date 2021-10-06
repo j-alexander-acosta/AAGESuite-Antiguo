@@ -21,7 +21,7 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views.generic.edit import ModelFormMixin
-from extra_views import InlineFormSetView, InlineFormSetFactory, CreateWithInlinesView
+from extra_views import InlineFormSetView, InlineFormSetFactory
 from jsonview.decorators import json_view
 from django.conf import settings
 
@@ -140,16 +140,15 @@ class TipoRespuestaListView(LoginRequired, ListView):
     paginate_by = 10
 
 
-class TipoRespuestaCreateView(LoginRequired, CreateWithInlinesView):
+class TipoRespuestaCreateView(LoginRequired, CreateView):
     model = TipoRespuesta
-    inlines = [RespuestaInline]
-    fields = ['nombre']
+    form_class = TipoRespuestaForm
     template_name = 'encuesta/tipo_respuesta/tipo_respuesta_create.html'
 
 
 class TipoRespuestaUpdateView(LoginRequired, UpdateView):
     model = TipoRespuesta
-    fields = ['nombre']
+    form_class = TipoRespuestaForm
     template_name = 'encuesta/tipo_respuesta/tipo_respuesta_create.html'
 
 
@@ -268,6 +267,27 @@ class UniversoEncuestaCreateView(LoginRequired, SuccessOrErrorMessageMixin, Crea
     form_class = UniversoEncuestaForm
     template_name = 'encuesta/universo_encuesta_create.html'
     success_message = "El Universo de Encuestas fue creado satisfactoriamente"
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        for evaluador in form.cleaned_data['evaluadores']:
+            self.object.evaluadores.add(evaluador)
+            pue = PersonaUniversoEncuesta()
+            pue.universo_encuesta = self.object
+            pue.persona = evaluador
+            pue.save()
+
+        # Generando encuestas para el universo
+        self.object.generar_encuestas_del_universo()
+        return super(ModelFormMixin, self).form_valid(form)
+
+
+class UniversoEncuestaUpdateView(LoginRequired, SuccessOrErrorMessageMixin, UpdateView,):
+    model = UniversoEncuesta
+    form_class = UniversoEncuestaForm
+    template_name = 'encuesta/universo_encuesta_create.html'
+    success_message = "El Universo de Encuestas fue actualizado satisfactoriamente"
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -465,7 +485,7 @@ def tomar_encuesta(request, hash):
 
     else:
         preguntas = aeu.universo_encuesta.encuesta.obtener_preguntas_no_respuesta_directa
-        ultima_pregunta = aeu.universo_encuesta.ultima_pregunta_respondida
+        ultima_pregunta = aeu.universo_encuesta.ultima_pregunta_respondida(aeu.persona)
         if ultima_pregunta and not request_page:
             for index, pregunta in enumerate(preguntas):
                 if pregunta == ultima_pregunta:
@@ -1078,34 +1098,49 @@ def export_eup_xls(request):
     row_num = 0
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
-    columns = ['RUT Evaluador',
-               'Nombres Evaluador',
-               'Apellidos Evaluador',
-               'Correo Evaluador',
-               'Funcion Evaluador',
-               'RUT Evaluado',
-               'Nombres Evaluado',
-               'Apellidos Evaluado',
-               'Correo Evaluado'
-               'Funcion Evaluado']
+    columns = [
+        'RUT Evaluador',
+       'Nombres Evaluador',
+       'Apellidos Evaluador',
+       'Correo Evaluador',
+       'Funcion Evaluador',
+       'Colegio Evaluador',
+       'Fundacion Evaluador',
+       'RUT Evaluado',
+       'Nombres Evaluado',
+       'Apellidos Evaluado',
+       'Correo Evaluado'
+       'Funcion Evaluado',
+       'Colegio Evaluado',
+       'Fundacion Evaluado',
+    ]
 
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)  # fila 0 columna 0
 
     # cuerpo del archivo
     font_style = xlwt.XFStyle()
-    rows = ConfigurarEncuestaUniversoPersona.objects.all().values_list(
-        'persona__rut',
-        'persona__nombres',
-        'persona__apellidos',
-        'persona__email',
-        'persona__funcion',
-        'evaluado__rut',
-        'evaluado__nombres',
-        'evaluado__apellidos',
-        'evaluado__email',
-        'evaluado__funcion'
-    )
+    configs = ConfigurarEncuestaUniversoPersona.objects.all()
+    rows = []
+    for confi in configs:
+        for evaluado in confi.evaluados.all():
+            row = [
+                confi.persona.rut,
+                confi.persona.nombres,
+                confi.persona.apellidos,
+                confi.persona.email,
+                confi.persona.infopersona.funcion if confi.persona.infopersona.funcion else '',
+                confi.persona.infopersona.colegio,
+                confi.persona.infopersona.fundacion,
+                evaluado.rut,
+                evaluado.nombres,
+                evaluado.apellidos,
+                evaluado.email,
+                evaluado.infopersona.funcion if evaluado.infopersona.funcion else '',
+                evaluado.infopersona.colegio,
+                evaluado.infopersona.fundacion,
+            ]
+            rows.append(row)
     for row in rows:
         row_num += 1
         for col_num in range(len(row)):
