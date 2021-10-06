@@ -30,7 +30,7 @@
         <tr>
             <th><i class="uil uil-user-exclamation"></i> Encuesta </th>
             <th><i class="uil-graduation-hat"></i> Tipo de Encuesta </th>
-            <th><i class="mdi mdi-calendar-clock"></i> Grupo activo </th>
+            <th><i class="mdi mdi-calendar-clock"></i> Periodo activo </th>
             <th><i class="mdi mdi-cogs"></i> Opciones </th>
         </tr>
         </thead>
@@ -41,9 +41,13 @@
                 <td> {{ o.tipo_encuesta }} </td>
                 <td> {{ o.periodo_activo }} </td>
                 <td>
-                    <a href="{% url 'evado:actualizar_encuestas_universo' o.pk %}" type="button" class="btn btn-sm btn-success">
-                        <i class="uil-refresh"></i> Actualizar encuestas
-                    </a>
+                    <div class="btn-group btn-group-sm">
+                        <a class="btn btn-success" href="{% url 'evado:actualizar_encuestas_universo' o.pk %}">
+                            <i class="uil-refresh"></i> Actualizar encuestas</a>
+{#                        <a class="btn btn-outline-primary" href="{% url 'evado:universo_encuesta_edit' o.pk %}"#}
+{#                           data-toggle="tooltip" data-placement="top" title="Editar">#}
+{#                            <i class="uil-edit"></i></a>#}
+                    </div>
                 </td>
             </tr>
         {% endfor %}

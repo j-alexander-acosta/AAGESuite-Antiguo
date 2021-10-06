@@ -174,10 +174,15 @@
                                 <thead>
                                 <tr>
                                     {% if not pregunta.no_mostrar_pregunta %}
-                                        <th width="250px">{{ pregunta.numero_pregunta }}. {{ pregunta.pregunta }}</th>
+                                        <th rowspan="2" class="align-middle" width="250px">{{ pregunta.numero_pregunta }}. {{ pregunta.pregunta }}</th>
                                     {% endif %}
+                                    <th colspan="{{ pregunta.tipo_respuesta.respuesta_set.all.count }}" class="text-center" style="border-bottom-width: 1px;">
+                                        {{ pregunta.tipo_respuesta.encabezado }}
+                                    </th>
+                                </tr>
+                                <tr>
                                     {% for r in pregunta.tipo_respuesta.respuesta_set.all %}
-                                        <th width="60px" class="text-center"> <small style="font-size: 10px;">  {{ r }} </small>  </th>
+                                        <th width="60px" class="text-center font-11"> {{ r }} </th>
                                     {% endfor %}
                                 </tr>
                                 </thead>

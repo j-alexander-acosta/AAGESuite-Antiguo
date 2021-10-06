@@ -71,15 +71,20 @@
                             <div class="table-responsive">
                                 <table class="table table-hover table-bordered">
                                     <thead>
-                                    <tr>
-                                        <th width="30px"> # </th>
-                                        <th width="100px"> Pregunta  </th>
-                                        {% with x.list|first as element %}
+                                    {% with x.list|first as element %}
+                                        <tr>
+                                            <th rowspan="2" class="align-middle" width="5%"> # </th>
+                                            <th rowspan="2" class="align-middle" width="50%"> Pregunta </th>
+                                            <th colspan="{{ element.tipo_respuesta.respuesta_set.all.count }}" class="text-center" style="border-bottom-width: 1px;">
+                                                {{ element.tipo_respuesta.encabezado }}
+                                            </th>
+                                        </tr>
+                                        <tr>
                                             {% for r in element.tipo_respuesta.respuesta_set.all %}
-                                                <th width="60px" align="center"> <small style="font-size: 10px;">  {{ r }} </small>  </th>
+                                                <th class="text-center font-12"> {{ r }}</th>
                                             {% endfor %}
-                                        {% endwith %}
-                                    </tr>
+                                        </tr>
+                                    {% endwith %}
                                     </thead>
                                     <tbody>
                                     {% for item in x.list %}
@@ -89,7 +94,7 @@
                                                     <td> </td>
                                                     <td> </td>
                                                     {% for r in item.tipo_respuesta.respuesta_set.all %}
-                                                        <th width="60px" align="center"> <small style="font-size: 10px;">  {{ r }} </small>  </th>
+                                                        <th class="text-center font-12"> {{ r }} </th>
                                                     {% endfor %}
                                                 </tr>
                                             {% endif %}
@@ -98,7 +103,7 @@
                                             <td> {{ forloop.counter }} </td>
                                             <td> {{ item.pregunta }} </td>
                                             {% for r in item.tipo_respuesta.respuesta_set.all %}
-                                                <td width="60px" align="center">
+                                                <td class="text-center">
                                                     {% if r.escrita %}
                                                         <textarea name="respuesta_{{ item.id }}"> </textarea>
                                                     {% elif r.check %}
@@ -110,7 +115,7 @@
                                                     <br>
                                                     {% if item.descripcion_item_pregunta  %}
                                                         {% if item.tipo_respuesta.respuesta_set.all|length == item.descripcion_item_pregunta.descripcionitempregunta_set.all|length %}
-                                                            <p style="font-size: 10px;">
+                                                            <p class="font-12">
                                                                 {{ item.descripcion_item_pregunta.descripcionitempregunta_set.all|get_at_index:forloop.counter0  }}
                                                             </p>
                                                             <br>

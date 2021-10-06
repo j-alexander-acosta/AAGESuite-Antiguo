@@ -30,6 +30,7 @@
                     <thead>
                     <tr>
                         <th><i class="uil-user-exclamation"></i> Nombre </th>
+                        <th><i class="uil-eye"></i> Encabezado </th>
                         <th><i class="uil-check-circle"></i> Respuestas </th>
                         <th><i class="mdi mdi-cogs"></i> Opciones </th>
                     </tr>
@@ -38,6 +39,7 @@
                     {% for f in object_list %}
                         <tr>
                             <td> {{ f.nombre }} </td>
+                            <td> {{ f.encabezado }} </td>
                             <td>
                                 <ul>
                                 {% for respuesta in f.respuesta_set.all %}
@@ -46,7 +48,9 @@
                                 </ul>
                             </td>
                             <td>
-                                <a class="btn btn-outline-primary" href="{% url 'evado:tipo_respuesta_edit' f.pk %}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="uil-edit"></i></a>
+                                <a class="btn btn-outline-primary" href="{% url 'evado:tipo_respuesta_edit' f.pk %}"
+                                   data-toggle="tooltip" data-placement="top" title="Editar">
+                                    <i class="uil-edit"></i></a>
                             </td>
                         </tr>
                     {% endfor %}

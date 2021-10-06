@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import forms
 from parsley.decorators import parsleyfy
-from django.forms import inlineformset_factory
 from django_summernote.widgets import SummernoteWidget
 from crispy_forms.bootstrap import StrictButton
 from crispy_forms.helper import FormHelper
@@ -302,6 +301,17 @@ class CategoriaPreguntaForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(CategoriaPreguntaForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+
+
+class TipoRespuestaForm(forms.ModelForm):
+    class Meta:
+        model = TipoRespuesta
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(TipoRespuestaForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
 
