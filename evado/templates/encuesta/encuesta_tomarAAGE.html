@@ -5,8 +5,8 @@
     {{ aplicar_encuesta.universo_encuesta.encuesta }}
 {% endblock %}
 
-{% block extra_style %}
-    <style type="text/css">
+{% block extra_css %}
+    <style>
         .table-responsive {
             max-height: 22em;
             overflow-y: scroll;
@@ -23,7 +23,7 @@
             padding: 0.25em;
         }
 
-        thead th {
+        thead {
             position: -webkit-sticky; /* for Safari */
             position: sticky;
             top: 0;
@@ -31,7 +31,7 @@
             background-color: #ffffff;
         }
 
-        thead th:first-child {
+        thead:first-child {
             left: 0;
             z-index: 1;
         }
