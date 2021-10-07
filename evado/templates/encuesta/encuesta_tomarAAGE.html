@@ -8,7 +8,7 @@
 {% block extra_css %}
     <style>
         .table-responsive {
-            max-height: 22em;
+            max-height: 27em;
             overflow-y: scroll;
             position: relative;
         }
@@ -176,8 +176,12 @@
                                     {% if not pregunta.no_mostrar_pregunta %}
                                         <th rowspan="2" class="align-middle" width="250px">{{ pregunta.numero_pregunta }}. {{ pregunta.pregunta }}</th>
                                     {% endif %}
-                                    <th colspan="{{ pregunta.tipo_respuesta.respuesta_set.all.count }}" class="text-center" style="border-bottom-width: 1px;">
-                                        {{ pregunta.tipo_respuesta.encabezado }}
+                                    <th colspan="{{ pregunta.tipo_respuesta.respuesta_set.all.count }}" class="py-1" style="border-bottom-width: 1px; ">
+                                        <div class="row">
+                                            <div class="col-md-1 text-center font-20">-</div>
+                                            <div class="col-md-10 text-center">{{ pregunta.tipo_respuesta.encabezado }}</div>
+                                            <div class="col-md-1 text-center font-20">+</div>
+                                        </div>
                                     </th>
                                 </tr>
                                 <tr>
@@ -405,9 +409,15 @@
             }
         }
         $(function() {
+            let checked = $(document).find("input[id^='radio_']:checked");
+            checked.each(function(){
+                $(this).closest('tr').addClass('text-info');
+            });
+
             activar_siguiente();
 
             $(document).find('input[id^="radio_"]').on('click', function(){
+                $(this).closest('tr').addClass('text-info');
                 activar_siguiente();
             });
         });
