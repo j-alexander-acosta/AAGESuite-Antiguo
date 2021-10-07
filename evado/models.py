@@ -352,6 +352,13 @@ class PersonaUniversoEncuesta(models.Model):
     creado_en = models.DateTimeField(auto_now_add=True)
 
     @property
+    def get_hash_encuesta(self):
+        return AplicarUniversoEncuestaPersona.objects.filter(
+            universo_encuesta=self.universo_encuesta,
+            persona=self.persona
+        ).first().hash
+
+    @property
     def mail_enviado(self):
         if self.correo_enviado:
             return True

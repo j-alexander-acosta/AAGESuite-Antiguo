@@ -21,9 +21,9 @@
             <h5>{{ universoencuesta }} <small>{{ object.periodo }}</small>
                 {% block buttons %}
                     <div class="btn-group btn-group-sm float-right">
-{#                        <a class="btn btn-outline-primary" href="{% url 'evado:universo_encuesta_edit' object.pk %}"#}
-{#                           data-toggle="tooltip" data-placement="top" title="Editar">#}
-{#                            <i class="uil-edit"></i></a>#}
+                        {#                        <a class="btn btn-outline-primary" href="{% url 'evado:universo_encuesta_edit' object.pk %}"#}
+                        {#                           data-toggle="tooltip" data-placement="top" title="Editar">#}
+                        {#                            <i class="uil-edit"></i></a>#}
                         <a data-toggle="modal" data-target="#send_mails" class="btn btn-primary">
                             <span class="mdi mdi-email-send"></span> Enviar Correos </a>
                         <a class="btn btn-success" href="{% url 'evado:actualizar_encuestas_universo' object.pk %}">
@@ -46,9 +46,16 @@
                         <tr>
                             <td>
                                 {{ x.persona }}
-                                <a href="{% url 'evado:enviar_encuesta' x.persona.id universoencuesta.id %}" class="btn btn-sm btn-primary float-right">
-                                    <span class="mdi mdi-email-send"></span> Enviar Correo
-                                </a>
+                                <div class="btn-group btn-group-sm float-right">
+                                    <a href="{% url 'evado:enviar_encuesta' x.persona.id universoencuesta.id %}" class="btn btn-primary">
+                                        <span class="mdi mdi-email-send"></span> Enviar Correo
+                                    </a>
+                                    {% if request.user.perfilusuario.es_admin or request.user.is_staff %}
+                                        <a href="{% url 'evado:tomar_encuesta' x.get_hash_encuesta %}" class="btn btn-outline-warning" target="_blank">
+                                            <span class="uil-eye"></span>
+                                        </a>
+                                    {% endif %}
+                                </div>
                                 <p class="label {% if x.correo_enviado %} text-success {% else %} text-danger {% endif %} mb-0">
                                     {% if x.correo_enviado %} Enviado {% else %} No Enviado  {% endif %}
                                 </p>
